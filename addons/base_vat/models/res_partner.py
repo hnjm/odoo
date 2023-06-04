@@ -39,7 +39,7 @@ _ref_vat = {
     'de': 'DE123456788',
     'dk': 'DK12345674',
     'do': 'DO1-01-85004-3 or 101850043',
-    'ec': 'EC1792060346-001',
+    'ec': '1792060346001 or 1792060346',
     'ee': 'EE123456780',
     'el': 'EL12345670',
     'es': 'ESA12345674',
@@ -76,6 +76,7 @@ _ref_vat = {
     'tr': 'TR1234567890 (VERGINO) or TR17291716060 (TCKIMLIKNO)',  # Levent Karakas @ Eska Yazilim A.S.
     've': 'V-12345678-1, V123456781, V-12.345.678-1',
     'xi': 'XI123456782',
+    'sa': '310175397400003 [Fifteen digits, first and last digits should be "3"]'
 }
 
 _region_specific_vat_codes = {
@@ -327,15 +328,8 @@ class ResPartner(models.Model):
 
 
     def is_valid_ruc_ec(self, vat):
-        ci = stdnum.util.get_cc_module("ec", "ci")
-        ruc = stdnum.util.get_cc_module("ec", "ruc")
-        if len(vat) == 10:
-            return ci.is_valid(vat)
-        elif len(vat) == 13:
-            if vat[2] == "6" and ci.is_valid(vat[:10]):
-                return True
-            else:
-                return ruc.is_valid(vat)
+        if len(vat) in (10, 13) and vat.isdecimal():
+            return True
         return False
 
     def check_vat_ec(self, vat):
@@ -584,6 +578,16 @@ class ResPartner(models.Model):
             return int(vat[9]) == c1 and int(vat[10]) == c2
 
         return False
+
+    __check_vat_sa_re = re.compile(r"^3[0-9]{13}3$")
+
+    # Saudi Arabia TIN validation
+    def check_vat_sa(self, vat):
+        """
+            Check company VAT TIN according to ZATCA specifications: The VAT number should start and begin with a '3'
+            and be 15 digits long
+        """
+        return self.__check_vat_sa_re.match(vat) or False
 
     def check_vat_ua(self, vat):
         res = []

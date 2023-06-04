@@ -279,6 +279,10 @@ class TestSaleStock(TestSaleCommon, ValuationReconciliationTestCommon):
         wizard = Form(self.env[(res_dict.get('res_model'))].with_context(res_dict['context'])).save()
         wizard.process_cancel_backorder()
 
+        #Check Exception error is logged on SO
+        activity = self.env['mail.activity'].search([('res_id', '=', self.so.id), ('res_model', '=', 'sale.order')])
+        self.assertEqual(len(activity), 1, 'When no backorder is created for a partial delivery, a warning error should be logged in its origin SO')
+
         # Check quantity delivered
         del_qty = sum(sol.qty_delivered for sol in self.so.order_line)
         self.assertEqual(del_qty, 4.0, 'Sale Stock: delivered quantity should be 4.0 after partial delivery')
@@ -1411,3 +1415,68 @@ class TestSaleStock(TestSaleCommon, ValuationReconciliationTestCommon):
         ])
         self.assertEqual(ship01.move_ids.move_orig_ids, (pick01 | pick02).move_ids)
         self.assertEqual(ship02.move_ids.move_orig_ids, (pick01 | pick02).move_ids)
+
+    def test_incoterm_in_advance_payment(self):
+        """When generating a advance payment invoice from a SO, this invoice incoterm should be the same as the SO"""
+
+        incoterm = self.env['account.incoterms'].create({
+            'name': 'Test Incoterm',
+            'code': 'TEST',
+        })
+
+        so = self.env['sale.order'].create({
+            'partner_id': self.partner_a.id,
+            'incoterm': incoterm.id,
+            'order_line': [(0, 0, {
+                'name': self.product_a.name,
+                'product_id': self.product_a.id,
+                'product_uom_qty': 10,
+                'product_uom': self.product_a.uom_id.id,
+                'price_unit': 1,
+            })],
+        })
+        so.action_confirm()
+
+        advance_product = self.env['product.product'].create({
+            'name': 'Deposit',
+            'type': 'service',
+            'invoice_policy': 'order',
+        })
+
+        adv_wiz = self.env['sale.advance.payment.inv'].with_context(active_ids=[so.id]).create({
+            'advance_payment_method': 'percentage',
+            'amount': 5.0,
+            'product_id': advance_product.id,
+        })
+
+        act = adv_wiz.with_context(open_invoices=True).create_invoices()
+        invoice = self.env['account.move'].browse(act['res_id'])
+
+        self.assertEqual(invoice.invoice_incoterm_id.id, incoterm.id)
+
+    def test_exception_delivery_partial_multi(self):
+        """
+        When a backorder is cancelled for a picking in multi-picking,
+        the related SO should have an exception logged
+        """
+        #Create 2 sale orders
+        so_1 = self._get_new_sale_order()
+        so_1.action_confirm()
+        picking_1 = so_1.picking_ids
+        picking_1.move_ids.write({'quantity_done': 1})
+
+        so_2 = self._get_new_sale_order()
+        so_2.action_confirm()
+        picking_2 = so_2.picking_ids
+        picking_2.move_ids.write({'quantity_done': 2})
+
+        #multi-picking validation
+        pick = picking_1 | picking_2
+        res_dict = pick.button_validate()
+        wizard = Form(self.env[(res_dict.get('res_model'))].with_context(res_dict['context'])).save()
+        wizard.backorder_confirmation_line_ids[1].write({'to_backorder': False})
+        wizard.process()
+
+        #Check Exception error is logged on so_2
+        activity = self.env['mail.activity'].search([('res_id', '=', so_2.id), ('res_model', '=', 'sale.order')])
+        self.assertEqual(len(activity), 1, 'When no backorder is created for a partial delivery, a warning error should be logged in its origin SO')

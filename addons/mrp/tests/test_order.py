@@ -3161,6 +3161,20 @@ class TestMrpOrder(TestMrpCommon):
 
         self.assertEqual(mo.move_raw_ids.quantity_done, 1.25)
 
+    def test_clear_finished_move(self):
+        """ Test that the finished moves created by the compute are correctly
+        erased after changing the finished product"""
+        mo_form = Form(self.env['mrp.production'])
+        mo_form.product_id = self.product_1
+        mo = mo_form.save()
+        self.assertEqual(len(mo.move_finished_ids), 1)
+        mo.product_id = self.product_2
+        self.assertEqual(len(mo.move_finished_ids), 1)
+        self.assertFalse(self.env['stock.move'].search([
+            ('product_id', '=', self.product_1.id),
+            ('state', '=', 'draft'),
+        ]))
+
     def test_compute_picking_type_id(self):
         """
         Test that the operation type set on the bom is set in the manufacturing order
@@ -3251,3 +3265,14 @@ class TestMrpOrder(TestMrpCommon):
         mo_form.picking_type_id = warehouse02.manu_type_id
         mo_form.bom_id = bom_wh02
         self.assertEqual(mo_form.picking_type_id, warehouse01.manu_type_id, 'Should be adapted because of the default value')
+
+    def test_unlink_workorder_with_consumed_operations(self):
+        self.bom_3.bom_line_ids[0].operation_id = self.bom_3.operation_ids[0].id
+        self.bom_3.bom_line_ids[1].operation_id = self.bom_3.operation_ids[1].id
+        mo_form = Form(self.env['mrp.production'])
+        mo_form.bom_id = self.bom_3
+        mo = mo_form.save()
+        mo.workorder_ids[1].unlink()
+        mo.action_confirm()
+        self.assertEqual(mo.state, 'confirmed')
+        self.assertEqual(len(mo.workorder_ids), 2)

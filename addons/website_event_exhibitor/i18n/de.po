@@ -14,7 +14,7 @@ msgstr ""
 "POT-Creation-Date: 2022-10-10 10:24+0000\n"
 "PO-Revision-Date: 2022-09-22 05:56+0000\n"
 "Last-Translator: Larissa Manderfeld, 2023\n"
-"Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
+"Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -62,6 +62,8 @@ msgid ""
 "<i class=\"fa fa-fw fa-arrow-right\"/>\n"
 "                    Write one."
 msgstr ""
+"<i class=\"fa fa-fw fa-arrow-right\"/>\n"
+"                    Eine schreiben."
 
 #. module: website_event_exhibitor
 #: model_terms:ir.ui.view,arch_db:website_event_exhibitor.event_sponsor_view_form
@@ -75,7 +77,7 @@ msgstr ""
 #. module: website_event_exhibitor
 #: model_terms:ir.ui.view,arch_db:website_event_exhibitor.exhibitor_aside
 msgid "<small class=\"badge text-bg-danger\">Unpublished</small>"
-msgstr ""
+msgstr "<small class=\"badge text-bg-danger\">Unveröffentlicht</small>"
 
 #. module: website_event_exhibitor
 #: model_terms:ir.ui.view,arch_db:website_event_exhibitor.exhibitors_search_tag
@@ -85,7 +87,7 @@ msgstr "<span class=\"btn border-0 py-1\">×</span>"
 #. module: website_event_exhibitor
 #: model_terms:ir.ui.view,arch_db:website_event_exhibitor.exhibitor_aside
 msgid "<span class=\"h5 m-3\">Other exhibitors</span>"
-msgstr ""
+msgstr "<span class=\"h5 m-3\">Andere Austeller</span>"
 
 #. module: website_event_exhibitor
 #: model_terms:ir.ui.view,arch_db:website_event_exhibitor.exhibitor_main
@@ -114,6 +116,10 @@ msgid ""
 "                    aerospace, environmental and applied fluid dynamics, and\n"
 "                    turbomachinery and propulsion)."
 msgstr ""
+"Eine internationale Bildungs- und Wissenschaftsorganisation\n"
+"                     ohne Erwerbszweck mit drei Abteilungen\n"
+"                    (Luft- und Raumfahrt, Umwelt- und angewandte Strömungsdynamik sowie\n"
+"                    Turbomaschinen und Antriebe)."
 
 #. module: website_event_exhibitor
 #: model_terms:ir.ui.view,arch_db:website_event_exhibitor.exhibitor_main
@@ -337,6 +343,8 @@ msgstr "Anzeigename"
 msgid ""
 "Display exhibitors on website, in the footer of every page of the event."
 msgstr ""
+"Aussteller auf der Website anzeigen, in der Fußzeile jeder Seite der "
+"Veranstaltung."
 
 #. module: website_event_exhibitor
 #: model_terms:ir.ui.view,arch_db:website_event_exhibitor.event_sponsor_view_form
@@ -518,7 +526,7 @@ msgstr "Bild URL"
 #: model_terms:event.sponsor,website_description:website_event_exhibitor.event_sponsor_0
 #: model_terms:event.sponsor,website_description:website_event_exhibitor.event_sponsor_3
 msgid "Inventory and Warehouse management"
-msgstr ""
+msgstr "Lager und Bestandsverwaltung"
 
 #. module: website_event_exhibitor
 #: model:ir.model.fields,field_description:website_event_exhibitor.field_event_sponsor__message_is_follower
@@ -983,7 +991,7 @@ msgstr ""
 #: model_terms:event.sponsor,website_description:website_event_exhibitor.event_sponsor_0
 #: model_terms:event.sponsor,website_description:website_event_exhibitor.event_sponsor_3
 msgid "Talent Management"
-msgstr ""
+msgstr "Talentmanagement"
 
 #. module: website_event_exhibitor
 #: code:addons/website_event_exhibitor/controllers/website_event_main.py:0
@@ -1004,7 +1012,7 @@ msgstr ""
 #. module: website_event_exhibitor
 #: model_terms:ir.ui.view,arch_db:website_event_exhibitor.exhibitor_main
 msgid "The sponsor website description is missing."
-msgstr ""
+msgstr "Die Beschreibung der Sponsorenwebsite fehlt."
 
 #. module: website_event_exhibitor
 #: model:ir.model.fields,field_description:website_event_exhibitor.field_event_sponsor__event_date_tz
@@ -1014,7 +1022,7 @@ msgstr "Zeitzone"
 #. module: website_event_exhibitor
 #: model_terms:ir.ui.view,arch_db:website_event_exhibitor.snippet_options
 msgid "Top Bar Filter"
-msgstr ""
+msgstr "Filter Obere Leiste"
 
 #. module: website_event_exhibitor
 #: model:ir.model.fields,help:website_event_exhibitor.field_event_sponsor__activity_exception_decoration
@@ -1128,7 +1136,7 @@ msgstr ""
 #. module: website_event_exhibitor
 #: model_terms:ir.ui.view,arch_db:website_event_exhibitor.exhibitors_main
 msgid "search."
-msgstr ""
+msgstr "Suche."
 
 #. module: website_event_exhibitor
 #. openerp-web
