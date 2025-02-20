@@ -34,6 +34,9 @@ tour.register('sale_timesheet_tour', {
     content: "Add 10 hours as ordered quantity for this product.",
     run: 'text 10',
 }, {
+    trigger: 'div[name="name"] textarea:propValueContains(Service Product)',
+    run: () => {}
+}, {
     trigger: 'button[name="action_confirm"]',
     content: 'Click on Confirm button to create a sale order with this quotation.',
 }, tour.stepUtils.toggleHomeMenu(),
@@ -173,6 +176,7 @@ tour.register('sale_timesheet_tour', {
 }, {
     trigger: '[name=sale_line_id] ul.ui-autocomplete > li:first-child > a:not(:has(i.fa))',
     content: 'Select the first Sales Order Item in the autocomplete dropdown.',
+    run: 'click'
 }, {
     trigger: 'h1 > div[name="name"] > input',
     content: 'Set Project name',

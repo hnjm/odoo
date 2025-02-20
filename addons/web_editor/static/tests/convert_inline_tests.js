@@ -16,6 +16,14 @@ QUnit.module('convert_inline', {}, function () {
             this.testConvertGrid = ({ before, after, title, stepFunction }) => {
                 this.editable.innerHTML = before;
                 (stepFunction || convertInline.bootstrapToTable)(this.editable);
+                // Remove class that is added by `bootstrapToTable` for use in
+                // further methods of `toInline`, and removed at the end of it.
+                this.editable.querySelectorAll('.o_converted_col').forEach(node => {
+                    node.classList.remove('o_converted_col');
+                    if (!node.classList.length) {
+                        node.removeAttribute('class');
+                    }
+                });
                 assert.strictEqual(removeComments(this.editable.innerHTML), after, title);
             }
         }
@@ -300,21 +308,21 @@ QUnit.module('convert_inline', {}, function () {
                     `<td>` +
                         `<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" align=\"center\" ` +
                         `role=\"presentation\" style=\"width: 100% !important; border-collapse: collapse; text-align: inherit; ` +
-                        `font-size: unset; line-height: unset;\"><tr>` +
+                        `font-size: unset; line-height: inherit;\"><tr>` +
                             `<td class="card-header"><span>HEADER</span></td>` +
                         `</tr></table></td>`)
                 .replace(/<td[^>]*>\(1, 0\)<\/td>/,
                     `<td>` +
                         `<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" align=\"center\" ` +
                         `role=\"presentation\" style=\"width: 100% !important; border-collapse: collapse; text-align: inherit; ` +
-                        `font-size: unset; line-height: unset;\"><tr>` +
+                        `font-size: unset; line-height: inherit;\"><tr>` +
                             `<td class="card-body"><h2 class="card-title">TITLE</h2><small>BODY <img></small></td>` +
                         `</tr></table></td>`)
                 .replace(/<td[^>]*>\(2, 0\)<\/td>/,
                     `<td>` +
                         `<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" align=\"center\" ` +
                         `role=\"presentation\" style=\"width: 100% !important; border-collapse: collapse; text-align: inherit; ` +
-                        `font-size: unset; line-height: unset;\"><tr>` +
+                        `font-size: unset; line-height: inherit;\"><tr>` +
                             `<td class="card-footer"><a href="#" class="btn">FOOTER</a></td>` +
                         `</tr></table></td>`),
         });
@@ -595,7 +603,7 @@ QUnit.module('convert_inline', {}, function () {
         assert.strictEqual($editable.html(),
             getRegularTableHtml(1, 1, 12, 100)
                 .split('style=').join('class="o_layout" style=')
-                .replace(' font-size: unset; line-height: unset;', '') // o_layout keeps those default values
+                .replace(' font-size: unset; line-height: inherit;', '') // o_layout keeps those default values
                 .replace(/<td[^>]*>\(0, 0\)/, '<td>' + getRegularTableHtml(1, 1, 12, 100).replace(/<td[^>]*>\(0, 0\)/, '<td><div>Mailing</div>')),
             "should have converted .o_layout to a special table structure with a table in it"
         );
@@ -609,7 +617,7 @@ QUnit.module('convert_inline', {}, function () {
         assert.strictEqual($editable.html(),
             getRegularTableHtml(1, 1, 12, 100)
                 .split('style=').join('class="o_layout" style=')
-                .replace(' font-size: unset; line-height: unset;', '') // o_layout keeps those default values
+                .replace(' font-size: unset; line-height: inherit;', '') // o_layout keeps those default values
                 .replace(/<td[^>]*>\(0, 0\)/, '<td><table><tbody><tr><td>Mailing</td></tr></tbody></table>'),
             "should have converted .o_layout to a special table structure, keeping the table in it"
         );
@@ -1056,6 +1064,52 @@ QUnit.module('convert_inline', {}, function () {
         styleSheet.deleteRule(0);
         styleSheet.deleteRule(0);
 
+        $styleSheet.remove();
+    });
+
+    QUnit.test('Correct border attributes for outlook', async function (assert) {
+        assert.expect(2);
+
+        const $styleSheet = $('<style type="text/css" title="test-stylesheet"/>');
+        document.head.appendChild($styleSheet[0])
+        const styleSheet = [...document.styleSheets].find(sheet => sheet.title === 'test-stylesheet');
+
+        styleSheet.insertRule(`
+            .test-border-zero {
+                border-bottom-width: 0px;
+                border-left-width: 0px;
+                border-right-width: 0px;
+                border-top-width: 0px;
+                border-style: solid;
+            }
+        `, 0);
+
+        styleSheet.insertRule(`
+            .test-border-one {
+                border-bottom-width: 1px;
+                border-left-width: 1px;
+                border-right-width: 1px;
+                border-top-width: 1px;
+                border-style: solid;
+            }
+        `, 1);
+
+        let $editable = $(`<div><div class="test-border-zero"></div></div>`);
+        convertInline.classToStyle($editable, convertInline.getCSSRules($editable[0].ownerDocument));
+        assert.strictEqual($editable.html(),
+            `<div class="test-border-zero" style="border-style:none;box-sizing:border-box;border-top-width:0px;border-right-width:0px;border-left-width:0px;border-bottom-width:0px"></div>`,
+            "Should change border-style to none",
+        );
+
+        $editable = $(`<div><div class="test-border-one"></div></div>`);
+        convertInline.classToStyle($editable, convertInline.getCSSRules($editable[0].ownerDocument));
+        assert.strictEqual($editable.html(),
+            `<div class="test-border-one" style="border-style:solid;box-sizing:border-box;border-top-width:1px;border-right-width:1px;border-left-width:1px;border-bottom-width:1px"></div>`,
+            "Should keep border style solid"
+        );
+
+        styleSheet.deleteRule(0);
+        styleSheet.deleteRule(0);
         $styleSheet.remove();
     });
 });

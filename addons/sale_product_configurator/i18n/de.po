@@ -3,15 +3,16 @@
 # 	* sale_product_configurator
 # 
 # Translators:
-# Martin Trigaux, 2022
+# Martin Trigaux, 2023
+# Larissa Manderfeld, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:25+0000\n"
+"POT-Creation-Date: 2024-02-06 13:32+0000\n"
 "PO-Revision-Date: 2022-09-22 05:55+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Larissa Manderfeld, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,9 +23,7 @@ msgstr ""
 #. module: sale_product_configurator
 #: model_terms:ir.ui.view,arch_db:sale_product_configurator.optional_product_items
 msgid "<i class=\"fa fa-shopping-cart add-optionnal-item\"/> Add to cart"
-msgstr ""
-"<i class=\"fa fa-shopping-cart add-optionnal-item\"/> Zum Warenkorb "
-"hinzufügen"
+msgstr "<i class=\"fa fa-shopping-cart add-optionnal-item\"/>In den Warenkorb"
 
 #. module: sale_product_configurator
 #: model_terms:ir.ui.view,arch_db:sale_product_configurator.configure_optional_products
@@ -54,7 +53,7 @@ msgstr "Hinzufügen"
 #. module: sale_product_configurator
 #: model:ir.model.fields,field_description:sale_product_configurator.field_sale_order_line__product_template_attribute_value_ids
 msgid "Attribute Values"
-msgstr "Merkmalswerte"
+msgstr "Attributwerte"
 
 #. module: sale_product_configurator
 #: model_terms:ir.ui.view,arch_db:sale_product_configurator.configure_optional_products
@@ -62,7 +61,7 @@ msgid "Available Options:"
 msgstr "Verfügbare Optionen:"
 
 #. module: sale_product_configurator
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_product_configurator/static/src/js/sale_product_field.js:0
 #, python-format
 msgid "Back"
@@ -74,14 +73,14 @@ msgid "Chair floor protection"
 msgstr "Stuhlbodenschutz"
 
 #. module: sale_product_configurator
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_product_configurator/static/src/js/sale_product_field.js:0
 #, python-format
 msgid "Configure"
 msgstr "Konfigurieren"
 
 #. module: sale_product_configurator
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_product_configurator/static/src/js/sale_product_field.js:0
 #, python-format
 msgid "Confirm"
@@ -135,12 +134,12 @@ msgstr "Produktbild"
 #. module: sale_product_configurator
 #: model_terms:ir.ui.view,arch_db:sale_product_configurator.sale_order_view_form
 msgid "Product Variant"
-msgstr "Produktvarianten"
+msgstr "Produktvariante"
 
 #. module: sale_product_configurator
 #: model_terms:ir.ui.view,arch_db:sale_product_configurator.product_template_view_form
 msgid "Recommend when 'Adding to Cart' or quotation"
-msgstr "Empfohlen bei 'In den Warenkorb legen' oder Preisangebot"
+msgstr "Empfohlen bei „In den Warenkorb“ oder Angebot"
 
 #. module: sale_product_configurator
 #: model_terms:ir.ui.view,arch_db:sale_product_configurator.product_quantity_config
@@ -150,7 +149,7 @@ msgstr "Entfernen"
 #. module: sale_product_configurator
 #: model:ir.model,name:sale_product_configurator.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Kundenauftragszeile"
+msgstr "Verkaufsauftragszeile"
 
 #. module: sale_product_configurator
 #: model_terms:ir.ui.view,arch_db:sale_product_configurator.configure
@@ -161,8 +160,3 @@ msgstr "Diese Kombination existiert nicht."
 #: model_terms:ir.ui.view,arch_db:sale_product_configurator.configure
 msgid "This product has no valid combination."
 msgstr "Dieses Produkt hat keine gültige Kombination."
-
-#. module: sale_product_configurator
-#: model:product.template,uom_name:sale_product_configurator.product_product_1_product_template
-msgid "Units"
-msgstr "Einheiten"

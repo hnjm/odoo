@@ -5,14 +5,17 @@
 # Translators:
 # Martin Trigaux, 2022
 # Leonardo J. Caballero G. <leonardocaballero@gmail.com>, 2022
+# Pedro M. Baeza <pedro.baeza@tecnativa.com>, 2023
+# Larissa Manderfeld, 2024
+# Wil Odoo, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-14 05:51+0000\n"
+"POT-Creation-Date: 2024-02-06 13:31+0000\n"
 "PO-Revision-Date: 2022-09-22 05:54+0000\n"
-"Last-Translator: Leonardo J. Caballero G. <leonardocaballero@gmail.com>, 2022\n"
+"Last-Translator: Wil Odoo, 2024\n"
 "Language-Team: Spanish (https://app.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,7 +28,7 @@ msgstr ""
 #: code:addons/pos_sale/static/src/xml/OrderManagementScreen/SaleOrderRow.xml:0
 #, python-format
 msgid "(left:"
-msgstr "(izquierda:"
+msgstr "(restante:"
 
 #. module: pos_sale
 #. odoo-javascript
@@ -48,6 +51,13 @@ msgstr "<span class=\"o_form_label\">Equipo de Ventas</span>"
 #: model_terms:ir.ui.view,arch_db:pos_sale.report_invoice_document
 msgid "<span style=\"margin: 0px 5px;\">:</span>"
 msgstr "<span style=\"margin: 0px 5px;\">:</span>"
+
+#. module: pos_sale
+#. odoo-javascript
+#: code:addons/pos_sale/static/src/js/OrderManagementScreen/SaleOrderManagementScreen.js:0
+#, python-format
+msgid "A new order has been created."
+msgstr "Se ha creado un nuevo pedido."
 
 #. module: pos_sale
 #. odoo-javascript
@@ -89,12 +99,12 @@ msgstr ""
 #. module: pos_sale
 #: model:ir.model,name:pos_sale.model_res_config_settings
 msgid "Config Settings"
-msgstr "Opciones de configuración"
+msgstr "Ajustes de configuración"
 
 #. module: pos_sale
 #: model:ir.model.fields,field_description:pos_sale.field_pos_order__currency_rate
 msgid "Currency Rate"
-msgstr "Tasa monetaria"
+msgstr "Tipo de cambio"
 
 #. module: pos_sale
 #. odoo-javascript
@@ -129,30 +139,37 @@ msgstr "Entregado de"
 #: code:addons/pos_sale/static/src/js/OrderManagementScreen/SaleOrderManagementScreen.js:0
 #, python-format
 msgid "Do you want to load the SN/Lots linked to the Sales Order?"
-msgstr "¿Quiere cargar el SN/lotes vinculados a la orden de compra?"
+msgstr "¿Quiere cargar el SN/lotes vinculados al pedido de compra?"
 
 #. module: pos_sale
 #: model:product.template,name:pos_sale.default_downpayment_product_product_template
 msgid "Down Payment (POS)"
-msgstr "Pago adelantado (POS)"
+msgstr "Anticipo (TPV)"
 
 #. module: pos_sale
 #: model:ir.model.fields,field_description:pos_sale.field_pos_order_line__down_payment_details
 msgid "Down Payment Details"
-msgstr "Detalles del pago adelantado"
+msgstr "Detalles del anticipio"
 
 #. module: pos_sale
 #: model:ir.model.fields,field_description:pos_sale.field_pos_config__down_payment_product_id
 #: model:ir.model.fields,field_description:pos_sale.field_res_config_settings__pos_down_payment_product_id
 msgid "Down Payment Product"
-msgstr "Producto para adelanto"
+msgstr "Producto de anticipo"
 
 #. module: pos_sale
 #. odoo-javascript
 #: code:addons/pos_sale/static/src/xml/OrderManagementScreen/SaleOrderManagementControlPanel.xml:0
 #, python-format
 msgid "E.g. customer: Steward, date: 2020-05-09"
-msgstr "Por ejemplo: cliente: steward, fecha: 09-05-2020"
+msgstr "P. ej.: cliente: Steward, fecha: 09-05-2020"
+
+#. module: pos_sale
+#. odoo-javascript
+#: code:addons/pos_sale/static/src/js/OrderManagementScreen/SaleOrderManagementScreen.js:0
+#, python-format
+msgid "Error amount too high"
+msgstr "Error: el importe es demasiado alto"
 
 #. module: pos_sale
 #. odoo-javascript
@@ -160,7 +177,7 @@ msgstr "Por ejemplo: cliente: steward, fecha: 09-05-2020"
 #: model_terms:ir.ui.view,arch_db:pos_sale.report_invoice_document
 #, python-format
 msgid "From"
-msgstr "Desde"
+msgstr "De"
 
 #. module: pos_sale
 #: model:ir.model.fields.selection,name:pos_sale.selection__sale_report__state__invoiced
@@ -183,19 +200,19 @@ msgstr ""
 #: code:addons/pos_sale/models/sale_order.py:0
 #, python-format
 msgid "Linked POS Orders"
-msgstr "Órdenes del PdV vinculadas"
+msgstr "Pedidos de TPV vinculados"
 
 #. module: pos_sale
 #: model:ir.model.fields,field_description:pos_sale.field_pos_order_line__sale_order_origin_id
 msgid "Linked Sale Order"
-msgstr "Orden de venta vinculada"
+msgstr "Pedido de venta vinculado"
 
 #. module: pos_sale
 #. odoo-python
 #: code:addons/pos_sale/models/pos_order.py:0
 #, python-format
 msgid "Linked Sale Orders"
-msgstr "Orden de ventas vinculadas"
+msgstr "Pedidos de venta vinculados"
 
 #. module: pos_sale
 #. odoo-javascript
@@ -243,7 +260,7 @@ msgstr "No hay producto de pago anticipado"
 #. module: pos_sale
 #: model:ir.model.fields,field_description:pos_sale.field_crm_team__pos_sessions_open_count
 msgid "Open POS Sessions"
-msgstr "Sesiones abiertas de punto de venta"
+msgstr "Sesiones abiertas del TPV"
 
 #. module: pos_sale
 #: model:ir.actions.act_window,name:pos_sale.pos_session_action_from_crm_team
@@ -262,7 +279,7 @@ msgstr "Pedido"
 #: model:ir.model.fields,field_description:pos_sale.field_sale_order__pos_order_line_ids
 #: model:ir.model.fields,field_description:pos_sale.field_sale_order_line__pos_order_line_ids
 msgid "Order lines Transfered to Point of Sale"
-msgstr "Líneas de orden que se transfirieron al punto de venta"
+msgstr "Líneas de pedido que se transfirieron al punto de venta"
 
 #. module: pos_sale
 #: model:ir.model.fields.selection,name:pos_sale.selection__sale_report__state__paid
@@ -284,12 +301,12 @@ msgstr "Configuración del TPV"
 #. module: pos_sale
 #: model:ir.model,name:pos_sale.model_pos_order_line
 msgid "Point of Sale Order Lines"
-msgstr "Líneas de Orden de Punto de Venta"
+msgstr "Líneas de pedido de punto de venta"
 
 #. module: pos_sale
 #: model:ir.model,name:pos_sale.model_pos_order
 msgid "Point of Sale Orders"
-msgstr "Pedidos del TPV"
+msgstr "Pedidos de TPV"
 
 #. module: pos_sale
 #: model:ir.model,name:pos_sale.model_pos_session
@@ -317,14 +334,14 @@ msgstr "Publicado"
 #: code:addons/pos_sale/static/src/xml/OrderManagementScreen/SaleOrderManagementControlPanel.xml:0
 #, python-format
 msgid "Previous Order List"
-msgstr "Anterior lista de pedidos"
+msgstr "Lista de pedidos anteriores"
 
 #. module: pos_sale
 #. odoo-javascript
 #: code:addons/pos_sale/static/src/js/OrderManagementScreen/SaleOrderManagementScreen.js:0
 #, python-format
 msgid "Products not available in POS"
-msgstr "Productos no disponibles en el PdV"
+msgstr "Productos no disponibles en el TPV"
 
 #. module: pos_sale
 #. odoo-javascript
@@ -345,7 +362,7 @@ msgstr "Presupuesto enviado"
 #: code:addons/pos_sale/static/src/xml/SetSaleOrderButton.xml:0
 #, python-format
 msgid "Quotation/Order"
-msgstr "Cotización/Orden"
+msgstr "Presupuesto/Pedido"
 
 #. module: pos_sale
 #. odoo-javascript
@@ -360,7 +377,7 @@ msgstr "Cargar SN/Lotes"
 #: code:addons/pos_sale/static/src/xml/ProductScreen/Orderline.xml:0
 #, python-format
 msgid "SO"
-msgstr "SO"
+msgstr "Pedido de venta"
 
 #. module: pos_sale
 #: model:ir.model.fields,field_description:pos_sale.field_pos_order__sale_order_count
@@ -401,12 +418,12 @@ msgstr "Equipo de ventas"
 #. module: pos_sale
 #: model:ir.model.fields,field_description:pos_sale.field_res_config_settings__pos_crm_team_id
 msgid "Sales Team (PoS)"
-msgstr "Equipo de ventas (PoS)"
+msgstr "Equipo de ventas (TPV)"
 
 #. module: pos_sale
 #: model_terms:ir.ui.view,arch_db:pos_sale.res_config_settings_view_form
 msgid "Sales are reported to the following sales team"
-msgstr "Las ventas se reportan al siguiente equipo de ventas"
+msgstr "Las ventas se comunican al siguiente equipo de ventas"
 
 #. module: pos_sale
 #. odoo-javascript
@@ -425,7 +442,7 @@ msgstr "Comercial"
 #. module: pos_sale
 #: model_terms:ir.ui.view,arch_db:pos_sale.crm_team_view_kanban_dashboard
 msgid "Session Running"
-msgstr "Sesión en ejecución"
+msgstr "Sesión en curso"
 
 #. module: pos_sale
 #: model:ir.model.fields,field_description:pos_sale.field_crm_team__pos_order_amount_total
@@ -435,7 +452,7 @@ msgstr "Cantidad de venta de la sesión"
 #. module: pos_sale
 #: model_terms:ir.ui.view,arch_db:pos_sale.crm_team_view_kanban_dashboard
 msgid "Sessions Running"
-msgstr "Sesiones en ejecución"
+msgstr "Sesiones en curso"
 
 #. module: pos_sale
 #. odoo-javascript
@@ -443,14 +460,14 @@ msgstr "Sesiones en ejecución"
 #: code:addons/pos_sale/static/src/xml/SetSaleOrderButton.xml:0
 #, python-format
 msgid "Set Sale Order"
-msgstr "Configure orden de venta"
+msgstr "Configurar pedido de venta"
 
 #. module: pos_sale
 #. odoo-javascript
 #: code:addons/pos_sale/static/src/js/OrderManagementScreen/SaleOrderManagementScreen.js:0
 #, python-format
 msgid "Settle the order"
-msgstr "Resolver la orden"
+msgstr "Procesar el pedido"
 
 #. module: pos_sale
 #. odoo-javascript
@@ -460,13 +477,13 @@ msgid ""
 "Some of the products in your Sale Order are not available in POS, do you "
 "want to import them?"
 msgstr ""
-"Algunos de los productos de su orden de venta no están disponibles en el "
-"PdV, ¿quiere importarlos?"
+"Algunos de los productos de su pedido de venta no están disponibles en el "
+"TPV. ¿Quiere importarlos?"
 
 #. module: pos_sale
 #: model:ir.model.fields,field_description:pos_sale.field_pos_order_line__sale_order_line_id
 msgid "Source Sale Order Line"
-msgstr "Línea fuente de orden de venta"
+msgstr "Línea de pedido de venta de origen"
 
 #. module: pos_sale
 #. odoo-javascript
@@ -484,7 +501,7 @@ msgstr "Estado"
 #. module: pos_sale
 #: model:ir.model.fields,help:pos_sale.field_sale_order__amount_unpaid
 msgid "The amount due from the sale order."
-msgstr "El monto adeudado de la orden de venta."
+msgstr "El importe adeudado del pedido de venta."
 
 #. module: pos_sale
 #: model:ir.model.fields,help:pos_sale.field_pos_order__currency_rate
@@ -500,7 +517,7 @@ msgstr ""
 #: code:addons/pos_sale/static/src/js/OrderManagementScreen/SaleOrderManagementScreen.js:0
 #, python-format
 msgid "There was a problem in loading the %s customer."
-msgstr "Hubo un problema al cargar el cliente %s."
+msgstr "Ocurrió un problema al cargar el cliente %s."
 
 #. module: pos_sale
 #: model:ir.model.fields,help:pos_sale.field_pos_config__crm_team_id
@@ -514,13 +531,13 @@ msgstr ""
 #. module: pos_sale
 #: model_terms:ir.ui.view,arch_db:pos_sale.res_config_settings_view_form
 msgid "This product will be applied when down payment is made"
-msgstr "Este producto se aplicará cuando se haga el pago inicial"
+msgstr "Este producto se aplicará al hacer un anticipo"
 
 #. module: pos_sale
 #: model:ir.model.fields,help:pos_sale.field_pos_config__down_payment_product_id
 #: model:ir.model.fields,help:pos_sale.field_res_config_settings__pos_down_payment_product_id
 msgid "This product will be used as down payment on a sale order."
-msgstr "Este producto se usará como pago inicial en una orden de venta."
+msgstr "Este producto se usará como anticipo en un pedido de venta."
 
 #. module: pos_sale
 #. odoo-javascript
@@ -529,6 +546,11 @@ msgstr "Este producto se usará como pago inicial en una orden de venta."
 #, python-format
 msgid "Total"
 msgstr "Total"
+
+#. module: pos_sale
+#: model:ir.model,name:pos_sale.model_stock_picking
+msgid "Transfer"
+msgstr "Traslado"
 
 #. module: pos_sale
 #: model_terms:ir.ui.view,arch_db:pos_sale.view_pos_order_form_inherit_pos_sale
@@ -546,7 +568,7 @@ msgid ""
 "                                to POS"
 msgstr ""
 "Transferido<br/>\n"
-"                                a POS"
+"                                a TPV"
 
 #. module: pos_sale
 #. odoo-javascript
@@ -558,7 +580,7 @@ msgstr "No se pueden recuperar los pedidos sin conexión."
 #. module: pos_sale
 #: model:ir.model.fields,field_description:pos_sale.field_sale_order__amount_unpaid
 msgid "Unpaid Amount"
-msgstr "Monto impago"
+msgstr "Importe impagado"
 
 #. module: pos_sale
 #. odoo-javascript
@@ -583,3 +605,5 @@ msgid ""
 "You have tried to charge a down payment of %s but only %s remains to be "
 "paid, %s will be applied to the purchase order line."
 msgstr ""
+"Ha intentado cargar un anticipo de %s pero sólo %s queda por pagar, se "
+"aplicará %s a la línea del pedido de compra."

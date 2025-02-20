@@ -12,7 +12,7 @@ let colorpickerArch;
 const ColorPaletteWidget = Widget.extend({
     template: 'web_editor.snippet.option.colorpicker',
     events: {
-        'click .o_we_color_btn': '_onColorButtonClick',
+        'click .o_we_color_btn:not(.o_custom_gradient_btn)': '_onColorButtonClick',
         'mouseenter .o_we_color_btn': '_onColorButtonEnter',
         'mouseleave .o_we_color_btn': '_onColorButtonLeave',
         'click .o_we_colorpicker_switch_pane_btn': '_onSwitchPaneButtonClick',
@@ -48,8 +48,7 @@ const ColorPaletteWidget = Widget.extend({
      */
     init: function (parent, options) {
         this._super.apply(this, arguments);
-        const editableDocument = options.editable ? options.editable.ownerDocument : document;
-        this.style = editableDocument.defaultView.getComputedStyle(editableDocument.documentElement);
+
         this.options = _.extend({
             selectedColor: false,
             resetButton: true,
@@ -61,12 +60,27 @@ const ColorPaletteWidget = Widget.extend({
             opacity: 1,
             selectedTab: 'theme-colors',
             withGradients: false,
+
+            // TODO adapt in master: notice that `options` may contain `editable`
+            // and `ownerDocument` values. Those are duplicates of `$editable` which
+            // can be received or is even computed from the instance here itself.
+            // Ideally those should not be used, they will be removed in master and
+            // the way $editable is received/computed will be reviewed.
+            editable: null,
+            ownerDocument: null,
         }, options || {});
         this.selectedColor = '';
         this.resetButton = this.options.resetButton;
         this.withCombinations = this.options.withCombinations;
 
+        // TODO review in master: do we really need a colorpalette in the editor
+        // working relying on the fact the editable is received from the caller
+        // and other ones that rely on the fact it is asked to the snippet menu?
         this.trigger_up('request_editable', {callback: val => this.options.$editable = val});
+        this.options.editable = this.options.$editable[0];
+        this.options.ownerDocument = this.options.editable && this.options.editable.ownerDocument;
+        const editableDocument = this.options.editable ? this.options.ownerDocument : document;
+        this.style = editableDocument.defaultView.getComputedStyle(editableDocument.documentElement);
 
         this.tabs = [{
             id: 'theme-colors',
@@ -720,8 +734,14 @@ const ColorPaletteWidget = Widget.extend({
             // instead of style but seems necessary for custom colors right
             // now...
             const value = buttonEl.dataset.color || buttonEl.style.backgroundColor;
+            // Buttons in the theme-colors tab of the palette have
+            // no opacity, hence they should be searched by removing
+            // opacity of 0.6 (which was applied by default) from
+            // the selected color.
+            const isCommonColor = buttonEl.classList.contains('o_common_color');
+            const selectedColor = isCommonColor ? this._opacifyColor(this.selectedColor) : this.selectedColor;
             buttonEl.classList.toggle('selected', value
-                && (this.selectedCC === value || weUtils.areCssValuesEqual(this.selectedColor, value)));
+                && (this.selectedCC === value || weUtils.areCssValuesEqual(selectedColor, value)));
         }
     },
     /**

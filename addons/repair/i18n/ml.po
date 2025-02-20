@@ -4,7 +4,7 @@
 # 
 # Translators:
 # Nikhil Krishnan, 2023
-# Hasna, 2023
+# Hasna <hasnausmantu@gmail.com>, 2023
 # Niyas Raphy, 2023
 # 
 msgid ""
@@ -416,6 +416,11 @@ msgid ""
 msgstr ""
 
 #. module: repair
+#: model:ir.model,name:repair.model_mail_compose_message
+msgid "Email composition wizard"
+msgstr ""
+
+#. module: repair
 #: model_terms:ir.ui.view,arch_db:repair.view_repair_order_form
 msgid "End Repair"
 msgstr ""
@@ -755,8 +760,10 @@ msgstr "പിശകുകളുടെ എണ്ണം"
 
 #. module: repair
 #: model:ir.model.fields,help:repair.field_repair_order__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "ഒരു പ്രവർത്തനം ആവശ്യമായ സന്ദേശങ്ങളുടെ എണ്ണം"
+msgid "Number of messages requiring action"
+msgstr ""
+"നടപടി ആവശ്യമായ സന്ദേശങ്ങളുടെ എണ്ണം\n"
+" "
 
 #. module: repair
 #: model:ir.model.fields,help:repair.field_repair_order__message_has_error_counter

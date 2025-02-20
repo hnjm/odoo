@@ -37,11 +37,19 @@ export default class ListUIPlugin extends spreadsheet.UIPlugin {
             case "SELECT_ODOO_LIST":
                 this._selectList(cmd.listId);
                 break;
+            case "REMOVE_ODOO_LIST":
+                if (cmd.listId === this.selectedListId) {
+                    this.selectedListId = undefined;
+                }
+                break;
             case "REFRESH_ODOO_LIST":
                 this._refreshOdooList(cmd.listId);
                 break;
             case "REFRESH_ALL_DATA_SOURCES":
                 this._refreshOdooLists();
+                break;
+            case "UPDATE_ODOO_LIST_DOMAIN":
+                this._addDomain(cmd.listId);
                 break;
             case "ADD_GLOBAL_FILTER":
             case "EDIT_GLOBAL_FILTER":
@@ -58,10 +66,14 @@ export default class ListUIPlugin extends spreadsheet.UIPlugin {
                             "ADD_GLOBAL_FILTER",
                             "EDIT_GLOBAL_FILTER",
                             "REMOVE_GLOBAL_FILTER",
+                            "UPDATE_ODOO_LIST_DOMAIN",
                         ].includes(command.type)
                     )
                 ) {
                     this._addDomains();
+                }
+                if (!this.getters.getListIds().length) {
+                    this.selectedListId = undefined;
                 }
                 break;
         }

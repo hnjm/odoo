@@ -1,12 +1,110 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from odoo.addons.base.models.ir_mail_server import extract_rfc2822_addresses
 from odoo.tests import Form
 from odoo.tests.common import TransactionCase
 from odoo.exceptions import AccessError, UserError
+from odoo.tests import tagged
 
 
+@tagged('res_partner')
 class TestPartner(TransactionCase):
+
+    def test_email_formatted(self):
+        """ Test various combinations of name / email, notably to check result
+        of email_formatted field. """
+        # multi create
+        new_partners = self.env['res.partner'].create([{
+            'name': "Vlad the Impaler",
+            'email': f'vlad.the.impaler.{idx:02d}@example.com',
+        } for idx in range(2)])
+        self.assertEqual(
+            sorted(new_partners.mapped('email_formatted')),
+            sorted([f'"Vlad the Impaler" <vlad.the.impaler.{idx:02d}@example.com>' for idx in range(2)]),
+            'Email formatted should be "name" <email>'
+        )
+
+        # test name_create with formatting / multi emails
+        for source, (exp_name, exp_email, exp_email_formatted) in [
+            (
+                'Balázs <vlad.the.negociator@example.com>, vlad.the.impaler@example.com',
+                ("Balázs", "vlad.the.negociator@example.com", '"Balázs" <vlad.the.negociator@example.com>')
+            ),
+            (
+                'Balázs <vlad.the.impaler@example.com>',
+                ("Balázs", "vlad.the.impaler@example.com", '"Balázs" <vlad.the.impaler@example.com>')
+            ),
+        ]:
+            with self.subTest(source=source):
+                new_partner_id = self.env['res.partner'].name_create(source)[0]
+                new_partner = self.env['res.partner'].browse(new_partner_id)
+                self.assertEqual(new_partner.name, exp_name)
+                self.assertEqual(new_partner.email, exp_email)
+                self.assertEqual(
+                    new_partner.email_formatted, exp_email_formatted,
+                    'Name_create should take first found email'
+                )
+
+        # check name updates and extract_rfc2822_addresses
+        for source, exp_email_formatted, exp_addr in [
+            (
+                'Vlad the Impaler',
+                '"Vlad the Impaler" <vlad.the.impaler@example.com>',
+                ['vlad.the.impaler@example.com']
+            ), (
+                'Balázs', '"Balázs" <vlad.the.impaler@example.com>',
+                ['vlad.the.impaler@example.com']
+            ),
+            # check with '@' in name
+            (
+                'Bike@Home', '"Bike@Home" <vlad.the.impaler@example.com>',
+                ['Bike@Home', 'vlad.the.impaler@example.com']
+            ), (
+                'Bike @ Home@Home', '"Bike @ Home@Home" <vlad.the.impaler@example.com>',
+                ['Home@Home', 'vlad.the.impaler@example.com']
+            ), (
+                'Balázs <email.in.name@example.com>',
+                '"Balázs <email.in.name@example.com>" <vlad.the.impaler@example.com>',
+                ['email.in.name@example.com', 'vlad.the.impaler@example.com']
+            ),
+        ]:
+            with self.subTest(source=source):
+                new_partner.write({'name': source})
+                self.assertEqual(new_partner.email_formatted, exp_email_formatted)
+                self.assertEqual(extract_rfc2822_addresses(new_partner.email_formatted), exp_addr)
+
+        # check email updates
+        new_partner.write({'name': 'Balázs'})
+        for source, exp_email_formatted in [
+            # encapsulated email
+            (
+                "Vlad the Impaler <vlad.the.impaler@example.com>",
+                '"Balázs" <vlad.the.impaler@example.com>'
+            ), (
+                '"Balázs" <balazs@adam.hu>',
+                '"Balázs" <balazs@adam.hu>'
+            ),
+            # multi email
+            (
+                "vlad.the.impaler@example.com, vlad.the.dragon@example.com",
+                '"Balázs" <vlad.the.impaler@example.com,vlad.the.dragon@example.com>'
+            ), (
+                "vlad.the.impaler.com, vlad.the.dragon@example.com",
+                '"Balázs" <vlad.the.dragon@example.com>'
+            ), (
+                'vlad.the.impaler.com, "Vlad the Dragon" <vlad.the.dragon@example.com>',
+                '"Balázs" <vlad.the.dragon@example.com>'
+            ),
+            # falsy emails
+            (False, False),
+            ('', False),
+            (' ', '"Balázs" <@ >'),
+            ('notanemail', '"Balázs" <@notanemail>'),
+        ]:
+            with self.subTest(source=source):
+                new_partner.write({'email': source})
+                self.assertEqual(new_partner.email_formatted, exp_email_formatted)
 
     def test_name_search(self):
         """ Check name_search on partner, especially with domain based on auto_join

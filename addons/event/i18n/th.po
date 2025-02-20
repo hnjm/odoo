@@ -7,14 +7,15 @@
 # Khwunchai Jaengsawang <khwunchai.j@ku.th>, 2022
 # Martin Trigaux, 2022
 # Wichanon Jamwutthipreecha, 2022
+# Rasareeyar Lappiam, 2025
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-23 08:23+0000\n"
+"POT-Creation-Date: 2025-02-10 08:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Wichanon Jamwutthipreecha, 2022\n"
+"Last-Translator: Rasareeyar Lappiam, 2025\n"
 "Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -38,28 +39,28 @@ msgstr "# ส่งแล้ว"
 #: code:addons/event/models/event_event.py:0
 #, python-format
 msgid "%(event_name)s (%(count)s seats remaining)"
-msgstr ""
+msgstr "%(event_name)s (%(count)s ที่นั่งที่เหลืออยู่)"
 
 #. module: event
 #. odoo-python
 #: code:addons/event/models/event_event.py:0
 #, python-format
 msgid "%(event_name)s (Sold out)"
-msgstr ""
+msgstr "%(event_name)s (ขายหมดแล้ว)"
 
 #. module: event
 #. odoo-python
 #: code:addons/event/models/event_ticket.py:0
 #, python-format
 msgid "%(ticket_name)s (%(count)s seats remaining)"
-msgstr ""
+msgstr "%(ticket_name)s (%(count)s ที่นั่งที่เหลืออยู่)"
 
 #. module: event
 #. odoo-python
 #: code:addons/event/models/event_ticket.py:0
 #, python-format
 msgid "%(ticket_name)s (Sold out)"
-msgstr ""
+msgstr "%(ticket_name)s (ขายหมดแล้ว)"
 
 #. module: event
 #. odoo-python
@@ -86,6 +87,8 @@ msgid ""
 "'Full Page Ticket - %s - %s' % ((object.event_id.name or "
 "'Event').replace('/',''), (object.name or '').replace('/',''))"
 msgstr ""
+"'ตั๋วหน้าเต็ม - %s - %s' % ((object.event_id.name or "
+"'Event').replace('/',''), (object.name or '').replace('/',''))"
 
 #. module: event
 #: model:ir.actions.report,print_report_name:event.action_report_event_event_full_page_ticket
@@ -97,7 +100,7 @@ msgstr "'ทิกเก็ตเต็มหน้า - %s' % (object.name or '
 #: code:addons/event/models/event_event.py:0
 #, python-format
 msgid "- \"%(event_name)s\": Missing %(nb_too_many)i seats."
-msgstr ""
+msgstr "- \"%(event_name)s\": ขาด %(nb_too_many)i ที่นั่ง"
 
 #. module: event
 #. odoo-python
@@ -106,7 +109,7 @@ msgstr ""
 msgid ""
 "- the ticket \"%(ticket_name)s\" (%(event_name)s): Missing %(nb_too_many)i "
 "seats."
-msgstr ""
+msgstr "- ตั๋ว \"%(ticket_name)s\" (%(event_name)s): ไม่มีที่นั่ง %(nb_too_many)i"
 
 #. module: event
 #: model:event.tag,name:event.event_tag_category_1_tag_2
@@ -264,6 +267,8 @@ msgid ""
 "<i class=\"fa fa-info-circle me-2\"></i>This event and all the conferences "
 "are in <b>English</b>!"
 msgstr ""
+"<i class=\"fa fa-info-circle "
+"me-2\"></i>กิจกรรมนี้และการประชุมทั้งหมดเป็น<b>ภาษาอังกฤษ</b>!"
 
 #. module: event
 #: model_terms:ir.ui.view,arch_db:event.view_event_kanban
@@ -309,6 +314,8 @@ msgid ""
 "<span class=\"badge text-bg-secondary o_wevent_badge float-"
 "end\">SPEAKER</span>"
 msgstr ""
+"<span class=\"badge text-bg-secondary o_wevent_badge float-"
+"end\">ผู้บรรยาย</span>"
 
 #. module: event
 #: model_terms:ir.ui.view,arch_db:event.event_registration_view_kanban
@@ -846,7 +853,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:event.view_event_form
 #: model_terms:ir.ui.view,arch_db:event.view_event_type_form
 msgid "Add some internal notes (to do lists, contact info, ...)"
-msgstr ""
+msgstr "เพิ่มบันทึกภายใน (รายการสิ่งที่ต้องทำ ข้อมูลการติดต่อ ...)"
 
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_event__address_search
@@ -904,7 +911,7 @@ msgstr "ประกาศ"
 #: code:addons/event/static/src/js/tours/event_tour.js:0
 #, python-format
 msgid "Apply change."
-msgstr ""
+msgstr "ใช้การเปลี่ยนแปลง"
 
 #. module: event
 #: model_terms:ir.ui.view,arch_db:event.view_event_search
@@ -915,7 +922,7 @@ msgstr "เก็บถาวรแล้ว"
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_event_ticket__is_launched
 msgid "Are sales launched"
-msgstr ""
+msgstr "มีการเปิดตัวการขาย"
 
 #. module: event
 #: model_terms:event.event,description:event.event_1
@@ -1128,7 +1135,7 @@ msgstr "หมวดหมู่"
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_tag__category_sequence
 msgid "Category Sequence"
-msgstr ""
+msgstr "ลำดับหมวดหมู่"
 
 #. module: event
 #: model_terms:event.event,description:event.event_2
@@ -1398,6 +1405,11 @@ msgid "Display Sponsors and Exhibitors on your event pages"
 msgstr "แสดงผู้สนับสนุนและผู้จัดแสดงในหน้าอีเวนต์ของคุณ"
 
 #. module: event
+#: model:ir.model.fields,field_description:event.field_event_event__date_tz
+msgid "Display Timezone"
+msgstr "แสดงโซนเวลา"
+
+#. module: event
 #: model:ir.model.fields,field_description:event.field_event_mail__sequence
 msgid "Display order"
 msgstr "แสดงลำดับ"
@@ -1520,7 +1532,7 @@ msgstr "อีเวนต์องค์กร"
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_registration__event_organizer_id
 msgid "Event Organizer"
-msgstr ""
+msgstr "ผู้จัดงาน"
 
 #. module: event
 #: model:ir.model,name:event.model_event_registration
@@ -1533,7 +1545,7 @@ msgstr "การลงทะเบียนอีเวนต์"
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_registration__event_user_id
 msgid "Event Responsible"
-msgstr ""
+msgstr "รับผิดชอบงานอีเวนต์"
 
 #. module: event
 #. odoo-python
@@ -1633,6 +1645,9 @@ msgid ""
 "                usually based on the types of events you organize (e.g. \"Workshop\",\n"
 "                \"Roadshow\", \"Online Webinar\", etc)."
 msgstr ""
+"เทมเพลตกิจกรรมรวมการกำหนดค่าที่คุณใช้บ่อยและมักจะขึ้นอยู่กับ\n"
+"                ประเภทของกิจกรรมที่คุณจัด (เช่น \"เวิร์กชอป\", \n"
+"               \"โรดโชว์\", \"สัมมนาผ่านเว็บออนไลน์\" เป็นต้น)"
 
 #. module: event
 #: model:ir.model,name:event.model_event_event_ticket
@@ -1683,7 +1698,7 @@ msgstr "อีเวนต์: ป้ายการลงทะเบียน"
 #. module: event
 #: model:mail.template,name:event.event_subscription
 msgid "Event: Registration Confirmation"
-msgstr ""
+msgstr "กิจกรรม: ยืนยันการลงทะเบียน"
 
 #. module: event
 #: model:mail.template,name:event.event_reminder
@@ -1739,6 +1754,8 @@ msgid ""
 "Every year we invite our community, partners and end-users to come and meet us! It's the ideal event to get together and present new features, roadmap of future versions, achievements of the software, workshops, training sessions, etc...\n"
 "            This event is also an opportunity to showcase our partners' case studies, methodology or developments. Be there and see directly from the source the features of the new version!"
 msgstr ""
+"ทุกปีเราเชิญชวนคอมมูนิตี้ พาร์ทเนอร์และผู้ใช้งานของเราทั้งหมดมาร่วมพบปะกับเรา! เป็นงานที่เหมาะสำหรับการรวมตัวกันและนำเสนอฟีเจอร์ใหม่ๆ แผนกลยุทธ์ของเวอร์ชันในอนาคต ผลงานของซอฟต์แวร์ การฝึกอบรม และอื่นๆ ...\n"
+"          กิจกรรมนี้ยังเป็นโอกาสในการนำเสนอกรณีศึกษา วิธีการหรือการพัฒนาของพาร์ทเนอร์ของเรา มาเป็นผู้เข้าชมและค้นพบฟีเจอร์เวอร์ชันใหม่ๆ โดยตรงจากเรา!"
 
 #. module: event
 #: model_terms:event.event,description:event.event_0
@@ -2030,7 +2047,7 @@ msgstr "ไอคอน"
 #: code:addons/event/static/src/icon_selection_field/icon_selection_field.js:0
 #, python-format
 msgid "Icon Selection"
-msgstr ""
+msgstr "การเลือกไอคอน"
 
 #. module: event
 #: model:ir.model.fields,help:event.field_event_event__activity_exception_icon
@@ -2095,6 +2112,13 @@ msgstr "ข้อมูลสำคัญของทิกเก็ต"
 #, python-format
 msgid "In Progress"
 msgstr "กำลังดำเนินการ"
+
+#. module: event
+#: model:ir.model.fields,help:event.field_event_event__date_tz
+msgid ""
+"Indicates the timezone in which the event dates/times will be displayed on "
+"the website."
+msgstr "ระบุโซนเวลาที่วันที่/เวลาของกิจกรรมจะแสดงบนเว็บไซต์"
 
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_mail__interval_nbr
@@ -2265,7 +2289,7 @@ msgstr "มาสร้าง <b>อีเวนต์</b>แรกกันเ�
 #: model:ir.model.fields,field_description:event.field_event_event_ticket__seats_limited
 #: model:ir.model.fields,field_description:event.field_event_type_ticket__seats_limited
 msgid "Limit Attendees"
-msgstr ""
+msgstr "จำกัดผู้เข้าร่วม"
 
 #. module: event
 #: model_terms:ir.ui.view,arch_db:event.view_event_form
@@ -2510,7 +2534,7 @@ msgstr "จํานวนการดําเนินการ"
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_event__seats_used
 msgid "Number of Attendees"
-msgstr ""
+msgstr "จำนวนผู้เข้าร่วม"
 
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_event__seats_expected
@@ -2520,7 +2544,7 @@ msgstr "จำนวนผู้เข้าร่วมที่คาดหว
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_event__seats_reserved
 msgid "Number of Registrations"
-msgstr ""
+msgstr "จำนวนการลงทะเบียน"
 
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_event__message_has_error_counter
@@ -2531,8 +2555,8 @@ msgstr "จํานวนข้อผิดพลาด"
 #. module: event
 #: model:ir.model.fields,help:event.field_event_event__message_needaction_counter
 #: model:ir.model.fields,help:event.field_event_registration__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "จํานวนข้อความที่ต้องดําเนินการ"
+msgid "Number of messages requiring action"
+msgstr "จำนวนข้อความที่ต้องดำเนินการ"
 
 #. module: event
 #: model:ir.model.fields,help:event.field_event_event__message_has_error_counter
@@ -2575,7 +2599,7 @@ msgstr "จองทิกเก็ตออนไลน์"
 #: code:addons/event/static/src/js/tours/event_tour.js:0
 #, python-format
 msgid "Open date range picker. Pick a Start date for your event"
-msgstr ""
+msgstr "เปิดเครื่องมือเลือกช่วงวันที่ เลือกวันที่เริ่มต้นสำหรับกิจกรรมของคุณ"
 
 #. module: event
 #: model_terms:event.event,description:event.event_0
@@ -2605,7 +2629,7 @@ msgstr ""
 #: code:addons/event/models/event_event.py:0
 #, python-format
 msgid "Operation not supported."
-msgstr ""
+msgstr "ไม่รองรับการดำเนินการ"
 
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_event__organizer_id
@@ -2793,7 +2817,7 @@ msgstr "เปิดการลงทะเบียน"
 #. module: event
 #: model:ir.actions.act_window,name:event.event_registration_action_stats_from_event
 msgid "Registration statistics"
-msgstr ""
+msgstr "สถิติการลงทะเบียน"
 
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_event_ticket__registration_ids
@@ -2930,17 +2954,17 @@ msgstr "ส่งแล้ว"
 #: model:mail.template,description:event.event_reminder
 msgid ""
 "Sent automatically to attendees if there is a reminder defined on the event"
-msgstr ""
+msgstr "ส่งไปยังผู้เข้าร่วมโดยอัตโนมัติหากมีการกำหนดการแจ้งเตือนไว้ในกิจกรรม"
 
 #. module: event
 #: model:mail.template,description:event.event_registration_mail_template_badge
 msgid "Sent automatically to someone after they registered to an event"
-msgstr ""
+msgstr "ส่งถึงใครบางคนโดยอัตโนมัติหลังจากที่พวกเขาลงทะเบียนเข้าร่วมกิจกรรม"
 
 #. module: event
 #: model:mail.template,description:event.event_subscription
 msgid "Sent to attendees after registering to an event"
-msgstr ""
+msgstr "ส่งไปยังผู้เข้าร่วมหลังจากลงทะเบียนเข้าร่วมกิจกรรม"
 
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_stage__sequence
@@ -3186,6 +3210,15 @@ msgid ""
 "The stop date cannot be earlier than the start date. Please check ticket "
 "%(ticket_name)s"
 msgstr ""
+"วันที่หยุดต้องไม่เร็วกว่าวันที่เริ่มต้น โปรดตรวจสอบตั๋ว %(ticket_name)s"
+
+#. module: event
+#. odoo-python
+#: code:addons/event/models/event_mail.py:0
+#, python-format
+msgid ""
+"The template which is referenced should be coming from %(model_name)s model."
+msgstr "เทมเพลตที่อ้างอิงควรมาจากโมเดล %(model_name)s"
 
 #. module: event
 #. odoo-python
@@ -3193,7 +3226,7 @@ msgstr ""
 #: code:addons/event/models/event_ticket.py:0
 #, python-format
 msgid "There are not enough seats available for:"
-msgstr ""
+msgstr "มีที่นั่งไม่เพียงพอสำหรับ:"
 
 #. module: event
 #: model_terms:event.event,description:event.event_0
@@ -3301,7 +3334,6 @@ msgid "Tickets can be printed or scanned directly from your phone."
 msgstr "สามารถพิมพ์หรือสแกนทิกเก็ตได้โดยตรงจากโทรศัพท์ของคุณ"
 
 #. module: event
-#: model:ir.model.fields,field_description:event.field_event_event__date_tz
 #: model:ir.model.fields,field_description:event.field_event_type__default_timezone
 msgid "Timezone"
 msgstr "โซนเวลา"
@@ -3457,7 +3489,7 @@ msgstr "สถานที่"
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_event__address_inline
 msgid "Venue (formatted for one line uses)"
-msgstr ""
+msgstr "สถานที่ (จัดรูปแบบสำหรับการใช้งานหนึ่งรายการ)"
 
 #. module: event
 #. odoo-python
@@ -3516,6 +3548,16 @@ msgid "What's new?"
 msgstr "มีอะไรใหม่บ้าง?"
 
 #. module: event
+#: model:ir.model.fields,help:event.field_event_event__date_begin
+#: model:ir.model.fields,help:event.field_event_registration__event_begin_date
+msgid ""
+"When the event is scheduled to take place (expressed in your local timezone "
+"on the form view)."
+msgstr ""
+"เมื่อมีการกำหนดให้เหตุการณ์เกิดขึ้น "
+"(แสดงตามโซนเวลาท้องถิ่นของคุณในมุมมองแบบฟอร์ม)"
+
+#. module: event
 #: model:ir.model.fields,help:event.field_event_event__is_ongoing
 msgid "Whether event has begun"
 msgstr "อีเวนต์ได้เริ่มต้นขึ้นแล้วหรือยัง"
@@ -3523,12 +3565,12 @@ msgstr "อีเวนต์ได้เริ่มต้นขึ้นแล
 #. module: event
 #: model:ir.model.fields,help:event.field_event_event_ticket__sale_available
 msgid "Whether it is possible to sell these tickets"
-msgstr ""
+msgstr "ไม่ว่าจะสามารถขายทิกเก็ตเหล่านี้ได้หรือไม่"
 
 #. module: event
 #: model:ir.model.fields,help:event.field_event_event_ticket__is_sold_out
 msgid "Whether seats are not available for this ticket."
-msgstr ""
+msgstr "ไม่ว่าจะไม่มีที่นั่งว่างสำหรับทิกเก็ตนี้หรือไม่"
 
 #. module: event
 #: model:event.event.ticket,description:event.event_0_ticket_2
@@ -3572,7 +3614,7 @@ msgstr "เช่น การประชุมสถาปนิก"
 #: model_terms:ir.ui.view,arch_db:event.view_event_form
 #: model_terms:ir.ui.view,arch_db:event.view_event_type_form
 msgid "e.g. How to get to your event, door closing time, ..."
-msgstr ""
+msgstr "เช่น วิธีเดินทางไปยังงาน เวลาปิดประตูเข้างาน ..."
 
 #. module: event
 #: model_terms:ir.ui.view,arch_db:event.view_event_type_form

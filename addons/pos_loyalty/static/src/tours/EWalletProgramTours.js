@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { ErrorPopup } from 'point_of_sale.tour.ErrorPopupTourMethods';
 import { PosLoyalty } from 'pos_loyalty.tour.PosCouponTourMethods';
 import { ProductScreen } from 'point_of_sale.tour.ProductScreenTourMethods';
 import { TicketScreen } from 'point_of_sale.tour.TicketScreenTourMethods';
@@ -103,3 +104,34 @@ PosLoyalty.exec.finalizeOrder('Cash', '0');
 Tour.register('EWalletProgramTour2', { test: true, url: '/pos/web' }, getSteps());
 
 //#endregion
+
+//#region ExpiredEWalletProgramTour
+
+startSteps();
+
+ProductScreen.do.confirmOpeningPopup();
+ProductScreen.do.clickHomeCategory();
+ProductScreen.do.clickPartnerButton();
+ProductScreen.do.clickCustomer('AAAA');
+ProductScreen.exec.addOrderline('Whiteboard Pen', '2', '6', '12.00');
+PosLoyalty.check.eWalletButtonState({ highlighted: false });
+PosLoyalty.do.clickEWalletButton();
+ErrorPopup.check.isShown();
+ErrorPopup.do.clickConfirm();
+
+Tour.register('ExpiredEWalletProgramTour', { test: true, url: '/pos/web' }, getSteps());
+
+//#endregion
+
+startSteps();
+ProductScreen.do.confirmOpeningPopup();
+ProductScreen.do.clickHomeCategory();
+ProductScreen.do.clickPartnerButton();
+ProductScreen.do.clickCustomer("partner_a");
+PosLoyalty.check.eWalletButtonState({ highlighted: false });
+ProductScreen.exec.addOrderline("product_a", "1");
+PosLoyalty.check.eWalletButtonState({ highlighted: true, text: getEWalletText("Pay") });
+PosLoyalty.do.clickEWalletButton(getEWalletText("Pay"));
+PosLoyalty.check.pointsAwardedAre("100"),
+PosLoyalty.exec.finalizeOrder("Cash", "90");
+Tour.register("PosLoyaltyPointsEwallet", { test: true, url: "/pos/web" }, getSteps());

@@ -10,24 +10,16 @@ import zipfile
 from collections import defaultdict
 from os.path import join as opj
 
-import odoo
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
-from odoo.modules.module import MANIFEST_NAMES
+from odoo.http import request
+from odoo.modules.module import adapt_version, MANIFEST_NAMES
 from odoo.tools import convert_csv_import, convert_sql_import, convert_xml_import, exception_to_unicode
+from odoo.tools import file_open, file_open_temporary_directory
 
 _logger = logging.getLogger(__name__)
 
 MAX_FILE_SIZE = 100 * 1024 * 1024  # in megabytes
-
-__import_paths__ = {}
-
-def _file_open(env, path):
-    path = os.path.normcase(os.path.normpath(path))
-    import_path = __import_paths__.get(env)
-    if import_path and path.startswith(import_path):
-        return open(path, 'rb')
-    return odoo.tools.file_open(path, 'rb')
 
 
 class IrModule(models.Model):
@@ -47,6 +39,14 @@ class IrModule(models.Model):
         super(IrModule, self - imported_modules)._get_latest_version()
 
     def _import_module(self, module, path, force=False):
+        # Do not create a bridge module for these neutralizations.
+        # Do not involve specific website during import by resetting
+        # information used by website's get_current_website.
+        self = self.with_context(website_id=None)  # noqa: PLW0642
+        force_website_id = None
+        if request and request.session.get('force_website_id'):
+            force_website_id = request.session.pop('force_website_id')
+
         known_mods = self.search([])
         known_mods_names = {m.name: m for m in known_mods}
         installed_mods = [m.name for m in known_mods if m.state == 'installed']
@@ -54,13 +54,17 @@ class IrModule(models.Model):
         terp = {}
         manifest_path = next((opj(path, name) for name in MANIFEST_NAMES if os.path.exists(opj(path, name))), None)
         if manifest_path:
-            with _file_open(self.env, manifest_path) as f:
+            with file_open(manifest_path, 'rb', env=self.env) as f:
                 terp.update(ast.literal_eval(f.read().decode()))
         if not terp:
             return False
+        if not terp.get('icon'):
+            icon_path = 'static/description/icon.png'
+            module_icon = module if os.path.exists(opj(path, icon_path)) else 'base'
+            terp['icon'] = opj('/', module_icon, icon_path)
         values = self.get_values_from_terp(terp)
         if 'version' in terp:
-            values['latest_version'] = terp['version']
+            values['latest_version'] = adapt_version(terp['version'])
 
         unmet_dependencies = set(terp.get('depends', [])).difference(installed_mods)
 
@@ -82,7 +86,7 @@ class IrModule(models.Model):
             mode = 'update' if not force else 'init'
         else:
             assert terp.get('installable', True), "Module not installable"
-            self.create(dict(name=module, state='installed', imported=True, **values))
+            mod = self.create(dict(name=module, state='installed', imported=True, **values))
             mode = 'init'
 
         for kind in ['data', 'init_xml', 'update_xml']:
@@ -97,7 +101,7 @@ class IrModule(models.Model):
                     noupdate = True
                 pathname = opj(path, filename)
                 idref = {}
-                with _file_open(self.env, pathname) as fp:
+                with file_open(pathname, 'rb', env=self.env) as fp:
                     if ext == '.csv':
                         convert_csv_import(self.env.cr, module, pathname, fp.read(), idref, mode, noupdate)
                     elif ext == '.sql':
@@ -111,7 +115,7 @@ class IrModule(models.Model):
             for root, dirs, files in os.walk(path_static):
                 for static_file in files:
                     full_path = opj(root, static_file)
-                    with _file_open(self.env, full_path) as fp:
+                    with file_open(full_path, 'rb', env=self.env) as fp:
                         data = base64.b64encode(fp.read())
                     url_path = '/{}{}'.format(module, full_path.split(path)[1].replace(os.path.sep, '/'))
                     if not isinstance(url_path, str):
@@ -124,6 +128,10 @@ class IrModule(models.Model):
                         type='binary',
                         datas=data,
                     )
+                    # Do not create a bridge module for this check.
+                    if 'public' in IrAttachment._fields:
+                        # Static data is public and not website-specific.
+                        values['public'] = True
                     attachment = IrAttachment.sudo().search([('url', '=', url_path), ('type', '=', 'binary'), ('res_model', '=', 'ir.ui.view')])
                     if attachment:
                         attachment.write(values)
@@ -175,6 +183,12 @@ class IrModule(models.Model):
             'res_id': asset.id,
         } for asset in created_assets])
 
+        mod._update_from_terp(terp)
+
+        if force_website_id:
+            # Restore neutralized website_id.
+            request.session['force_website_id'] = force_website_id
+
         return True
 
     @api.model
@@ -192,49 +206,45 @@ class IrModule(models.Model):
                 if zf.file_size > MAX_FILE_SIZE:
                     raise UserError(_("File '%s' exceed maximum allowed file size", zf.filename))
 
-            with tempfile.TemporaryDirectory() as module_dir:
-                try:
-                    __import_paths__[self.env] = module_dir
-                    manifest_files = [
-                        file
-                        for file in z.filelist
-                        if file.filename.count('/') == 1
-                        and file.filename.split('/')[1] in MANIFEST_NAMES
-                    ]
-                    module_data_files = defaultdict(list)
-                    for manifest in manifest_files:
-                        manifest_path = z.extract(manifest, module_dir)
-                        mod_name = manifest.filename.split('/')[0]
-                        try:
-                            with _file_open(self.env, manifest_path) as f:
-                                terp = ast.literal_eval(f.read().decode())
-                        except Exception:
+            with file_open_temporary_directory(self.env) as module_dir:
+                manifest_files = [
+                    file
+                    for file in z.filelist
+                    if file.filename.count('/') == 1
+                    and file.filename.split('/')[1] in MANIFEST_NAMES
+                ]
+                module_data_files = defaultdict(list)
+                for manifest in manifest_files:
+                    manifest_path = z.extract(manifest, module_dir)
+                    mod_name = manifest.filename.split('/')[0]
+                    try:
+                        with file_open(manifest_path, 'rb', env=self.env) as f:
+                            terp = ast.literal_eval(f.read().decode())
+                    except Exception:
+                        continue
+                    for filename in terp.get('data', []) + terp.get('init_xml', []) + terp.get('update_xml', []):
+                        if os.path.splitext(filename)[1].lower() not in ('.xml', '.csv', '.sql'):
                             continue
-                        for filename in terp.get('data', []) + terp.get('init_xml', []) + terp.get('update_xml', []):
-                            if os.path.splitext(filename)[1].lower() not in ('.xml', '.csv', '.sql'):
-                                continue
-                            module_data_files[mod_name].append('%s/%s' % (mod_name, filename))
-                    for file in z.filelist:
-                        filename = file.filename
-                        mod_name = filename.split('/')[0]
-                        is_data_file = filename in module_data_files[mod_name]
-                        is_static = filename.startswith('%s/static' % mod_name)
-                        if is_data_file or is_static:
-                            z.extract(file, module_dir)
+                        module_data_files[mod_name].append('%s/%s' % (mod_name, filename))
+                for file in z.filelist:
+                    filename = file.filename
+                    mod_name = filename.split('/')[0]
+                    is_data_file = filename in module_data_files[mod_name]
+                    is_static = filename.startswith('%s/static' % mod_name)
+                    if is_data_file or is_static:
+                        z.extract(file, module_dir)
 
-                    dirs = [d for d in os.listdir(module_dir) if os.path.isdir(opj(module_dir, d))]
-                    for mod_name in dirs:
-                        module_names.append(mod_name)
-                        try:
-                            # assert mod_name.startswith('theme_')
-                            path = opj(module_dir, mod_name)
-                            if self._import_module(mod_name, path, force=force):
-                                success.append(mod_name)
-                        except Exception as e:
-                            _logger.exception('Error while importing module')
-                            errors[mod_name] = exception_to_unicode(e)
-                finally:
-                    __import_paths__.pop(self.env)
+                dirs = [d for d in os.listdir(module_dir) if os.path.isdir(opj(module_dir, d))]
+                for mod_name in dirs:
+                    module_names.append(mod_name)
+                    try:
+                        # assert mod_name.startswith('theme_')
+                        path = opj(module_dir, mod_name)
+                        if self._import_module(mod_name, path, force=force):
+                            success.append(mod_name)
+                    except Exception as e:
+                        _logger.exception('Error while importing module')
+                        errors[mod_name] = exception_to_unicode(e)
         r = ["Successfully imported module '%s'" % mod for mod in success]
         for mod, error in errors.items():
             r.append("Error while importing module '%s'.\n\n %s \n Make sure those modules are installed and try again." % (mod, error))

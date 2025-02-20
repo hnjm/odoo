@@ -6,6 +6,10 @@
     --ListRenderer-thead-bg-color: #{$gray-200};
     --ListRenderer-thead-border-end-color: #{$border-color};
 
+    @include media-breakpoint-up(md) {
+        height: 100%;
+    }
+
     .o_list_view &  {
         --ListRenderer-table-padding-h: #{$o-horizontal-padding};
     }
@@ -45,6 +49,11 @@
             th:not(.o_list_record_selector) {
                 border-left: $border-width solid var(--ListRenderer-thead-border-end-color);
             }
+
+            .o_list_number_th {
+                /*rtl:ignore*/
+                text-align: right;
+            }
         }
 
         // Override BS default
@@ -54,7 +63,11 @@
 
         tbody > tr > td:not(.o_list_record_selector) {
             &:not(.o_handle_cell):not(.o_list_button):not(.o_list_record_remove) {
-                @include o-text-overflow(table-cell);
+                --fieldWidget-display: block; // Will affect inner components (see fields.scss)
+
+                display: table-cell;
+                @include text-truncate();
+
                 &.o_list_text {
                     white-space: pre-wrap;
                 }
@@ -63,9 +76,11 @@
             &.o_list_number {
                 /*rtl:ignore*/
                 text-align: right;
+                /*rtl:ignore*/
+                direction : ltr;
             }
             &.o_list_text {
-                word-break: break-word;
+                word-wrap: break-word;
                 .o_field_widget textarea.o_input {
                     vertical-align: top;
                 }
@@ -113,6 +128,13 @@
 
             > tr > td {
                 @include o-text-overflow(table-cell);
+            }
+
+            .o_list_number {
+                /*rtl:ignore*/
+                text-align: right;
+                /*rtl:ignore*/
+                direction : ltr;
             }
         }
 
@@ -237,6 +259,8 @@
 
         .o_list_actions_header {
             width: 32px;
+            background-color: var(--ListRenderer-thead-bg-color);
+            z-index: 100;
         }
 
         .o_data_row.o_list_no_open {

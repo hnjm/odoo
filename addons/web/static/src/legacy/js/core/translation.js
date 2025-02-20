@@ -65,7 +65,7 @@ var TranslationDataBase = Class.extend(/** @lends instance.TranslationDataBase# 
     load_translations: function(session, modules, lang, url) {
         var self = this;
         var cacheId = session.cache_hashes && session.cache_hashes.translations;
-        url = url || '/web/webclient/translations';
+        url = url || new URL("/web/webclient/translations", session.origin || location.origin).href;
         url += '/' + (cacheId ? cacheId : Date.now());
         const paramsGet = {};
         if (modules) {
@@ -73,6 +73,9 @@ var TranslationDataBase = Class.extend(/** @lends instance.TranslationDataBase# 
         }
         if (lang) {
             paramsGet.lang = lang;
+        } else if (session.is_frontend && session.lang_url_code) {
+            // Keep distinct cached responses per language.
+            paramsGet.unique = session.lang_url_code;
         }
         return $.get(url, paramsGet).then(function (trans) {
             self.set_bundle(trans);

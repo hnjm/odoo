@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo.addons.sale_timesheet.tests.common import TestCommonSaleTimesheet
@@ -745,8 +744,8 @@ class TestSaleService(TestCommonSaleTimesheet):
         order_line.product_uom_qty = 10
         self.assertEqual(allocated_hours, order_line.project_id.allocated_hours, 'Project allocated hours should not be changed.')
 
-    def test_different_uom_sol_to_hours_when_confrim_sale_order(self):
-        """ Test check whether the project allocated hours are set correctly or not when the product is different in the sale order line.
+    def test_different_uom_to_hours_on_sale_order_confirmation(self):
+        """ Verify correctness of a project's allocted hours for multiple UOMs.
 
             The conversion to time should be processed as follows :
                 H : qty = uom_qty [Hours]
@@ -759,29 +758,78 @@ class TestSaleService(TestCommonSaleTimesheet):
             1) Create a 4 SOL on a SO With different UOM
             2) Confirm the SO
             3) Check the project allocated hour is correctly set
+            4) Repeat with different timesheet encoding UOM
         """
 
         self.env['sale.order.line'].create([{
             'order_id': self.sale_order.id,
             'product_id': self.product_delivery_timesheet3.id,
             'product_uom_qty': 2,
-            'product_uom': self.env.ref('uom.product_uom_day').id,
+            'product_uom': self.env.ref('uom.product_uom_day').id, # 16 hours
         }, {
             'order_id': self.sale_order.id,
             'product_id': self.product_delivery_timesheet3.id,
             'product_uom_qty': 8,
-            'product_uom': self.env.ref('uom.product_uom_hour').id,
+            'product_uom': self.env.ref('uom.product_uom_hour').id, # 8 hours
         }, {
             'order_id': self.sale_order.id,
             'product_id': self.product_delivery_timesheet3.id,
             'product_uom_qty': 1,
-            'product_uom': self.env.ref('uom.product_uom_dozen').id,
+            'product_uom': self.env.ref('uom.product_uom_dozen').id, # 0 hours
         }, {
             'order_id': self.sale_order.id,
             'product_id': self.product_delivery_timesheet3.id,
             'product_uom_qty': 6,
-            'product_uom': self.env.ref('uom.product_uom_unit').id,
+            'product_uom': self.env.ref('uom.product_uom_unit').id, # 6 hours
         }])
         self.sale_order.action_confirm()
-        project_allocated_hours = self.sale_order.order_line[0].project_id.allocated_hours
-        self.assertEqual(30, project_allocated_hours, 'current set the project allocated hours.')
+        allocated_hours = self.sale_order.project_ids.allocated_hours
+        self.assertEqual(16 + 8 + 6, allocated_hours,
+                         "Project's allocated hours should add up correctly.")
+
+        self.env.company.timesheet_encode_uom_id = self.env.ref('uom.product_uom_day')
+        so_copy = self.sale_order.copy()
+        so_copy.action_confirm()
+        self.assertEqual(allocated_hours, so_copy.project_ids.allocated_hours,
+                         "Timesheet encoding shouldn't affect hours allocated.")
+
+    def test_timesheet_hours_delivered_rounding(self):
+        """
+        Ensure hours are rounded consistently on SO & invoice.
+        """
+        self.env.company.project_time_mode_id.rounding = 1.0
+        self.env['sale.order.line'].create({
+            'name': self.product_delivery_timesheet3.name,
+            'product_id': self.product_delivery_timesheet3.id,
+            'product_uom_qty': 10,
+            'product_uom': self.product_delivery_timesheet3.uom_id.id,
+            'price_unit': self.product_delivery_timesheet3.list_price,
+            'order_id': self.sale_order.id,
+        })
+
+        for amount in (8.1, 8.5, 8.9):
+            order = self.sale_order.copy()
+            sol = order.order_line
+            order.action_confirm()
+
+            self.env['account.analytic.line'].create([{
+                'name': 'Test Line',
+                'project_id': sol.project_id.id,
+                'task_id': sol.task_id.id,
+                'unit_amount': amount,
+                'employee_id': self.employee_manager.id,
+            }])
+
+            invoice = order._create_invoices()
+            hours_delivered = sol._get_delivered_quantity_by_analytic([])[sol.id]
+
+            self.assertEqual(
+                order.timesheet_total_duration,
+                hours_delivered,
+                f"{amount} hours delivered should round the same for SO & timesheet",
+            )
+            self.assertEqual(
+                invoice.timesheet_total_duration,
+                hours_delivered,
+                f"{amount} hours delivered should round the same for invoice & timesheet",
+            )

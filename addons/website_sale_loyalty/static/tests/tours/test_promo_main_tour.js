@@ -45,6 +45,11 @@ tour.register('shop_sale_loyalty', {
             trigger: '.td-product_name:contains("10.0% discount on total amount")',
             run: function () {}, // it's a check
         },
+        {
+            content: "check loyalty points",
+            trigger: '.oe_website_sale_gift_card span:contains("372.03 Points")',
+            run: function () {}, // it's a check
+        },
         /* 2. Add some cabinet to get a free one, play with quantity */
         {
             content: "go to shop",
@@ -96,7 +101,7 @@ tour.register('shop_sale_loyalty', {
             tourUtils.goToCart({quantity: 3}),
         {
             content: "check reduction amount got recomputed and merged both discount lines into one only",
-            extra_trigger: '.oe_currency_value:contains("-﻿75.50"):not(#cart_total .oe_currency_value:contains("-﻿75.50"))',
+            extra_trigger: '.oe_currency_value:contains("-﻿74.00"):not(#cart_total .oe_currency_value:contains("-﻿74.00"))',
             trigger: '.oe_website_sale .oe_cart',
             run: function () {}, // it's a check
         },
@@ -108,7 +113,7 @@ tour.register('shop_sale_loyalty', {
         },
         {
             content: "check reduction amount got recomputed when changing qty",
-            trigger: '.oe_currency_value:contains("-﻿107.50")',
+            trigger: '.oe_currency_value:contains("-﻿106.00")',
             run: function () {}, // it's a check
         },
         {

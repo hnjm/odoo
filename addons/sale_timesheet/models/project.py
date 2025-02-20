@@ -55,7 +55,7 @@ class Project(models.Model):
     warning_employee_rate = fields.Boolean(compute='_compute_warning_employee_rate', compute_sudo=True)
     partner_id = fields.Many2one(
         compute='_compute_partner_id', store=True, readonly=False)
-    allocated_hours = fields.Float(compute='_compute_allocated_hours', store=True, readonly=False, copy=False)
+    allocated_hours = fields.Float(compute='_compute_allocated_hours', store=True, readonly=False)
 
     @api.model
     def _get_view(self, view_id=None, view_type='form', **options):
@@ -152,7 +152,7 @@ class Project(models.Model):
     @api.depends('pricing_type', 'allow_timesheets', 'allow_billable', 'sale_line_employee_ids', 'sale_line_employee_ids.employee_id')
     def _compute_warning_employee_rate(self):
         projects = self.filtered(lambda p: p.allow_billable and p.allow_timesheets and p.pricing_type == 'employee_rate')
-        employees = self.env['account.analytic.line']._read_group([('task_id', 'in', projects.task_ids.ids)], ['employee_id', 'project_id'], ['employee_id', 'project_id'], ['employee_id', 'project_id'], lazy=False)
+        employees = self.env['account.analytic.line']._read_group([('task_id', 'in', projects.task_ids.ids)], ['employee_id', 'project_id'], ['employee_id', 'project_id'], lazy=False)
         dict_project_employee = defaultdict(list)
         for line in employees:
             dict_project_employee[line['project_id'][0]] += [line['employee_id'][0]] if line['employee_id'] else []
@@ -213,7 +213,7 @@ class Project(models.Model):
 
     def _update_timesheets_sale_line_id(self):
         for project in self.filtered(lambda p: p.allow_billable and p.allow_timesheets):
-            timesheet_ids = project.sudo(False).mapped('timesheet_ids').filtered(lambda t: not t.is_so_line_edited and t._is_not_billed())
+            timesheet_ids = project.mapped('timesheet_ids').filtered(lambda t: not t.is_so_line_edited and t._is_updatable_timesheet())
             if not timesheet_ids:
                 continue
             for employee_id in project.sale_line_employee_ids.filtered(lambda l: l.project_id == project).employee_id:
@@ -364,6 +364,7 @@ class Project(models.Model):
             'billable_manual': _lt('Timesheets (Billed Manually)'),
             'non_billable': _lt('Timesheets (Non Billable)'),
             'timesheet_revenues': _lt('Timesheets revenues'),
+            'other_costs': _lt('Materials'),
         }
 
     def _get_profitability_sequence_per_invoice_type(self):
@@ -375,6 +376,7 @@ class Project(models.Model):
             'billable_manual': 4,
             'non_billable': 5,
             'timesheet_revenues': 6,
+            'other_costs': 12,
         }
 
     def _get_profitability_aal_domain(self):

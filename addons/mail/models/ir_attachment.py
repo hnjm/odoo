@@ -1,12 +1,33 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models
-from odoo.exceptions import AccessError
-from odoo.http import request
+from odoo import _, models, SUPERUSER_ID
+from odoo.exceptions import AccessError, MissingError, UserError
+from odoo.tools import consteq
+
 
 class IrAttachment(models.Model):
     _inherit = 'ir.attachment'
+
+    def _check_attachments_access(self, attachment_tokens):
+        """This method relies on access rules/rights and therefore it should not be called from a sudo env."""
+        self = self.sudo(False)
+        attachment_tokens = attachment_tokens or ([None] * len(self))
+        if len(attachment_tokens) != len(self):
+            raise UserError(_("An access token must be provided for each attachment."))
+        for attachment, access_token in zip(self, attachment_tokens):
+            try:
+                attachment_sudo = attachment.with_user(SUPERUSER_ID).exists()
+                if not attachment_sudo:
+                    raise MissingError(_("The attachment %s does not exist.", attachment.id))
+                try:
+                    attachment.check('write')
+                except AccessError:
+                    if not access_token or not attachment_sudo.access_token or not consteq(attachment_sudo.access_token, access_token):
+                        message_sudo = self.env['mail.message'].sudo().search([('attachment_ids', 'in', attachment_sudo.ids)], limit=1)
+                        if not message_sudo or not message_sudo.is_current_user_or_guest_author:
+                            raise
+            except (AccessError, MissingError):
+                raise UserError(_("The attachment %s does not exist or you do not have the rights to access it.", attachment.id))
 
     def _post_add_create(self):
         """ Overrides behaviour when the attachment is created through the controller
@@ -48,7 +69,6 @@ class IrAttachment(models.Model):
         self.unlink()
 
     def _attachment_format(self, legacy=False):
-        safari = request and request.httprequest.user_agent and request.httprequest.user_agent.browser == 'safari'
         res_list = []
         for attachment in self:
             res = {
@@ -56,7 +76,9 @@ class IrAttachment(models.Model):
                 'id': attachment.id,
                 'filename': attachment.name,
                 'name': attachment.name,
-                'mimetype': 'application/octet-stream' if safari and attachment.mimetype and 'video' in attachment.mimetype else attachment.mimetype,
+                'mimetype': attachment.mimetype,
+                'type': attachment.type,
+                'url': attachment.url,
             }
             if not legacy:
                 res['originThread'] = [('insert', {

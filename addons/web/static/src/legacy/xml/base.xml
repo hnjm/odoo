@@ -132,6 +132,7 @@
             t-ref="autofocus"
             t-on-change="_onInputChange"
             t-on-click="_onInputClick"
+            autocomplete="off"
         />
         <span t-if="props.warn_future and state.warning" class="fa fa-exclamation-triangle text-danger o_tz_warning o_datepicker_warning">
             <t>This date is on the future. Make sure it is what you expected.</t>
@@ -260,7 +261,7 @@
                         <main class="modal-body">
                             <t t-slot="default"/>
                         </main>
-                        <footer t-if="props.renderFooter" class="modal-footer justify-content-around justify-content-sm-start flex-wrap gap-1" t-ref="modal-footer">
+                        <footer t-if="props.renderFooter" class="modal-footer justify-content-around justify-content-md-start flex-wrap gap-1" t-ref="modal-footer">
                             <t t-slot="buttons" close="_close" >
                                 <button class="btn btn-primary" t-on-click.prevent="_close">
                                     <t>Ok</t>

@@ -12,9 +12,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 12:49+0000\n"
+"POT-Creation-Date: 2024-02-06 13:31+0000\n"
 "PO-Revision-Date: 2022-09-22 05:55+0000\n"
 "Last-Translator: Dorin Hongu <dhongu@gmail.com>, 2023\n"
 "Language-Team: Romanian (https://app.transifex.com/odoo/teams/41243/ro/)\n"
@@ -171,7 +171,7 @@ msgstr "Costul mediu "
 #. module: stock_account
 #: model:ir.model.fields.selection,name:stock_account.selection__product_category__property_cost_method__average
 msgid "Average Cost (AVCO)"
-msgstr "Costul mediu (AVCO)"
+msgstr "Cost mediu ponderat (CMP)"
 
 #. module: stock_account
 #: model_terms:ir.ui.view,arch_db:stock_account.stock_valuation_layer_revaluation_form_view
@@ -399,7 +399,6 @@ msgstr "Locații inventar"
 
 #. module: stock_account
 #. odoo-python
-#: code:addons/stock_account/__init__.py:0
 #: code:addons/stock_account/__init__.py:0
 #: code:addons/stock_account/models/account_chart_template.py:0
 #: model:ir.model.fields,field_description:stock_account.field_product_category__property_valuation
@@ -659,8 +658,8 @@ msgid ""
 "        First In First Out (FIFO): The products are valued supposing those that enter the company first will also leave it first.\n"
 "        "
 msgstr ""
-"Prețul standard: Produsele sunt evaluate la costul standard definit pe produs.\n"
-"Costul mediu (AVCO): Produsele sunt evaluate la costul mediu ponderat.\n"
+"Preț standard: Produsele sunt evaluate la costul standard definit pe produs.\n"
+"Cost mediu ponderat (CMP): Produsele sunt evaluate la costul mediu ponderat.\n"
 "First In First Out (FIFO): Produsele sunt evaluate presupunând că cele care intră în companie mai întâi o vor părăsi mai întâi."
 
 #. module: stock_account
@@ -821,6 +820,15 @@ msgid ""
 msgstr ""
 "Liniile de mișcare nu sunt într-o stare consistentă: nu împărtășesc aceeași "
 "origine sau destinație a companiei."
+
+#. module: stock_account
+#. odoo-python
+#: code:addons/stock_account/wizard/stock_valuation_layer_revaluation.py:0
+#, python-format
+msgid ""
+"The value of a stock valuation layer cannot be negative. Landed cost could "
+"be use to correct a specific transfer."
+msgstr ""
 
 #. module: stock_account
 #: model_terms:ir.actions.act_window,help:stock_account.stock_valuation_layer_action
@@ -1064,6 +1072,15 @@ msgstr ""
 "Nu aveți niciun cont de intrare în stoc definit în categoria dumneavoastră "
 "de produse. Trebuie să definiți unu înainte de procedarea acestei "
 "operațiuni."
+
+#. module: stock_account
+#. odoo-python
+#: code:addons/stock_account/models/product.py:0
+#, python-format
+msgid ""
+"You don't have any output valuation account defined on your product "
+"category. You must define one before processing this operation."
+msgstr ""
 
 #. module: stock_account
 #. odoo-python

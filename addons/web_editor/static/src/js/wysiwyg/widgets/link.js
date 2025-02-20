@@ -8,6 +8,7 @@ const {isColorGradient} = require('web_editor.utils');
 
 const getDeepRange = OdooEditorLib.getDeepRange;
 const getInSelection = OdooEditorLib.getInSelection;
+const EMAIL_REGEX = OdooEditorLib.EMAIL_REGEX;
 const _t = core._t;
 
 /**
@@ -85,14 +86,19 @@ const Link = Widget.extend({
                 }
                 $node = $node.parent();
             }
-            const linkNode = this.$link[0] || this.data.range.cloneContents();
-            const linkText = linkNode.textContent;
+            const linkNode = this.linkEl || this.data.range.cloneContents();
+            const linkText = linkNode.innerText.replaceAll("\u200B", "");
             this.data.content = linkText.replace(/[ \t\r\n]+/g, ' ');
             this.data.originalText = this.data.content;
             if (linkNode instanceof DocumentFragment) {
                 this.data.originalHTML = $('<fakeEl>').append(linkNode).html();
             } else {
                 this.data.originalHTML = linkNode.innerHTML;
+            }
+            const imgEl = linkNode.querySelector('IMG');
+            if (imgEl) {
+                this.data.isImage = true;
+                this.needLabel = false;
             }
             this.data.url = this.$link.attr('href') || '';
         } else {
@@ -115,8 +121,8 @@ const Link = Widget.extend({
             'text-truncate',
         ];
         const keptClasses = this.data.iniClassName.split(' ').filter(className => classesToKeep.includes(className));
-        const allBtnColorPrefixes = /(^|\s+)(bg|text|border)(-[a-z0-9_-]*)?/gi;
-        const allBtnClassSuffixes = /(^|\s+)btn(-[a-z0-9_-]*)?/gi;
+        const allBtnColorPrefixes = /(^|\s+)(bg|text|border)((-[a-z0-9_-]*)|\b)/gi;
+        const allBtnClassSuffixes = /(^|\s+)btn((-[a-z0-9_-]*)|\b)/gi;
         const allBtnShapes = /\s*(rounded-circle|flat)\s*/gi;
         this.data.className = this.data.iniClassName
             .replace(allBtnColorPrefixes, ' ')
@@ -159,10 +165,7 @@ const Link = Widget.extend({
         this._updateOptionsUI();
 
         if (this.data.url) {
-            var match = /mailto:(.+)/.exec(this.data.url);
-            this.$('input[name="url"]').val(match ? match[1] : this.data.url);
-            this._onURLInput();
-            this._savedURLInputOnDestroy = false;
+            this._updateUrlInput(this.data.url);
         }
 
         if (!this.noFocusUrl) {
@@ -288,12 +291,10 @@ const Link = Widget.extend({
      * @private
      */
     _correctLink: function (url) {
-        if (url.indexOf('mailto:') === 0 || url.indexOf('tel:') === 0) {
+        if (url.indexOf('tel:') === 0) {
             url = url.replace(/^tel:([0-9]+)$/, 'tel://$1');
-        } else if (url.indexOf('@') !== -1 && url.indexOf(':') === -1) {
-            url = 'mailto:' + url;
-        } else if (url && url.indexOf('://') === -1 && url[0] !== '/'
-                    && url[0] !== '#' && url.slice(0, 2) !== '${') {
+        } else if (url && !url.startsWith('mailto:') && url.indexOf('://') === -1
+                    && url[0] !== '/' && url[0] !== '#' && url.slice(0, 2) !== '${') {
             url = 'http://' + url;
         }
         return url;
@@ -340,11 +341,9 @@ const Link = Widget.extend({
             (type && size ? (' btn-' + size) : '');
         var isNewWindow = this._isNewWindow(url);
         var doStripDomain = this._doStripDomain();
-        if (
-            url.indexOf('@') >= 0 && url.indexOf('mailto:') < 0 && !url.match(/^http[s]?/i) ||
-            this._link && this._link.href.includes('mailto:') && !url.includes('mailto:')
-        ) {
-            url = ('mailto:' + url);
+        const emailMatch = url.match(EMAIL_REGEX);
+        if (emailMatch) {
+            url = emailMatch[1] ? emailMatch[0] : 'mailto:' + emailMatch[0];
         } else if (url.indexOf(location.origin) === 0 && doStripDomain) {
             url = url.slice(location.origin.length);
         }
@@ -497,7 +496,7 @@ const Link = Widget.extend({
      */
     _updateLinkContent($link, linkInfos, { force = false } = {}) {
         if (force || (this._setLinkContent && (linkInfos.content !== this.data.originalText || linkInfos.url !== this.data.url))) {
-            if (linkInfos.content === this.data.originalText) {
+            if (linkInfos.content === this.data.originalText || this.data.isImage) {
                 $link.html(this.data.originalHTML);
             } else if (linkInfos.content && linkInfos.content.length) {
                 $link.text(linkInfos.content);
@@ -511,6 +510,19 @@ const Link = Widget.extend({
      * @private
      */
     _updateOptionsUI: function () {},
+    /**
+     * @private
+     * @param {String} url
+     */
+    _updateUrlInput: function (url) {
+        if (!this.el) {
+            return;
+        }
+        const match = /mailto:(.+)/.exec(url);
+        this.el.querySelector('input[name="url"]').value = match ? match[1] : url;
+        this._onURLInput();
+        this._savedURLInputOnDestroy = false;
+    },
 
     //--------------------------------------------------------------------------
     // Handlers
@@ -548,7 +560,7 @@ const Link = Widget.extend({
         this._savedURLInputOnDestroy = true;
         var $linkUrlInput = this.$('#o_link_dialog_url_input');
         let value = $linkUrlInput.val();
-        let isLink = value.indexOf('@') < 0;
+        let isLink = !EMAIL_REGEX.test(value);
         this._getIsNewWindowFormRow().toggleClass('d-none', !isLink);
         this.$('.o_strip_domain').toggleClass('d-none', value.indexOf(window.location.origin) !== 0);
     },

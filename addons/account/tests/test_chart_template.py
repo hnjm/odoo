@@ -80,7 +80,23 @@ class TestChartTemplate(TransactionCase):
         return cls._create_tax_template(template_name, name, amount, tag_name=None)
 
     @classmethod
-    def _create_tax_template(cls, tax_template_xmlid, name, amount, tag_name=None, chart_template_id=None, account_data=None):
+    def _create_group_tax_template(cls, tax_template_xmlid, name, chart_template_id=None, active=True):
+        children_1 = cls._create_tax_template(f'{tax_template_xmlid}_children1', f'{name}_children_1', 10, active=active)
+        children_2 = cls._create_tax_template(f'{tax_template_xmlid}_children2', f'{name}_children_2', 15, active=active)
+        return cls.env['account.tax.template']._load_records([{
+            'xml_id': tax_template_xmlid,
+            'values': {
+                'name': name,
+                'amount_type': 'group',
+                'type_tax_use': 'none',
+                'active': active,
+                'chart_template_id': chart_template_id if chart_template_id else cls.chart_template.id,
+                'children_tax_ids': [Command.set((children_1 + children_2).ids)],
+            },
+        }])
+
+    @classmethod
+    def _create_tax_template(cls, tax_template_xmlid, name, amount, tag_name=None, chart_template_id=None, account_data=None, active=True):
         if tag_name:
             tag = cls.env['account.account.tag'].create({
                 'name': tag_name,
@@ -103,6 +119,7 @@ class TestChartTemplate(TransactionCase):
                 'name': name,
                 'amount': amount,
                 'type_tax_use': 'none',
+                'active': active,
                 'chart_template_id': chart_template_id if chart_template_id else cls.chart_template.id,
                 'invoice_repartition_line_ids': [
                     Command.create({
@@ -191,7 +208,26 @@ class TestChartTemplate(TransactionCase):
 
         tax = self.env['account.tax'].search([
             ('company_id', '=', self.company.id),
-            ('name', '=', self.tax_template_1.name),
+            ('name', 'like', f'%{self.tax_template_1.name}'),
+        ])
+        # Check that tax was not recreated
+        self.assertEqual(len(tax), 1)
+        # Check that tags have been updated
+        self.assertEqual(tax.invoice_repartition_line_ids.tag_ids.name, self.tax_template_1.invoice_repartition_line_ids.tag_ids.name)
+
+    def test_update_taxes_existing_template_rounding_error(self):
+        """
+        When a template is close enough from the corresponding existing tax but has a minor rounding error,
+        we still want to update that tax with the template values and not recreate it.
+        """
+        # We compare up to the precision of the field, which is 4 decimals
+        self.tax_template_1.amount += 0.00001
+        self.tax_template_1.invoice_repartition_line_ids.tag_ids.name += " [DUP]"
+        update_taxes_from_templates(self.env.cr, self.chart_template_xmlid)
+
+        tax = self.env['account.tax'].search([
+            ('company_id', '=', self.company.id),
+            ('name', 'like', f'%{self.tax_template_1.name}'),
         ])
         # Check that tax was not recreated
         self.assertEqual(len(tax), 1)
@@ -363,3 +399,67 @@ class TestChartTemplate(TransactionCase):
         self.tax_template_2.invoice_repartition_line_ids.tag_ids.name = 'tag_name_2_modified'
         with self.assertRaises(ValidationError):
             update_taxes_from_templates(self.env.cr, self.chart_template_xmlid)
+
+    def test_update_taxes_children_tax_ids(self):
+        """ Ensures children_tax_ids are correctly generated when updating taxes with
+        amount_type='group'.
+        """
+        # Both parent and its two children should be created.
+        group_tax_name = 'Group Tax name 1 TEST'
+        self._create_group_tax_template('account.test_group_tax_test_template', group_tax_name, chart_template_id=self.chart_template.id)
+        update_taxes_from_templates(self.env.cr, self.chart_template_xmlid)
+
+        parent_tax = self.env['account.tax'].search([
+            ('company_id', '=', self.company.id),
+            ('name', '=', group_tax_name),
+        ])
+        children_taxes = self.env['account.tax'].search([
+            ('company_id', '=', self.company.id),
+            ('name', 'like', f'{group_tax_name}_%'),
+        ])
+        self.assertEqual(len(parent_tax), 1, "The parent tax should have been created.")
+        self.assertEqual(len(children_taxes), 2, "Two children should have been created.")
+        self.assertEqual(parent_tax.children_tax_ids.ids, children_taxes.ids, "The parent and its children taxes should be linked together.")
+
+        # Parent exists - only the two children should be created.
+        children_taxes.unlink()
+        update_taxes_from_templates(self.env.cr, self.chart_template_xmlid)
+        children_taxes = self.env['account.tax'].search([
+            ('company_id', '=', self.company.id),
+            ('name', 'like', f'{group_tax_name}_%'),
+        ])
+        self.assertEqual(len(children_taxes), 2, "Two children should be re-created.")
+        self.assertEqual(parent_tax.children_tax_ids.ids, children_taxes.ids,
+                         "The parent and its children taxes should be linked together.")
+
+        # Children exist - only the parent should be created.
+        parent_tax.unlink()
+        update_taxes_from_templates(self.env.cr, self.chart_template_xmlid)
+        parent_tax = self.env['account.tax'].search([
+            ('company_id', '=', self.company.id),
+            ('name', '=', group_tax_name),
+        ])
+        self.assertEqual(len(parent_tax), 1, "The parent tax should have been re-created.")
+        self.assertEqual(parent_tax.children_tax_ids.ids, children_taxes.ids,
+                         "The parent and its children taxes should be linked together.")
+
+    def test_update_taxes_children_tax_ids_inactive(self):
+        """ Ensure tax templates are correctly generated when updating taxes with children taxes,
+        even if templates are inactive.
+        """
+        group_tax_name = 'Group Tax name 1 inactive TEST'
+        self._create_group_tax_template('account.test_group_tax_test_template_inactive', group_tax_name, chart_template_id=self.chart_template.id, active=False)
+        update_taxes_from_templates(self.env.cr, self.chart_template_xmlid)
+
+        parent_tax = self.env['account.tax'].with_context(active_test=False).search([
+            ('company_id', '=', self.company.id),
+            ('name', '=', group_tax_name),
+        ])
+        children_taxes = self.env['account.tax'].with_context(active_test=False).search([
+            ('company_id', '=', self.company.id),
+            ('name', 'like', f'{group_tax_name}_%'),
+        ])
+        self.assertEqual(len(parent_tax), 1, "The parent tax should have been created, even if it is inactive.")
+        self.assertFalse(parent_tax.active, "The parent tax should be inactive.")
+        self.assertEqual(len(children_taxes), 2, "Two children should have been created, even if they are inactive.")
+        self.assertEqual(children_taxes.mapped('active'), [False] * 2, "Children taxes should be inactive.")

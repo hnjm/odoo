@@ -1,14 +1,18 @@
+import logging
 import time
 
 from passlib.totp import TOTP
 
 from odoo import http
-from odoo.tests import tagged, HttpCase
 from odoo.addons.auth_totp.controllers.home import Home
+from odoo.addons.base.tests.common import HttpCaseWithUserPortal
+from odoo.tests import tagged
+
+_logger = logging.getLogger(__name__)
 
 
 @tagged('post_install', '-at_install')
-class TestTOTPortal(HttpCase):
+class TestTOTPortal(HttpCaseWithUserPortal):
     """
     Largely replicates TestTOTP
     """

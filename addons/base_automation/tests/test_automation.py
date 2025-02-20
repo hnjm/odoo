@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo.tests import TransactionCase
+
+from odoo.addons.base.tests.common import TransactionCaseWithUserDemo
 from odoo.exceptions import UserError
 
 import odoo.tests
 
 @odoo.tests.tagged('post_install', '-at_install')
-class TestAutomation(TransactionCase):
+class TestAutomation(TransactionCaseWithUserDemo):
 
     def test_01_on_create(self):
         """ Simple on_create with admin user """
@@ -32,6 +33,32 @@ class TestAutomation(TransactionCase):
         bilbo.name = "Bilbo"
         self.assertFalse(bilbo.active)
 
+        # verify the "Base Action Rule: check and execute" frequency is updated correctly when a new action is created.
+        self.env["base.automation"].create([
+            {
+                "name": "Bilbo time senstive reminder in a hurry",
+                "trigger": "on_time",
+                "model_id": self.env.ref("base.model_res_partner").id,
+                "trigger_field_ids": [],
+                "trg_date_range": -60,
+                "trg_date_range_type": "minutes",
+                "trg_date_id": self.env.ref("base.field_res_partner__write_date").id,
+            },
+            {
+                "name": "Bilbo time senstive reminder late",
+                "trigger": "on_time",
+                "model_id": self.env.ref("base.model_res_partner").id,
+                "trigger_field_ids": [],
+                "trg_date_range": 60,
+                "trg_date_range_type": "minutes",
+                "trg_date_id": self.env.ref("base.field_res_partner__write_date").id,
+            }
+            ])
+
+        cron = self.env.ref('base_automation.ir_cron_data_base_automation_check', raise_if_not_found=False)
+        self.assertEqual(cron.interval_number, 6)
+        self.assertEqual(cron.interval_type, "minutes")
+
 
     def test_02_on_create_restricted(self):
         """ on_create action with low portal user """
@@ -50,7 +77,7 @@ class TestAutomation(TransactionCase):
         # action cached was cached with admin, force CacheMiss
         action.env.clear()
 
-        self_portal = self.env["ir.filters"].with_user(self.env.ref("base.user_demo").id)
+        self_portal = self.env["ir.filters"].with_user(self.user_demo.id)
         # verify the portal user can create ir.filters but can not read base.automation
         self.assertTrue(self_portal.env["ir.filters"].check_access_rights("create", raise_exception=False))
         self.assertFalse(self_portal.env["base.automation"].check_access_rights("read", raise_exception=False))
@@ -83,7 +110,7 @@ class TestAutomation(TransactionCase):
         # action cached was cached with admin, force CacheMiss
         action.env.clear()
 
-        self_portal = self.env["ir.filters"].with_user(self.env.ref("base.user_demo").id)
+        self_portal = self.env["ir.filters"].with_user(self.user_demo.id)
 
         # simulate a onchange call on name
         onchange = self_portal.onchange({}, [], {"name": "1", "active": ""})

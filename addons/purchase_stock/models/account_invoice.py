@@ -39,7 +39,8 @@ class AccountMove(models.Model):
             move = move.with_company(move.company_id)
             for line in move.invoice_line_ids:
                 # Filter out lines being not eligible for price difference.
-                if line.product_id.type != 'product' or line.product_id.valuation != 'real_time':
+                # Moreover, this function is used for standard cost method only.
+                if line.product_id.type != 'product' or line.product_id.valuation != 'real_time' or line.product_id.cost_method != 'standard':
                     continue
 
                 # Retrieve accounts needed to generate the price difference.
@@ -142,11 +143,10 @@ class AccountMove(models.Model):
         return lines_vals_list
 
     def _post(self, soft=True):
-        if self._context.get('move_reverse_cancel'):
-            return super()._post(soft)
-        self.env['account.move.line'].create(self._stock_account_prepare_anglo_saxon_in_lines_vals())
+        if not self._context.get('move_reverse_cancel'):
+            self.env['account.move.line'].create(self._stock_account_prepare_anglo_saxon_in_lines_vals())
 
-        # Create correction layer if invoice price is different
+        # Create correction layer and impact accounts if invoice price is different
         stock_valuation_layers = self.env['stock.valuation.layer'].sudo()
         valued_lines = self.env['account.move.line'].sudo()
         for invoice in self:
@@ -156,25 +156,25 @@ class AccountMove(models.Model):
                 valued_lines |= invoice.invoice_line_ids.filtered(
                     lambda l: l.product_id and l.product_id.cost_method != 'standard')
         if valued_lines:
-            stock_valuation_layers |= valued_lines._create_in_invoice_svl()
+            svls, _amls = valued_lines._apply_price_difference()
+            stock_valuation_layers |= svls
 
         for (product, company), dummy in groupby(stock_valuation_layers, key=lambda svl: (svl.product_id, svl.company_id)):
             product = product.with_company(company.id)
             if not float_is_zero(product.quantity_svl, precision_rounding=product.uom_id.rounding):
                 product.sudo().with_context(disable_auto_svl=True).write({'standard_price': product.value_svl / product.quantity_svl})
 
-        if stock_valuation_layers:
-            stock_valuation_layers._validate_accounting_entries()
+        posted = super(AccountMove, self.with_context(skip_cogs_reconciliation=True))._post(soft)
 
-        posted = super()._post(soft)
         # The invoice reference is set during the super call
         for layer in stock_valuation_layers:
             description = f"{layer.account_move_line_id.move_id.display_name} - {layer.product_id.display_name}"
             layer.description = description
-            if layer.product_id.valuation != 'real_time':
-                continue
-            layer.account_move_id.ref = description
-            layer.account_move_id.line_ids.write({'name': description})
+
+        if stock_valuation_layers:
+            stock_valuation_layers._validate_accounting_entries()
+
+        self._stock_account_anglo_saxon_reconcile_valuation()
 
         return posted
 

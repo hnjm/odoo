@@ -14,6 +14,9 @@ registerModel({
          */
         convertData(data) {
             const data2 = {};
+            if ('access_token' in data) {
+                data2.accessToken = data.access_token;
+            }
             if ('checksum' in data) {
                 data2.checksum = data.checksum;
             }
@@ -38,6 +41,12 @@ registerModel({
             }
             if ('originThread' in data) {
                 data2.originThread = data.originThread;
+            }
+            if ('type' in data) {
+                data2.type = data.type;
+            }
+            if ('url' in data) {
+                data2.url = data.url;
             }
             return data2;
         },
@@ -195,7 +204,6 @@ registerModel({
                 if (!this.messaging) {
                     return false;
                 }
-
                 if (this.messages.length && this.originThread && this.originThread.model === 'mail.channel') {
                     return this.messages.some(message => (
                         message.canBeDeleted ||

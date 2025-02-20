@@ -40,7 +40,7 @@ class PricelistItem(models.Model):
     min_quantity = fields.Float(
         string="Min. Quantity",
         default=0,
-        digits='Product Unit Of Measure',
+        digits='Product Unit of Measure',
         help="For the rule to apply, bought/sold quantity must be greater "
              "than or equal to the minimum quantity specified in this field.\n"
              "Expressed in the default unit of measure of the product.")
@@ -148,7 +148,7 @@ class PricelistItem(models.Model):
             elif item.product_tmpl_id and item.applied_on == '1_product':
                 item.name = _("Product: %s") % (item.product_tmpl_id.display_name)
             elif item.product_id and item.applied_on == '0_product_variant':
-                item.name = _("Variant: %s") % (item.product_id.with_context(display_default_code=False).display_name)
+                item.name = _("Variant: %s") % (item.product_id.display_name)
             else:
                 item.name = _("All Products")
 
@@ -273,17 +273,24 @@ class PricelistItem(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for values in vals_list:
-            if values.get('applied_on', False):
-                # Ensure item consistency for later searches.
-                applied_on = values['applied_on']
-                if applied_on == '3_global':
-                    values.update(dict(product_id=None, product_tmpl_id=None, categ_id=None))
-                elif applied_on == '2_product_category':
-                    values.update(dict(product_id=None, product_tmpl_id=None))
-                elif applied_on == '1_product':
-                    values.update(dict(product_id=None, categ_id=None))
-                elif applied_on == '0_product_variant':
-                    values.update(dict(categ_id=None))
+            if not values.get('applied_on'):
+                values['applied_on'] = (
+                    '0_product_variant' if values.get('product_id') else
+                    '1_product' if values.get('product_tmpl_id') else
+                    '2_product_category' if values.get('categ_id') else
+                    '3_global'
+                )
+
+            # Ensure item consistency for later searches.
+            applied_on = values['applied_on']
+            if applied_on == '3_global':
+                values.update(dict(product_id=None, product_tmpl_id=None, categ_id=None))
+            elif applied_on == '2_product_category':
+                values.update(dict(product_id=None, product_tmpl_id=None))
+            elif applied_on == '1_product':
+                values.update(dict(product_id=None, categ_id=None))
+            elif applied_on == '0_product_variant':
+                values.update(dict(categ_id=None))
         return super().create(vals_list)
 
     def write(self, values):
@@ -323,30 +330,27 @@ class PricelistItem(models.Model):
         if self.min_quantity and qty_in_product_uom < self.min_quantity:
             res = False
 
-        elif self.categ_id:
-            # Applied on a specific category
-            cat = product.categ_id
-            while cat:
-                if cat.id == self.categ_id.id:
-                    break
-                cat = cat.parent_id
-            if not cat:
+        elif self.applied_on == "2_product_category":
+            if (
+                product.categ_id != self.categ_id
+                and not product.categ_id.parent_path.startswith(self.categ_id.parent_path)
+            ):
                 res = False
         else:
             # Applied on a specific product template/variant
             if is_product_template:
-                if self.product_tmpl_id and product.id != self.product_tmpl_id.id:
+                if self.applied_on == "1_product" and product.id != self.product_tmpl_id.id:
                     res = False
-                elif self.product_id and not (
+                elif self.applied_on == "0_product_variant" and not (
                     product.product_variant_count == 1
                     and product.product_variant_id.id == self.product_id.id
                 ):
                     # product self acceptable on template if has only one variant
                     res = False
             else:
-                if self.product_tmpl_id and product.product_tmpl_id.id != self.product_tmpl_id.id:
+                if self.applied_on == "1_product" and product.product_tmpl_id.id != self.product_tmpl_id.id:
                     res = False
-                elif self.product_id and product.id != self.product_id.id:
+                elif self.applied_on == "0_product_variant" and product.id != self.product_id.id:
                     res = False
 
         return res

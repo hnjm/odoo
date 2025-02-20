@@ -7,7 +7,8 @@ import logging
 import requests
 from werkzeug.urls import url_quote
 from base64 import b64encode
-from urllib3.util.ssl_ import create_urllib3_context
+from odoo.addons.account.tools import LegacyHTTPAdapter
+from json.decoder import JSONDecodeError
 
 from odoo import api, models, _
 from odoo.tools.float_utils import json_float_round
@@ -23,21 +24,6 @@ ETA_DOMAINS = {
     'token.preproduction': 'https://id.preprod.eta.gov.eg',
     'token.production': 'https://id.eta.gov.eg',
 }
-
-
-class L10nEgHTTPAdapter(requests.adapters.HTTPAdapter):
-    """ An adapter to allow unsafe legacy renegotiation necessary to connect to
-    gravely outdated ETA production servers.
-    """
-
-    def init_poolmanager(self, *args, **kwargs):
-        # This is not defined before Python 3.12
-        # cfr. https://github.com/python/cpython/pull/93927
-        # Origin: https://github.com/openssl/openssl/commit/ef51b4b9
-        OP_LEGACY_SERVER_CONNECT = 0x04
-        context = create_urllib3_context(options=OP_LEGACY_SERVER_CONNECT)
-        kwargs["ssl_context"] = context
-        return super().init_poolmanager(*args, **kwargs)
 
 
 class AccountEdiFormat(models.Model):
@@ -61,7 +47,7 @@ class AccountEdiFormat(models.Model):
         request_url = api_domain + request_url
         try:
             session = requests.session()
-            session.mount("https://", L10nEgHTTPAdapter())
+            session.mount("https://", LegacyHTTPAdapter())
             request_response = session.request(method, request_url, data=request_data.get('body'), headers=request_data.get('header'), timeout=(5, 10))
         except (ValueError, requests.exceptions.ConnectionError, requests.exceptions.MissingSchema, requests.exceptions.Timeout, requests.exceptions.HTTPError) as ex:
             return {
@@ -69,16 +55,18 @@ class AccountEdiFormat(models.Model):
                 'blocking_level': 'warning'
             }
         if not request_response.ok:
-            response_data = request_response.json()
-            if isinstance(response_data, dict) and response_data.get('error'):
+            try:
+                response_data = request_response.json()
+            except JSONDecodeError as ex:
                 return {
-                    'error': response_data.get('error', _('Unknown error')),
+                    'error': str(ex),
                     'blocking_level': 'error'
                 }
-            return {
-                'error': request_response.reason,
-                'blocking_level': 'error'
-            }
+            if response_data and response_data.get('error'):
+                return {
+                    'error': response_data.get('error'),
+                    'blocking_level': 'error'
+                }
         return {'response': request_response}
 
     @api.model
@@ -129,6 +117,11 @@ class AccountEdiFormat(models.Model):
         access_data = self._l10n_eg_eta_get_access_token(invoice)
         if access_data.get('error'):
             return access_data
+        # Check current status. It may already be cancelled or rejected.
+        if invoice.l10n_eg_submission_number:
+            document_summary = self._l10n_eg_get_einvoice_document_summary(invoice)
+            if document_summary.get('doc_data') and document_summary['doc_data'][0].get('status') in ('Cancelled', 'Rejected'):
+                return {'success': True}
         request_url = f'/api/v1/documents/state/{url_quote(invoice.l10n_eg_uuid)}/state'
         request_data = {
             'body': json.dumps({'status': 'cancelled', 'reason': 'Cancelled'}),
@@ -145,7 +138,7 @@ class AccountEdiFormat(models.Model):
         }
 
     @api.model
-    def _l10n_eg_get_einvoice_status(self, invoice):
+    def _l10n_eg_get_einvoice_document_summary(self, invoice):
         access_data = self._l10n_eg_eta_get_access_token(invoice)
         if access_data.get('error'):
             return access_data
@@ -159,6 +152,11 @@ class AccountEdiFormat(models.Model):
             return response_data
         response_data = response_data.get('response').json()
         document_summary = [doc for doc in response_data.get('documentSummary', []) if doc.get('uuid') == invoice.l10n_eg_uuid]
+        return {'doc_data': document_summary}
+
+    @api.model
+    def _l10n_eg_get_einvoice_status(self, invoice):
+        document_summary = self._l10n_eg_get_einvoice_document_summary(invoice)
         return_dict = {
             'Invalid': {
                 'error': _("This invoice has been marked as invalid by the ETA. Please check the ETA website for more information"),
@@ -171,8 +169,8 @@ class AccountEdiFormat(models.Model):
             'Valid': {'success': True},
             'Cancelled': {'error': _('Document Canceled'), 'blocking_level': 'error'},
         }
-        if document_summary and return_dict.get(document_summary[0].get('status')):
-            return return_dict.get(document_summary[0]['status'])
+        if document_summary.get('doc_data') and return_dict.get(document_summary['doc_data'][0].get('status')):
+            return return_dict.get(document_summary['doc_data'][0]['status'])
         return {'error': _('an Unknown error has occured'), 'blocking_level': 'warning'}
 
     def _l10n_eg_eta_get_access_token(self, invoice):
@@ -261,7 +259,7 @@ class AccountEdiFormat(models.Model):
         for line in invoice.invoice_line_ids.filtered(lambda x: x.display_type not in ('line_note', 'line_section')):
             line_tax_details = tax_data.get(line, {})
             price_unit = self._l10n_eg_edi_round(abs((line.balance / line.quantity) / (1 - (line.discount / 100.0)))) if line.quantity and line.discount != 100.0 else line.price_unit
-            price_subtotal_before_discount = self._l10n_eg_edi_round(abs(line.balance / (1 - (line.discount / 100)))) if line.discount != 100.0 else price_unit * line.quantity
+            price_subtotal_before_discount = self._l10n_eg_edi_round(abs(line.balance / (1 - (line.discount / 100)))) if line.discount != 100.0 else self._l10n_eg_edi_round(price_unit * line.quantity)
             discount_amount = self._l10n_eg_edi_round(price_subtotal_before_discount - abs(line.balance))
             item_code = line.product_id.l10n_eg_eta_code or line.product_id.barcode
             lines.append({
@@ -287,7 +285,7 @@ class AccountEdiFormat(models.Model):
                         'taxType': tax['tax_repartition_line'].tax_id.l10n_eg_eta_code.split('_')[0].upper().upper(),
                         'amount': self._l10n_eg_edi_round(abs(tax['tax_amount'])),
                         'subType': tax['tax_repartition_line'].tax_id.l10n_eg_eta_code.split('_')[1].upper(),
-                        'rate': abs(tax['tax_repartition_line'].tax_id.amount),
+                        **({'rate': abs(tax['tax_repartition_line'].tax_id.amount)} if tax['tax_repartition_line'].tax_id.amount_type != 'fixed' else {}),
                     }
                 for tax_details in line_tax_details.get('tax_details', {}).values() for tax in tax_details.get('group_tax_details')
                 ],

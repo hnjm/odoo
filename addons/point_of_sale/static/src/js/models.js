@@ -11,6 +11,8 @@ var utils = require('web.utils');
 var { Gui } = require('point_of_sale.Gui');
 const { batched, uuidv4 } = require("point_of_sale.utils");
 const { escape } = require("@web/core/utils/strings");
+const { rpcService } = require('@web/core/network/rpc_service');
+const { isIOS, isIosApp } = require('@web/core/browser/feature_detection');
 
 var QWeb = core.qweb;
 var _t = core._t;
@@ -134,6 +136,8 @@ class PosGlobalState extends PosModel {
             },
         };
 
+        this.syncingOrders = new Set();
+        this.tempScreenIsShown = false;
         // these dynamic attributes can be watched for change by other models or widgets
         Object.assign(this, {
             'synch':            { status:'connected', pending:0 },
@@ -160,7 +164,30 @@ class PosGlobalState extends PosModel {
         this.uom_unit_id = uom_id[1];
     }
 
+    shouldInvoiceNewTab(actionRecord) {
+        return (
+            (isIOS() || isIosApp()) &&
+            actionRecord.type === "ir.actions.report" &&
+            actionRecord.report_type === "qweb-pdf"
+        );
+    }
+
+    async loadInvoiceReportAction() {
+        try {
+            const future_rpc = rpcService.start({ bus: this.env.posbus });
+            const action = await future_rpc("/web/action/load", {
+                action_id: this.invoiceReportAction,
+            });
+            this.invoiceActionRecord = action;
+        } catch {
+            console.warn(
+                "Error loading invoice report action. In an iOS environment, " +
+                "invoicing an order will replace the current page which will cause reload of the app.");
+        }
+    }
+
     async after_load_server_data(){
+        await this.loadInvoiceReportAction();
         await this.load_product_uom_unit();
         await this.load_orders();
         this.set_start_order();
@@ -262,8 +289,20 @@ class PosGlobalState extends PosModel {
                     }
                 }
                 else {
-                    for (const correspondingProduct of products) {
-                        this._assignApplicableItems(pricelist, correspondingProduct, pricelistItem);
+                    for (const correspondingProduct of modelProducts) {
+                        if (pricelistItem.categ_id) {
+                            let pricelistItem_categ_id = pricelistItem.categ_id[0];
+                            let product_categ_id = correspondingProduct.categ && correspondingProduct.categ.id; 
+                            let parent_categ_ids = correspondingProduct.parent_category_ids;
+                            if (product_categ_id && parent_categ_ids) {
+                                if (_.contains(parent_categ_ids.concat(product_categ_id), pricelistItem_categ_id)) {
+                                    this._assignApplicableItems(pricelist, correspondingProduct, pricelistItem);
+                                }
+                            }
+                        } 
+                        else {
+                            this._assignApplicableItems(pricelist, correspondingProduct, pricelistItem);
+                        }
                     }
                 }
             }
@@ -472,12 +511,39 @@ class PosGlobalState extends PosModel {
                 }
             }
         }
+        if(!missingProductIds.size) return;
         const products = await this.env.services.rpc({
             model: 'pos.session',
             method: 'get_pos_ui_product_product_by_params',
             args: [odoo.pos_session_id, {domain: [['id', 'in', [...missingProductIds]]]}],
         });
+        await this._loadMissingPricelistItems(products);
         this._loadProductProduct(products);
+    }
+    async _loadMissingPricelistItems(products) {
+        if(!products.length) return;
+        const product_tmpl_ids = products.map(product => product.product_tmpl_id[0]);
+        const product_ids = products.map(product => product.id);
+
+        const pricelistItems = await this.env.services.rpc({
+            model: 'pos.session',
+            method: 'get_pos_ui_product_pricelist_item_by_product',
+            args: [odoo.pos_session_id, product_tmpl_ids, product_ids],
+        });
+
+        // Merge the loaded pricelist items with the existing pricelists
+        // Prioritizing the addition of newly loaded pricelist items to the start of the existing pricelists.
+        // This ensures that the order reflects the desired priority of items in the pricelistItems array.
+        // E.g. The order in the items should be: [product-pricelist-item, product-template-pricelist-item, category-pricelist-item, global-pricelist-item].
+        // for reference check order of the Product Pricelist Item model
+        for (const pricelist of this.pricelists) {
+            const itemIds = new Set(pricelist.items.map(item => item.id));
+
+            const _pricelistItems = pricelistItems.filter(item => {
+                return item.pricelist_id[0] === pricelist.id && !itemIds.has(item.id);
+            });
+            pricelist.items = [..._pricelistItems, ...pricelist.items];
+        }
     }
     // load the partners based on the ids
     async _loadPartners(partnerIds) {
@@ -517,6 +583,7 @@ class PosGlobalState extends PosModel {
                     limit: this.config.limited_products_amount,
                 }],
             }, { shadow: true });
+            await this._loadMissingPricelistItems(products);
             this._loadProductProduct(products);
             page += 1;
         } while(products.length == this.config.limited_products_amount);
@@ -633,6 +700,43 @@ class PosGlobalState extends PosModel {
         return this.orders;
     }
 
+    computePriceAfterFp(price, taxes){
+        const order = this.get_order();
+        if(order && order.fiscal_position) {
+            let mapped_included_taxes = [];
+            let new_included_taxes = [];
+            const self = this;
+            _(taxes).each(function(tax) {
+                const line_taxes = self.get_taxes_after_fp([tax.id], order.fiscal_position);
+                if (line_taxes.length && line_taxes[0].price_include){
+                    new_included_taxes = new_included_taxes.concat(line_taxes);
+                }
+                if(tax.price_include && !_.contains(line_taxes, tax)){
+                    mapped_included_taxes.push(tax);
+                }
+            });
+
+            if (mapped_included_taxes.length > 0) {
+                if (new_included_taxes.length > 0) {
+                    //If previous tax and new tax where both included in price. The price including tax is the same
+                    return price;
+                }
+                else{
+                    return this.compute_all(mapped_included_taxes, price, 1, this.currency.rounding, true).total_excluded;
+                }
+            }
+        }
+        return price;
+    }
+    getTaxesByIds(taxIds) {
+        let taxes = [];
+        for (let i = 0; i < taxIds.length; i++) {
+            if (this.taxes_by_id[taxIds[i]]) {
+                taxes.push(this.taxes_by_id[taxIds[i]]);
+            }
+        }
+        return taxes;
+    }
     _convert_product_img_to_base64 (product, url) {
         return new Promise(function (resolve, reject) {
             var img = new Image();
@@ -724,6 +828,40 @@ class PosGlobalState extends PosModel {
         });
     }
 
+    // To be used in the context of closing the POS
+    // Saves the order locally and try to send it to the backend.
+    // If there is an error show a popup and ask to continue the closing or not
+    // return a successful promise on sync or if user decides to contine else reject
+    async push_orders_with_closing_popup (order, opts) {
+        try {
+            return await this.push_orders(order, opts);
+        } catch (error) {
+            console.warn(error);
+            const reason = this.env.pos.failed
+                ? this.env._t(
+                      'Some orders could not be submitted to ' +
+                          'the server due to configuration errors. ' +
+                          'You can exit the Point of Sale, but do ' +
+                          'not close the session before the issue ' +
+                          'has been resolved.'
+                  )
+                : this.env._t(
+                      'Some orders could not be submitted to ' +
+                          'the server due to internet connection issues. ' +
+                          'You can exit the Point of Sale, but do ' +
+                          'not close the session before the issue ' +
+                          'has been resolved.'
+                  );
+            const { confirmed } =  await Gui.showPopup('ConfirmPopup', {
+                title: this.env._t('Offline Orders'),
+                body: reason,
+                confirmText: this.env._t('Close anyway'),
+                cancelText: this.env._t('Do not close'),
+            });
+            return confirmed ? Promise.resolve(true) : Promise.reject();
+        }
+    }
+
     // saves the order locally and try to send it to the backend.
     // it returns a promise that succeeds after having tried to send the order and all the other pending orders.
     push_orders (order, opts) {
@@ -772,9 +910,53 @@ class PosGlobalState extends PosModel {
                 self.validated_orders_name_server_id_map[server_ids[i].pos_reference] = server_ids[i].id;
             }
             return server_ids;
+        }).catch(function(error) {
+            if (self._isRPCError(error)) {
+                if (orders.length > 1) {
+                    return self._flush_orders_retry(orders, options);
+                } else {
+                    self.set_synch('error');
+                    throw error;
+                }
+            } else {
+                self.set_synch('disconnected');
+                throw error;
+            }
         }).finally(function() {
             self._after_flush_orders(orders);
         });
+    }
+    // Attempts to send the orders to the server one by one if an RPC error is encountered.
+    async _flush_orders_retry(orders, options) {
+
+        let successfulOrders = 0;
+        let lastError;
+        let serverIds = [];
+
+        for (let order of orders) {
+            try {
+                let server_ids = await this._save_to_server([order], options);
+                successfulOrders++;
+                this.validated_orders_name_server_id_map[server_ids[0].pos_reference] = server_ids[0].id;
+                serverIds.push(server_ids[0]);
+            } catch (err) {
+                lastError = err;
+            }
+        }
+
+        if (successfulOrders === orders.length) {
+            this.set_synch('connected');
+            return serverIds;
+        }
+        if (this._isRPCError(lastError)) {
+            this.set_synch('error');
+        } else {
+            this.set_synch('disconnected');
+        }
+        throw lastError;
+    }
+    _isRPCError(err) {
+        return err.message && err.message.name === 'RPC_ERROR';
     }
     /**
      * Hook method after _flush_orders resolved or rejected.
@@ -818,20 +1000,31 @@ class PosGlobalState extends PosModel {
         if (!orders || !orders.length) {
             return Promise.resolve([]);
         }
-        this.set_synch('connecting', orders.length);
+
+        // Filter out orders that are already being synced
+        const ordersToSync = orders.filter(order => !this.syncingOrders.has(order.id));
+
+        if (!ordersToSync.length) {
+            return Promise.resolve([]);
+        }
+
+        // Add these order IDs to the syncing set
+        ordersToSync.forEach(order => this.syncingOrders.add(order.id));
+
+        this.set_synch('connecting', ordersToSync.length);
         options = options || {};
 
         var self = this;
-        var timeout = typeof options.timeout === 'number' ? options.timeout : 30000 * orders.length;
+        var timeout = typeof options.timeout === 'number' ? options.timeout : 30000 * ordersToSync.length;
 
         // Keep the order ids that are about to be sent to the
         // backend. In between create_from_ui and the success callback
         // new orders may have been added to it.
-        var order_ids_to_sync = _.pluck(orders, 'id');
+        var order_ids_to_sync = _.pluck(ordersToSync, 'id');
 
         // we try to send the order. shadow prevents a spinner if it takes too long. (unless we are sending an invoice,
         // then we want to notify the user that we are waiting on something )
-        var args = [_.map(orders, function (order) {
+        var args = [_.map(ordersToSync, function (order) {
                 order.to_invoice = options.to_invoice || false;
                 return order;
             })];
@@ -848,12 +1041,14 @@ class PosGlobalState extends PosModel {
             .then(function (server_ids) {
                 _.each(order_ids_to_sync, function (order_id) {
                     self.db.remove_order(order_id);
+                    self.syncingOrders.delete(order_id)
                 });
                 self.failed = false;
                 self.set_synch('connected');
                 return server_ids;
             }).catch(function (error){
-                console.warn('Failed to send orders:', orders);
+                ordersToSync.forEach(order_id => self.syncingOrders.delete(order_id));
+                console.warn('Failed to send orders:', ordersToSync);
                 if(error.code === 200 ){    // Business Logic Error, not a connection problem
                     // Hide error if already shown before ...
                     if ((!self.failed || options.show_error) && !options.to_invoice) {
@@ -1050,15 +1245,46 @@ class PosGlobalState extends PosModel {
 
         // 2) Deal with the rounding methods
 
-        var round_tax = this.company.tax_calculation_rounding_method != 'round_globally';
+        const company = this.company;
+        var round_tax = company.tax_calculation_rounding_method != 'round_globally';
 
         var initial_currency_rounding = currency_rounding;
         if(!round_tax)
             currency_rounding = currency_rounding * 0.00001;
 
         // 3) Iterate the taxes in the reversed sequence order to retrieve the initial base of the computation.
-        var recompute_base = function(base_amount, fixed_amount, percent_amount, division_amount){
-             return (base_amount - fixed_amount) / (1.0 + percent_amount / 100.0) * (100 - division_amount) / 100;
+        var recompute_base = function(base_amount, incl_tax_amounts){
+            let fixed_amount = incl_tax_amounts.fixed_amount;
+            let division_amount = 0.0;
+            for(const [, tax_factor] of incl_tax_amounts.division_taxes){
+                division_amount += tax_factor;
+            }
+            let percent_amount = 0.0;
+            for(const [, tax_factor] of incl_tax_amounts.percent_taxes){
+                percent_amount += tax_factor;
+            }
+
+            if(company.country && company.country.code === "IN"){
+                let total_tax_amount = 0.0;
+                for(const [i, tax_factor] of incl_tax_amounts.percent_taxes){
+                    const tax_amount = round_pr(base_amount * tax_factor / (100 + percent_amount), currency_rounding);
+                    total_tax_amount += tax_amount;
+                    cached_tax_amounts[i] = tax_amount;
+                    fixed_amount += tax_amount;
+                }
+                for(const [i,] of incl_tax_amounts.percent_taxes){
+                    cached_base_amounts[i] = base - total_tax_amount;
+                }
+                percent_amount = 0.0;
+            }
+
+            Object.assign(incl_tax_amounts, {
+                percent_taxes: [],
+                division_taxes: [],
+                fixed_amount: 0.0,
+            });
+
+            return (base_amount - fixed_amount) / (1.0 + percent_amount / 100.0) * (100 - division_amount) / 100;
         }
 
         var base = round_pr(price_unit * quantity, initial_currency_rounding);
@@ -1073,30 +1299,31 @@ class PosGlobalState extends PosModel {
         var i = taxes.length - 1;
         var store_included_tax_total = true;
 
-        var incl_fixed_amount = 0.0;
-        var incl_percent_amount = 0.0;
-        var incl_division_amount = 0.0;
+        const incl_tax_amounts = {
+            percent_taxes: [],
+            division_taxes: [],
+            fixed_amount: 0.0,
+        }
 
         var cached_tax_amounts = {};
+        var cached_base_amounts = {};
+        let is_base_affected = true;
         if (handle_price_include){
             _(taxes.reverse()).each(function(tax){
-                if(tax.include_base_amount){
-                    base = recompute_base(base, incl_fixed_amount, incl_percent_amount, incl_division_amount);
-                    incl_fixed_amount = 0.0;
-                    incl_percent_amount = 0.0;
-                    incl_division_amount = 0.0;
+                if(tax.include_base_amount && is_base_affected){
+                    base = recompute_base(base, incl_tax_amounts);
                     store_included_tax_total = true;
                 }
                 if(tax.price_include){
                     if(tax.amount_type === 'percent')
-                        incl_percent_amount += tax.amount;
+                        incl_tax_amounts.percent_taxes.push([i, tax.amount]);
                     else if(tax.amount_type === 'division')
-                        incl_division_amount += tax.amount;
+                        incl_tax_amounts.division_taxes.push([i, tax.amount]);
                     else if(tax.amount_type === 'fixed')
-                        incl_fixed_amount += Math.abs(quantity) * tax.amount
+                        incl_tax_amounts.fixed_amount += Math.abs(quantity) * tax.amount;
                     else{
                         var tax_amount = self._compute_all(tax, base, quantity);
-                        incl_fixed_amount += tax_amount;
+                        incl_tax_amounts.fixed_amount += tax_amount;
                         cached_tax_amounts[i] = tax_amount;
                     }
                     if(store_included_tax_total){
@@ -1105,10 +1332,11 @@ class PosGlobalState extends PosModel {
                     }
                 }
                 i -= 1;
+                is_base_affected = tax.is_base_affected;
             });
         }
 
-        var total_excluded = round_pr(recompute_base(base, incl_fixed_amount, incl_percent_amount, incl_division_amount), initial_currency_rounding);
+        var total_excluded = round_pr(recompute_base(base, incl_tax_amounts), initial_currency_rounding);
         var total_included = total_excluded;
 
         // 4) Iterate the taxes in the sequence order to fill missing base/amount values.
@@ -1121,12 +1349,16 @@ class PosGlobalState extends PosModel {
         i = 0;
         var cumulated_tax_included_amount = 0;
         _(taxes.reverse()).each(function(tax){
-            if(tax.price_include || tax.is_base_affected)
+            if(tax.price_include && i in cached_base_amounts)
+                var tax_base_amount = cached_base_amounts[i];
+            else if(tax.price_include || tax.is_base_affected)
                 var tax_base_amount = base;
             else
                 var tax_base_amount = total_excluded;
 
-            if(!skip_checkpoint && tax.price_include && total_included_checkpoints[i] !== undefined){
+            if(tax.price_include && cached_tax_amounts.hasOwnProperty(i)){
+                var tax_amount = cached_tax_amounts[i];
+            }else if(!skip_checkpoint && tax.price_include && total_included_checkpoints[i] !== undefined){
                 var tax_amount = total_included_checkpoints[i] - (base + cumulated_tax_included_amount);
                 cumulated_tax_included_amount = 0;
             }else
@@ -1294,32 +1526,34 @@ class PosGlobalState extends PosModel {
      */
     async _addProducts(ids, setAvailable=true){
         if(setAvailable){
-            await this.env.services.rpc({
-                model: 'product.product',
-                method: 'write',
-                args: [ids, {'available_in_pos': true}],
-                context: this.env.session.user_context,
-            });
+            try {
+                await this.env.services.rpc({
+                    model: 'product.product',
+                    method: 'write',
+                    args: [ids, {'available_in_pos': true}],
+                    context: this.env.session.user_context,
+                });
+            } catch (error) {
+                const ignoreError = this._isRPCError(error) && error.message.data && error.message.data.name === 'odoo.exceptions.AccessError';
+                if (!ignoreError) {
+                    throw error;
+                }
+            }
         }
         let product = await this.env.services.rpc({
             model: 'pos.session',
             method: 'get_pos_ui_product_product_by_params',
             args: [odoo.pos_session_id, {domain: [['id', 'in', ids]]}],
         });
+        await this._loadMissingPricelistItems(product);
         this._loadProductProduct(product);
-    }
-    async refreshTotalDueOfPartner(partner) {
-        const partnerWithUpdatedTotalDue = await this.env.services.rpc({
-            model: 'res.partner',
-            method: 'search_read',
-            fields: ['total_due'],
-            domain: [['id', '=', partner.id]],
-        });
-        this.db.update_partners(partnerWithUpdatedTotalDue);
-        return partnerWithUpdatedTotalDue;
     }
     doNotAllowRefundAndSales() {
         return false;
+    }
+
+    get invoiceReportAction() {
+      return "account.account_invoices";
     }
 }
 PosGlobalState.prototype.electronic_payment_interfaces = {};
@@ -1369,7 +1603,6 @@ class Product extends PosModel {
     }
     isPricelistItemUsable(item, date) {
         return (
-            (!item.categ_id || _.contains(this.parent_category_ids.concat(this.categ.id), item.categ_id[0])) &&
             (!item.date_start || moment.utc(item.date_start).isSameOrBefore(date)) &&
             (!item.date_end || moment.utc(item.date_end).isSameOrAfter(date))
         );
@@ -1456,15 +1689,22 @@ class Product extends PosModel {
         // pricelist that have base == 'pricelist'.
         return price;
     }
+    _compute_display_price(pricelist, quantity, discount = 0) {
+        const order = this.pos.get_order();
+        const unitPrice = this.get_price(pricelist, quantity) * (1.0 - (discount / 100.0));
+        const taxes = this.pos.get_taxes_after_fp(this.taxes_id, order && order.fiscal_position);
+        const currentTaxes = this.pos.getTaxesByIds(this.taxes_id);
+        const priceAfterFp = this.pos.computePriceAfterFp(unitPrice, currentTaxes);
+        const allPrices = this.pos.compute_all(taxes, priceAfterFp, 1, this.pos.currency.rounding);
+        return this.pos.config.iface_tax_included === 'total' ? allPrices.total_included : allPrices.total_excluded;
+    }
+
     get_display_price(pricelist, quantity) {
-        if (this.pos.config.iface_tax_included === 'total') {
-            const order = this.pos.get_order();
-            const taxes = this.pos.get_taxes_after_fp(this.taxes_id, order && order.fiscal_position);
-            const allPrices = this.pos.compute_all(taxes, this.get_price(pricelist, quantity), 1, this.pos.currency.rounding);
-            return allPrices.total_included;
-        } else {
-            return this.get_price(pricelist, quantity);
-        }
+        return this._compute_display_price(pricelist, quantity);
+    }
+
+    get_display_price_discount(pricelist, quantity, discount) {
+        return this._compute_display_price(pricelist, quantity, discount);
     }
 }
 Registries.Model.add(Product);
@@ -1513,7 +1753,6 @@ class Orderline extends PosModel {
         this.product = this.pos.db.get_product_by_id(json.product_id);
         this.set_product_lot(this.product);
         this.price = json.price_unit;
-        this.price_manually_set = json.price_manually_set;
         this.price_automatically_set = json.price_automatically_set;
         this.set_discount(json.discount);
         this.set_quantity(json.qty, 'do not recompute unit price');
@@ -1532,6 +1771,9 @@ class Orderline extends PosModel {
         this.set_customer_note(json.customer_note);
         this.refunded_qty = json.refunded_qty;
         this.refunded_orderline_id = json.refunded_orderline_id;
+        this.price_manually_set = json.price_manually_set ||
+            this.get_display_price() !==
+            this.product.get_display_price_discount(this.order.pricelist, this.get_quantity(), this.get_discount()) * this.get_quantity();
     }
     clone(){
         var orderline = Orderline.create({},{
@@ -1573,7 +1815,7 @@ class Orderline extends PosModel {
      *    @param {Object} modifiedPackLotLines key-value pair of String (the cid) & String (the new lot_name)
      *    @param {Array} newPackLotLines array of { lot_name: String }
      */
-    setPackLotLines({ modifiedPackLotLines, newPackLotLines }) {
+    setPackLotLines({ modifiedPackLotLines, newPackLotLines , setQuantity = true }) {
         // Set the new values for modified lot lines.
         let lotLinesToRemove = [];
         for (let lotLine of this.pack_lot_lines) {
@@ -1601,7 +1843,7 @@ class Orderline extends PosModel {
         }
 
         // Set the quantity of the line based on number of pack lots.
-        if(!this.product.to_weight){
+        if(!this.product.to_weight && setQuantity){
             this.set_quantity_by_lot();
         }
     }
@@ -1855,11 +2097,13 @@ class Orderline extends PosModel {
             price_without_tax:  this.get_price_without_tax(),
             price_with_tax_before_discount:  this.get_price_with_tax_before_discount(),
             tax:                this.get_tax(),
+            tax_percentages:    this.get_tax_percentages(),
             product_description:      this.get_product().description,
             product_description_sale: this.get_product().description_sale,
             pack_lot_lines:      this.get_lot_lines(),
             customer_note:      this.get_customer_note(),
             taxed_lst_unit_price: this.get_taxed_lst_unit_price(),
+            unitDisplayPriceBeforeDiscount: this.getUnitDisplayPriceBeforeDiscount(),
         };
     }
     generate_wrapped_product_name() {
@@ -1909,7 +2153,14 @@ class Orderline extends PosModel {
         if (this.pos.config.iface_tax_included === 'total') {
             return this.get_all_prices(1).priceWithTax;
         } else {
-            return this.get_unit_price();
+            return this.get_all_prices(1).priceWithoutTax;
+        }
+    }
+    getUnitDisplayPriceBeforeDiscount(){
+        if (this.pos.config.iface_tax_included === 'total') {
+            return this.get_all_prices(1).priceWithTaxBeforeDiscount;
+        } else {
+            return this.get_all_prices(1).priceWithoutTaxBeforeDiscount;
         }
     }
     get_base_price(){
@@ -1934,19 +2185,20 @@ class Orderline extends PosModel {
         if (this.pos.config.iface_tax_included === 'total') {
             return this.get_price_with_tax();
         } else {
-            return this.get_base_price();
+            return this.get_price_without_tax();
         }
     }
     get_taxed_lst_unit_price(){
-        var lst_price = this.compute_fixed_price(this.get_lst_price());
+        const lstPrice = this.compute_fixed_price(this.get_lst_price());
+        const product =  this.get_product();
+        const taxesIds = product.taxes_id;
+        const productTaxes = this.pos.get_taxes_after_fp(taxesIds, this.order.fiscal_position);
+        const unitPrices =  this.compute_all(productTaxes, lstPrice, 1, this.pos.currency.rounding);
         if (this.pos.config.iface_tax_included === 'total') {
-            var product =  this.get_product();
-            var taxes_ids = product.taxes_id;
-            var product_taxes = this.pos.get_taxes_after_fp(taxes_ids);
-            return this.compute_all(product_taxes, lst_price, 1, this.pos.currency.rounding).total_included;
+            return unitPrices.total_included;
+        } else {
+            return unitPrices.total_excluded;
         }
-        var digits = this.pos.dp['Product Price'];
-        return lst_price.toFixed(digits)
     }
     get_price_without_tax(){
         return this.get_all_prices().priceWithoutTax;
@@ -1959,6 +2211,9 @@ class Orderline extends PosModel {
     }
     get_tax(){
         return this.get_all_prices().tax;
+    }
+    get_tax_percentages() {
+        return this.get_all_prices().tax_percentages;
     }
     get_applicable_taxes(){
         var i;
@@ -1982,13 +2237,7 @@ class Orderline extends PosModel {
     }
     get_taxes(){
         var taxes_ids = this.tax_ids || this.get_product().taxes_id;
-        var taxes = [];
-        for (var i = 0; i < taxes_ids.length; i++) {
-            if (this.pos.taxes_by_id[taxes_ids[i]]) {
-                taxes.push(this.pos.taxes_by_id[taxes_ids[i]]);
-            }
-        }
-        return taxes;
+        return this.pos.getTaxesByIds(taxes_ids);
     }
     /**
      * Calculate the amount of taxes of a specific Orderline, that are included in the price.
@@ -1999,7 +2248,7 @@ class Orderline extends PosModel {
         const taxDetails = this.get_tax_details();
         return productTaxes
             .filter(tax => tax.price_include)
-            .reduce((sum, tax) => sum + taxDetails[tax.id],
+            .reduce((sum, tax) => sum + taxDetails[tax.id].amount,
             0
         );
     }
@@ -2047,54 +2296,33 @@ class Orderline extends PosModel {
         var all_taxes_before_discount = this.compute_all(product_taxes, this.get_unit_price(), qty, this.pos.currency.rounding);
         _(all_taxes.taxes).each(function(tax) {
             taxtotal += tax.amount;
-            taxdetail[tax.id] = tax.amount;
+            taxdetail[tax.id] = {
+                amount: tax.amount,
+                base: tax.base,
+            };
         });
 
         return {
             "priceWithTax": all_taxes.total_included,
             "priceWithoutTax": all_taxes.total_excluded,
             "priceWithTaxBeforeDiscount": all_taxes_before_discount.total_included,
+            "priceWithoutTaxBeforeDiscount": all_taxes_before_discount.total_excluded,
             "tax": taxtotal,
             "taxDetails": taxdetail,
+            "tax_percentages": product_taxes.map((tax) => tax.amount),
         };
     }
     display_discount_policy(){
-        return this.order.pricelist.discount_policy;
+        return this.order.pricelist ? this.order.pricelist.discount_policy : "with_discount";
     }
     compute_fixed_price (price) {
-        var order = this.order;
-        if(order.fiscal_position) {
-            var taxes = this.get_taxes();
-            var mapped_included_taxes = [];
-            var new_included_taxes = [];
-            var self = this;
-            _(taxes).each(function(tax) {
-                var line_taxes = self.pos.get_taxes_after_fp([tax.id], order.fiscal_position);
-                if (line_taxes.length && line_taxes[0].price_include){
-                    new_included_taxes = new_included_taxes.concat(line_taxes);
-                }
-                if(tax.price_include && !_.contains(line_taxes, tax)){
-                    mapped_included_taxes.push(tax);
-                }
-            });
-
-            if (mapped_included_taxes.length > 0) {
-                if (new_included_taxes.length > 0) {
-                    var price_without_taxes = this.compute_all(mapped_included_taxes, price, 1, order.pos.currency.rounding, true).total_excluded
-                    return this.compute_all(new_included_taxes, price_without_taxes, 1, order.pos.currency.rounding, false).total_included
-                }
-                else{
-                    return this.compute_all(mapped_included_taxes, price, 1, order.pos.currency.rounding, true).total_excluded;
-                }
-            }
-        }
-        return price;
+        return this.pos.computePriceAfterFp(price, this.get_taxes());
     }
     get_fixed_lst_price(){
         return this.compute_fixed_price(this.get_lst_price());
     }
     get_lst_price(){
-        return this.product.get_price(this.pos.default_pricelist, 1, 0)
+        return this.product.get_price(this.pos.default_pricelist, 1, this.price_extra)
     }
     set_lst_price(price){
       this.order.assert_editable();
@@ -2116,6 +2344,14 @@ class Orderline extends PosModel {
     }
     get_total_cost() {
         return this.product.standard_price * this.quantity;
+    }
+    /**
+     * Checks if the current line is a tip from a customer.
+     * @returns Boolean
+     */
+    isTipLine() {
+        const tipProduct = this.pos.config.tip_product_id;
+        return tipProduct && this.product.id === tipProduct[0];
     }
 }
 Registries.Model.add(Orderline);
@@ -2258,7 +2494,7 @@ class Payment extends PosModel {
             payment_method_id: this.payment_method.id,
             amount: this.get_amount(),
             payment_status: this.payment_status,
-            can_be_reversed: this.can_be_resersed,
+            can_be_reversed: this.can_be_reversed,
             ticket: this.ticket,
             card_type: this.card_type,
             cardholder_name: this.cardholder_name,
@@ -2378,6 +2614,7 @@ class Order extends PosModel {
             if (fiscal_position) {
                 this.fiscal_position = fiscal_position;
             } else {
+                this.fiscal_position_not_found = true;
                 console.error('ERROR: trying to load a fiscal position not available in the pos');
             }
         }
@@ -2490,7 +2727,7 @@ class Order extends PosModel {
                 return paymentline.export_for_printing();
             });
         let partner = this.partner;
-        let cashier = this.pos.get_cashier();
+        let cashier = this.cashier;
         let company = this.pos.company;
         let date    = new Date();
 
@@ -2557,7 +2794,7 @@ class Order extends PosModel {
                 logo:  this.pos.company_logo_base64,
             },
             currency: this.pos.currency,
-            pos_qr_code: this._get_qr_code_data(),
+            pos_qr_code: this.finalized && this._get_qr_code_data(),
         };
 
         if (is_html(this.pos.config.receipt_header)){
@@ -2669,13 +2906,14 @@ class Order extends PosModel {
     calculate_base_amount(tax_ids_array, lines) {
         // Consider price_include taxes use case
         let has_taxes_included_in_price = tax_ids_array.filter(tax_id =>
-            this.pos.taxes_by_id[tax_id].price_include
+            this.pos.taxes_by_id[tax_id].price_include ||
+            this.pos.taxes_by_id[tax_id].children_tax_ids.length > 0 &&
+            this.pos.taxes_by_id[tax_id].children_tax_ids.every(child_tax => child_tax.price_include)
         ).length;
 
         let base_amount = lines.reduce((sum, line) =>
                 sum +
-                line.get_price_without_tax() +
-                (has_taxes_included_in_price ? line.get_total_taxes_included_in_price() : 0),
+                (has_taxes_included_in_price ? line.get_price_with_tax() : line.get_price_without_tax()),
             0
         );
         return base_amount;
@@ -2760,7 +2998,9 @@ class Order extends PosModel {
     }
 
     add_product(product, options){
-        if(this.pos.doNotAllowRefundAndSales() && this.orderlines[0] && this.orderlines[0].refunded_orderline_id) {
+        if(this.pos.doNotAllowRefundAndSales() &&
+        this._isRefundAndSaleOrder() &&
+        (!options.quantity || options.quantity > 0)) {
             Gui.showPopup('ErrorPopup', {
                 title: _t('Refund and Sales not allowed'),
                 body: _t('It is not allowed to mix refunds and sales')
@@ -2794,7 +3034,7 @@ class Order extends PosModel {
         }
 
         if (options.draftPackLotLines) {
-            this.selected_orderline.setPackLotLines(options.draftPackLotLines);
+            this.selected_orderline.setPackLotLines({ ...options.draftPackLotLines, setQuantity: options.quantity === undefined });
         }
     }
     set_orderline_options(orderline, options) {
@@ -2976,20 +3216,20 @@ class Order extends PosModel {
     _get_ignored_product_ids_total_discount() {
         return [];
     }
-    _reduce_total_discount_callback(sum, orderLine) {
-        sum += (orderLine.get_unit_price() * (orderLine.get_discount()/100) * orderLine.get_quantity());
+    _reduce_total_discount_callback(sum, orderLine){
+        let discountUnitPrice = orderLine.getUnitDisplayPriceBeforeDiscount() * (orderLine.get_discount()/100);
         if (orderLine.display_discount_policy() === 'without_discount'){
-            sum += ((orderLine.get_taxed_lst_unit_price() - orderLine.get_unit_price()) * orderLine.get_quantity());
+            discountUnitPrice += orderLine.get_taxed_lst_unit_price() - orderLine.getUnitDisplayPriceBeforeDiscount();
         }
-        return sum;
+        return sum + discountUnitPrice * orderLine.get_quantity();
     }
     get_total_discount() {
         const ignored_product_ids = this._get_ignored_product_ids_total_discount()
         return round_pr(this.orderlines.reduce((sum, orderLine) => {
             if (!ignored_product_ids.includes(orderLine.product.id)) {
-                sum += (orderLine.get_unit_price() * (orderLine.get_discount()/100) * orderLine.get_quantity());
-                if (orderLine.display_discount_policy() === 'without_discount'){
-                    sum += ((orderLine.get_lst_price() - orderLine.get_unit_price()) * orderLine.get_quantity());
+                sum += (orderLine.getUnitDisplayPriceBeforeDiscount() * (orderLine.get_discount()/100) * orderLine.get_quantity());
+                if (orderLine.display_discount_policy() === 'without_discount' && !orderLine.price_manually_set){
+                    sum += ((orderLine.get_taxed_lst_unit_price() - orderLine.getUnitDisplayPriceBeforeDiscount()) * orderLine.get_quantity());
                 }
             }
             return sum;
@@ -3010,7 +3250,7 @@ class Order extends PosModel {
                     if (!(taxId in groupTaxes)) {
                         groupTaxes[taxId] = 0;
                     }
-                    groupTaxes[taxId] += taxDetails[taxId];
+                    groupTaxes[taxId] += taxDetails[taxId].amount;
                 }
             });
 
@@ -3043,14 +3283,19 @@ class Order extends PosModel {
             var ldetails = line.get_tax_details();
             for(var id in ldetails){
                 if(ldetails.hasOwnProperty(id)){
-                    details[id] = (details[id] || 0) + ldetails[id];
+                    let amount = (details[id] && details[id].amount) ? details[id].amount : 0;
+                    let base = (details[id] && details[id].base) ? details[id].base : 0;
+                    details[id] = {
+                        amount: amount + ldetails[id].amount,
+                        base: base + ldetails[id].base,
+                    };
                 }
             }
         });
 
         for(var id in details){
             if(details.hasOwnProperty(id)){
-                fulldetails.push({amount: details[id], tax: this.pos.taxes_by_id[id], name: this.pos.taxes_by_id[id].name});
+                fulldetails.push({amount: details[id].amount, base: details[id].base, tax: this.pos.taxes_by_id[id], name: this.pos.taxes_by_id[id].name});
             }
         }
 

@@ -6,7 +6,7 @@ from uuid import uuid4
 import pytz
 
 from odoo import api, fields, models, tools, _
-from odoo.exceptions import ValidationError, UserError
+from odoo.exceptions import AccessError, ValidationError, UserError
 
 
 class PosConfig(models.Model):
@@ -172,10 +172,10 @@ class PosConfig(models.Model):
     product_load_background = fields.Boolean(default=False)
     limited_partners_loading = fields.Boolean('Limited Partners Loading',
                                               default=True,
-                                              help="By default, 100 partners are loaded.\n"
+                                              help="By default, 10000 partners are loaded.\n"
                                                    "When the session is open, we keep on loading all remaining partners in the background.\n"
                                                    "In the meantime, you can use the 'Load Customers' button to load partners from database.")
-    limited_partners_amount = fields.Integer(default=100)
+    limited_partners_amount = fields.Integer(default=10000)
     partner_load_background = fields.Boolean(default=False)
 
     @api.depends('payment_method_ids')
@@ -323,6 +323,20 @@ class PosConfig(models.Model):
                 _("You must have at least one payment method configured to launch a session.")
             )
 
+    @api.constrains('limited_partners_amount', 'limited_partners_loading')
+    def _check_limited_partners(self):
+        for rec in self:
+            if rec.limited_partners_loading and not rec.limited_partners_amount:
+                raise ValidationError(
+                    _("Number of partners loaded can not be 0"))
+
+    @api.constrains('limited_products_amount', 'limited_products_loading')
+    def _check_limited_products(self):
+        for rec in self:
+            if rec.limited_products_loading and not rec.limited_products_amount:
+                raise ValidationError(
+                    _("Number of product loaded can not be 0"))
+
     @api.constrains('pricelist_id', 'available_pricelist_ids')
     def _check_pricelists(self):
         self._check_companies()
@@ -347,9 +361,14 @@ class PosConfig(models.Model):
                 result.append((config.id, "%s (%s)" % (config.name, last_session.user_id.name)))
         return result
 
+    def _check_header_footer(self, values):
+        if not self.env.is_admin() and {'is_header_or_footer', 'receipt_header', 'receipt_footer'} & values.keys():
+            raise AccessError(_('Only administrators can edit receipt headers and footers'))
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
+            self._check_header_footer(vals)
             IrSequence = self.env['ir.sequence'].sudo()
             val = {
                 'name': _('POS Order %s', vals['name']),
@@ -378,6 +397,7 @@ class PosConfig(models.Model):
                 raise UserError(_('The default tip product is missing. Please manually specify the tip product. (See Tips field.)'))
 
     def write(self, vals):
+        self._check_header_footer(vals)
         self._reset_default_on_vals(vals)
         opened_session = self.mapped('session_ids').filtered(lambda s: s.state != 'closed')
         if opened_session:
@@ -565,8 +585,16 @@ class PosConfig(models.Model):
         for pos_config in self:
             if pos_config.payment_method_ids or pos_config.has_active_session:
                 continue
-            cash_journal = self.env['account.journal'].search([('company_id', '=', company.id), ('type', '=', 'cash')], limit=1)
-            bank_journal = self.env['account.journal'].search([('company_id', '=', company.id), ('type', '=', 'bank')], limit=1)
+            cash_journal = self.env['account.journal'].search([
+                ('company_id', '=', company.id),
+                ('type', '=', 'cash'),
+                ('currency_id', 'in', [pos_config.currency_id.id, False]),
+            ], limit=1)
+            bank_journal = self.env['account.journal'].search([
+                ('company_id', '=', company.id),
+                ('type', '=', 'bank'),
+                ('currency_id', 'in', [pos_config.currency_id.id, False]),
+            ], limit=1)
             payment_methods = self.env['pos.payment.method']
             if cash_journal:
                 payment_methods |= payment_methods.create({
@@ -595,7 +623,7 @@ class PosConfig(models.Model):
             if not pos_journal:
                 pos_journal = self.env['account.journal'].create({
                     'type': 'general',
-                    'name': 'Point of Sale',
+                    'name': _('Point of Sale'),
                     'code': 'POSS',
                     'company_id': company.id,
                     'sequence': 20
@@ -613,8 +641,9 @@ class PosConfig(models.Model):
             WITH pm AS (
                   SELECT product_id,
                          Max(write_date) date
-                    FROM stock_quant
+                    FROM stock_move_line
                 GROUP BY product_id
+                ORDER BY date DESC
             )
                SELECT p.id
                  FROM product_product p
@@ -626,10 +655,11 @@ class PosConfig(models.Model):
                     AND (t.company_id=%(company_id)s OR t.company_id IS NULL)
                     AND %(available_categ_ids)s IS NULL OR t.pos_categ_id=ANY(%(available_categ_ids)s)
                 )    OR p.id=%(tip_product_id)s
-             ORDER BY t.priority DESC,
-                      t.detailed_type DESC,
-                      COALESCE(pm.date,p.write_date) DESC 
-                LIMIT %(limit)s
+            ORDER BY t.priority DESC,
+                    case when t.detailed_type = 'service' then 1 else 0 end DESC,
+                    pm.date DESC NULLS LAST,
+                    p.write_date
+            LIMIT %(limit)s
         """
         params = {
             'company_id': self.company_id.id,

@@ -235,9 +235,7 @@ registerPatch({
          */
         _handleGlobalWindowFocus() {
             this.update({ outOfFocusUnreadMessageCounter: 0 });
-            this.env.bus.trigger('set_title_part', {
-                part: '_chat',
-            });
+            this.env.services["title"].setParts({ _chat: undefined });
         },
         /**
          * @private
@@ -264,6 +262,40 @@ registerPatch({
             } else {
                 this.soundEffects.incomingCall.stop();
             }
+        },
+        async handleClickOnLink(ev) {
+            if (ev.target.closest('.o_channel_redirect')) {
+                // avoid following dummy href
+                ev.preventDefault();
+                const channel = this.models['Thread'].insert({
+                    id: Number(ev.target.dataset.oeId),
+                    model: 'mail.channel',
+                });
+                if (!channel.isPinned) {
+                    await channel.join();
+                    channel.update({ isServerPinned: true });
+                }
+                channel.open();
+                return true;
+            } else if (ev.target.closest('.o_mail_redirect')) {
+                ev.preventDefault();
+                this.openChat({
+                    partnerId: Number(ev.target.dataset.oeId)
+                });
+                return true;
+            }
+            if (ev.target.tagName === 'A') {
+                if (ev.target.dataset.oeId && ev.target.dataset.oeModel) {
+                    // avoid following dummy href
+                    ev.preventDefault();
+                    this.openProfile({
+                        id: Number(ev.target.dataset.oeId),
+                        model: ev.target.dataset.oeModel,
+                    });
+                }
+                return true;
+            }
+            return false;
         },
     },
     fields: {

@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from markupsafe import Markup
+from unittest.mock import patch
 
 from odoo.addons.mail.tests import common
 from odoo.exceptions import AccessError
@@ -212,6 +213,29 @@ class TestMailRender(TestMailRenderCommon):
             self.assertEqual(rendered, expected)
 
     @users('employee')
+    def test_render_template_inline_template_w_post_process_custom_local_links(self):
+        def _mock_get_base_url(recordset):
+            return f"http://www.render-object-{recordset._name}-{recordset.id}-{recordset.display_name}.com"
+        partner_ids = self.env['res.partner'].sudo().create([{
+            'name': f'test partner {n}'
+        } for n in range(20)]).ids
+        with patch('odoo.models.Model.get_base_url', new=_mock_get_base_url), self.assertQueryCount(7):
+            # make sure name isn't already in cache
+            self.env['res.partner'].browse(partner_ids).invalidate_recordset(['name', 'display_name'])
+            render_results = self.env['mail.render.mixin']._render_template(
+                '<a href="/test/destination"><img src="/test/image"></a>',
+                'res.partner',
+                partner_ids,
+                engine='inline_template',
+                post_process=True,
+            )
+        Partner = self.env['res.partner'].with_prefetch(partner_ids)
+        for partner_id, render_result in render_results.items():
+            partner = Partner.browse(partner_id)
+            expected_base_url = f"http://www.render-object-{partner._name}-{partner.id}-{partner.name}.com"
+            self.assertEqual(render_result, f'<a href="{expected_base_url}/test/destination"><img src="{expected_base_url}/test/image"></a>')
+
+    @users('employee')
     def test_render_template_qweb(self):
         partner = self.env['res.partner'].browse(self.render_object.ids)
         for source, expected in zip(self.base_qweb_bits, self.base_rendered):
@@ -306,15 +330,25 @@ class TestMailRender(TestMailRenderCommon):
     @users('employee')
     def test_replace_local_links(self):
         local_links_template_bits = [
+            '<a href="/web/path?a=a&b=b"/>',
+            '<img src="/web/path?a=a&b=b"/>',
+            '<v:fill src="/web/path?a=a&b=b"/>',
+            '<v:image src="/web/path?a=a&b=b"/>',
             '<div style="background-image:url(/web/path?a=a&b=b);"/>',
             '<div style="background-image:url(\'/web/path?a=a&b=b\');"/>',
             '<div style="background-image:url(&#34;/web/path?a=a&b=b&#34;);"/>',
+            '<div background="/web/path?a=a&b=b"/>',
         ]
         base_url = self.env['mail.render.mixin'].get_base_url()
         rendered_local_links = [
+            '<a href="%s/web/path?a=a&b=b"/>' % base_url,
+            '<img src="%s/web/path?a=a&b=b"/>' % base_url,
+            '<v:fill src="%s/web/path?a=a&b=b"/>' % base_url,
+            '<v:image src="%s/web/path?a=a&b=b"/>' % base_url,
             '<div style="background-image:url(%s/web/path?a=a&b=b);"/>' % base_url,
             '<div style="background-image:url(\'%s/web/path?a=a&b=b\');"/>' % base_url,
-            '<div style="background-image:url(&#34;%s/web/path?a=a&b=b&#34;);"/>' % base_url
+            '<div style="background-image:url(&#34;%s/web/path?a=a&b=b&#34;);"/>' % base_url,
+            '<div background="%s/web/path?a=a&b=b"/>' % base_url,
         ]
         for source, expected in zip(local_links_template_bits, rendered_local_links):
             rendered = self.env['mail.render.mixin']._replace_local_links(source)

@@ -9,13 +9,15 @@ import re
 import socket
 import threading
 import time
-from email.utils import getaddresses
+import email.utils
+from email.utils import getaddresses as orig_getaddresses
 from urllib.parse import urlparse
+import html as htmllib
 
 import idna
 import markupsafe
 from lxml import etree, html
-from lxml.html import clean
+from lxml.html import clean, defs
 from werkzeug import urls
 
 import odoo
@@ -24,11 +26,22 @@ from odoo.tools import misc
 
 _logger = logging.getLogger(__name__)
 
+
+# disable strict mode when present: we rely on original non-strict
+# parsing, and we know that it isn't reliable, that ok.
+# cfr python/cpython@4a153a1d3b18803a684cd1bcc2cdf3ede3dbae19
+if hasattr(email.utils, 'supports_strict_parsing'):
+    def getaddresses(fieldvalues):
+        return orig_getaddresses(fieldvalues, strict=False)
+else:
+    getaddresses = orig_getaddresses
+
+
 #----------------------------------------------------------
 # HTML Sanitizer
 #----------------------------------------------------------
 
-safe_attrs = clean.defs.safe_attrs | frozenset(
+safe_attrs = defs.safe_attrs | frozenset(
     ['style',
      'data-o-mail-quote', 'data-o-mail-quote-node',  # quote detection
      'data-oe-model', 'data-oe-id', 'data-oe-field', 'data-oe-type', 'data-oe-expression', 'data-oe-translation-initial-sha', 'data-oe-nodeid',
@@ -41,7 +54,7 @@ safe_attrs = clean.defs.safe_attrs | frozenset(
      ])
 SANITIZE_TAGS = {
     # allow new semantic HTML5 tags
-    'allow_tags': clean.defs.tags | frozenset('article bdi section header footer hgroup nav aside figure main'.split() + [etree.Comment]),
+    'allow_tags': defs.tags | frozenset('article bdi section header footer hgroup nav aside figure main'.split() + [etree.Comment]),
     'kill_tags': ['base', 'embed', 'frame', 'head', 'iframe', 'link', 'meta',
                   'noscript', 'object', 'script', 'style', 'title'],
     'remove_tags': ['html', 'body'],
@@ -142,7 +155,6 @@ def tag_quote(el):
 
     # gmail or yahoo // # outlook, html // # msoffice
     if 'gmail_extra' in el_class or \
-            'divRplyFwdMsg' in el_id or \
             ('SkyDrivePlaceholder' in el_class or 'SkyDrivePlaceholder' in el_class):
         el.set('data-o-mail-quote', '1')
         if el.getparent() is not None:
@@ -154,6 +166,32 @@ def tag_quote(el):
         el.set('data-o-mail-quote', '1')
         for sibling in el.itersiblings(preceding=False):
             sibling.set('data-o-mail-quote', '1')
+
+    # odoo, gmail and outlook automatic signature wrapper
+    is_signature_wrapper = 'odoo_signature_wrapper' in el_class or 'gmail_signature' in el_class or el_id == "Signature"
+    is_outlook_auto_message = 'appendonsend' in el_id
+    # gmail and outlook reply quote
+    is_outlook_reply_quote = 'divRplyFwdMsg' in el_id
+    is_gmail_quote = 'gmail_quote' in el_class
+    is_quote_wrapper = is_signature_wrapper or is_gmail_quote or is_outlook_reply_quote
+    if is_quote_wrapper:
+        el.set('data-o-mail-quote-container', '1')
+        el.set('data-o-mail-quote', '1')
+
+    # outlook reply wrapper is preceded with <hr> and a div containing recipient info
+    if is_outlook_reply_quote:
+        hr = el.getprevious()
+        reply_quote = el.getnext()
+        if hr is not None and hr.tag == 'hr':
+            hr.set('data-o-mail-quote', '1')
+        if reply_quote is not None:
+            reply_quote.set('data-o-mail-quote-container', '1')
+            reply_quote.set('data-o-mail-quote', '1')
+
+    if is_outlook_auto_message:
+        if not el.text or not el.text.strip():
+            el.set('data-o-mail-quote-container', '1')
+            el.set('data-o-mail-quote', '1')
 
     # html signature (-- <br />blah)
     signature_begin = re.compile(r"((?:(?:^|\n)[-]{2}[\s]?$))")
@@ -172,6 +210,8 @@ def tag_quote(el):
         el.set('data-o-mail-quote-node', '1')
         el.set('data-o-mail-quote', '1')
     if el.getparent() is not None and (el.getparent().get('data-o-mail-quote') or el.getparent().get('data-o-mail-quote-container')) and not el.getparent().get('data-o-mail-quote-node'):
+        el.set('data-o-mail-quote', '1')
+    if el.getprevious() is not None and el.getprevious().get('data-o-mail-quote') and not el.text_content().strip():
         el.set('data-o-mail-quote', '1')
 
 
@@ -199,6 +239,11 @@ def html_normalize(src, filter_callback=None):
     src = doctype.sub(u"", src)
 
     try:
+        src = src.replace('--!>', '-->')
+        src = re.sub(r'(<!-->|<!--->)', '<!-- -->', src)
+        # On the specific case of Outlook desktop it adds unnecessary '<o:.*></o:.*>' tags which are parsed
+        # in '<p></p>' which may alter the appearance (eg. spacing) of the mail body
+        src = re.sub(r'</?o:.*?>', '', src)
         doc = html.fromstring(src)
     except etree.ParserError as e:
         # HTML comment only string, whitespace only..
@@ -309,8 +354,10 @@ def is_html_empty(html_content):
     """
     if not html_content:
         return True
-    tag_re = re.compile(r'\<\s*\/?(?:p|div|span|br|b|i|font)(?:(?=\s+\w*)[^/>]*|\s*)/?\s*\>')
-    return not bool(re.sub(tag_re, '', html_content).strip())
+    icon_re = r'<\s*(i|span)\b(\s+[A-Za-z_-][A-Za-z0-9-_]*(\s*=\s*[\'"][^"\']*[\'"])?)*\s*\bclass\s*=\s*["\'][^"\']*\b(fa|fab|fad|far|oi)\b'
+    tag_re = r'<\s*\/?(?:p|div|section|span|br|b|i|font)\b(?:(\s+[A-Za-z_-][A-Za-z0-9-_]*(\s*=\s*[\'"][^"\']*[\'"]))*)(?:\s*>|\s*\/\s*>)'
+    return not bool(re.sub(tag_re, '', html_content).strip()) and not re.search(icon_re, html_content)
+
 
 def html_keep_url(text):
     """ Transform the url into clickable link with <a/> tag """
@@ -319,7 +366,7 @@ def html_keep_url(text):
     link_tags = re.compile(r"""(?<!["'])((ftp|http|https):\/\/(\w+:{0,1}\w*@)?([^\s<"']+)(:[0-9]+)?(\/|\/([^\s<"']))?)(?![^\s<"']*["']|[^\s<"']*</a>)""")
     for item in re.finditer(link_tags, text):
         final += text[idx:item.start()]
-        final += '<a href="%s" target="_blank" rel="noreferrer noopener">%s</a>' % (item.group(0), item.group(0))
+        final += create_link(item.group(0), item.group(0))
         idx = item.end()
     final += text[idx:]
     return final
@@ -336,8 +383,13 @@ def html_to_inner_content(html):
     processed = re.sub(HTML_NEWLINES_REGEX, ' ', html)
     processed = re.sub(HTML_TAGS_REGEX, '', processed)
     processed = re.sub(r' {2,}|\t', ' ', processed)
+    processed = htmllib.unescape(processed)
     processed = processed.strip()
     return processed
+
+
+def create_link(url, label):
+    return f'<a href="{url}" target="_blank" rel="noreferrer noopener">{label}</a>'
 
 
 def html2plaintext(html, body_id=None, encoding='utf-8'):
@@ -373,6 +425,15 @@ def html2plaintext(html, body_id=None, encoding='utf-8'):
             link.text = '%s [%s]' % (link.text, i)
             url_index.append(url)
 
+    for img in tree.findall('.//img'):
+        src = img.get('src')
+        if src:
+            i += 1
+            img.tag = 'span'
+            img_name = re.search(r'[^/]+(?=\.[a-zA-Z]+(?:\?|$))', src)
+            img.text = '%s [%s]' % (img_name.group(0) if img_name else 'Image', i)
+            url_index.append(src)
+
     html = ustr(etree.tostring(tree, encoding=encoding))
     # \r char is converted into &#13;, must remove it
     html = html.replace('&#13;', '')
@@ -385,12 +446,13 @@ def html2plaintext(html, body_id=None, encoding='utf-8'):
     html = html.replace('<em>', '/').replace('</em>', '/')
     html = html.replace('<tr>', '\n')
     html = html.replace('</p>', '\n')
-    html = re.sub('<br\s*/?>', '\n', html)
+    html = re.sub(r'<br\s*/?>', '\n', html)
     html = re.sub('<.*?>', ' ', html)
     html = html.replace(' ' * 2, ' ')
     html = html.replace('&gt;', '>')
     html = html.replace('&lt;', '<')
     html = html.replace('&amp;', '&')
+    html = html.replace('&nbsp;', u'\N{NO-BREAK SPACE}')
 
     # strip all lines
     html = '\n'.join([x.strip() for x in html.splitlines()])
@@ -485,7 +547,8 @@ def append_content_to_html(html, content, plaintext=True, preserve=False, contai
 
 def prepend_html_content(html_body, html_content):
     """Prepend some HTML content at the beginning of an other HTML content."""
-    html_content = type(html_content)(re.sub(r'(?i)(</?(?:html|body|head|!\s*DOCTYPE)[^>]*>)', '', html_content))
+    replacement = re.sub(r'(?i)(</?(?:html|body|head|!\s*DOCTYPE)[^>]*>)', '', html_content)
+    html_content = markupsafe.Markup(replacement) if isinstance(html_content, markupsafe.Markup) else replacement
     html_content = html_content.strip()
 
     body_match = re.search(r'<body[^>]*>', html_body) or re.search(r'<html[^>]*>', html_body)
@@ -507,7 +570,6 @@ mail_header_msgid_re = re.compile('<[^<>]+>')
 
 email_addr_escapes_re = re.compile(r'[\\"]')
 
-
 def generate_tracking_message_id(res_id):
     """Returns a string that can be used in the Message-ID RFC822 header field
 
@@ -525,14 +587,47 @@ def email_split_tuples(text):
     """ Return a list of (name, email) address tuples found in ``text`` . Note
     that text should be an email header or a stringified email list as it may
     give broader results than expected on actual text. """
+    def _parse_based_on_spaces(pair):
+        """ With input 'name email@domain.com' (missing quotes for a formatting)
+        getaddresses returns ('', 'name email@domain.com). This when having no
+        name and an email a fallback to enhance parsing is to redo a getaddresses
+        by replacing spaces by commas. The new email will be split into sub pairs
+        allowing to find the email and name parts, allowing to make a new name /
+        email pair. Emails should not contain spaces thus this is coherent with
+        email formation. """
+        name, email = pair
+        if not name and email and ' ' in email:
+            inside_pairs = getaddresses([email.replace(' ', ',')])
+            name_parts, found_email = [], False
+            for pair in inside_pairs:
+                if pair[1] and '@' not in pair[1]:
+                    name_parts.append(pair[1])
+                if pair[1] and '@' in pair[1]:
+                    found_email = pair[1]
+            name, email = (' '.join(name_parts), found_email) if found_email else (name, email)
+        return (name, email)
+
     if not text:
         return []
-    return [(addr[0], addr[1]) for addr in getaddresses([text])
-                # getaddresses() returns '' when email parsing fails, and
-                # sometimes returns emails without at least '@'. The '@'
-                # is strictly required in RFC2822's `addr-spec`.
-                if addr[1]
-                if '@' in addr[1]]
+
+    # found valid pairs, filtering out failed parsing
+    valid_pairs = [
+        (addr[0], addr[1]) for addr in getaddresses([text])
+        # getaddresses() returns '' when email parsing fails, and
+        # sometimes returns emails without at least '@'. The '@'
+        # is strictly required in RFC2822's `addr-spec`.
+        if addr[1] and '@' in addr[1]
+    ]
+    # corner case: returning '@gmail.com'-like email (see test_email_split)
+    if any(pair[1].startswith('@') for pair in valid_pairs):
+        filtered = [
+            found_email for found_email in email_re.findall(text)
+            if found_email and not found_email.startswith('@')
+        ]
+        if filtered:
+            valid_pairs = [('', found_email) for found_email in filtered]
+
+    return list(map(_parse_based_on_spaces, valid_pairs))
 
 def email_split(text):
     """ Return a list of the email addresses found in ``text`` """
@@ -547,18 +642,41 @@ def email_split_and_format(text):
         return []
     return [formataddr((name, email)) for (name, email) in email_split_tuples(text)]
 
-def email_normalize(text, strict=True):
-    """ Sanitize and standardize email address entries.
-        A normalized email is considered as :
-        - having a left part + @ + a right part (the domain can be without '.something')
-        - being lower case
-        - having no name before the address. Typically, having no 'Name <>'
-        Ex:
-        - Possible Input Email : 'Name <NaMe@DoMaIn.CoM>'
-        - Normalized Output Email : 'name@domain.com'
+def email_split_and_format_normalize(text):
+    """ Same as 'email_split_and_format' but normalizing email. """
+    return [
+        formataddr(
+            (name, _normalize_email(email))
+        ) for (name, email) in email_split_tuples(text)
+    ]
 
-    :param bool strict: text should contain exactly one email (default behavior
-      and unique behavior before Odoo16);
+def email_normalize(text, strict=True):
+    """ Sanitize and standardize email address entries. As of rfc5322 section
+    3.4.1 local-part is case-sensitive. However most main providers do consider
+    the local-part as case insensitive. With the introduction of smtp-utf8
+    within odoo, this assumption is certain to fall short for international
+    emails. We now consider that
+
+      * if local part is ascii: normalize still 'lower' ;
+      * else: use as it, SMTP-UF8 is made for non-ascii local parts;
+
+    Concerning domain part of the address, as of v14 international domain (IDNA)
+    are handled fine. The domain is always lowercase, lowering it is fine as it
+    is probably an error. With the introduction of IDNA, there is an encoding
+    that allow non-ascii characters to be encoded to ascii ones, using 'idna.encode'.
+
+    A normalized email is considered as :
+    - having a left part + @ + a right part (the domain can be without '.something')
+    - having no name before the address. Typically, having no 'Name <>'
+    Ex:
+    - Possible Input Email : 'Name <NaMe@DoMaIn.CoM>'
+    - Normalized Output Email : 'name@domain.com'
+
+    :param boolean strict: if True, text should contain a single email
+      (default behavior in stable 14+). If more than one email is found no
+      normalized email is returned. If False the first found candidate is used
+      e.g. if email is 'tony@e.com, "Tony2" <tony2@e.com>', result is either
+      False (strict=True), either 'tony@e.com' (strict=False).
 
     :return: False if no email found (or if more than 1 email found when being
       in strict mode); normalized email otherwise;
@@ -566,7 +684,84 @@ def email_normalize(text, strict=True):
     emails = email_split(text)
     if not emails or (strict and len(emails) != 1):
         return False
-    return emails[0].lower()
+
+    return _normalize_email(emails[0])
+
+def email_normalize_all(text):
+    """ Tool method allowing to extract email addresses from a text input and returning
+    normalized version of all found emails. If no email is found, a void list
+    is returned.
+
+    e.g. if email is 'tony@e.com, "Tony2" <tony2@e.com' returned result is ['tony@e.com, tony2@e.com']
+
+    :return list: list of normalized emails found in text
+    """
+    if not text:
+        return []
+    emails = email_split(text)
+    return list(filter(None, [_normalize_email(email) for email in emails]))
+
+def _normalize_email(email):
+    """ As of rfc5322 section 3.4.1 local-part is case-sensitive. However most
+    main providers do consider the local-part as case insensitive. With the
+    introduction of smtp-utf8 within odoo, this assumption is certain to fall
+    short for international emails. We now consider that
+
+      * if local part is ascii: normalize still 'lower' ;
+      * else: use as it, SMTP-UF8 is made for non-ascii local parts;
+
+    Concerning domain part of the address, as of v14 international domain (IDNA)
+    are handled fine. The domain is always lowercase, lowering it is fine as it
+    is probably an error. With the introduction of IDNA, there is an encoding
+    that allow non-ascii characters to be encoded to ascii ones, using 'idna.encode'.
+
+    A normalized email is considered as :
+    - having a left part + @ + a right part (the domain can be without '.something')
+    - having no name before the address. Typically, having no 'Name <>'
+    Ex:
+    - Possible Input Email : 'Name <NaMe@DoMaIn.CoM>'
+    - Normalized Output Email : 'name@domain.com'
+    """
+    local_part, at, domain = email.rpartition('@')
+    try:
+        local_part.encode('ascii')
+    except UnicodeEncodeError:
+        pass
+    else:
+        local_part = local_part.lower()
+    return local_part + at + domain.lower()
+
+def email_anonymize(normalized_email, *, redact_domain=False):
+    """
+    Replace most charaters in the local part of the email address with
+    '*' to hide the recipient, but keep enough characters for debugging
+    purpose.
+
+    The email address must be normalized already.
+
+    >>> email_anonymize('admin@example.com')
+    'a****@example.com'
+    >>> email_anonymize('portal@example.com')
+    'p***al@example.com'
+    >>> email_anonymize('portal@example.com', redact_domain=True)
+    'p***al@e******.com'
+    """
+    if not normalized_email:
+        return normalized_email
+
+    local, at, domain = normalized_email.partition('@')
+    if len(local) <= 5:
+        anon_local = local[:1] + '*' * (len(local) - 1)
+    else:
+        anon_local = local[:1] + '*' * (len(local) - 3) + local[-2:]
+
+    host, dot, tld = domain.rpartition('.')
+    if redact_domain and not domain.startswith('[') and all((host, dot, tld)):
+        anon_host = host[0] + '*' * (len(host) - 1)
+    else:
+        anon_host = host
+
+    return f'{anon_local}{at}{anon_host}{dot}{tld}'
 
 def email_domain_extract(email):
     """ Extract the company domain to be used by IAP services notably. Domain
@@ -649,7 +844,6 @@ def formataddr(pair, charset='utf-8'):
             return f'"{name}" <{local}@{domain}>'
     return f"{local}@{domain}"
 
-
 def encapsulate_email(old_email, new_email):
     """Change the FROM of the message and use the old one as name.
 
@@ -676,3 +870,14 @@ def encapsulate_email(old_email, new_email):
         name_part,
         new_email_split[0][1],
     ))
+
+def unfold_references(msg_references):
+    """ As it declared in [RFC2822] long header bodies can be "folded" using
+    CRLF+WSP. Some mail clients split References header body which contains
+    Message Ids by "\n ".
+
+    RFC2882: https://tools.ietf.org/html/rfc2822#section-2.2.3 """
+    return [
+        re.sub(r'[\r\n\t ]+', r'', ref)  # "Unfold" buggy references
+        for ref in mail_header_msgid_re.findall(msg_references)
+    ]

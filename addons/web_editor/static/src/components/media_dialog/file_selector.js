@@ -126,7 +126,10 @@ export class FileSelectorControlPanel extends Component {
             return;
         }
         await this.props.uploadFiles(inputFiles);
-        this.fileInput.el.value = '';
+        const fileInputEl = this.fileInput.el;
+        if (fileInputEl) {
+            fileInputEl.value = "";
+        }
     }
 }
 FileSelectorControlPanel.template = 'web_editor.FileSelectorControlPanel';
@@ -260,7 +263,7 @@ export class FileSelector extends Component {
     }
 
     async onUploaded(attachment) {
-        this.state.attachments = [attachment, ...this.state.attachments];
+        this.state.attachments = [attachment, ...this.state.attachments.filter(attach => attach.id !== attachment.id)];
         this.selectAttachment(attachment);
         if (!this.props.multiSelect) {
             await this.props.save();

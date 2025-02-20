@@ -1,14 +1,21 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+import logging
+
+from datetime import datetime, timedelta
+from freezegun import freeze_time
 from unittest.mock import patch
+
+from odoo.fields import Command
+from odoo.tests import tagged, TransactionCase
 
 from odoo.addons.base.tests.common import TransactionCaseWithUserDemo, HttpCaseWithUserPortal
 from odoo.addons.website.tools import MockRequest
-from odoo.tests import tagged
-from odoo.tests.common import HttpCase, TransactionCase
-from odoo.tools import DotDict
 
-''' /!\/!\
+_logger = logging.getLogger(__name__)
+
+r''' /!\/!\
 Calling `get_pricelist_available` after setting `property_product_pricelist` on
 a partner will not work as expected. That field will change the output of
 `get_pricelist_available` but modifying it will not invalidate the cache.
@@ -282,6 +289,7 @@ class TestWebsitePriceList(TransactionCase):
         returns a dict with just `price_reduce` (no discount) as key
         when the product is tax included.
         """
+        self.env.company.country_id = self.env.ref('base.us')
         tax = self.env['account.tax'].create({
             'name': "Tax 10",
             'amount': 10,
@@ -296,6 +304,90 @@ class TestWebsitePriceList(TransactionCase):
         prices = product._get_sales_prices(self.list_christmas)
         self.assertFalse('base_price' in prices[product.id])
 
+    def test_pricelist_item_based_on_cost_for_templates(self):
+        """ Test that `_get_sales_prices` from `product_template` computes the correct price when
+        the pricelist item is based on the cost of the product.
+        """
+        pricelist = self.env['product.pricelist'].create({
+            'name': 'Pricelist base on cost',
+            'item_ids': [Command.create({
+                'base': 'standard_price',
+                'compute_price': 'percentage',
+                'percent_price': 10,
+            })]
+        })
+
+        pa = self.env['product.attribute'].create({'name': 'Attribute'})
+        pav1 = self.env['product.attribute.value'].create({'name': 'Value1', 'attribute_id': pa.id})
+        pav2 = self.env['product.attribute.value'].create({'name': 'Value2', 'attribute_id': pa.id})
+
+        product_template = self.env['product.template'].create({
+            'name': 'Product Template', 'list_price': 10.0, 'standard_price': 5.0
+        })
+        self.assertEqual(product_template.standard_price, 5)
+        price = product_template._get_sales_prices(pricelist)[product_template.id]['price_reduce']
+        msg = "Template has no variants, the price should be computed based on the template's cost."
+        self.assertEqual(price, 4.5, msg)
+
+        product_template.attribute_line_ids = [Command.create({
+            'attribute_id': pa.id, 'value_ids': [Command.set([pav1.id, pav2.id])]
+        })]
+        msg = "Product template with variants should have no cost."
+        self.assertEqual(product_template.standard_price, 0, msg)
+        self.assertEqual(product_template.product_variant_ids[0].standard_price, 0)
+
+        price = product_template._get_sales_prices(pricelist)[product_template.id]['price_reduce']
+        msg = "Template has variants, the price should be computed based on the 1st variant's cost."
+        self.assertEqual(price, 0, msg)
+
+        product_template.product_variant_ids[0].standard_price = 20
+        price = product_template._get_sales_prices(pricelist)[product_template.id]['price_reduce']
+        self.assertEqual(price, 18, msg)
+
+    def test_pricelist_item_validity_period(self):
+        """ Test that if a cart was created before a validity period,
+            the correct prices will still apply.
+        """
+        today = datetime.today()
+        tomorrow = today + timedelta(days=1)
+        pricelist = self.env['product.pricelist'].create({
+            'name': 'Pricelist with validity period',
+            'item_ids': [Command.create({
+                    'compute_price': 'formula',
+                    'base': 'list_price',
+                    'price_discount': 20,
+                    'date_start': tomorrow,
+            })]
+        })
+        product = self.env['product.product'].create({
+            'name': 'Super Product',
+            'list_price': 100,
+            'taxes_id': False,
+        })
+        current_website = self.env['website'].get_current_website()
+        current_website.pricelist_id = pricelist
+        with freeze_time(today) as frozen_time:
+            so = self.env['sale.order'].create({
+                'partner_id': self.env.user.partner_id.id,
+                'pricelist_id': pricelist.id,
+                'order_line': [(0, 0, {
+                    'name': product.name,
+                    'product_id': product.id,
+                    'product_uom_qty': 1,
+                    'product_uom': product.uom_id.id,
+                    'price_unit': product.list_price,
+                    'tax_id': False,
+                })],
+                'website_id': current_website.id,
+            })
+            sol = so.order_line
+            self.assertEqual(sol.price_total, 100.0)
+
+            frozen_time.move_to(tomorrow + timedelta(seconds=10))
+            with MockRequest(self.env, website=current_website, sale_order_id=so.id):
+                so._cart_update(product_id=product.id, line_id=sol.id, set_qty=2)
+            self.assertEqual(sol.price_unit, 80.0, 'Reduction should be applied')
+            self.assertEqual(sol.price_total, 160)
 
 def simulate_frontend_context(self, website_id=1):
     # Mock this method will be enough to simulate frontend context in most methods
@@ -617,6 +709,14 @@ class TestWebsiteSaleSession(HttpCaseWithUserPortal):
             'login': 'toto',
             'password': 'long_enough_password',
         })
+        # We need at least two selectable pricelists to display the dropdown
+        self.env['product.pricelist'].create([{
+            'name': 'Public Pricelist 1',
+            'selectable': True
+        }, {
+            'name': 'Public Pricelist 2',
+            'selectable': True
+        }])
         user_pricelist = self.env['product.pricelist'].create({
             'name': 'User Pricelist',
             'website_id': website.id,

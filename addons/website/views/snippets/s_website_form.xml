@@ -19,7 +19,7 @@
 
 <template id="s_website_form_options" inherit_id="website.snippet_options">
     <!-- Extend drop locations to columns -->
-    <xpath expr="//t[@t-set='so_content_addition_selector']" position="inside">, .s_website_form</xpath>
+    <xpath expr="//t[@t-set='so_content_addition_selector']" position="inside" t-translation="off">, .s_website_form</xpath>
 
     <xpath expr="//div" position="after">
         <!-- Form -->
@@ -149,6 +149,8 @@
                 <we-select data-name="hidden_condition_no_text_opt" data-attribute-name="visibilityComparator" data-no-preview="true">
                     <we-button data-select-data-attribute="selected">Is equal to</we-button>
                     <we-button data-select-data-attribute="!selected">Is not equal to</we-button>
+                    <we-button data-select-data-attribute="contains">Contains</we-button>
+                    <we-button data-select-data-attribute="!contains">Doesn't contain</we-button>
                 </we-select>
                 <we-select data-name="hidden_condition_text_opt" data-attribute-name="visibilityComparator" data-no-preview="true">
                     <!-- str comparator possibilities -->

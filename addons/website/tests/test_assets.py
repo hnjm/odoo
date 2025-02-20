@@ -12,9 +12,11 @@ class TestWebsiteAssets(odoo.tests.HttpCase):
     def test_01_multi_domain_assets_generation(self):
         Website = self.env['website']
         Attachment = self.env['ir.attachment']
+        # Create an additional website to ensure it works in multi-website setup
+        Website.create({'name': 'Second Website'})
         # Simulate single website DBs: make sure other website do not interfer
         # (We can't delete those, constraint will most likely be raised)
-        Website.search([]).write({'domain': 'inactive.test'})
+        [w.write({'domain': f'inactive-{w.id}.test'}) for w in Website.search([])]
         # Don't use HOST, hardcode it so it doesn't get changed one day and make
         # the test useless
         domain_1 = "http://127.0.0.1:%s" % config['http_port']
@@ -63,3 +65,35 @@ class TestWebsiteAssets(odoo.tests.HttpCase):
         check_asset()
         self.url_open(domain_1 + '/web')
         check_asset()
+
+    def test_02_multi_domain_assets_generation(self):
+        # Create an additional website to ensure it works in multi-website setup
+        website2 = self.env['website'].create({'name': 'Second Website'})
+
+        self.authenticate('admin', 'admin')
+        # Edit one of the website to force assets to be different
+        self.env['web_editor.assets'].with_context(website_id=1).make_scss_customization(
+            '/website/static/src/scss/options/colors/user_color_palette.scss',
+            {"o-cc1-bg": "'400'"},
+        )
+
+        def get_backend_asset_attach():
+            return self.env['ir.attachment'].search([('name', '=', 'web.assets_backend.min.js')])
+
+        self.url_open('/website/force/1')
+        self.url_open('/web')
+        asset_website1 = get_backend_asset_attach().filtered(lambda r: r.website_id.id == 1)
+        self.assertIn(1, get_backend_asset_attach().mapped('website_id').ids)
+        self.url_open('/website/force/%s' % website2.id)
+        self.url_open('/web')
+        asset_website2 = get_backend_asset_attach().filtered(lambda r: r.website_id.id == website2.id)
+        self.assertIn(1, get_backend_asset_attach().mapped('website_id').ids)
+        self.assertIn(website2.id, get_backend_asset_attach().mapped('website_id').ids)
+        self.url_open('/website/force/1')
+        self.url_open('/web')
+        self.assertIn(1, get_backend_asset_attach().mapped('website_id').ids)
+        self.assertIn(website2.id, get_backend_asset_attach().mapped('website_id').ids)
+        self.url_open('/website/force/%s' % website2.id)
+        self.url_open('/web')
+        self.assertEqual(asset_website1, get_backend_asset_attach().filtered(lambda r: r.website_id.id == 1))
+        self.assertEqual(asset_website2, get_backend_asset_attach().filtered(lambda r: r.website_id.id == website2.id))

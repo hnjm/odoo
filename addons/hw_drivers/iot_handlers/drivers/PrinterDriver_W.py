@@ -13,6 +13,7 @@ from odoo.addons.hw_drivers.driver import Driver
 from odoo.addons.hw_drivers.event_manager import event_manager
 from odoo.addons.hw_drivers.main import iot_devices
 from odoo.addons.hw_drivers.tools import helpers
+from odoo.tools.mimetypes import guess_mimetype
 
 _logger = logging.getLogger(__name__)
 
@@ -106,14 +107,25 @@ class PrinterDriver(Driver):
         printer = self.device_name
 
         args = [
-            "-dPrinted", "-dBATCH", "-dNOSAFER", "-dNOPAUSE", "-dNOPROMPT"
+            "-dPrinted", "-dBATCH", "-dNOPAUSE", "-dNOPROMPT"
             "-q",
             "-sDEVICE#mswinpr2",
             f'-sOutputFile#%printer%{printer}',
             f'{file_name}'
             ]
 
-        ghostscript.Ghostscript(*args)
+        _logger.debug("Printing report with ghostscript using %s", args)
+        stderr_buf = io.BytesIO()
+        stdout_buf = io.BytesIO()
+        stdout_log_level = logging.DEBUG
+        try:
+            ghostscript.Ghostscript(*args, stdout=stdout_buf, stderr=stderr_buf)
+        except Exception:
+            _logger.exception("Error while printing report, ghostscript args: %s, error buffer: %s", args, stderr_buf.getvalue())
+            stdout_log_level = logging.ERROR # some stdout value might contains relevant error information
+            raise
+        finally:
+            _logger.log(stdout_log_level, "Ghostscript stdout: %s", stdout_buf.getvalue())
 
     def print_receipt(self, data):
         receipt = b64decode(data['receipt'])
@@ -150,6 +162,11 @@ class PrinterDriver(Driver):
             self.print_raw(drawer)
 
     def _action_default(self, data):
-        self.print_report(b64decode(data['document']))
+        document = b64decode(data['document'])
+        mimetype = guess_mimetype(document)
+        if mimetype == 'application/pdf':
+            self.print_report(document)
+        else:
+            self.print_raw(document)
 
 proxy_drivers['printer'] = PrinterDriver

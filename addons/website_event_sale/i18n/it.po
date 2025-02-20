@@ -5,14 +5,16 @@
 # Translators:
 # Martin Trigaux, 2022
 # Sergio Zanchetta <primes2h@gmail.com>, 2022
+# Marianna Ciofani, 2023
+# Wil Odoo, 2024
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:02+0000\n"
+"POT-Creation-Date: 2024-02-06 13:32+0000\n"
 "PO-Revision-Date: 2022-09-22 05:56+0000\n"
-"Last-Translator: Sergio Zanchetta <primes2h@gmail.com>, 2022\n"
+"Last-Translator: Wil Odoo, 2024\n"
 "Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,8 +39,13 @@ msgid ""
 "                                            Registered\n"
 "                                        </small>"
 msgstr ""
+"<small class=\"o_wevent_participating text-bg-success\">\n"
+"                                            <i class=\"fa fa-check me-2\"/>\n"
+"                                            Registrato\n"
+"                                        </small>"
 
 #. module: website_event_sale
+#. odoo-python
 #: code:addons/website_event_sale/models/product_pricelist.py:0
 #, python-format
 msgid ""
@@ -49,6 +56,7 @@ msgstr ""
 "prezzi con una quantità min. positiva."
 
 #. module: website_event_sale
+#. odoo-python
 #: code:addons/website_event_sale/models/product_pricelist.py:0
 #, python-format
 msgid ""
@@ -61,7 +69,7 @@ msgstr ""
 #. module: website_event_sale
 #: model:ir.model,name:website_event_sale.model_event_sale_report
 msgid "Event Sales Report"
-msgstr ""
+msgstr "Resoconto vendite evento"
 
 #. module: website_event_sale
 #: model:ir.model.fields,field_description:website_event_sale.field_product_product__event_ticket_ids
@@ -89,6 +97,11 @@ msgid "Pricelist Rule"
 msgstr "Regola listino prezzi"
 
 #. module: website_event_sale
+#: model:ir.model,name:website_event_sale.model_product_template
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: website_event_sale
 #: model:ir.model,name:website_event_sale.model_product_product
 msgid "Product Variant"
 msgstr "Variante prodotto"
@@ -98,12 +111,6 @@ msgstr "Variante prodotto"
 #: model_terms:ir.ui.view,arch_db:website_event_sale.event_sale_report_view_search
 msgid "Published Events"
 msgstr "Eventi pubblicati"
-
-#. module: website_event_sale
-#: code:addons/website_event_sale/controllers/main.py:0
-#, python-format
-msgid "Registration"
-msgstr "Registrazione"
 
 #. module: website_event_sale
 #: model:ir.model,name:website_event_sale.model_sale_order
@@ -116,12 +123,14 @@ msgid "Sales Order Line"
 msgstr "Riga ordine di vendita"
 
 #. module: website_event_sale
+#. odoo-python
 #: code:addons/website_event_sale/models/sale_order.py:0
 #, python-format
 msgid "Sorry, The %(ticket)s tickets for the %(event)s event are sold out."
 msgstr "I biglietti %(event)s per l'evento %(ticket)s sono esauriti."
 
 #. module: website_event_sale
+#. odoo-python
 #: code:addons/website_event_sale/models/sale_order.py:0
 #, python-format
 msgid ""
@@ -132,18 +141,21 @@ msgstr ""
 " %(remaining_seats)dposti."
 
 #. module: website_event_sale
+#. odoo-python
 #: code:addons/website_event_sale/models/sale_order.py:0
 #, python-format
 msgid "The provided ticket doesn't exist"
-msgstr ""
+msgstr "Il biglietto fornito non esiste"
 
 #. module: website_event_sale
+#. odoo-python
 #: code:addons/website_event_sale/models/sale_order.py:0
 #, python-format
 msgid "The ticket doesn't match with this product."
 msgstr "Il biglietto non corrisponde al prodotto."
 
 #. module: website_event_sale
+#. odoo-python
 #: code:addons/website_event_sale/models/product_pricelist.py:0
 #, python-format
 msgid "Warning"
@@ -152,7 +164,7 @@ msgstr "Avviso"
 #. module: website_event_sale
 #: model_terms:ir.ui.view,arch_db:website_event_sale.event_confirmation
 msgid "We are looking forward to meeting you at the following"
-msgstr ""
+msgstr "Non vediamo l'ora di incontrarti al prossimo"
 
 #. module: website_event_sale
 #: model:ir.model,name:website_event_sale.model_website
@@ -160,10 +172,13 @@ msgid "Website"
 msgstr "Sito web"
 
 #. module: website_event_sale
+#. odoo-python
 #: code:addons/website_event_sale/models/sale_order.py:0
 #, python-format
 msgid "You cannot raise manually the event ticket quantity in your cart"
 msgstr ""
+"Non è possibile aumentare manualmente la quantità dei biglietti per l'evento"
+" nel carrello"
 
 #. module: website_event_sale
 #: model_terms:ir.ui.view,arch_db:website_event_sale.event_confirmation

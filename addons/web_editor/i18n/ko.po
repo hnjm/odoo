@@ -4,16 +4,18 @@
 # 
 # Translators:
 # Linkup <link-up@naver.com>, 2022
-# Sarah Park, 2023
 # Martin Trigaux, 2023
+# Wil Odoo, 2024
+# Daye Jeong, 2024
+# Sarah Park, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-14 05:53+0000\n"
+"POT-Creation-Date: 2024-02-06 13:32+0000\n"
 "PO-Revision-Date: 2022-09-22 05:55+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Sarah Park, 2024\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,7 +42,7 @@ msgstr ""
 #: code:addons/web_editor/static/src/js/editor/snippets.options.js:0
 #, python-format
 msgid "%spx"
-msgstr ""
+msgstr "%s픽셀"
 
 #. module: web_editor
 #. odoo-javascript
@@ -90,7 +92,7 @@ msgstr "100%"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
 msgid "1977"
-msgstr ""
+msgstr "1977"
 
 #. module: web_editor
 #. odoo-javascript
@@ -98,14 +100,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 #, python-format
 msgid "1x"
-msgstr ""
+msgstr "1x"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/wysiwyg/wysiwyg.js:0
 #, python-format
 msgid "2 columns"
-msgstr ""
+msgstr "2 열"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.colorpicker
@@ -123,21 +125,21 @@ msgstr "25%"
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 #, python-format
 msgid "2x"
-msgstr ""
+msgstr "2x"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "3 Stars"
-msgstr ""
+msgstr "별 3개"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/wysiwyg/wysiwyg.js:0
 #, python-format
 msgid "3 columns"
-msgstr ""
+msgstr "3 열"
 
 #. module: web_editor
 #. odoo-javascript
@@ -145,14 +147,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 #, python-format
 msgid "3x"
-msgstr ""
+msgstr "3x"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/wysiwyg/wysiwyg.js:0
 #, python-format
 msgid "4 columns"
-msgstr ""
+msgstr "4 열"
 
 #. module: web_editor
 #. odoo-javascript
@@ -160,14 +162,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 #, python-format
 msgid "4x"
-msgstr ""
+msgstr "4x"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "5 Stars"
-msgstr ""
+msgstr "별 5개"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
@@ -180,42 +182,42 @@ msgstr "50%"
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 #, python-format
 msgid "5x"
-msgstr ""
+msgstr "5x"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.colorpicker
 msgid "90"
-msgstr ""
+msgstr "90"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.colorpicker
 msgid "<span class=\"flex-grow-0 ms-1 text-white-50\">%</span>"
-msgstr ""
+msgstr "<span class=\"flex-grow-0 ms-1 text-white-50\">%</span>"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.colorpicker
 msgid "<span class=\"flex-grow-0 ms-1 text-white-50\">deg</span>"
-msgstr ""
+msgstr "<span class=\"flex-grow-0 ms-1 text-white-50\">도</span>"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.colorpicker
 msgid "<span class=\"me-2 ms-3\">Y</span>"
-msgstr ""
+msgstr "<span class=\"me-2 ms-3\">Y</span>"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.colorpicker
 msgid "<span class=\"me-2\">X</span>"
-msgstr ""
+msgstr "<span class=\"me-2\">X</span>"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippets
 msgid "<span>Blocks</span>"
-msgstr ""
+msgstr "<span>블록</span>"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippets
 msgid "<span>Customize</span>"
-msgstr ""
+msgstr "<span>사용자 정의</span>"
 
 #. module: web_editor
 #. odoo-javascript
@@ -231,7 +233,7 @@ msgstr "서버 오류가 발생했습니다. 로그인이 올바르고 저장중
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Above"
-msgstr ""
+msgstr "위"
 
 #. module: web_editor
 #. odoo-javascript
@@ -253,7 +255,7 @@ msgstr "추가"
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Add Column"
-msgstr ""
+msgstr "열 추가"
 
 #. module: web_editor
 #. odoo-javascript
@@ -264,6 +266,7 @@ msgstr "행 추가"
 
 #. module: web_editor
 #. odoo-javascript
+#: code:addons/web_editor/static/src/components/media_dialog/document_selector.js:0
 #: code:addons/web_editor/static/src/components/media_dialog/image_selector.js:0
 #, python-format
 msgid "Add URL"
@@ -274,21 +277,21 @@ msgstr "URL 추가"
 #: code:addons/web_editor/static/src/js/wysiwyg/wysiwyg.js:0
 #, python-format
 msgid "Add a blockquote section."
-msgstr ""
+msgstr "인용 블록 섹션을 추가합니다."
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/wysiwyg/wysiwyg.js:0
 #, python-format
 msgid "Add a button."
-msgstr ""
+msgstr "버튼을 추가합니다."
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/wysiwyg/wysiwyg.js:0
 #, python-format
 msgid "Add a code section."
-msgstr ""
+msgstr "코드 섹션을 추가합니다."
 
 #. module: web_editor
 #. odoo-javascript
@@ -309,7 +312,7 @@ msgstr ""
 #: code:addons/web_editor/static/src/js/wysiwyg/wysiwyg.js:0
 #, python-format
 msgid "Add a link."
-msgstr ""
+msgstr "링크를 추가합니다."
 
 #. module: web_editor
 #. odoo-javascript
@@ -326,21 +329,14 @@ msgid "Add a row below"
 msgstr ""
 
 #. module: web_editor
-#. odoo-javascript
-#: code:addons/web_editor/static/src/components/media_dialog/document_selector.js:0
-#, python-format
-msgid "Add document"
-msgstr "문서 추가"
-
-#. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
 msgid "Aden"
-msgstr ""
+msgstr "Aden"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
 msgid "Airy & Zigs"
-msgstr ""
+msgstr "Airy & Zigs"
 
 #. module: web_editor
 #. odoo-javascript
@@ -352,17 +348,17 @@ msgstr "경고"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Align Center"
-msgstr ""
+msgstr "중앙 정렬"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Align Left"
-msgstr ""
+msgstr "왼쪽 정렬"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Align Right"
-msgstr ""
+msgstr "오른쪽 정렬"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
@@ -388,7 +384,7 @@ msgstr "모든 SCSS 파일"
 #: code:addons/web_editor/static/src/components/media_dialog/document_selector.js:0
 #, python-format
 msgid "All documents have been loaded"
-msgstr ""
+msgstr "모든 문서가 불러오기 되었습니다"
 
 #. module: web_editor
 #. odoo-javascript
@@ -400,12 +396,12 @@ msgstr "모든 이미지가 로드되었습니다"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Alt tag"
-msgstr ""
+msgstr "Alt 태그"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.colorpicker
 msgid "Angle"
-msgstr ""
+msgstr "각도"
 
 #. module: web_editor
 #. odoo-javascript
@@ -504,7 +500,7 @@ msgstr "배경 색상"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
 msgid "Background Position"
-msgstr ""
+msgstr "배경 위치"
 
 #. module: web_editor
 #: model:ir.model,name:web_editor.model_base
@@ -516,31 +512,31 @@ msgstr "Base"
 #: code:addons/web_editor/static/src/js/wysiwyg/wysiwyg.js:0
 #, python-format
 msgid "Basic blocks"
-msgstr ""
+msgstr "기본 블록"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Basics"
-msgstr ""
+msgstr "베이직"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Below"
-msgstr ""
+msgstr "아래"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Big section heading."
-msgstr ""
+msgstr "큰 섹션의 제목입니다."
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
 msgid "Blobs"
-msgstr ""
+msgstr "곡선형 도형"
 
 #. module: web_editor
 #. odoo-javascript
@@ -552,12 +548,12 @@ msgstr "블록"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
 msgid "Blocks & Rainy"
-msgstr ""
+msgstr "블록 & 비"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
 msgid "Blur"
-msgstr ""
+msgstr "블러"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
@@ -583,7 +579,7 @@ msgstr "테두리 색상"
 #: code:addons/web_editor/static/src/xml/wysiwyg.xml:0
 #, python-format
 msgid "Border Style"
-msgstr ""
+msgstr "테두리 스타일"
 
 #. module: web_editor
 #. odoo-javascript
@@ -595,19 +591,19 @@ msgstr "테두리 두께"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
 msgid "Brannan"
-msgstr ""
+msgstr "Brannan"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
 msgid "Brightness"
-msgstr ""
+msgstr "밝기"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Bulleted list"
-msgstr ""
+msgstr "글머리 기호 목록"
 
 #. module: web_editor
 #. odoo-javascript
@@ -658,7 +654,7 @@ msgstr "점검표"
 #: code:addons/web_editor/static/src/js/editor/snippets.options.js:0
 #, python-format
 msgid "Choose a record..."
-msgstr ""
+msgstr "레코드 선택..."
 
 #. module: web_editor
 #. odoo-javascript
@@ -691,7 +687,7 @@ msgstr "색상"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
 msgid "Color filter"
-msgstr ""
+msgstr "색상 필터"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
@@ -733,33 +729,33 @@ msgstr "확인"
 #: code:addons/web_editor/static/src/js/wysiwyg/wysiwyg.js:0
 #, python-format
 msgid "Content conflict"
-msgstr ""
+msgstr "콘텐츠 충돌"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
 msgid "Contrast"
-msgstr ""
+msgstr "대비"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/wysiwyg/wysiwyg.js:0
 #, python-format
 msgid "Convert into 2 columns."
-msgstr ""
+msgstr "2열로 변환합니다."
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/wysiwyg/wysiwyg.js:0
 #, python-format
 msgid "Convert into 3 columns."
-msgstr ""
+msgstr "3열로 변환합니다."
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/wysiwyg/wysiwyg.js:0
 #, python-format
 msgid "Convert into 4 columns."
-msgstr ""
+msgstr "4열로 변환합니다."
 
 #. module: web_editor
 #. odoo-javascript
@@ -782,10 +778,14 @@ msgstr ""
 #: code:addons/web_editor/static/src/js/editor/snippets.editor.js:0
 #, python-format
 msgid "Could not install module <strong>%s</strong>"
-msgstr ""
+msgstr "<strong>%s</strong> 모듈을 설치할 수 없습니다."
 
 #. module: web_editor
+#. odoo-javascript
+#. module: web_editor
+#: code:addons/web_editor/static/src/components/upload_progress_toast/upload_service.js:0
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
+#, python-format
 msgid "Cover"
 msgstr "표지"
 
@@ -801,7 +801,7 @@ msgstr "작성"
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Create a list with numbering."
-msgstr ""
+msgstr "번호가 매겨진 목록을 생성합니다."
 
 #. module: web_editor
 #. odoo-javascript
@@ -815,7 +815,7 @@ msgstr ""
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Create an URL."
-msgstr ""
+msgstr "URL을 생성합니다."
 
 #. module: web_editor
 #: model:ir.model.fields,field_description:web_editor.field_web_editor_converter_test_sub__create_uid
@@ -850,7 +850,7 @@ msgstr "사용자 정의"
 #: code:addons/web_editor/static/src/js/editor/snippets.options.js:0
 #, python-format
 msgid "Custom %s"
-msgstr ""
+msgstr "사용자 지정 %s"
 
 #. module: web_editor
 #. odoo-javascript
@@ -883,12 +883,12 @@ msgstr "기본"
 #: code:addons/web_editor/static/src/xml/wysiwyg.xml:0
 #, python-format
 msgid "Default + Rounded"
-msgstr ""
+msgstr "기본 + 둥근 모서리"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.colorpicker
 msgid "Define a custom gradient"
-msgstr ""
+msgstr "사용자 지정 그라데이션"
 
 #. module: web_editor
 #. odoo-javascript
@@ -903,7 +903,7 @@ msgstr "삭제"
 #: code:addons/web_editor/static/src/js/editor/snippets.editor.js:0
 #, python-format
 msgid "Delete %s"
-msgstr ""
+msgstr "%s 삭제"
 
 #. module: web_editor
 #. odoo-javascript
@@ -941,7 +941,7 @@ msgstr "작성 취소"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippets
 msgid "Discard record"
-msgstr ""
+msgstr "기록 삭제"
 
 #. module: web_editor
 #: model:ir.model.fields,field_description:web_editor.field_web_editor_converter_test_sub__display_name
@@ -953,7 +953,7 @@ msgstr "표시명"
 #: code:addons/web_editor/static/src/js/editor/snippets.editor.js:0
 #, python-format
 msgid "Do you want to install the %s App?"
-msgstr ""
+msgstr "%s 앱을 설치하시겠습니까?"
 
 #. module: web_editor
 #. odoo-javascript
@@ -981,7 +981,7 @@ msgstr "편집하려면 두 번 클릭하십시오."
 #: code:addons/web_editor/static/src/js/editor/snippets.editor.js:0
 #, python-format
 msgid "Drag and drop the building block."
-msgstr ""
+msgstr "빌딩 블록을 드래그 앤 드롭하세요."
 
 #. module: web_editor
 #. odoo-javascript
@@ -994,45 +994,45 @@ msgstr "컨테이너 복제"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Dynamic Colors"
-msgstr ""
+msgstr "동적 색상"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/backend/html_field.js:0
 #, python-format
 msgid "Dynamic Placeholder"
-msgstr ""
+msgstr "동적 자리 표시자"
 
 #. module: web_editor
 #. odoo-python
 #: code:addons/web_editor/controllers/main.py:0
 #, python-format
 msgid "ERROR: couldn't get download urls from media library."
-msgstr ""
+msgstr "오류: 미디어 라이브러리에서 다운로드 URL을 가져올 수 없습니다."
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
 msgid "EarlyBird"
-msgstr ""
+msgstr "얼리버드"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/wysiwyg.xml:0
 #, python-format
 msgid "Edit Link"
-msgstr ""
+msgstr "링크 편집"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
 msgid "Edit image"
-msgstr ""
+msgstr "이미지 편집"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Edit media description"
-msgstr ""
+msgstr "매체 설명 편집"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1041,42 +1041,42 @@ msgstr ""
 msgid ""
 "Editing a built-in file through this editor is not advised, as it will "
 "prevent it from being updated during future App upgrades."
-msgstr ""
+msgstr "이 편집기를 통해 기본 파일을 편집하면 향후 앱 업그레이드 시 업데이트되지 않으므로 권장하지 않습니다."
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Embed Image"
-msgstr ""
+msgstr "이미지 임베드"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Embed Youtube Video"
-msgstr ""
+msgstr "유튜브 동영상 임베드"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Embed the image in the document."
-msgstr ""
+msgstr "문서에 이미지를 삽입합니다."
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Embed the youtube video in the document."
-msgstr ""
+msgstr "문서에 유튜브 동영상을 삽입합니다."
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Empty quote"
-msgstr ""
+msgstr "빈 인용문"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1088,29 +1088,29 @@ msgstr "예상됨"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.colorpicker
 msgid "Extend to the closest corner"
-msgstr ""
+msgstr "가장 가까운 모서리로 확장"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.colorpicker
 msgid "Extend to the closest side"
-msgstr ""
+msgstr "가장 가까운 쪽으로 확장"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.colorpicker
 msgid "Extend to the farthest corner"
-msgstr ""
+msgstr "가장 먼 곳까지 확장"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.colorpicker
 msgid "Extend to the farthest side"
-msgstr ""
+msgstr "가장 먼 쪽으로 확장"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/components/upload_progress_toast/upload_progress_toast.xml:0
 #, python-format
 msgid "File has been uploaded"
-msgstr ""
+msgstr "파일이 업로드 되었습니다"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1126,14 +1126,14 @@ msgstr "채우기"
 #: code:addons/web_editor/static/src/xml/wysiwyg.xml:0
 #, python-format
 msgid "Fill + Rounded"
-msgstr ""
+msgstr "채우기 + 둥근 모서리"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/wysiwyg.xml:0
 #, python-format
 msgid "Fill Color"
-msgstr ""
+msgstr "색상 채우기"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1147,7 +1147,7 @@ msgstr "필터"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippets
 msgid "First Panel"
-msgstr ""
+msgstr "첫 번째 패널"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1167,7 +1167,7 @@ msgstr "휘어지는"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
 msgid "Flip"
-msgstr ""
+msgstr "대칭 이동"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1186,7 +1186,7 @@ msgstr "수직 뒤집기"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
 msgid "Floating shapes"
-msgstr ""
+msgstr "플로팅 도형"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
@@ -1212,7 +1212,7 @@ msgstr "글자 크기"
 #: code:addons/web_editor/static/src/js/editor/snippets.editor.js:0
 #, python-format
 msgid "For technical reasons, this block cannot be dropped here"
-msgstr ""
+msgstr "기술적인 이유로 이 블록은 여기에 놓을 수 없습니다"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1241,7 +1241,7 @@ msgstr "전체 화면"
 msgid ""
 "Get the perfect image by searching in our library of copyright free photos "
 "and illustrations."
-msgstr ""
+msgstr "라이브러리에서 저작권이 없는 사진 및 일러스트레이션을 검색하여 꼭 맞는 이미지를 사용할 수 있습니다."
 
 #. module: web_editor
 #. odoo-javascript
@@ -1249,7 +1249,7 @@ msgstr ""
 #: code:addons/web_editor/static/src/xml/snippets.xml:0
 #, python-format
 msgid "Gradient"
-msgstr ""
+msgstr "그라데이션"
 
 #. module: web_editor
 #: model:ir.model,name:web_editor.model_ir_http
@@ -1304,7 +1304,7 @@ msgstr "제목 6"
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Heading 1"
-msgstr ""
+msgstr "제목 1"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1312,7 +1312,7 @@ msgstr ""
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Heading 2"
-msgstr ""
+msgstr "제목 2"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1320,28 +1320,28 @@ msgstr ""
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Heading 3"
-msgstr ""
+msgstr "제목 3"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Heading 4"
-msgstr ""
+msgstr "제목 4"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Heading 5"
-msgstr ""
+msgstr "제목 5"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Heading 6"
-msgstr ""
+msgstr "제목 6"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
@@ -1408,42 +1408,42 @@ msgstr "아이콘"
 #: code:addons/web_editor/static/src/js/editor/snippets.editor.js:0
 #, python-format
 msgid "Icon Formatting"
-msgstr ""
+msgstr "아이콘 서식"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Icon size 1x"
-msgstr ""
+msgstr "아이콘 사이즈 1x"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Icon size 2x"
-msgstr ""
+msgstr "아이콘 사이즈 2x"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Icon size 3x"
-msgstr ""
+msgstr "아이콘 사이즈 3x"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Icon size 4x"
-msgstr ""
+msgstr "아이콘 사이즈 4x"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Icon size 5x"
-msgstr ""
+msgstr "아이콘 사이즈 5x"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1468,7 +1468,7 @@ msgstr " 파일을 재설정하면 모든 맞춤 설정한 내용이 기본 파�
 #: code:addons/web_editor/static/src/components/media_dialog/file_selector.xml:0
 #, python-format
 msgid "Illustrations"
-msgstr ""
+msgstr "일러스트레이션"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1484,7 +1484,7 @@ msgstr "이미지"
 #: code:addons/web_editor/static/src/js/editor/snippets.editor.js:0
 #, python-format
 msgid "Image Formatting"
-msgstr ""
+msgstr "그림 서식"
 
 #. module: web_editor
 #: model:ir.model.fields,field_description:web_editor.field_ir_attachment__image_height
@@ -1506,40 +1506,40 @@ msgstr "이미지 폭"
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Image padding"
-msgstr ""
+msgstr "이미지 여백"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
 msgid "Inkwell"
-msgstr ""
+msgstr "잉크웰"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/snippets.editor.js:0
 #, python-format
 msgid "Inline Text"
-msgstr ""
+msgstr "글꼴 편집"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Insert a rating over 3 stars."
-msgstr ""
+msgstr "별 3개 이상 평점을 삽입합니다."
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Insert a rating over 5 stars."
-msgstr ""
+msgstr "별 5개 이상 평점을 삽입합니다."
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Insert a table."
-msgstr ""
+msgstr "표를 삽입합니다."
 
 #. module: web_editor
 #. odoo-javascript
@@ -1553,77 +1553,77 @@ msgstr ""
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Insert above"
-msgstr ""
+msgstr "위로 삽입"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Insert an horizontal rule separator."
-msgstr ""
+msgstr "가로선 구분 기호를 삽입합니다."
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/wysiwyg/wysiwyg.js:0
 #, python-format
 msgid "Insert an image."
-msgstr ""
+msgstr "이미지를 삽입합니다."
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Insert below"
-msgstr ""
+msgstr "아래로 삽입"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Insert left"
-msgstr ""
+msgstr "왼쪽으로 삽입"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Insert media"
-msgstr ""
+msgstr "매체 삽입"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Insert or edit link"
-msgstr ""
+msgstr "링크 삽입 또는 편집"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/backend/html_field.js:0
 #, python-format
 msgid "Insert personalized content"
-msgstr ""
+msgstr "맞춤형 콘텐츠 삽입"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Insert right"
-msgstr ""
+msgstr "오른쪽으로 삽입"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Insert table"
-msgstr ""
+msgstr "표 삽입"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/wysiwyg/wysiwyg.js:0
 #, python-format
 msgid "Insert your signature."
-msgstr ""
+msgstr "서명을 추가합니다."
 
 #. module: web_editor
 #. odoo-javascript
@@ -1637,35 +1637,35 @@ msgstr "설치하기"
 #: code:addons/web_editor/static/src/js/editor/snippets.editor.js:0
 #, python-format
 msgid "Install %s"
-msgstr ""
+msgstr "%s 설치"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/snippets.editor.js:0
 #, python-format
 msgid "Install in progress"
-msgstr ""
+msgstr "설치 중"
 
 #. module: web_editor
 #. odoo-python
 #: code:addons/web_editor/models/ir_ui_view.py:0
 #, python-format
 msgid "Invalid field value for %s: %s"
-msgstr ""
+msgstr "필드 값이 잘못되었습니다 %s: %s"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/snippets.editor.js:0
 #, python-format
 msgid "Invisible Elements"
-msgstr ""
+msgstr "보이지 않는 요소"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/snippets.options.js:0
 #, python-format
 msgid "Item"
-msgstr ""
+msgstr "항목"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1744,7 +1744,7 @@ msgstr "링크 꼬리표"
 #: code:addons/web_editor/static/src/js/wysiwyg/widgets/link_popover_widget.js:0
 #, python-format
 msgid "Link copied to clipboard."
-msgstr ""
+msgstr "링크가 클립보드에 복사되었습니다."
 
 #. module: web_editor
 #. odoo-javascript
@@ -1778,19 +1778,19 @@ msgstr "반복"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
 msgid "Main Color"
-msgstr ""
+msgstr "주요 색상"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/backend/html_field.js:0
 #, python-format
 msgid "Marketing Tools"
-msgstr ""
+msgstr "마케팅 도구"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
 msgid "Maven"
-msgstr ""
+msgstr "메이븐"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1817,49 +1817,49 @@ msgstr "중간"
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Medium section heading."
-msgstr ""
+msgstr "중간 섹션의 제목입니다."
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/snippets.editor.js:0
 #, python-format
 msgid "More info about this app."
-msgstr ""
+msgstr "이 앱에 대한 자세한 정보를 확인하세요."
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Move down"
-msgstr ""
+msgstr "아래로 이동"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Move left"
-msgstr ""
+msgstr "왼쪽으로 이동"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Move right"
-msgstr ""
+msgstr "오른쪽으로 이동"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Move up"
-msgstr ""
+msgstr "위로 이동"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/components/media_dialog/file_selector.xml:0
 #, python-format
 msgid "My Images"
-msgstr ""
+msgstr "나의 이미지"
 
 #. module: web_editor
 #: model:ir.model.fields,field_description:web_editor.field_web_editor_converter_test_sub__name
@@ -1887,7 +1887,7 @@ msgstr "아니오"
 #: code:addons/web_editor/static/src/js/wysiwyg/widgets/link_popover_widget.js:0
 #, python-format
 msgid "No URL specified"
-msgstr ""
+msgstr "URL이 지정되지 않음"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1908,21 +1908,21 @@ msgstr "이미지가 없습니다."
 #: code:addons/web_editor/static/src/js/editor/snippets.editor.js:0
 #, python-format
 msgid "No location to drop in"
-msgstr ""
+msgstr "드롭 인 위치가 없습니다"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/snippets.options.js:0
 #, python-format
 msgid "No more records"
-msgstr ""
+msgstr "레코드가 없습니다"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/components/media_dialog/icon_selector.xml:0
 #, python-format
 msgid "No pictograms found."
-msgstr ""
+msgstr "픽토드램을 찾을 수 없습니다."
 
 #. module: web_editor
 #. odoo-javascript
@@ -1948,12 +1948,12 @@ msgstr "일반"
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Numbered list"
-msgstr ""
+msgstr "번호가 지정된 목록"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.tests
 msgid "Odoo Editor Tests"
-msgstr ""
+msgstr "Odoo 편집기 테스트"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1982,7 +1982,7 @@ msgstr "화면 전용"
 #: code:addons/web_editor/static/src/xml/wysiwyg.xml:0
 #, python-format
 msgid "Open in a new tab"
-msgstr ""
+msgstr "새 탭에서 열기"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1998,17 +1998,17 @@ msgstr "새 창으로 열기"
 #: code:addons/web_editor/static/src/components/media_dialog/image_selector.xml:0
 #, python-format
 msgid "Optimized"
-msgstr ""
+msgstr "최적화"
 
 #. module: web_editor
 #: model:ir.model.fields,field_description:web_editor.field_ir_attachment__original_id
 msgid "Original (unoptimized, unresized) attachment"
-msgstr ""
+msgstr "원본(최적화되지 않은, 크기 조정되지 않은) 첨부 파일"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
 msgid "Origins"
-msgstr ""
+msgstr "출처"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2024,7 +2024,7 @@ msgstr "외곽선"
 #: code:addons/web_editor/static/src/xml/wysiwyg.xml:0
 #, python-format
 msgid "Outline + Rounded"
-msgstr ""
+msgstr "윤곽선 + 둥근 모서리"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
@@ -2036,26 +2036,26 @@ msgstr "패딩"
 #: code:addons/web_editor/static/src/js/editor/snippets.editor.js:0
 #, python-format
 msgid "Page Options"
-msgstr ""
+msgstr "페이지 옵션"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Paragraph block."
-msgstr ""
+msgstr "문단 블록"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Paste as URL"
-msgstr ""
+msgstr "URL로 붙여넣기"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Patterns"
-msgstr ""
+msgstr "패턴"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.colorpicker
@@ -2083,17 +2083,17 @@ msgstr "기본"
 #. module: web_editor
 #: model:ir.model.fields.selection,name:web_editor.selection__web_editor_converter_test__selection_str__c
 msgid "Qu'est-ce qu'il fout ce maudit pancake, tabernacle ?"
-msgstr ""
+msgstr "Qu'est-ce qu'il fout ce maudit pancake, tabernacle ?"
 
 #. module: web_editor
 #: model:ir.model.fields.selection,name:web_editor.selection__web_editor_converter_test__selection_str__a
 msgid "Qu'il n'est pas arrivé à Toronto"
-msgstr ""
+msgstr "Qu'il n'est pas arrivé à Toronto"
 
 #. module: web_editor
 #: model:ir.model.fields.selection,name:web_editor.selection__web_editor_converter_test__selection_str__b
 msgid "Qu'il était supposé arriver à Toronto"
-msgstr ""
+msgstr "Qu'il était supposé arriver à Toronto"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
@@ -2191,7 +2191,7 @@ msgstr "Qweb qweb 필드"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.colorpicker
 msgid "Radial"
-msgstr ""
+msgstr "방사형"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2203,14 +2203,14 @@ msgstr "읽기 전용 필드"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Redirect the user elsewhere when he clicks on the media."
-msgstr ""
+msgstr "사용자가 미디어를 클릭하면 다른 곳으로 이동합니다."
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Remove (DELETE)"
-msgstr ""
+msgstr "제거 (삭제)"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2225,26 +2225,26 @@ msgstr "블록 제거"
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Remove Current"
-msgstr ""
+msgstr "현재 단계 삭제"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/wysiwyg.xml:0
 #, python-format
 msgid "Remove Link"
-msgstr ""
+msgstr "링크 삭제"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.colorpicker
 msgid "Remove Selected Color"
-msgstr ""
+msgstr "선택한 색상 제거"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/wysiwyg/wysiwyg.js:0
 #, python-format
 msgid "Remove columns"
-msgstr ""
+msgstr "열 삭제"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2265,26 +2265,26 @@ msgstr ""
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Remove format"
-msgstr ""
+msgstr "서식 삭제"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Remove link"
-msgstr ""
+msgstr "링크 삭제"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/snippets.editor.js:0
 #, python-format
 msgid "Rename %s"
-msgstr ""
+msgstr "%s 이름 바꾸기"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
 msgid "Repeat pattern"
-msgstr ""
+msgstr "패턴 반복"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2300,7 +2300,7 @@ msgstr "대체"
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Replace media"
-msgstr ""
+msgstr "미디어 바꾸기"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2320,14 +2320,22 @@ msgid "Reset Image"
 msgstr "이미지 초기화"
 
 #. module: web_editor
+#. odoo-javascript
+#: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
+#: code:addons/web_editor/static/src/xml/editor.xml:0
+#, python-format
+msgid "Reset Size"
+msgstr "사이즈 재설정"
+
+#. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Reset crop"
-msgstr ""
+msgstr "자르기 재설정"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Reset transformation"
-msgstr ""
+msgstr "변환 초기화"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2342,7 +2350,7 @@ msgstr "화면 재설정은 아직 지원되지 않습니다"
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 #, python-format
 msgid "Resize Default"
-msgstr ""
+msgstr "기본 크기로 조정"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2395,7 +2403,7 @@ msgstr "오른쪽으로 회전"
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Row"
-msgstr ""
+msgstr "행"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2414,7 +2422,7 @@ msgstr "SCSS 파일 : %s"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
 msgid "Saturation"
-msgstr ""
+msgstr "채도"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2430,19 +2438,19 @@ msgstr "저장"
 #: code:addons/web_editor/static/src/js/editor/snippets.editor.js:0
 #, python-format
 msgid "Save and Install"
-msgstr ""
+msgstr "저장 및 설치"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/snippets.options.js:0
 #, python-format
 msgid "Save and Reload"
-msgstr ""
+msgstr "저장 및 다시 불러오기"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippets
 msgid "Save record"
-msgstr ""
+msgstr "기록 저장"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2468,14 +2476,14 @@ msgstr "이미지 검색"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippets
 msgid "Search for a block (e.g. numbers, image wall, ...)"
-msgstr ""
+msgstr "블록 검색 (예. 숫자, 이미지 월, ...)"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/snippets.options.js:0
 #, python-format
 msgid "Search for records..."
-msgstr ""
+msgstr "기록 검색..."
 
 #. module: web_editor
 #. odoo-javascript
@@ -2489,7 +2497,7 @@ msgstr "추가 검색..."
 #: code:addons/web_editor/static/src/js/editor/snippets.options.js:0
 #, python-format
 msgid "Search to show more records"
-msgstr ""
+msgstr "검색하여 더 많은 기록 표시"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2503,14 +2511,14 @@ msgstr "2차"
 #: code:addons/web_editor/static/src/js/editor/snippets.editor.js:0
 #, python-format
 msgid "Select a block on your page to style it."
-msgstr ""
+msgstr "페이지에서 블록을 선택하여 스타일을 지정할 수 있습니다."
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/components/media_dialog/media_dialog.js:0
 #, python-format
 msgid "Select a media"
-msgstr ""
+msgstr "미디어 선택"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2524,7 +2532,7 @@ msgstr "구분자"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
 msgid "Sepia"
-msgstr ""
+msgstr "세피아"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2556,7 +2564,7 @@ msgstr "모양"
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 #, python-format
 msgid "Shape: Circle"
-msgstr ""
+msgstr "도형: 원"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2564,7 +2572,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 #, python-format
 msgid "Shape: Rounded"
-msgstr ""
+msgstr "도형: 둥근형"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2572,14 +2580,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 #, python-format
 msgid "Shape: Thumbnail"
-msgstr ""
+msgstr "도형: 섬네일"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/components/media_dialog/file_selector.xml:0
 #, python-format
 msgid "Show optimized images"
-msgstr ""
+msgstr "최적화된 이미지 보기"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2602,27 +2610,27 @@ msgstr "사이즈"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Size 1x"
-msgstr ""
+msgstr "사이즈 1x"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Size 2x"
-msgstr ""
+msgstr "사이즈 2x"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Size 3x"
-msgstr ""
+msgstr "사이즈 3x"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Size 4x"
-msgstr ""
+msgstr "사이즈 4x"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Size 5x"
-msgstr ""
+msgstr "사이즈 5x"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2638,7 +2646,7 @@ msgstr "작게"
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Small section heading."
-msgstr ""
+msgstr "작은 섹션의 제목입니다."
 
 #. module: web_editor
 #. odoo-javascript
@@ -2652,7 +2660,7 @@ msgstr "고체"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Solids"
-msgstr ""
+msgstr "입체"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2661,12 +2669,12 @@ msgstr ""
 msgid ""
 "Someone with escalated rights previously modified this area, you are "
 "therefore not able to modify it yourself."
-msgstr ""
+msgstr "해당 영역은 추가 권한을 가진 사용자에 의해 수정되었으므로, 수정하실 수 없습니다."
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Specials"
-msgstr ""
+msgstr "스페셜"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2707,14 +2715,14 @@ msgstr "제안"
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Switch direction"
-msgstr ""
+msgstr "방향 전환"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Switch the text's direction."
-msgstr ""
+msgstr "텍스트 방향을 전환합니다."
 
 #. module: web_editor
 #. odoo-javascript
@@ -2728,7 +2736,7 @@ msgstr "표"
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Table Options"
-msgstr ""
+msgstr "테이블 옵션"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2757,21 +2765,21 @@ msgstr "문자"
 #: code:addons/web_editor/static/src/xml/wysiwyg.xml:0
 #, python-format
 msgid "Text Color"
-msgstr ""
+msgstr "글꼴 색상"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Text align"
-msgstr ""
+msgstr "텍스트 정렬"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Text style"
-msgstr ""
+msgstr "텍스트 스타일"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2792,7 +2800,7 @@ msgstr "URL이 유효한 것 같습니다."
 #: code:addons/web_editor/models/ir_qweb_fields.py:0
 #, python-format
 msgid "The datetime %s does not match the format %s"
-msgstr ""
+msgstr "날짜 시간 %s이 형식 %s과 일치하지 않습니다"
 
 #. module: web_editor
 #. odoo-python
@@ -2801,7 +2809,7 @@ msgstr ""
 msgid ""
 "The document was already saved from someone with a different history for "
 "model %r, field %r with id %r."
-msgstr ""
+msgstr "문서가 이미 모델 %r, 필드 %r에 대해 다른 기록을 가지고 있는 id %r로부터 저장되었습니다."
 
 #. module: web_editor
 #. odoo-javascript
@@ -2815,7 +2823,7 @@ msgstr "제공된 URL이 지원되는 동영상을 참조하지 않습니다"
 #: code:addons/web_editor/tools.py:0
 #, python-format
 msgid "The provided url is invalid"
-msgstr ""
+msgstr "입력하신 URL이 유효하지 않습니다"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2832,6 +2840,8 @@ msgid ""
 "The version from the database will be used.\n"
 "                    If you need to keep your changes, copy the content below and edit the new document."
 msgstr ""
+"데이터베이스의 버전이 사용됩니다.\n"
+"                    변경 내용을 유지하려면 아래 내용을 복사하여 새 문서로 편집하세요."
 
 #. module: web_editor
 #. odoo-javascript
@@ -2853,21 +2863,21 @@ msgstr "테마 색상"
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "There is a conflict between your version and the one in the database."
-msgstr ""
+msgstr "사용 중인 버전과 데이터베이스의 버전이 충돌됩니다."
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/wysiwyg/widgets/link_popover_widget.js:0
 #, python-format
 msgid "This URL is invalid. Preview couldn't be updated."
-msgstr ""
+msgstr "URL이 유효하지 않습니다. 미리보기를 업데이트할 수 없습니다."
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/snippets.xml:0
 #, python-format
 msgid "This block is outdated"
-msgstr ""
+msgstr "해당 블록은 최신 버전이 아닙니다"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2905,6 +2915,7 @@ msgid ""
 "This type of image is not supported for cropping.<br/>If you want to crop "
 "it, please first download it from the original source and upload it in Odoo."
 msgstr ""
+"이 유형의 이미지는 자르기를 할 수 없습니다.<br/>이미지 자르기를 하려면 먼저 원본 소스를 다운로드한 후 Odoo에 업로드하십시오."
 
 #. module: web_editor
 #. odoo-javascript
@@ -2916,7 +2927,7 @@ msgstr "제목"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Title tag"
-msgstr ""
+msgstr "제목 태그"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2925,7 +2936,7 @@ msgstr ""
 msgid ""
 "To make changes, drop this block and use the new options in the last "
 "version."
-msgstr ""
+msgstr "변경하시려면, 먼저 이 블록을 삭제하고 최근 버전의 새 옵션을 사용하세요."
 
 #. module: web_editor
 #. odoo-javascript
@@ -2934,75 +2945,75 @@ msgstr ""
 msgid ""
 "To save a snippet, we need to save all your previous modifications and "
 "reload the page."
-msgstr ""
+msgstr "스니펫을 저장하려면, 이전에 수정한 내용을 모두 저장하고 페이지를 다시 불러오기 해야 합니다."
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "To-do"
-msgstr ""
+msgstr "할 일"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
 msgid "Toaster"
-msgstr ""
+msgstr "Toaster"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Toggle bold"
-msgstr ""
+msgstr "굵게 전환"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Toggle checklist"
-msgstr ""
+msgstr "체크리스트 전환"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Toggle icon spin"
-msgstr ""
+msgstr "아이콘 회전 전환"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Toggle italic"
-msgstr ""
+msgstr "이탤릭체 전환"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Toggle ordered list"
-msgstr ""
+msgstr "주문 목록 전환"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Toggle strikethrough"
-msgstr ""
+msgstr "취소선 전환"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Toggle underline"
-msgstr ""
+msgstr "밑줄 전환"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Toggle unordered list"
-msgstr ""
+msgstr "정렬되지 않은 목록 전환"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3017,17 +3028,17 @@ msgstr "툴팁"
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Track tasks with a checklist."
-msgstr ""
+msgstr "체크리스트를 활용하여 작업을 추적합니다."
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Transform"
-msgstr ""
+msgstr "변환"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Transform the picture"
-msgstr ""
+msgstr "사진 변환하기"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3056,7 +3067,7 @@ msgstr "투명한 색상"
 #: code:addons/web_editor/static/src/components/media_dialog/icon_selector.xml:0
 #, python-format
 msgid "Try searching with other keywords."
-msgstr ""
+msgstr "다른 키워드로 검색해 보세요."
 
 #. module: web_editor
 #. odoo-javascript
@@ -3071,7 +3082,7 @@ msgstr "유형"
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Type \"/\" for commands"
-msgstr ""
+msgstr "명령어로 \"/\"를 입력하세요"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3083,7 +3094,7 @@ msgstr "URL 또는 이메일"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Unalign"
-msgstr ""
+msgstr "정렬 해제"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3111,19 +3122,19 @@ msgstr "이미지 업로드"
 #: code:addons/web_editor/static/src/components/media_dialog/image_selector.js:0
 #, python-format
 msgid "Uploaded image's format is not supported. Try with: "
-msgstr ""
+msgstr "해당 이미지는 지원되지 않는 형식입니다. 다른 형식의 파일로 시도해보세요:"
 
 #. module: web_editor
 #. odoo-python
 #: code:addons/web_editor/controllers/main.py:0
 #, python-format
 msgid "Uploaded image's format is not supported. Try with: %s"
-msgstr ""
+msgstr "해당 이미지는 지원되지 않는 형식입니다. 다음 형식의 파일로 시도해보세요: %s"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
 msgid "Valencia"
-msgstr ""
+msgstr "Valencia"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3138,7 +3149,7 @@ msgstr "동영상"
 #: code:addons/web_editor/static/src/js/editor/snippets.editor.js:0
 #, python-format
 msgid "Video Formatting"
-msgstr ""
+msgstr "동영상 서식"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3176,7 +3187,7 @@ msgstr "비메오"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
 msgid "Walden"
-msgstr ""
+msgstr "Walden"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3185,12 +3196,12 @@ msgstr ""
 msgid ""
 "Warning: after closing this dialog, the version you were working on will be "
 "discarded and will never be available anymore."
-msgstr ""
+msgstr "경고: 이 대화 상자를 닫으면 작업 중이던 버전은 삭제되며, 더 이상 사용할 수 없게 됩니다."
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
 msgid "Wavy"
-msgstr ""
+msgstr "물결 모양"
 
 #. module: web_editor
 #: model:ir.model,name:web_editor.model_web_editor_converter_test_sub
@@ -3209,7 +3220,7 @@ msgstr "웹 편집기 변환기 테스트"
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Widgets"
-msgstr ""
+msgstr "위젯"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
@@ -3243,7 +3254,7 @@ msgstr "XML (HTML)"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
 msgid "Xpro"
-msgstr ""
+msgstr "Xpro"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3289,7 +3300,7 @@ msgstr "Youku"
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 #, python-format
 msgid "Your URL"
-msgstr ""
+msgstr "URL"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3332,34 +3343,34 @@ msgstr "자동"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
 msgid "darken"
-msgstr ""
+msgstr "어둡게"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "default"
-msgstr ""
+msgstr "기본값"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
 msgid "exclusion"
-msgstr ""
+msgstr "예외"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
 msgid "lighten"
-msgstr ""
+msgstr "밝게"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
 msgid "multiply"
-msgstr ""
+msgstr "곱하기"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
 msgid "overlay"
-msgstr ""
+msgstr "오버레이"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3371,7 +3382,7 @@ msgstr "px"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
 msgid "screen"
-msgstr ""
+msgstr "화면"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3383,9 +3394,9 @@ msgstr "동영상"
 #. module: web_editor
 #: model:ir.model,name:web_editor.model_ir_websocket
 msgid "websocket message handling"
-msgstr ""
+msgstr "웹소켓 메시지 처리"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "www.example.com"
-msgstr ""
+msgstr "www.example.com"

@@ -96,15 +96,16 @@ class AccountMoveReversal(models.TransientModel):
 
     def _prepare_default_reversal(self, move):
         reverse_date = self.date if self.date_mode == 'custom' else move.date
+        mixed_payment_term = move.invoice_payment_term_id.id if move.invoice_payment_term_id and move.company_id.early_pay_discount_computation == 'mixed' else None
         return {
             'ref': _('Reversal of: %(move_name)s, %(reason)s', move_name=move.name, reason=self.reason)
                    if self.reason
                    else _('Reversal of: %s', move.name),
             'date': reverse_date,
             'invoice_date_due': reverse_date,
-            'invoice_date': move.is_invoice(include_receipts=True) and (self.date or move.date) or False,
+            'invoice_date': move.is_invoice(include_receipts=True) and reverse_date or False,
             'journal_id': self.journal_id.id,
-            'invoice_payment_term_id': None,
+            'invoice_payment_term_id': mixed_payment_term,
             'invoice_user_id': move.invoice_user_id.id,
             'auto_post': 'at_date' if reverse_date > fields.Date.context_today(self) else 'no',
         }
@@ -114,9 +115,23 @@ class AccountMoveReversal(models.TransientModel):
         moves = self.move_ids
 
         # Create default values.
+        partners = moves.company_id.partner_id + moves.commercial_partner_id
+
+        bank_ids = self.env['res.partner.bank'].search([
+            ('partner_id', 'in', partners.ids),
+            ('company_id', 'in', moves.company_id.ids + [False]),
+        ], order='sequence DESC')
+        partner_to_bank = {bank.partner_id: bank for bank in bank_ids}
         default_values_list = []
         for move in moves:
-            default_values_list.append(self._prepare_default_reversal(move))
+            if move.is_outbound():
+                partner = move.company_id.partner_id
+            else:
+                partner = move.commercial_partner_id
+            default_values_list.append({
+                'partner_bank_id': partner_to_bank.get(partner, self.env['res.partner.bank']).id,
+                **self._prepare_default_reversal(move),
+            })
 
         batches = [
             [self.env['account.move'], [], True],   # Moves to be cancelled by the reverses.

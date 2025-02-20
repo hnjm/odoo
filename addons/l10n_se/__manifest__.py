@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     "name": "Sweden - Accounting",
-    "version": "1.0",
+    "version": "1.1",
     "author": "XCLUDE, Odoo SA",
     "category": "Accounting/Localizations/Account Charts",
     'description': """
@@ -27,6 +27,7 @@ It also includes the invoice OCR payment reference handling.
         "data/account_fiscal_position_account_template.xml",
         "data/account_fiscal_position_tax_template.xml",
         "data/account_chart_template_configuration.xml",
+        "data/res_country_data.xml",
         "views/partner_view.xml",
         "views/account_journal_view.xml",
     ],

@@ -14,6 +14,7 @@ from odoo.tests import new_test_user
 
 from unittest.mock import patch
 
+from odoo import release
 from odoo.addons import __path__ as __addons_path__
 from odoo.tools import mute_logger
 
@@ -210,6 +211,8 @@ class TestImportModule(odoo.tests.TransactionCase):
                 ]
             },
             'license': 'LGPL-3',
+            'category': 'Test Category',
+            'depends': ['base'],
         })
 
         stream = BytesIO()
@@ -234,6 +237,10 @@ class TestImportModule(odoo.tests.TransactionCase):
         asset_data = self.env['ir.model.data'].search([('model', '=', 'ir.asset'), ('res_id', '=', asset.id)])
         self.assertEqual(asset_data.module, 'test_module')
         self.assertEqual(asset_data.name, f'{bundle}_{path}'.replace(".", "_"))
+
+        module = self.env['ir.module.module'].search([('name', '=', 'test_module')])
+        self.assertEqual(module.dependencies_id.mapped('name'), ['base'])
+        self.assertEqual(module.category_id.name, 'Test Category')
 
         # Uninstall test module
         self.env['ir.module.module'].search([('name', '=', 'test_module')]).module_uninstall()
@@ -264,6 +271,7 @@ class TestImportModule(odoo.tests.TransactionCase):
                 ]
             },
             'license': 'LGPL-3',
+            'version': '1.0',
         })
         stream = BytesIO()
         with ZipFile(stream, 'w') as archive:
@@ -288,6 +296,9 @@ class TestImportModule(odoo.tests.TransactionCase):
         self.assertEqual(asset_data.module, 'test_module')
         self.assertEqual(asset_data.name, f'{bundle}_/{path}'.replace(".", "_"))
 
+        module = self.env['ir.module.module'].search([('name', '=', 'test_module')])
+        self.assertEqual(module.latest_version, f'{release.series}.1.0')
+
         # Update test module
         stream = BytesIO()
         with ZipFile(stream, 'w') as archive:
@@ -311,3 +322,60 @@ class TestImportModule(odoo.tests.TransactionCase):
         asset_data = self.env['ir.model.data'].search([('model', '=', 'ir.asset'), ('res_id', '=', asset.id)])
         self.assertEqual(asset_data.module, 'test_module')
         self.assertEqual(asset_data.name, f'{bundle}_/{path}'.replace(".", "_"))
+
+
+class TestImportModuleHttp(TestImportModule, odoo.tests.HttpCase):
+    def test_import_module_icon(self):
+        """Assert import a module with an icon result in the module displaying the icon in the apps menu,
+        and with the base module icon if module without icon"""
+        files = [
+            ('foo/__manifest__.py', b"{'name': 'foo'}"),
+            ('foo/static/description/icon.png', b"foo_icon"),
+            ('bar/__manifest__.py', b"{'name': 'bar'}"),
+        ]
+        self.import_zipfile(files)
+        foo_icon_path, foo_icon_data = files[1]
+        # Assert icon of module foo, which must be the icon provided in the zip
+        self.assertEqual(self.url_open('/' + foo_icon_path).content, foo_icon_data)
+        # Assert icon of module bar, which must be the icon of the base module as none was provided
+        self.assertEqual(self.env.ref('base.module_bar').icon_image, self.env.ref('base.module_base').icon_image)
+
+    def test_import_module_field_file(self):
+        files = [
+            ('foo/__manifest__.py', b"{'data': ['data.xml']}"),
+            ('foo/data.xml', b"""
+                <data>
+                    <record id="logo" model="ir.attachment">
+                        <field name="name">Company Logo</field>
+                        <field name="datas" type="base64" file="foo/static/src/img/content/logo.png"/>
+                        <field name="res_model">ir.ui.view</field>
+                        <field name="public" eval="True"/>
+                    </record>
+                </data>
+            """),
+            ('foo/static/src/img/content/logo.png', b"foo_logo"),
+        ]
+        self.import_zipfile(files)
+        logo_path, logo_data = files[2]
+        self.assertEqual(base64.b64decode(self.env.ref('foo.logo').datas), logo_data)
+        self.assertEqual(self.url_open('/' + logo_path).content, logo_data)
+
+    def test_import_module_assets_http(self):
+        asset_bundle = 'web_assets_backend'
+        asset_path = '/foo/static/src/js/test.js'
+        files = [
+            ('foo/__manifest__.py', json.dumps({
+                'assets': {
+                    asset_bundle: [
+                        asset_path,
+                    ]
+                },
+            })),
+            ('foo/static/src/js/test.js', b"foo_assets_backend"),
+        ]
+        self.import_zipfile(files)
+        asset = self.env.ref('foo.web_assets_backend_/foo/static/src/js/test_js')
+        self.assertEqual(asset.bundle, asset_bundle)
+        self.assertEqual(asset.path, asset_path)
+        asset_data = files[1][1]
+        self.assertEqual(self.url_open(asset_path).content, asset_data)

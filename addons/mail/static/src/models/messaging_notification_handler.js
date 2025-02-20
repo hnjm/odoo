@@ -98,6 +98,8 @@ registerModel({
                             return this._handleNotificationPartnerTransientMessage(message.payload);
                         case 'mail.channel/leave':
                             return this._handleNotificationChannelLeave(message.payload);
+                        case 'mail.channel/delete':
+                            return this._handleNotificationChannelDelete(message.payload);
                         case 'res.users/connection':
                             return this._handleNotificationPartnerUserConnection(message.payload);
                         case 'mail.activity/updated': {
@@ -177,6 +179,21 @@ registerModel({
                 this.messaging.messagingBus.trigger('o-attachment-deleted', { attachment });
                 attachment.delete();
             }
+        },
+        /**
+         * @private
+         * @param {Object} payload
+         * @param {integer} payload.id
+         */
+        async _handleNotificationChannelDelete({ id }) {
+            const channel = this.messaging.models['Thread'].findFromIdentifyingData({
+                id,
+                model: 'mail.channel',
+            });
+            if (!channel) {
+                return;
+            }
+            channel.delete();
         },
         /**
          * @private
@@ -420,13 +437,19 @@ registerModel({
          * @param {boolean} param1.sticky
          * @param {string} param1.title
          * @param {boolean} param1.warning
+         * @param {string} param1.type
          */
-        _handleNotificationSimpleNotification({ message, message_is_html, sticky, title, warning }) {
+        _handleNotificationSimpleNotification({ message, message_is_html, sticky, title, warning, type }) {
+            type = warning
+               ? "warning"
+               : ["info", "success", "warning", "danger"].includes(type)
+               ? type
+               : "danger";
             this.messaging.notify({
                 message: message_is_html ? Markup(message) : message,
                 sticky,
                 title,
-                type: warning ? 'warning' : 'danger',
+                type,
             });
         },
         /**
@@ -682,9 +705,8 @@ registerModel({
             const titlePattern = messaging.outOfFocusUnreadMessageCounter === 1
                 ? this.env._t("%s Message")
                 : this.env._t("%s Messages");
-            this.env.bus.trigger('set_title_part', {
-                part: '_chat',
-                title: sprintf(titlePattern, messaging.outOfFocusUnreadMessageCounter),
+            this.env.services["title"].setParts({
+                _chat: sprintf(titlePattern, messaging.outOfFocusUnreadMessageCounter),
             });
         },
         /**

@@ -16,3 +16,6 @@ from . import test_assets
 from . import test_assets_xml
 from . import test_login
 from . import test_web_search_read
+from . import test_domain
+from . import test_ir_qweb
+from . import test_reports

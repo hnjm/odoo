@@ -4,15 +4,17 @@
 # 
 # Translators:
 # Martin Trigaux, 2023
+# Michael Yeung, 2023
 # Tony Ng, 2023
+# Wil Odoo, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-02 10:34+0000\n"
+"POT-Creation-Date: 2024-02-06 13:32+0000\n"
 "PO-Revision-Date: 2022-09-22 05:55+0000\n"
-"Last-Translator: Tony Ng, 2023\n"
+"Last-Translator: Wil Odoo, 2024\n"
 "Language-Team: Chinese (Taiwan) (https://app.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,13 +35,20 @@ msgid ""
 "                </p>\n"
 "            "
 msgstr ""
+"\n"
+"                <p class=\"o_view_nocontent_smiling_face\">\n"
+"                    沒有發現里程碑。讓我們創建一個吧！\n"
+"                </p><p>\n"
+"                    追蹤要取得成功必須達成的主要進度點。\n"
+"                </p>\n"
+"            "
 
 #. module: sale_project
 #. odoo-python
 #: code:addons/sale_project/models/project.py:0
 #, python-format
 msgid "%(name)s's Sales Order"
-msgstr ""
+msgstr "%(name)s的銷售訂單"
 
 #. module: sale_project
 #: model:ir.model.fields,help:sale_project.field_sale_order_line__qty_delivered_method
@@ -61,14 +70,14 @@ msgstr ""
 #: code:addons/sale_project/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
 msgid "All items have been loaded"
-msgstr ""
+msgstr "所有項目已被載入"
 
 #. module: sale_project
 #. odoo-python
 #: code:addons/sale_project/models/product.py:0
 #, python-format
 msgid "Based on Delivered Quantity (Manual)"
-msgstr ""
+msgstr "基於交付數量(手動)"
 
 #. module: sale_project
 #. odoo-python
@@ -91,7 +100,7 @@ msgstr "配置設定"
 #. module: sale_project
 #: model_terms:ir.ui.view,arch_db:sale_project.view_edit_project_inherit_form
 msgid "Create Invoice"
-msgstr "建立應收憑單"
+msgstr "建立發票"
 
 #. module: sale_project
 #: model:ir.model.fields,field_description:sale_project.field_product_product__service_tracking
@@ -119,7 +128,7 @@ msgstr "說明"
 #. module: sale_project
 #: model:ir.model.fields,field_description:sale_project.field_project_task__display_sale_order_button
 msgid "Display Sales Order"
-msgstr ""
+msgstr "顯示銷售訂單"
 
 #. module: sale_project
 #: model:ir.model.fields,field_description:sale_project.field_sale_order__visible_project
@@ -144,7 +153,7 @@ msgstr "有待開立應收憑單之SO"
 #. module: sale_project
 #: model:ir.model.fields,field_description:sale_project.field_project_project__has_any_so_with_nothing_to_invoice
 msgid "Has a SO with an invoice status of No"
-msgstr ""
+msgstr "銷售訂單的發票狀態為“否”"
 
 #. module: sale_project
 #: model:ir.model.fields,field_description:sale_project.field_project_project__invoice_count
@@ -166,7 +175,7 @@ msgid ""
 "Invoice ordered quantities as soon as this service is sold. Create a project"
 " for the order with a task for each sales order line to track the time "
 "spent."
-msgstr ""
+msgstr "售出此服務後立即開立訂購數量的發票，並為該訂單建立一個項目。為每個銷售訂單行分配一個任務來紀錄所花的時間。"
 
 #. module: sale_project
 #. odoo-python
@@ -175,7 +184,7 @@ msgstr ""
 msgid ""
 "Invoice ordered quantities as soon as this service is sold. Create a task in"
 " an existing project to track the time spent."
-msgstr ""
+msgstr "售出此服務後立即開立訂購數量的發票，並於現有之項目中建立一個任務來紀錄所花的時間。"
 
 #. module: sale_project
 #. odoo-python
@@ -184,7 +193,7 @@ msgstr ""
 msgid ""
 "Invoice ordered quantities as soon as this service is sold. Create an empty "
 "project for the order to track the time spent."
-msgstr ""
+msgstr "在此服務售出後立即為訂購數量開立發票。為訂單創建一個新專案以追蹤花費的時間。"
 
 #. module: sale_project
 #. odoo-python
@@ -193,7 +202,7 @@ msgstr ""
 msgid ""
 "Invoice this service when it is delivered (set the quantity by hand on your "
 "sales order lines). "
-msgstr ""
+msgstr "交貨時為此服務開立發票（在銷售訂單資料行手動設定數量）。"
 
 #. module: sale_project
 #. odoo-python
@@ -203,7 +212,7 @@ msgid ""
 "Invoice this service when it is delivered (set the quantity by hand on your "
 "sales order lines). Create a project for the order with a task for each "
 "sales order line to track the time spent."
-msgstr ""
+msgstr "交貨時為此服務開立發票（在銷售訂單資料行上手動設定數量）。為訂單建立一個專案，並為每個銷售訂單資料行分配一個任務，以追蹤所花費的時間。"
 
 #. module: sale_project
 #. odoo-python
@@ -213,7 +222,7 @@ msgid ""
 "Invoice this service when it is delivered (set the quantity by hand on your "
 "sales order lines). Create a task in an existing project to track the time "
 "spent."
-msgstr ""
+msgstr "交貨時為此服務開立發票（在銷售訂單資料行上手動設定數量）。在現有專案中建立任務，以追蹤所花費的時間。"
 
 #. module: sale_project
 #. odoo-python
@@ -223,14 +232,14 @@ msgid ""
 "Invoice this service when it is delivered (set the quantity by hand on your "
 "sales order lines). Create an empty project for the order to track the time "
 "spent."
-msgstr ""
+msgstr "交貨時為此服務開立發票（在銷售訂單資料行上手動設定數量）。為訂單建立一個新專案，以追蹤所花費的時間。"
 
 #. module: sale_project
 #. odoo-python
 #: code:addons/sale_project/models/product.py:0
 #, python-format
 msgid "Invoice your milestones when they are reached."
-msgstr ""
+msgstr "達到里程碑時開立發票。"
 
 #. module: sale_project
 #. odoo-python
@@ -239,7 +248,7 @@ msgstr ""
 msgid ""
 "Invoice your milestones when they are reached. Create a project for the "
 "order with a task for each sales order line to track the time spent."
-msgstr ""
+msgstr "當達到里程碑時，開立發票。為訂單建立一個專案，並為每個銷售訂單資料行分配一個任務，以追蹤所花費的時間。"
 
 #. module: sale_project
 #. odoo-python
@@ -248,7 +257,7 @@ msgstr ""
 msgid ""
 "Invoice your milestones when they are reached. Create a task in an existing "
 "project to track the time spent."
-msgstr ""
+msgstr "當達到里程碑時，開立發票。在現有專案中建立任務，以追蹤所花費的時間。"
 
 #. module: sale_project
 #. odoo-python
@@ -257,7 +266,7 @@ msgstr ""
 msgid ""
 "Invoice your milestones when they are reached. Create an empty project for "
 "the order to track the time spent."
-msgstr ""
+msgstr "當達到里程碑時，開立發票。為訂單建立一個新專案，以追蹤所花費的時間。"
 
 #. module: sale_project
 #: model_terms:ir.ui.view,arch_db:sale_project.view_edit_project_inherit_form
@@ -269,7 +278,7 @@ msgstr "向客戶開立您的時間和材料應收憑單"
 #: code:addons/sale_project/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
 msgid "Invoiced"
-msgstr "已開立應收憑單"
+msgstr "已開立發票"
 
 #. module: sale_project
 #. odoo-python
@@ -277,17 +286,17 @@ msgstr "已開立應收憑單"
 #: code:addons/sale_project/models/project.py:0
 #, python-format
 msgid "Invoices"
-msgstr "應收憑單"
+msgstr "發票"
 
 #. module: sale_project
 #: model_terms:ir.ui.view,arch_db:sale_project.product_template_form_view_invoice_policy_inherit_sale_project
 msgid "Invoicing Policy"
-msgstr "開立應收憑單策略"
+msgstr "發票政策"
 
 #. module: sale_project
 #: model:ir.model.fields,field_description:sale_project.field_sale_order__is_product_milestone
 msgid "Is Product Milestone"
-msgstr ""
+msgstr "這是產品的里程碑"
 
 #. module: sale_project
 #: model:ir.model.fields,field_description:sale_project.field_sale_order_line__is_service
@@ -304,7 +313,7 @@ msgstr "日記帳項目"
 #: code:addons/sale_project/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
 msgid "Load more"
-msgstr "加載更多"
+msgstr "載入更多"
 
 #. module: sale_project
 #: model:ir.model.fields,help:sale_project.field_product_product__service_type
@@ -359,13 +368,13 @@ msgstr "沒有銷售訂單"
 #. module: sale_project
 #: model_terms:ir.ui.view,arch_db:sale_project.portal_tasks_list_inherit
 msgid "No Sales Order Item"
-msgstr ""
+msgstr "無銷售訂單項"
 
 #. module: sale_project
 #: model_terms:ir.ui.view,arch_db:sale_project.project_milestone_view_form
 #: model_terms:ir.ui.view,arch_db:sale_project.project_milestone_view_tree
 msgid "Non-billable"
-msgstr ""
+msgstr "非計費"
 
 #. module: sale_project
 #: model:ir.model.fields.selection,name:sale_project.selection__product_template__service_tracking__no
@@ -389,6 +398,13 @@ msgstr ""
 
 #. module: sale_project
 #. odoo-python
+#: code:addons/sale_project/models/sale_order.py:0
+#, python-format
+msgid "Operation not supported"
+msgstr "不支援該操作"
+
+#. module: sale_project
+#. odoo-python
 #: code:addons/sale_project/models/project.py:0
 #, python-format
 msgid "Other Revenues"
@@ -406,7 +422,7 @@ msgstr "其他服務"
 msgid ""
 "Percentage of the ordered quantity that will automatically be delivered once"
 " the milestone is reached."
-msgstr ""
+msgstr "達到里程碑後自動交貨的訂購數量百分比。"
 
 #. module: sale_project
 #. odoo-python
@@ -423,7 +439,7 @@ msgstr "商品"
 #. module: sale_project
 #: model:ir.model,name:sale_project.model_product_product
 msgid "Product Variant"
-msgstr "產品變體"
+msgstr "產品款式"
 
 #. module: sale_project
 #: model:ir.model,name:sale_project.model_project_project
@@ -447,7 +463,7 @@ msgstr "專案里程碑"
 #. module: sale_project
 #: model:ir.model.fields.selection,name:sale_project.selection__product_template__service_type__milestones
 msgid "Project Milestones"
-msgstr ""
+msgstr "項目里程碑"
 
 #. module: sale_project
 #: model:ir.model.fields,field_description:sale_project.field_product_product__project_template_id
@@ -480,9 +496,14 @@ msgid "Quantity"
 msgstr "數量"
 
 #. module: sale_project
+#: model:ir.model,name:sale_project.model_sale_order_template_line
+msgid "Quotation Template Line"
+msgstr "報價單範本資料行"
+
+#. module: sale_project
 #: model:ir.model.fields,field_description:sale_project.field_sale_order_line__reached_milestones_ids
 msgid "Reached Milestones"
-msgstr ""
+msgstr "已達到里程碑"
 
 #. module: sale_project
 #: model_terms:ir.ui.view,arch_db:sale_project.project_sharing_inherit_project_task_view_search
@@ -505,7 +526,7 @@ msgstr "銷售"
 #. module: sale_project
 #: model_terms:ir.ui.view,arch_db:sale_project.view_edit_project_inherit_form
 msgid "Sales & Invoicing"
-msgstr ""
+msgstr "銷售及發票"
 
 #. module: sale_project
 #. odoo-python
@@ -544,7 +565,7 @@ msgstr "銷售訂單專案"
 #. module: sale_project
 #: model:ir.model.fields,help:sale_project.field_project_milestone__sale_line_id
 msgid "Sales Order Item that will be updated once the milestone is reached."
-msgstr ""
+msgstr "達到里程碑後立即更新的銷售訂單項目。"
 
 #. module: sale_project
 #: model:ir.model.fields,help:sale_project.field_project_task__sale_line_id
@@ -553,6 +574,9 @@ msgid ""
 "By default the sales order item set on the project will be selected. In the absence of one, the last prepaid sales order item that has time remaining will be used.\n"
 "Remove the sales order item in order to make this task non billable. You can also change or remove the sales order item of each timesheet entry individually."
 msgstr ""
+"將會加入此任務花費時間、以向客戶開立發票的銷售訂單項目。\n"
+"預設情況下，會選擇專案設定的銷售訂單項目。如果沒有，將使用尚有剩餘時間的最後一個預付銷售訂單項目。\n"
+"要將此任務設為不計費，可刪除此銷售訂單項目。你也可以單獨修改或刪除工時表每個記項的銷售訂單項目。"
 
 #. module: sale_project
 #. odoo-javascript
@@ -561,7 +585,7 @@ msgstr ""
 #: code:addons/sale_project/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
 msgid "Sales Order Items"
-msgstr ""
+msgstr "銷售訂單項目"
 
 #. module: sale_project
 #: model:ir.model,name:sale_project.model_sale_order_line
@@ -581,6 +605,8 @@ msgid ""
 "Sales order item that will be selected by default on the tasks and timesheets of this project, except if the employee set on the timesheets is explicitely linked to another sales order item on the project.\n"
 "It can be modified on each task and timesheet entry individually if necessary."
 msgstr ""
+"此專案的任務及工時表預設選擇的銷售訂單項目，除非工時表設定的員工明確連結至專案的另一個銷售訂單項目。\n"
+"如有必要，可在任務或工時表的每個記項上單獨修改。"
 
 #. module: sale_project
 #: model:ir.model.fields,help:sale_project.field_project_project__sale_order_id
@@ -598,21 +624,14 @@ msgstr "任務連結到的銷售訂單。"
 #: code:addons/sale_project/controllers/portal.py:0
 #, python-format
 msgid "Search in Invoice"
-msgstr "於應收憑單中搜尋"
+msgstr "搜尋發票"
 
 #. module: sale_project
 #. odoo-python
 #: code:addons/sale_project/controllers/portal.py:0
 #, python-format
 msgid "Search in Sales Order"
-msgstr "於銷售訂單中搜尋"
-
-#. module: sale_project
-#. odoo-python
-#: code:addons/sale_project/controllers/portal.py:0
-#, python-format
-msgid "Search in Sales Order Item"
-msgstr "於銷售訂單明細中搜尋"
+msgstr "搜尋銷售訂單"
 
 #. module: sale_project
 #: model:ir.model.fields,help:sale_project.field_sale_order__project_id
@@ -643,7 +662,7 @@ msgstr "任務"
 #: code:addons/sale_project/models/sale_order_line.py:0
 #, python-format
 msgid "Task Created (%s): %s"
-msgstr ""
+msgstr "已建立任務 (%s): %s"
 
 #. module: sale_project
 #: model:ir.model,name:sale_project.model_project_task_recurrence
@@ -698,12 +717,12 @@ msgstr "產品%s不應具有專案模板，因為它將在全局專案中生成�
 #: code:addons/sale_project/models/sale_order_line.py:0
 #, python-format
 msgid "This task has been created from: %s (%s)"
-msgstr ""
+msgstr "此任務建立自: %s (%s)"
 
 #. module: sale_project
 #: model:ir.model.fields,field_description:sale_project.field_project_task__task_to_invoice
 msgid "To invoice"
-msgstr "開應收憑單"
+msgstr "待開立發票"
 
 #. module: sale_project
 #: model:ir.model.fields,field_description:sale_project.field_product_product__service_type

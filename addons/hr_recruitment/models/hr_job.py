@@ -13,14 +13,23 @@ class Job(models.Model):
 
     @api.model
     def _default_address_id(self):
-        return self.env.company.partner_id
+        last_used_address = self.env['hr.job'].search([('company_id', 'in', self.env.companies.ids)], order='id desc', limit=1)
+        if last_used_address:
+            return last_used_address.address_id
+        else:
+            return self.env.company.partner_id
+
+    def _address_id_domain(self):
+        return ['|', '&', '&', ('type', '!=', 'contact'), ('type', '!=', 'private'),
+                ('id', 'in', self.sudo().env.companies.partner_id.child_ids.ids),
+                ('id', 'in', self.sudo().env.companies.partner_id.ids)]
 
     def _get_default_favorite_user_ids(self):
         return [(6, 0, [self.env.uid])]
 
     address_id = fields.Many2one(
         'res.partner', "Job Location", default=_default_address_id,
-        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
+        domain=lambda self: self._address_id_domain(),
         help="Address where employees are working")
     application_ids = fields.One2many('hr.applicant', 'job_id', "Job Applications")
     application_count = fields.Integer(compute='_compute_application_count', string="Application Count")
@@ -176,8 +185,9 @@ class Job(models.Model):
                     ON s.job_id = a.job_id
                    AND a.stage_id = s.stage_id
                    AND a.active IS TRUE
+                   WHERE a.company_id in %s
               GROUP BY s.job_id
-            """, [tuple(self.ids), ]
+            """, [tuple(self.ids), tuple(self.env.companies.ids)]
         )
 
         new_applicant_count = dict(self.env.cr.fetchall())
@@ -216,6 +226,8 @@ class Job(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             vals['favorite_user_ids'] = vals.get('favorite_user_ids', []) + [(4, self.env.uid)]
+            if vals.get('alias_name'):
+                vals['alias_user_id'] = False
         jobs = super().create(vals_list)
         utm_linkedin = self.env.ref("utm.utm_source_linkedin", raise_if_not_found=False)
         if utm_linkedin:

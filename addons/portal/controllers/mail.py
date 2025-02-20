@@ -4,19 +4,22 @@
 from werkzeug import urls
 from werkzeug.exceptions import NotFound, Forbidden
 
-from odoo import http, _
+from odoo import http
 from odoo.http import request
 from odoo.osv import expression
 from odoo.tools import consteq, plaintext2html
 from odoo.addons.mail.controllers import mail
-from odoo.addons.portal.controllers.portal import CustomerPortal
-from odoo.exceptions import AccessError, MissingError, UserError
+from odoo.exceptions import AccessError
 
 
 def _check_special_access(res_model, res_id, token='', _hash='', pid=False):
     record = request.env[res_model].browse(res_id).sudo()
     if _hash and pid:  # Signed Token Case: hash implies token is signed by partner pid
-        return consteq(_hash, record._sign_token(pid))
+        can_access = consteq(_hash, record._sign_token(pid))
+        if not can_access:
+            parent_sign_token = record._portal_get_parent_hash_token(pid)
+            can_access = parent_sign_token and consteq(_hash, parent_sign_token)
+        return can_access
     elif token:  # Token Case: token is the global one of the document
         token_field = request.env[res_model]._mail_post_token_field
         return (token and record and consteq(record[token_field], token))
@@ -107,17 +110,26 @@ class PortalChatter(http.Controller):
         return ['token', 'pid']
 
     def _portal_post_check_attachments(self, attachment_ids, attachment_tokens):
-        if len(attachment_tokens) != len(attachment_ids):
-            raise UserError(_("An access token must be provided for each attachment."))
-        for (attachment_id, access_token) in zip(attachment_ids, attachment_tokens):
-            try:
-                CustomerPortal._document_check_access(self, 'ir.attachment', attachment_id, access_token)
-            except (AccessError, MissingError):
-                raise UserError(_("The attachment %s does not exist or you do not have the rights to access it.", attachment_id))
+        request.env['ir.attachment'].browse(attachment_ids)._check_attachments_access(attachment_tokens)
 
     def _portal_post_has_content(self, res_model, res_id, message, attachment_ids=None, **kw):
         """ Tells if we can effectively post on the model based on content. """
         return bool(message) or bool(attachment_ids)
+
+    @http.route('/mail/avatar/mail.message/<int:res_id>/author_avatar/<int:width>x<int:height>', type='http', auth='public')
+    def portal_avatar(self, res_id=None, height=50, width=50, access_token=None, _hash=None, pid=None):
+        """ Get the avatar image in the chatter of the portal """
+        if access_token or (_hash and pid):
+            message = request.env['mail.message'].browse(int(res_id)).exists().filtered(
+                lambda msg: _check_special_access(msg.model, msg.res_id, access_token, _hash, pid and int(pid))
+            ).sudo()
+        else:
+            message = request.env.ref('web.image_placeholder').sudo()
+        # in case there is no message, it creates a stream with the placeholder image
+        stream = request.env['ir.binary']._get_image_stream_from(
+            message, field_name='author_avatar', width=int(width), height=int(height),
+        )
+        return stream.get_response()
 
     @http.route(['/mail/chatter_post'], type='json', methods=['POST'], auth='public', website=True)
     def portal_chatter_post(self, res_model, res_id, message, attachment_ids=None, attachment_tokens=None, **kw):
@@ -186,15 +198,13 @@ class PortalChatter(http.Controller):
 
     @http.route('/mail/chatter_fetch', type='json', auth='public', website=True)
     def portal_message_fetch(self, res_model, res_id, domain=False, limit=10, offset=0, **kw):
-        if not domain:
-            domain = []
         # Only search into website_message_ids, so apply the same domain to perform only one search
         # extract domain from the 'website_message_ids' field
         model = request.env[res_model]
         field = model._fields['website_message_ids']
         field_domain = field.get_domain_list(model)
         domain = expression.AND([
-            domain,
+            self._setup_portal_message_fetch_extra_domain(kw),
             field_domain,
             [('res_id', '=', res_id), '|', ('body', '!=', ''), ('attachment_ids', '!=', False)]
         ])
@@ -213,6 +223,9 @@ class PortalChatter(http.Controller):
             'messages': Message.search(domain, limit=limit, offset=offset).portal_message_format(),
             'message_count': Message.search_count(domain)
         }
+
+    def _setup_portal_message_fetch_extra_domain(self, data):
+        return []
 
     @http.route(['/mail/update_is_internal'], type='json', auth="user", website=True)
     def portal_message_update_is_internal(self, message_id, is_internal):
@@ -242,7 +255,7 @@ class MailController(mail.MailController):
         if not model or not res_id or model not in request.env:
             return super(MailController, cls)._redirect_to_record(model, res_id, access_token=access_token, **kwargs)
 
-        if issubclass(type(request.env[model]), request.env.registry['portal.mixin']):
+        if isinstance(request.env[model], request.env.registry['portal.mixin']):
             uid = request.session.uid or request.env.ref('base.public_user').id
             record_sudo = request.env[model].sudo().browse(res_id).exists()
             try:

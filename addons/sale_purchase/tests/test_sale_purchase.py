@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from odoo import Command
 from odoo.exceptions import UserError, AccessError
 from odoo.tests import tagged
 from odoo.addons.sale_purchase.tests.common import TestCommonSalePurchaseNoChart
@@ -258,3 +259,81 @@ class TestSalePurchase(TestCommonSalePurchaseNoChart):
 
         po = self.env['purchase.order'].search([('partner_id', '=', self.partner_vendor_service.id)], order='id desc', limit=1)
         self.assertEqual(po.order_line.name, "[C01] Name01")
+
+    def test_pol_custom_attribute(self):
+        """
+         test that custom atributes are passed from the SO the PO for service products
+        """
+        # Setup service product variants
+        product_attribute = self.env['product.attribute'].create({
+            'name': 'product attribute',
+            'display_type': 'radio',
+            'create_variant': 'always'
+        })
+
+        product_attribute_value = self.env['product.attribute.value'].create({
+            'name': 'single product attribute value',
+            'is_custom': True,
+            'attribute_id': product_attribute.id
+        })
+
+        product_attribute_line = self.env['product.template.attribute.line'].create({
+            'attribute_id': product_attribute.id,
+            'product_tmpl_id': self.service_purchase_1.product_tmpl_id.id,
+            'value_ids': [Command.link(product_attribute_value.id)]
+        })
+
+        custom_value = "test"
+
+        # create and confirm SO
+        sale_order = self.env['sale.order'].create({
+            'partner_id': self.partner_a.id,
+            'order_line': [
+                Command.create({
+                    'name': self.service_purchase_1.name,
+                    'product_id': self.service_purchase_1.id,
+                    'product_uom_qty': 1,
+                    'product_custom_attribute_value_ids': [
+                        Command.create({
+                            'custom_product_template_attribute_value_id': product_attribute_line.product_template_value_ids.id,
+                            'custom_value': custom_value,
+                        })
+                    ],
+                })
+            ],
+        })
+        sale_order.action_confirm()
+        pol = sale_order._get_purchase_orders().order_line
+        self.assertEqual(pol.name, f"{self.service_purchase_1.display_name}\n\n{product_attribute.name}: {product_attribute_value.name}: {custom_value}")
+
+    def test_service_to_purchase_multi_company(self):
+        """Test the service to purchase in a multi-company environment
+
+        The `product.template.service_to_purchase` is a company_dependent field, whose
+        value depends on the company are in, which is not necessarily the order company
+
+        Granted that:
+        - The current company is company_1
+        - The product is configured as a service to be purchased on company_1
+        - The product is NOT configured as a service to be purchased on company_2
+        - We process an order on company_2, while being logged in company_1
+
+        The order must be processed without generating a PO, respecting the product
+        setting for this order's company.
+        """
+        company_1 = self.env.company
+        company_2 = self.company_data_2['company']
+        self.assertTrue(self.service_purchase_1.service_to_purchase)
+        self.assertFalse(self.service_purchase_1.with_company(company_2).service_to_purchase)
+        order = self.env['sale.order'].create({
+            'partner_id': self.partner_a.id,
+            'company_id': company_2.id,
+            'order_line': [
+                Command.create({
+                    'product_id': self.service_purchase_1.id,
+                    'product_uom_qty': 1,
+                })
+            ]
+        })
+        order.with_company(company_1).action_confirm()
+        self.assertFalse(order.purchase_order_count)

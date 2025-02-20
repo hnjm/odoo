@@ -1,9 +1,13 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import logging
+
 from odoo.tests import tagged
 
 from odoo.addons.mail.tests.common import mail_new_test_user
 from odoo.addons.product_matrix.tests.common import TestMatrixCommon
+
+_logger = logging.getLogger(__name__)
 
 
 @tagged('post_install', '-at_install')
@@ -31,6 +35,10 @@ class TestSaleMatrixUi(TestMatrixCommon):
         cls.currency.action_unarchive()
 
     def test_sale_matrix_ui(self):
+        self.env.ref('base.group_user').implied_ids += (
+            self.env.ref('sale_management.group_sale_order_template')
+        )
+
         # Set the template as configurable by matrix.
         self.matrix_template.product_add_mode = "matrix"
 

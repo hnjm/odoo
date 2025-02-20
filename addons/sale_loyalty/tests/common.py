@@ -2,8 +2,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import defaultdict
-from odoo.addons.sale.tests.test_sale_product_attribute_value_config import TestSaleProductAttributeValueCommon
+
+from odoo import Command
 from odoo.exceptions import ValidationError
+
+from odoo.addons.sale.tests.test_sale_product_attribute_value_config import TestSaleProductAttributeValueCommon
 
 
 class TestSaleCouponCommon(TestSaleProductAttributeValueCommon):
@@ -11,14 +14,19 @@ class TestSaleCouponCommon(TestSaleProductAttributeValueCommon):
     @classmethod
     def setUpClass(cls):
         super(TestSaleCouponCommon, cls).setUpClass()
-
         # set currency to not rely on demo data and avoid possible race condition
         cls.currency_ratio = 1.0
         pricelist = cls.env.ref('product.list0')
         pricelist.currency_id = cls._setup_currency(cls.currency_ratio)
 
+        # Disable noisy pricelist (aka demo data Benelux)
+        cls.env.user.partner_id.write({
+            'property_product_pricelist': pricelist.id,
+        })
+        (cls.env['product.pricelist'].search([]) - pricelist).write({'active': False})
+
         # Set all the existing programs to active=False to avoid interference
-        cls.env['loyalty.program'].search([]).write({'active': False})
+        cls.env['loyalty.program'].search([]).sudo().write({'active': False})
 
         # create partner for sale order.
         cls.steve = cls.env['res.partner'].create({
@@ -69,6 +77,12 @@ class TestSaleCouponCommon(TestSaleProductAttributeValueCommon):
             'price_include': False,
         })
 
+        cls.tax_group = cls.env['account.tax'].create({
+            'name': "tax_group",
+            'amount_type': 'group',
+            'children_tax_ids': [Command.set((cls.tax_10pc_incl + cls.tax_10pc_base_incl).ids)],
+        })
+
         #products
         cls.product_A = cls.env['product.product'].create({
             'name': 'Product A',
@@ -89,6 +103,13 @@ class TestSaleCouponCommon(TestSaleProductAttributeValueCommon):
             'list_price': 100,
             'sale_ok': True,
             'taxes_id': [(6, 0, [])],
+        })
+
+        cls.product_D = cls.env['product.product'].create({
+            'name': 'Product D',
+            'list_price': 100,
+            'sale_ok': True,
+            'taxes_id': [(6, 0, [cls.tax_group.id])],
         })
 
         cls.product_gift_card = cls.env['product.product'].create({

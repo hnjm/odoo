@@ -106,7 +106,7 @@
     const HEADER_BORDER_COLOR = "#C0C0C0";
     const CELL_BORDER_COLOR = "#E2E3E3";
     const BACKGROUND_CHART_COLOR = "#FFFFFF";
-    const MENU_ITEM_DISABLED_COLOR = "#CACACA";
+    const DISABLED_TEXT_COLOR = "#CACACA";
     const DEFAULT_COLOR_SCALE_MIDPOINT_COLOR = 0xb6d7a8;
     const LINK_COLOR = "#01666b";
     const FILTERS_COLOR = "#188038";
@@ -204,7 +204,7 @@
     const BOTTOMBAR_HEIGHT = 36;
     const DEFAULT_CELL_WIDTH = 96;
     const DEFAULT_CELL_HEIGHT = 23;
-    const SCROLLBAR_WIDTH$1 = 15;
+    const SCROLLBAR_WIDTH = 15;
     const AUTOFILL_EDGE_LENGTH = 8;
     const ICON_EDGE_LENGTH = 18;
     const UNHIDE_ICON_EDGE_LENGTH = 14;
@@ -304,19 +304,89 @@
     // -----------------------------------------------------------------------------
     // Date Type
     // -----------------------------------------------------------------------------
+    /**
+     * A DateTime object that can be used to manipulate spreadsheet dates.
+     * Conceptually, a spreadsheet date is simply a number with a date format,
+     * and it is timezone-agnostic.
+     * This DateTime object consistently uses UTC time to represent a naive date and time.
+     */
+    class DateTime {
+        constructor(year, month, day, hours = 0, minutes = 0, seconds = 0) {
+            this.jsDate = new Date(Date.UTC(year, month, day, hours, minutes, seconds, 0));
+        }
+        static fromTimestamp(timestamp) {
+            const date = new Date(timestamp);
+            return new DateTime(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+        }
+        static now() {
+            const now = new Date();
+            return new DateTime(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds());
+        }
+        toString() {
+            return this.jsDate.toString();
+        }
+        getTime() {
+            return this.jsDate.getTime();
+        }
+        getFullYear() {
+            return this.jsDate.getUTCFullYear();
+        }
+        getMonth() {
+            return this.jsDate.getUTCMonth();
+        }
+        getDate() {
+            return this.jsDate.getUTCDate();
+        }
+        getDay() {
+            return this.jsDate.getUTCDay();
+        }
+        getHours() {
+            return this.jsDate.getUTCHours();
+        }
+        getMinutes() {
+            return this.jsDate.getUTCMinutes();
+        }
+        getSeconds() {
+            return this.jsDate.getUTCSeconds();
+        }
+        setFullYear(year) {
+            this.jsDate.setFullYear(year);
+        }
+        setDate(date) {
+            this.jsDate.setUTCDate(date);
+        }
+        setHours(hours) {
+            this.jsDate.setUTCHours(hours);
+        }
+        setMinutes(minutes) {
+            this.jsDate.setUTCMinutes(minutes);
+        }
+        setSeconds(seconds) {
+            this.jsDate.setUTCSeconds(seconds);
+        }
+    }
     // -----------------------------------------------------------------------------
     // Parsing
     // -----------------------------------------------------------------------------
-    const INITIAL_1900_DAY = new Date(1899, 11, 30);
+    const INITIAL_1900_DAY = new DateTime(1899, 11, 30);
     const MS_PER_DAY = 24 * 60 * 60 * 1000;
     const CURRENT_MILLENIAL = 2000; // note: don't forget to update this in 2999
-    const CURRENT_YEAR = new Date().getFullYear();
-    const INITIAL_JS_DAY = new Date(0);
-    const DATE_JS_1900_OFFSET = INITIAL_JS_DAY - INITIAL_1900_DAY;
+    const CURRENT_YEAR = DateTime.now().getFullYear();
+    const INITIAL_JS_DAY = DateTime.fromTimestamp(0);
+    const DATE_JS_1900_OFFSET = INITIAL_JS_DAY.getTime() - INITIAL_1900_DAY.getTime();
     const mdyDateRegexp = /^\d{1,2}(\/|-|\s)\d{1,2}((\/|-|\s)\d{1,4})?$/;
     const ymdDateRegexp = /^\d{3,4}(\/|-|\s)\d{1,2}(\/|-|\s)\d{1,2}$/;
     const timeRegexp = /((\d+(:\d+)?(:\d+)?\s*(AM|PM))|(\d+:\d+(:\d+)?))$/;
+    const CACHE = {};
     function parseDateTime(str) {
+        if (CACHE[str]) {
+            return CACHE[str];
+        }
+        const date = _parseDateTime(str);
+        CACHE[str] = date;
+        return date;
+    }
+    function _parseDateTime(str) {
         str = str.trim();
         let time;
         const timeMatch = str.match(timeRegexp);
@@ -352,7 +422,7 @@
             return {
                 value: date.value + time.value,
                 format: date.format + " " + (time.format === "hhhh:mm:ss" ? "hh:mm:ss" : time.format),
-                jsDate: new Date(date.jsDate.getFullYear() + time.jsDate.getFullYear() - 1899, date.jsDate.getMonth() + time.jsDate.getMonth() - 11, date.jsDate.getDate() + time.jsDate.getDate() - 30, date.jsDate.getHours() + time.jsDate.getHours(), date.jsDate.getMinutes() + time.jsDate.getMinutes(), date.jsDate.getSeconds() + time.jsDate.getSeconds()),
+                jsDate: new DateTime(date.jsDate.getFullYear() + time.jsDate.getFullYear() - 1899, date.jsDate.getMonth() + time.jsDate.getMonth() - 11, date.jsDate.getDate() + time.jsDate.getDate() - 30, date.jsDate.getHours() + time.jsDate.getHours(), date.jsDate.getMinutes() + time.jsDate.getMinutes(), date.jsDate.getSeconds() + time.jsDate.getSeconds()),
             };
         }
         return date || time;
@@ -369,13 +439,13 @@
             const day = Number(parts[dayIndex]);
             const leadingZero = (parts[monthIndex].length === 2 && month < 10) || (parts[dayIndex].length === 2 && day < 10);
             const year = parts[yearIndex] ? inferYear(parts[yearIndex]) : CURRENT_YEAR;
-            const jsDate = new Date(year, month - 1, day);
+            const jsDate = new DateTime(year, month - 1, day);
             const sep = str.match(/\/|-|\s/)[0];
             if (jsDate.getMonth() !== month - 1 || jsDate.getDate() !== day) {
                 // invalid date
                 return null;
             }
-            const delta = jsDate - INITIAL_1900_DAY;
+            const delta = jsDate.getTime() - INITIAL_1900_DAY.getTime();
             let format = leadingZero ? `mm${sep}dd` : `m${sep}d`;
             if (parts[yearIndex]) {
                 format = isMDY ? format + sep + "yyyy" : "yyyy" + sep + format;
@@ -435,7 +505,7 @@
             if (hours >= 24) {
                 format = "hhhh:mm:ss";
             }
-            const jsDate = new Date(1899, 11, 30, hours, minutes, seconds);
+            const jsDate = new DateTime(1899, 11, 30, hours, minutes, seconds);
             return {
                 value: hours / 24 + minutes / 1440 + seconds / 86400,
                 format: format,
@@ -449,7 +519,7 @@
     // -----------------------------------------------------------------------------
     function numberToJsDate(value) {
         const truncValue = Math.trunc(value);
-        let date = new Date(truncValue * MS_PER_DAY - DATE_JS_1900_OFFSET);
+        let date = DateTime.fromTimestamp(truncValue * MS_PER_DAY - DATE_JS_1900_OFFSET);
         let time = value - truncValue;
         time = time < 0 ? 1 + time : time;
         const hours = Math.round(time * 24);
@@ -466,7 +536,7 @@
     }
     /** Return the number of days in the current month of the given date */
     function getDaysInMonth(date) {
-        return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+        return new DateTime(date.getFullYear(), date.getMonth() + 1, 0).getDate();
     }
     function isLastDayOfMonth(date) {
         return getDaysInMonth(date) === date.getDate();
@@ -484,7 +554,7 @@
         const yStart = date.getFullYear();
         const mStart = date.getMonth();
         const dStart = date.getDate();
-        const jsDate = new Date(yStart, mStart + months);
+        const jsDate = new DateTime(yStart, mStart + months, 1);
         if (keepEndOfMonth && dStart === getDaysInMonth(date)) {
             jsDate.setDate(getDaysInMonth(jsDate));
         }
@@ -613,13 +683,6 @@
 
     //------------------------------------------------------------------------------
     /**
-     * Stringify an object, like JSON.stringify, except that the first level of keys
-     * is ordered.
-     */
-    function stringify(obj) {
-        return JSON.stringify(obj, Object.keys(obj).sort());
-    }
-    /**
      * Remove quotes from a quoted string
      * ```js
      * removeStringQuotes('"Hello"')
@@ -720,12 +783,20 @@
             2 * PADDING_AUTORESIZE_VERTICAL);
     }
     function computeTextWidth(context, text, style) {
-        context.save();
-        context.font = computeTextFont(style);
-        const textWidth = context.measureText(text).width;
-        context.restore();
-        return textWidth;
+        const font = computeTextFont(style);
+        if (!textWidthCache[font]) {
+            textWidthCache[font] = {};
+        }
+        if (textWidthCache[font][text] === undefined) {
+            context.save();
+            context.font = font;
+            const textWidth = context.measureText(text).width;
+            context.restore();
+            textWidthCache[font][text] = textWidth;
+        }
+        return textWidthCache[font][text];
     }
+    const textWidthCache = {};
     function computeTextFont(style) {
         const italic = style.italic ? "italic " : "";
         const weight = style.bold ? "bold" : DEFAULT_FONT_WEIGHT;
@@ -836,7 +907,7 @@
     function isDateTime(str) {
         return parseDateTime(str) !== null;
     }
-    const MARKDOWN_LINK_REGEX = /^\[([^\[]+)\]\((.+)\)$/;
+    const MARKDOWN_LINK_REGEX = /^\[(.+)\]\((.+)\)$/;
     //link must start with http or https
     //https://stackoverflow.com/a/3809435/4760614
     const WEB_LINK_REGEX = /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/;
@@ -912,13 +983,13 @@
      */
     function getItemId(item, itemsDic) {
         for (let [key, value] of Object.entries(itemsDic)) {
-            if (stringify(value) === stringify(item)) {
+            if (deepEquals(value, item)) {
                 return parseInt(key, 10);
             }
         }
         // Generate new Id if the item didn't exist in the dictionary
         const ids = Object.keys(itemsDic);
-        const maxId = ids.length === 0 ? 0 : Math.max(...ids.map((id) => parseInt(id, 10)));
+        const maxId = ids.length === 0 ? 0 : largeMax(ids.map((id) => parseInt(id, 10)));
         itemsDic[maxId + 1] = item;
         return maxId + 1;
     }
@@ -999,12 +1070,16 @@
         return position === "after" ? base + 1 : base;
     }
     /**
-     * Compare two objects.
+     * Compares two objects.
      */
     function deepEquals(o1, o2) {
         if (o1 === o2)
             return true;
         if ((o1 && !o2) || (o2 && !o1))
+            return false;
+        if (typeof o1 !== typeof o2)
+            return false;
+        if (typeof o1 !== "object")
             return false;
         // Objects can have different keys if the values are undefined
         const keys = new Set();
@@ -1024,9 +1099,16 @@
         }
         return true;
     }
-    /** Check if the given array contains all the values of the other array. */
+    /**
+     * Check if the given array contains all the values of the other array.
+     * It makes the assumption that both array do not contain duplicates.
+     */
     function includesAll(arr, values) {
-        return values.every((value) => arr.includes(value));
+        if (arr.length < values.length) {
+            return false;
+        }
+        const set = new Set(arr);
+        return values.every((value) => set.has(value));
     }
     /**
      * Return an object with all the keys in the object that have a falsy value removed.
@@ -1044,6 +1126,50 @@
         if (!matrix.length)
             return matrix;
         return matrix[0].map((_, i) => matrix.map((row) => row[i]));
+    }
+    /**
+     * Creates a version of the function that's memoized on the value of its first
+     * argument, if any.
+     */
+    function memoize(func) {
+        const cache = new Map();
+        const funcName = func.name ? func.name + " (memoized)" : "memoized";
+        return {
+            [funcName](...args) {
+                if (!cache.has(args[0])) {
+                    cache.set(args[0], func(...args));
+                }
+                return cache.get(args[0]);
+            },
+        }[funcName];
+    }
+    /**
+     * Alternative to Math.max that works with large arrays.
+     * Typically useful for arrays bigger than 100k elements.
+     */
+    function largeMax(array) {
+        let len = array.length;
+        if (len < 100000)
+            return Math.max(...array);
+        let max = -Infinity;
+        while (len--) {
+            max = array[len] > max ? array[len] : max;
+        }
+        return max;
+    }
+    /**
+     * Alternative to Math.min that works with large arrays.
+     * Typically useful for arrays bigger than 100k elements.
+     */
+    function largeMin(array) {
+        let len = array.length;
+        if (len < 100000)
+            return Math.min(...array);
+        let min = +Infinity;
+        while (len--) {
+            min = array[len] < min ? array[len] : min;
+        }
+        return min;
     }
 
     const RBA_REGEX = /rgba?\(|\s+|\)/gi;
@@ -1323,8 +1449,10 @@
     const cellReference = new RegExp(/\$?([A-Z]{1,3})\$?([0-9]{1,7})/, "i");
     // Same as above, but matches the exact string (nothing before or after)
     const singleCellReference = new RegExp(/^\$?([A-Z]{1,3})\$?([0-9]{1,7})$/, "i");
-    /** Reference of a column header (eg. A, AB) */
-    const colHeader = new RegExp(/^([A-Z]{1,3})+$/, "i");
+    /** Reference of a column header (eg. A, AB, $A) */
+    const colHeader = new RegExp(/^\$?([A-Z]{1,3})+$/, "i");
+    /** Reference of a row header (eg. 1, $1) */
+    const rowHeader = new RegExp(/^\$?([0-9]{1,7})+$/, "i");
     /** Reference of a column (eg. A, $CA, Sheet1!B) */
     const colReference = new RegExp(/^\s*('.+'!|[^']+!)?\$?([A-Z]{1,3})$/, "i");
     /** Reference of a row (eg. 1, 59, Sheet1!9) */
@@ -1353,6 +1481,9 @@
     }
     function isColHeader(str) {
         return colHeader.test(str);
+    }
+    function isRowHeader(str) {
+        return rowHeader.test(str);
     }
     /**
      * Return true if the given xc is the reference of a single cell,
@@ -1466,6 +1597,31 @@
     //from https://stackoverflow.com/questions/721304/insert-commas-into-number-string @Thomas/Alan Moore
     const thousandsGroupsRegexp = /(\d+?)(?=(\d{3})+(?!\d)|$)/g;
     const zeroRegexp = /0/g;
+    // TODO in the future : remove these constants MONTHS/DAYS, and use a library such as luxon to handle it
+    // + possibly handle automatic translation of day/month
+    const MONTHS = {
+        0: _lt("January"),
+        1: _lt("February"),
+        2: _lt("March"),
+        3: _lt("April"),
+        4: _lt("May"),
+        5: _lt("June"),
+        6: _lt("July"),
+        7: _lt("August"),
+        8: _lt("September"),
+        9: _lt("October"),
+        10: _lt("November"),
+        11: _lt("December"),
+    };
+    const DAYS$1 = {
+        0: _lt("Sunday"),
+        1: _lt("Monday"),
+        2: _lt("Tuesday"),
+        3: _lt("Wednesday"),
+        4: _lt("Thursday"),
+        5: _lt("Friday"),
+        6: _lt("Saturday"),
+    };
     // -----------------------------------------------------------------------------
     // FORMAT REPRESENTATION CACHE
     // -----------------------------------------------------------------------------
@@ -1487,6 +1643,9 @@
     function formatValue(value, format) {
         switch (typeof value) {
             case "string":
+                if (value.includes('\\"')) {
+                    return value.replace(/\\"/g, '"');
+                }
                 return value;
             case "boolean":
                 return value ? "TRUE" : "FALSE";
@@ -1614,27 +1773,36 @@
         }
         return numberString.slice(0, i + 1) || undefined;
     }
+    const leadingZeroesRegexp = /^0+/;
     /**
      * Limit the size of the decimal part of a number to the given number of digits.
      */
     function limitDecimalDigits(decimalDigits, maxDecimals) {
+        var _a;
         let integerDigits = "0";
         let resultDecimalDigits = decimalDigits;
         // Note : we'd want to simply use number.toFixed() to handle the max digits & rounding,
         // but it has very strange behaviour. Ex: 12.345.toFixed(2) => "12.35", but 1.345.toFixed(2) => "1.34"
         let slicedDecimalDigits = decimalDigits.slice(0, maxDecimals);
         const i = maxDecimals;
-        if (Number(Number(decimalDigits[i]) < 5)) {
+        if (Number(decimalDigits[i]) < 5) {
             return { integerDigits, decimalDigits: slicedDecimalDigits };
         }
         // round up
+        const leadingZeroes = ((_a = slicedDecimalDigits.match(leadingZeroesRegexp)) === null || _a === void 0 ? void 0 : _a[0]) || "";
         const slicedRoundedUp = (Number(slicedDecimalDigits) + 1).toString();
-        if (slicedRoundedUp.length > slicedDecimalDigits.length) {
-            integerDigits = (Number(integerDigits) + 1).toString();
+        const withoutLeadingZeroes = slicedDecimalDigits.slice(leadingZeroes.length);
+        // e.g. carry over from 99 to 100
+        const carryOver = slicedRoundedUp.length > withoutLeadingZeroes.length;
+        if (carryOver && !leadingZeroes) {
+            integerDigits = "1";
             resultDecimalDigits = undefined;
         }
+        else if (carryOver) {
+            resultDecimalDigits = leadingZeroes.slice(0, -1) + slicedRoundedUp;
+        }
         else {
-            resultDecimalDigits = slicedRoundedUp;
+            resultDecimalDigits = leadingZeroes + slicedRoundedUp;
         }
         return { integerDigits, decimalDigits: resultDecimalDigits };
     }
@@ -1689,8 +1857,9 @@
         return strDate + (strDate && strTime ? " " : "") + strTime;
     }
     function formatJSDate(jsDate, format) {
-        const sep = format.match(/\/|-|\s/)[0];
-        const parts = format.split(sep);
+        var _a;
+        const sep = (_a = format.match(/\/|-|\s/)) === null || _a === void 0 ? void 0 : _a[0];
+        const parts = sep ? format.split(sep) : [format];
         return parts
             .map((p) => {
             switch (p) {
@@ -1698,10 +1867,23 @@
                     return jsDate.getDate();
                 case "dd":
                     return jsDate.getDate().toString().padStart(2, "0");
+                case "ddd":
+                    return DAYS$1[jsDate.getDay()].slice(0, 3);
+                case "dddd":
+                    return DAYS$1[jsDate.getDay()];
                 case "m":
                     return jsDate.getMonth() + 1;
                 case "mm":
                     return String(jsDate.getMonth() + 1).padStart(2, "0");
+                case "mmm":
+                    return MONTHS[jsDate.getMonth()].slice(0, 3);
+                case "mmmm":
+                    return MONTHS[jsDate.getMonth()];
+                case "mmmmm":
+                    return MONTHS[jsDate.getMonth()].slice(0, 1);
+                case "yy":
+                    const fullYear = String(jsDate.getFullYear()).replace("-", "").padStart(2, "0");
+                    return fullYear.slice(fullYear.length - 2);
                 case "yyyy":
                     return jsDate.getFullYear();
                 default:
@@ -1725,7 +1907,7 @@
             .map((p) => {
             switch (p) {
                 case "hhhh":
-                    const helapsedHours = Math.floor((jsDate.getTime() - INITIAL_1900_DAY) / (60 * 60 * 1000));
+                    const helapsedHours = Math.floor((jsDate.getTime() - INITIAL_1900_DAY.getTime()) / (60 * 60 * 1000));
                     return helapsedHours.toString();
                 case "hh":
                     return hours.toString().padStart(2, "0");
@@ -1748,27 +1930,30 @@
     }
     function createLargeNumberFormat(format, magnitude, postFix) {
         const internalFormat = parseFormat(format || "#,##0");
-        const largeNumberFormat = internalFormat
-            .map((formatPart) => {
-            if (formatPart.type === "NUMBER") {
-                return [
-                    {
-                        ...formatPart,
-                        format: {
-                            ...formatPart.format,
-                            magnitude,
-                            decimalPart: undefined,
-                        },
-                    },
-                    {
-                        type: "STRING",
-                        format: postFix,
-                    },
-                ];
+        const largeNumberFormat = [];
+        for (let i = 0; i < internalFormat.length; i++) {
+            const formatPart = internalFormat[i];
+            if (formatPart.type !== "NUMBER") {
+                largeNumberFormat.push(formatPart);
+                continue;
             }
-            return formatPart;
-        })
-            .flat();
+            largeNumberFormat.push({
+                ...formatPart,
+                format: {
+                    ...formatPart.format,
+                    magnitude,
+                    decimalPart: undefined,
+                },
+            });
+            largeNumberFormat.push({
+                type: "STRING",
+                format: postFix,
+            });
+            const nextFormatPart = internalFormat[i + 1];
+            if ((nextFormatPart === null || nextFormatPart === void 0 ? void 0 : nextFormatPart.type) === "STRING" && ["k", "m", "b"].includes(nextFormatPart.format)) {
+                i++;
+            }
+        }
         return convertInternalFormatToFormat(largeNumberFormat);
     }
     function changeDecimalPlaces(format, step) {
@@ -2021,8 +2206,9 @@
         }
         get zone() {
             const { left, top, bottom, right } = this._zone;
-            if (right !== undefined && bottom !== undefined)
-                return { left, top, right, bottom };
+            if (right !== undefined && bottom !== undefined) {
+                return this._zone;
+            }
             else if (bottom === undefined && right !== undefined) {
                 return { right, top, left, bottom: this.getSheetSize(this.sheetId).height - 1 };
             }
@@ -2044,18 +2230,10 @@
             if (isFullCol) {
                 parts[0].rowFixed = parts[0].rowFixed || parts[1].rowFixed;
                 parts[1].rowFixed = parts[0].rowFixed || parts[1].rowFixed;
-                if (zone.left === zone.right) {
-                    parts[0].colFixed = parts[0].colFixed || parts[1].colFixed;
-                    parts[1].colFixed = parts[0].colFixed || parts[1].colFixed;
-                }
             }
             if (isFullRow) {
                 parts[0].colFixed = parts[0].colFixed || parts[1].colFixed;
                 parts[1].colFixed = parts[0].colFixed || parts[1].colFixed;
-                if (zone.top === zone.bottom) {
-                    parts[0].rowFixed = parts[0].rowFixed || parts[1].rowFixed;
-                    parts[1].rowFixed = parts[0].rowFixed || parts[1].rowFixed;
-                }
             }
             return parts;
         }
@@ -2127,8 +2305,11 @@
     /**
      * Create a range from a xc. If the xc is empty, this function returns undefined.
      */
-    function createRange(getters, sheetId, range) {
-        return range ? getters.getRangeFromSheetXC(sheetId, range) : undefined;
+    function createValidRange(getters, sheetId, xc) {
+        if (!xc)
+            return;
+        const range = getters.getRangeFromSheetXC(sheetId, xc);
+        return !(range.invalidSheetName || range.invalidXc) ? range : undefined;
     }
 
     /** Methods from Odoo Web Utils  */
@@ -2202,6 +2383,37 @@
         setIsFastStrategy(isFast) {
             this.isFastIdStrategy = isFast;
         }
+        /**
+         * Generates a custom UUID using a simple 26^8 method (8-character alphanumeric string with lowercase letters)
+         * This has a higher chance of collision than a UUIDv4, but not only faster to generate than an UUIDV4,
+         * it also has a smaller size, which is preferable to alleviate the overall data size.
+         *
+         * This method is preferable when generating uuids for the core data (sheetId, figureId, etc)
+         * as they will appear several times in the revisions and local history.
+         *
+         */
+        smallUuid() {
+            if (this.isFastIdStrategy) {
+                this.fastIdStart++;
+                return String(this.fastIdStart);
+                //@ts-ignore
+            }
+            else if (window.crypto && window.crypto.getRandomValues) {
+                //@ts-ignore
+                return ([1e7] + -1e3).replace(/[018]/g, (c) => (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16));
+            }
+            else {
+                // mainly for jest and other browsers that do not have the crypto functionality
+                return "xxxxxxxx-xxxx".replace(/[xy]/g, function (c) {
+                    var r = (Math.random() * 16) | 0, v = c == "x" ? r : (r & 0x3) | 0x8;
+                    return v.toString(16);
+                });
+            }
+        }
+        /**
+         * Generates an UUIDV4, has astronomically low chance of collision, but is larger in size than the smallUuid.
+         * This method should be used when you need to avoid collisions at all costs, like the id of a revision.
+         */
         uuidv4() {
             if (this.isFastIdStrategy) {
                 this.fastIdStart++;
@@ -2315,17 +2527,20 @@
      */
     function toUnboundedZone(xc) {
         const zone = toZoneWithoutBoundaryChanges(xc);
+        reorderZone(zone);
+        return zone;
+    }
+    function reorderZone(zone) {
         if (zone.right !== undefined && zone.right < zone.left) {
-            const tmp = zone.left;
+            const right = zone.left;
             zone.left = zone.right;
-            zone.right = tmp;
+            zone.right = right;
         }
         if (zone.bottom !== undefined && zone.bottom < zone.top) {
-            const tmp = zone.top;
+            const bottom = zone.top;
             zone.top = zone.bottom;
-            zone.bottom = tmp;
+            zone.bottom = bottom;
         }
-        return zone;
     }
     /**
      * Convert from a cartesian reference to a Zone.
@@ -3087,7 +3302,6 @@
         "SET_VIEWPORT_OFFSET",
         "SELECT_SEARCH_NEXT_MATCH",
         "SELECT_SEARCH_PREVIOUS_MATCH",
-        "REFRESH_SEARCH",
         "UPDATE_SEARCH",
         "CLEAR_SEARCH",
         "EVALUATE_CELLS",
@@ -3170,7 +3384,7 @@
          * Static helper which returns a successful DispatchResult
          */
         static get Success() {
-            return new DispatchResult();
+            return SUCCESS;
         }
         get isSuccessful() {
             return this.reasons.length === 0;
@@ -3183,6 +3397,7 @@
             return this.reasons.includes(reason);
         }
     }
+    const SUCCESS = new DispatchResult();
     exports.CommandResult = void 0;
     (function (CommandResult) {
         CommandResult[CommandResult["Success"] = 0] = "Success";
@@ -3213,67 +3428,73 @@
         CommandResult[CommandResult["InvalidRange"] = 25] = "InvalidRange";
         CommandResult[CommandResult["InvalidZones"] = 26] = "InvalidZones";
         CommandResult[CommandResult["InvalidSheetId"] = 27] = "InvalidSheetId";
-        CommandResult[CommandResult["InputAlreadyFocused"] = 28] = "InputAlreadyFocused";
-        CommandResult[CommandResult["MaximumRangesReached"] = 29] = "MaximumRangesReached";
-        CommandResult[CommandResult["InvalidChartDefinition"] = 30] = "InvalidChartDefinition";
-        CommandResult[CommandResult["InvalidDataSet"] = 31] = "InvalidDataSet";
-        CommandResult[CommandResult["InvalidLabelRange"] = 32] = "InvalidLabelRange";
-        CommandResult[CommandResult["InvalidScorecardKeyValue"] = 33] = "InvalidScorecardKeyValue";
-        CommandResult[CommandResult["InvalidScorecardBaseline"] = 34] = "InvalidScorecardBaseline";
-        CommandResult[CommandResult["InvalidGaugeDataRange"] = 35] = "InvalidGaugeDataRange";
-        CommandResult[CommandResult["EmptyGaugeRangeMin"] = 36] = "EmptyGaugeRangeMin";
-        CommandResult[CommandResult["GaugeRangeMinNaN"] = 37] = "GaugeRangeMinNaN";
-        CommandResult[CommandResult["EmptyGaugeRangeMax"] = 38] = "EmptyGaugeRangeMax";
-        CommandResult[CommandResult["GaugeRangeMaxNaN"] = 39] = "GaugeRangeMaxNaN";
-        CommandResult[CommandResult["GaugeRangeMinBiggerThanRangeMax"] = 40] = "GaugeRangeMinBiggerThanRangeMax";
-        CommandResult[CommandResult["GaugeLowerInflectionPointNaN"] = 41] = "GaugeLowerInflectionPointNaN";
-        CommandResult[CommandResult["GaugeUpperInflectionPointNaN"] = 42] = "GaugeUpperInflectionPointNaN";
-        CommandResult[CommandResult["GaugeLowerBiggerThanUpper"] = 43] = "GaugeLowerBiggerThanUpper";
-        CommandResult[CommandResult["InvalidAutofillSelection"] = 44] = "InvalidAutofillSelection";
-        CommandResult[CommandResult["WrongComposerSelection"] = 45] = "WrongComposerSelection";
-        CommandResult[CommandResult["MinBiggerThanMax"] = 46] = "MinBiggerThanMax";
-        CommandResult[CommandResult["LowerBiggerThanUpper"] = 47] = "LowerBiggerThanUpper";
-        CommandResult[CommandResult["MidBiggerThanMax"] = 48] = "MidBiggerThanMax";
-        CommandResult[CommandResult["MinBiggerThanMid"] = 49] = "MinBiggerThanMid";
-        CommandResult[CommandResult["FirstArgMissing"] = 50] = "FirstArgMissing";
-        CommandResult[CommandResult["SecondArgMissing"] = 51] = "SecondArgMissing";
-        CommandResult[CommandResult["MinNaN"] = 52] = "MinNaN";
-        CommandResult[CommandResult["MidNaN"] = 53] = "MidNaN";
-        CommandResult[CommandResult["MaxNaN"] = 54] = "MaxNaN";
-        CommandResult[CommandResult["ValueUpperInflectionNaN"] = 55] = "ValueUpperInflectionNaN";
-        CommandResult[CommandResult["ValueLowerInflectionNaN"] = 56] = "ValueLowerInflectionNaN";
-        CommandResult[CommandResult["MinInvalidFormula"] = 57] = "MinInvalidFormula";
-        CommandResult[CommandResult["MidInvalidFormula"] = 58] = "MidInvalidFormula";
-        CommandResult[CommandResult["MaxInvalidFormula"] = 59] = "MaxInvalidFormula";
-        CommandResult[CommandResult["ValueUpperInvalidFormula"] = 60] = "ValueUpperInvalidFormula";
-        CommandResult[CommandResult["ValueLowerInvalidFormula"] = 61] = "ValueLowerInvalidFormula";
-        CommandResult[CommandResult["InvalidSortZone"] = 62] = "InvalidSortZone";
-        CommandResult[CommandResult["WaitingSessionConfirmation"] = 63] = "WaitingSessionConfirmation";
-        CommandResult[CommandResult["MergeOverlap"] = 64] = "MergeOverlap";
-        CommandResult[CommandResult["TooManyHiddenElements"] = 65] = "TooManyHiddenElements";
-        CommandResult[CommandResult["Readonly"] = 66] = "Readonly";
-        CommandResult[CommandResult["InvalidViewportSize"] = 67] = "InvalidViewportSize";
-        CommandResult[CommandResult["InvalidScrollingDirection"] = 68] = "InvalidScrollingDirection";
-        CommandResult[CommandResult["FigureDoesNotExist"] = 69] = "FigureDoesNotExist";
-        CommandResult[CommandResult["InvalidConditionalFormatId"] = 70] = "InvalidConditionalFormatId";
-        CommandResult[CommandResult["InvalidCellPopover"] = 71] = "InvalidCellPopover";
-        CommandResult[CommandResult["EmptyTarget"] = 72] = "EmptyTarget";
-        CommandResult[CommandResult["InvalidFreezeQuantity"] = 73] = "InvalidFreezeQuantity";
-        CommandResult[CommandResult["FrozenPaneOverlap"] = 74] = "FrozenPaneOverlap";
-        CommandResult[CommandResult["ValuesNotChanged"] = 75] = "ValuesNotChanged";
-        CommandResult[CommandResult["InvalidFilterZone"] = 76] = "InvalidFilterZone";
-        CommandResult[CommandResult["FilterOverlap"] = 77] = "FilterOverlap";
-        CommandResult[CommandResult["FilterNotFound"] = 78] = "FilterNotFound";
-        CommandResult[CommandResult["MergeInFilter"] = 79] = "MergeInFilter";
-        CommandResult[CommandResult["NonContinuousTargets"] = 80] = "NonContinuousTargets";
-        CommandResult[CommandResult["DuplicatedFigureId"] = 81] = "DuplicatedFigureId";
-        CommandResult[CommandResult["InvalidSelectionStep"] = 82] = "InvalidSelectionStep";
-        CommandResult[CommandResult["DuplicatedChartId"] = 83] = "DuplicatedChartId";
-        CommandResult[CommandResult["ChartDoesNotExist"] = 84] = "ChartDoesNotExist";
-        CommandResult[CommandResult["InvalidHeaderIndex"] = 85] = "InvalidHeaderIndex";
-        CommandResult[CommandResult["InvalidQuantity"] = 86] = "InvalidQuantity";
+        CommandResult[CommandResult["InvalidCellId"] = 28] = "InvalidCellId";
+        CommandResult[CommandResult["InputAlreadyFocused"] = 29] = "InputAlreadyFocused";
+        CommandResult[CommandResult["MaximumRangesReached"] = 30] = "MaximumRangesReached";
+        CommandResult[CommandResult["InvalidInputId"] = 31] = "InvalidInputId";
+        CommandResult[CommandResult["InvalidChartDefinition"] = 32] = "InvalidChartDefinition";
+        CommandResult[CommandResult["InvalidDataSet"] = 33] = "InvalidDataSet";
+        CommandResult[CommandResult["InvalidLabelRange"] = 34] = "InvalidLabelRange";
+        CommandResult[CommandResult["InvalidScorecardKeyValue"] = 35] = "InvalidScorecardKeyValue";
+        CommandResult[CommandResult["InvalidScorecardBaseline"] = 36] = "InvalidScorecardBaseline";
+        CommandResult[CommandResult["InvalidGaugeDataRange"] = 37] = "InvalidGaugeDataRange";
+        CommandResult[CommandResult["EmptyGaugeRangeMin"] = 38] = "EmptyGaugeRangeMin";
+        CommandResult[CommandResult["GaugeRangeMinNaN"] = 39] = "GaugeRangeMinNaN";
+        CommandResult[CommandResult["EmptyGaugeRangeMax"] = 40] = "EmptyGaugeRangeMax";
+        CommandResult[CommandResult["GaugeRangeMaxNaN"] = 41] = "GaugeRangeMaxNaN";
+        CommandResult[CommandResult["GaugeRangeMinBiggerThanRangeMax"] = 42] = "GaugeRangeMinBiggerThanRangeMax";
+        CommandResult[CommandResult["GaugeLowerInflectionPointNaN"] = 43] = "GaugeLowerInflectionPointNaN";
+        CommandResult[CommandResult["GaugeUpperInflectionPointNaN"] = 44] = "GaugeUpperInflectionPointNaN";
+        CommandResult[CommandResult["GaugeLowerBiggerThanUpper"] = 45] = "GaugeLowerBiggerThanUpper";
+        CommandResult[CommandResult["InvalidAutofillSelection"] = 46] = "InvalidAutofillSelection";
+        CommandResult[CommandResult["WrongComposerSelection"] = 47] = "WrongComposerSelection";
+        CommandResult[CommandResult["MinBiggerThanMax"] = 48] = "MinBiggerThanMax";
+        CommandResult[CommandResult["LowerBiggerThanUpper"] = 49] = "LowerBiggerThanUpper";
+        CommandResult[CommandResult["MidBiggerThanMax"] = 50] = "MidBiggerThanMax";
+        CommandResult[CommandResult["MinBiggerThanMid"] = 51] = "MinBiggerThanMid";
+        CommandResult[CommandResult["FirstArgMissing"] = 52] = "FirstArgMissing";
+        CommandResult[CommandResult["SecondArgMissing"] = 53] = "SecondArgMissing";
+        CommandResult[CommandResult["MinNaN"] = 54] = "MinNaN";
+        CommandResult[CommandResult["MidNaN"] = 55] = "MidNaN";
+        CommandResult[CommandResult["MaxNaN"] = 56] = "MaxNaN";
+        CommandResult[CommandResult["ValueUpperInflectionNaN"] = 57] = "ValueUpperInflectionNaN";
+        CommandResult[CommandResult["ValueLowerInflectionNaN"] = 58] = "ValueLowerInflectionNaN";
+        CommandResult[CommandResult["MinInvalidFormula"] = 59] = "MinInvalidFormula";
+        CommandResult[CommandResult["MidInvalidFormula"] = 60] = "MidInvalidFormula";
+        CommandResult[CommandResult["MaxInvalidFormula"] = 61] = "MaxInvalidFormula";
+        CommandResult[CommandResult["ValueUpperInvalidFormula"] = 62] = "ValueUpperInvalidFormula";
+        CommandResult[CommandResult["ValueLowerInvalidFormula"] = 63] = "ValueLowerInvalidFormula";
+        CommandResult[CommandResult["InvalidSortZone"] = 64] = "InvalidSortZone";
+        CommandResult[CommandResult["WaitingSessionConfirmation"] = 65] = "WaitingSessionConfirmation";
+        CommandResult[CommandResult["MergeOverlap"] = 66] = "MergeOverlap";
+        CommandResult[CommandResult["TooManyHiddenElements"] = 67] = "TooManyHiddenElements";
+        CommandResult[CommandResult["Readonly"] = 68] = "Readonly";
+        CommandResult[CommandResult["InvalidViewportSize"] = 69] = "InvalidViewportSize";
+        CommandResult[CommandResult["InvalidScrollingDirection"] = 70] = "InvalidScrollingDirection";
+        CommandResult[CommandResult["FigureDoesNotExist"] = 71] = "FigureDoesNotExist";
+        CommandResult[CommandResult["InvalidConditionalFormatId"] = 72] = "InvalidConditionalFormatId";
+        CommandResult[CommandResult["InvalidCellPopover"] = 73] = "InvalidCellPopover";
+        CommandResult[CommandResult["EmptyTarget"] = 74] = "EmptyTarget";
+        CommandResult[CommandResult["InvalidFreezeQuantity"] = 75] = "InvalidFreezeQuantity";
+        CommandResult[CommandResult["FrozenPaneOverlap"] = 76] = "FrozenPaneOverlap";
+        CommandResult[CommandResult["ValuesNotChanged"] = 77] = "ValuesNotChanged";
+        CommandResult[CommandResult["InvalidFilterZone"] = 78] = "InvalidFilterZone";
+        CommandResult[CommandResult["FilterOverlap"] = 79] = "FilterOverlap";
+        CommandResult[CommandResult["FilterNotFound"] = 80] = "FilterNotFound";
+        CommandResult[CommandResult["MergeInFilter"] = 81] = "MergeInFilter";
+        CommandResult[CommandResult["NonContinuousTargets"] = 82] = "NonContinuousTargets";
+        CommandResult[CommandResult["DuplicatedFigureId"] = 83] = "DuplicatedFigureId";
+        CommandResult[CommandResult["InvalidSelectionStep"] = 84] = "InvalidSelectionStep";
+        CommandResult[CommandResult["DuplicatedChartId"] = 85] = "DuplicatedChartId";
+        CommandResult[CommandResult["ChartDoesNotExist"] = 86] = "ChartDoesNotExist";
+        CommandResult[CommandResult["InvalidHeaderIndex"] = 87] = "InvalidHeaderIndex";
+        CommandResult[CommandResult["InvalidQuantity"] = 88] = "InvalidQuantity";
+        CommandResult[CommandResult["NoChanges"] = 89] = "NoChanges";
     })(exports.CommandResult || (exports.CommandResult = {}));
 
+    function isMatrix(x) {
+        return Array.isArray(x) && Array.isArray(x[0]);
+    }
     var DIRECTION;
     (function (DIRECTION) {
         DIRECTION["UP"] = "up";
@@ -3500,6 +3721,7 @@
     background-color: white;
     border-left: 3px solid red;
     padding: 10px;
+    overflow-wrap: break-word;
   }
 `;
     class ErrorToolTip extends owl.Component {
@@ -3668,6 +3890,9 @@
                 }
             });
             this.state.values = this.getFilterValues(this.props.filterPosition);
+        }
+        get isReadonly() {
+            return this.env.model.getters.isReadonly();
         }
         getFilterValues(position) {
             const sheetId = this.env.model.getters.getActiveSheetId();
@@ -3840,6 +4065,8 @@
         return node.description ? node.description : "";
     }
 
+    const macRegex = /Mac/i;
+    const MODIFIER_KEYS = ["Shift", "Control", "Alt", "Meta"];
     /**
      * Return true if the event was triggered from
      * a child element.
@@ -3858,13 +4085,49 @@
     function getOpenedMenus() {
         return Array.from(document.querySelectorAll(".o-spreadsheet .o-menu"));
     }
+    const letterRegex = /^[a-zA-Z]$/;
+    /**
+     * Transform a keyboard event into a shortcut string that represent this event. The letters keys will be uppercased.
+     *
+     * @argument ev - The keyboard event to transform
+     * @argument mode - Use either ev.key of ev.code to get the string shortcut
+     *
+     * @example
+     * event : { ctrlKey: true, key: "a" } => "Ctrl+A"
+     * event : { shift: true, alt: true, key: "Home" } => "Alt+Shift+Home"
+     */
+    function keyboardEventToShortcutString(ev, mode = "key") {
+        let keyDownString = "";
+        if (!MODIFIER_KEYS.includes(ev.key)) {
+            if (isCtrlKey(ev))
+                keyDownString += "Ctrl+";
+            if (ev.altKey)
+                keyDownString += "Alt+";
+            if (ev.shiftKey)
+                keyDownString += "Shift+";
+        }
+        const key = mode === "key" ? ev.key : ev.code;
+        keyDownString += letterRegex.test(key) ? key.toUpperCase() : key;
+        return keyDownString;
+    }
+    function isMacOS() {
+        return Boolean(macRegex.test(navigator.userAgent));
+    }
+    /**
+     * @param {KeyboardEvent | MouseEvent} ev
+     * @returns Returns true if the event was triggered with the "ctrl" modifier pressed.
+     * On Mac, this is the "meta" or "command" key.
+     */
+    function isCtrlKey(ev) {
+        return isMacOS() ? ev.metaKey : ev.ctrlKey;
+    }
 
     /**
      * Return the o-spreadsheet element position relative
      * to the browser viewport.
      */
-    function useSpreadsheetPosition() {
-        const position = owl.useState({ x: 0, y: 0 });
+    function useSpreadsheetRect() {
+        const position = owl.useState({ x: 0, y: 0, width: 0, height: 0 });
         let spreadsheetElement = document.querySelector(".o-spreadsheet");
         updatePosition();
         function updatePosition() {
@@ -3872,9 +4135,11 @@
                 spreadsheetElement = document.querySelector(".o-spreadsheet");
             }
             if (spreadsheetElement) {
-                const { top, left } = spreadsheetElement.getBoundingClientRect();
+                const { top, left, width, height } = spreadsheetElement.getBoundingClientRect();
                 position.x = left;
                 position.y = top;
+                position.width = width;
+                position.height = height;
             }
         }
         owl.onMounted(updatePosition);
@@ -3909,15 +4174,18 @@
     class Popover extends owl.Component {
         constructor() {
             super(...arguments);
-            this.spreadsheetPosition = useSpreadsheetPosition();
+            this.spreadsheetRect = useSpreadsheetRect();
+        }
+        get maxHeight() {
+            return Math.max(0, this.viewportDimension.height - BOTTOMBAR_HEIGHT - SCROLLBAR_WIDTH);
         }
         get style() {
             // the props's position is expressed relative to the "body" element
             // but we teleport the element in ".o-spreadsheet" to keep everything
             // within our control and to avoid leaking into external DOM
-            const horizontalPosition = `left:${this.horizontalPosition() - this.spreadsheetPosition.x}`;
-            const verticalPosition = `top:${this.verticalPosition() - this.spreadsheetPosition.y}`;
-            const maxHeight = Math.max(0, this.viewportDimension.height - BOTTOMBAR_HEIGHT - SCROLLBAR_WIDTH$1);
+            const horizontalPosition = `left:${this.horizontalPosition() - this.spreadsheetRect.x}`;
+            const verticalPosition = `top:${this.verticalPosition() - this.spreadsheetRect.y}`;
+            const maxHeight = this.maxHeight;
             const height = `max-height:${maxHeight}`;
             const shadow = maxHeight !== 0 ? "box-shadow: 1px 2px 5px 2px rgb(51 51 51 / 15%);" : "";
             return `
@@ -3941,7 +4209,7 @@
         }
         get shouldRenderBottom() {
             const { y } = this.props.position;
-            return (y + this.props.childHeight <
+            return (y + Math.min(this.props.childHeight, this.maxHeight) <
                 this.viewportDimension.height + (this.env.isDashboard() ? 0 : TOPBAR_HEIGHT));
         }
         horizontalPosition() {
@@ -4014,7 +4282,7 @@
         }
       }
       &.disabled {
-        color: ${MENU_ITEM_DISABLED_COLOR};
+        color: ${DISABLED_TEXT_COLOR};
         cursor: not-allowed;
       }
     }
@@ -4516,6 +4784,7 @@
                     if (this.state.link.url) {
                         this.save();
                     }
+                    ev.preventDefault();
                     break;
                 case "Escape":
                     this.cancel();
@@ -4750,7 +5019,7 @@
                 });
             }
         }
-        if (result.isCancelledBecause(62 /* CommandResult.InvalidSortZone */)) {
+        if (result.isCancelledBecause(64 /* CommandResult.InvalidSortZone */)) {
             const { col, row } = anchor;
             env.model.selection.selectZone({ cell: { col, row }, zone });
             env.raiseError(_lt("Cannot sort. To sort, select only cells or only merges that have the same size."));
@@ -4773,13 +5042,13 @@
     };
     function interactiveAddFilter(env, sheetId, target) {
         const result = env.model.dispatch("CREATE_FILTER_TABLE", { target, sheetId });
-        if (result.isCancelledBecause(77 /* CommandResult.FilterOverlap */)) {
+        if (result.isCancelledBecause(79 /* CommandResult.FilterOverlap */)) {
             env.raiseError(AddFilterInteractiveContent.filterOverlap);
         }
-        else if (result.isCancelledBecause(79 /* CommandResult.MergeInFilter */)) {
+        else if (result.isCancelledBecause(81 /* CommandResult.MergeInFilter */)) {
             env.raiseError(AddFilterInteractiveContent.mergeInFilter);
         }
-        else if (result.isCancelledBecause(80 /* CommandResult.NonContinuousTargets */)) {
+        else if (result.isCancelledBecause(82 /* CommandResult.NonContinuousTargets */)) {
             env.raiseError(AddFilterInteractiveContent.nonContinuousTargets);
         }
     }
@@ -4801,7 +5070,7 @@
             else if (result.reasons.includes(22 /* CommandResult.WrongFigurePasteOption */)) {
                 env.raiseError(PasteInteractiveContent.wrongFigurePasteOption);
             }
-            else if (result.reasons.includes(74 /* CommandResult.FrozenPaneOverlap */)) {
+            else if (result.reasons.includes(76 /* CommandResult.FrozenPaneOverlap */)) {
                 env.raiseError(PasteInteractiveContent.frozenPaneOverlap);
             }
         }
@@ -4931,8 +5200,8 @@
         let last;
         const activesRows = env.model.getters.getActiveRows();
         if (activesRows.size !== 0) {
-            first = Math.min(...activesRows);
-            last = Math.max(...activesRows);
+            first = largeMin([...activesRows]);
+            last = largeMax([...activesRows]);
         }
         else {
             const zone = env.model.getters.getSelectedZones()[0];
@@ -4960,8 +5229,8 @@
         let last;
         const activeCols = env.model.getters.getActiveCols();
         if (activeCols.size !== 0) {
-            first = Math.min(...activeCols);
-            last = Math.max(...activeCols);
+            first = largeMin([...activeCols]);
+            last = largeMax([...activeCols]);
         }
         else {
             const zone = env.model.getters.getSelectedZones()[0];
@@ -4989,8 +5258,8 @@
         let last;
         const activesRows = env.model.getters.getActiveRows();
         if (activesRows.size !== 0) {
-            first = Math.min(...activesRows);
-            last = Math.max(...activesRows);
+            first = largeMin([...activesRows]);
+            last = largeMax([...activesRows]);
         }
         else {
             const zone = env.model.getters.getSelectedZones()[0];
@@ -5016,6 +5285,13 @@
             elements: rows,
         });
     };
+    const CAN_REMOVE_COLUMNS_ROWS = (dimension, env) => {
+        const sheetId = env.model.getters.getActiveSheetId();
+        const selectedElements = env.model.getters.getElementsFromSelection(dimension);
+        const includesAllVisibleHeaders = env.model.getters.checkElementsIncludeAllVisibleHeaders(sheetId, dimension, selectedElements);
+        const includesAllNonFrozenHeaders = env.model.getters.checkElementsIncludeAllNonFrozenHeaders(sheetId, dimension, selectedElements);
+        return !includesAllVisibleHeaders && !includesAllNonFrozenHeaders;
+    };
     const REMOVE_COLUMNS_NAME = (env) => {
         if (env.model.getters.getSelectedZones().length > 1) {
             return _lt("Delete columns");
@@ -5024,8 +5300,8 @@
         let last;
         const activeCols = env.model.getters.getActiveCols();
         if (activeCols.size !== 0) {
-            first = Math.min(...activeCols);
-            last = Math.max(...activeCols);
+            first = largeMin([...activeCols]);
+            last = largeMax([...activeCols]);
         }
         else {
             const zone = env.model.getters.getSelectedZones()[0];
@@ -5094,7 +5370,7 @@
         let row;
         let quantity;
         if (activeRows.size) {
-            row = Math.min(...activeRows);
+            row = largeMin([...activeRows]);
             quantity = activeRows.size;
         }
         else {
@@ -5126,7 +5402,7 @@
         let row;
         let quantity;
         if (activeRows.size) {
-            row = Math.max(...activeRows);
+            row = largeMax([...activeRows]);
             quantity = activeRows.size;
         }
         else {
@@ -5167,7 +5443,7 @@
         let column;
         let quantity;
         if (activeCols.size) {
-            column = Math.min(...activeCols);
+            column = largeMin([...activeCols]);
             quantity = activeCols.size;
         }
         else {
@@ -5201,7 +5477,7 @@
         let column;
         let quantity;
         if (activeCols.size) {
-            column = Math.max(...activeCols);
+            column = largeMax([...activeCols]);
             quantity = activeCols.size;
         }
         else {
@@ -5299,7 +5575,7 @@
     const CREATE_SHEET_ACTION = (env) => {
         const activeSheetId = env.model.getters.getActiveSheetId();
         const position = env.model.getters.getSheetIds().indexOf(activeSheetId) + 1;
-        const sheetId = env.model.uuidGenerator.uuidv4();
+        const sheetId = env.model.uuidGenerator.smallUuid();
         env.model.dispatch("CREATE_SHEET", { sheetId, position });
         env.model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: activeSheetId, sheetIdTo: sheetId });
     };
@@ -5310,7 +5586,7 @@
         const getters = env.model.getters;
         const zone = getters.getSelectedZone();
         let dataSetZone = zone;
-        const id = env.model.uuidGenerator.uuidv4();
+        const id = env.model.uuidGenerator.smallUuid();
         let labelRange;
         if (zone.left !== zone.right) {
             dataSetZone = { ...zone, left: zone.left + 1 };
@@ -5409,6 +5685,12 @@
     const INSERT_LINK = (env) => {
         let { col, row } = env.model.getters.getPosition();
         env.model.dispatch("OPEN_CELL_POPOVER", { col, row, popoverType: "LinkEditor" });
+    };
+    const INSERT_LINK_NAME = (env) => {
+        const sheetId = env.model.getters.getActiveSheetId();
+        const { col, row } = env.model.getters.getPosition();
+        const cell = env.model.getters.getCell(sheetId, col, row);
+        return cell && cell.isLink() ? _lt("Edit link") : _lt("Insert link");
     };
     //------------------------------------------------------------------------------
     // Filters action
@@ -5547,7 +5829,7 @@
         action: DELETE_CELL_SHIFT_LEFT,
     })
         .add("insert_link", {
-        name: _lt("Insert link"),
+        name: INSERT_LINK_NAME,
         separator: true,
         sequence: 150,
         action: INSERT_LINK,
@@ -5620,11 +5902,7 @@
         name: REMOVE_COLUMNS_NAME,
         sequence: 90,
         action: REMOVE_COLUMNS_ACTION,
-        isVisible: (env) => {
-            const sheetId = env.model.getters.getActiveSheetId();
-            const selectedCols = env.model.getters.getElementsFromSelection("COL");
-            return env.model.getters.canRemoveHeaders(sheetId, "COL", selectedCols);
-        },
+        isVisible: (env) => CAN_REMOVE_COLUMNS_ROWS("COL", env),
     })
         .add("clear_column", {
         name: DELETE_CONTENT_COLUMNS_NAME,
@@ -5638,7 +5916,7 @@
         isVisible: (env) => {
             const sheetId = env.model.getters.getActiveSheetId();
             const selectedCols = env.model.getters.getElementsFromSelection("COL");
-            return env.model.getters.canRemoveHeaders(sheetId, "COL", selectedCols);
+            return !env.model.getters.checkElementsIncludeAllVisibleHeaders(sheetId, "COL", selectedCols);
         },
         separator: true,
     })
@@ -5712,11 +5990,7 @@
         name: REMOVE_ROWS_NAME,
         sequence: 70,
         action: REMOVE_ROWS_ACTION,
-        isVisible: (env) => {
-            const sheetId = env.model.getters.getActiveSheetId();
-            const selectedRows = env.model.getters.getElementsFromSelection("ROW");
-            return env.model.getters.canRemoveHeaders(sheetId, "ROW", selectedRows);
-        },
+        isVisible: (env) => CAN_REMOVE_COLUMNS_ROWS("ROW", env),
     })
         .add("clear_row", {
         name: DELETE_CONTENT_ROWS_NAME,
@@ -5730,7 +6004,7 @@
         isVisible: (env) => {
             const sheetId = env.model.getters.getActiveSheetId();
             const selectedRows = env.model.getters.getElementsFromSelection("ROW");
-            return env.model.getters.canRemoveHeaders(sheetId, "ROW", selectedRows);
+            return !env.model.getters.checkElementsIncludeAllVisibleHeaders(sheetId, "ROW", selectedRows);
         },
         separator: true,
     })
@@ -5754,17 +6028,20 @@
     });
 
     function interactiveRenameSheet(env, sheetId, errorText) {
+        if (env.model.getters.isReadonly()) {
+            return;
+        }
         const placeholder = env.model.getters.getSheetName(sheetId);
         const title = _lt("Rename Sheet");
         const callback = (name) => {
             if (name === null || name === placeholder) {
                 return;
             }
-            if (name === "") {
-                interactiveRenameSheet(env, sheetId, _lt("The sheet name cannot be empty."));
-            }
             const result = env.model.dispatch("RENAME_SHEET", { sheetId, name });
             if (!result.isSuccessful) {
+                if (result.reasons.includes(10 /* CommandResult.MissingSheetName */)) {
+                    interactiveRenameSheet(env, sheetId, _lt("The sheet name cannot be empty."));
+                }
                 if (result.reasons.includes(11 /* CommandResult.DuplicatedSheetName */)) {
                     interactiveRenameSheet(env, sheetId, _lt("A sheet with the name %s already exists. Please select another name.", name));
                 }
@@ -5785,7 +6062,7 @@
         name: _lt("Delete"),
         sequence: 10,
         isVisible: (env) => {
-            return env.model.getters.getSheetIds().length > 1;
+            return env.model.getters.getVisibleSheetIds().length > 1;
         },
         action: (env) => env.askConfirmation(_lt("Are you sure you want to delete this sheet ?"), () => {
             env.model.dispatch("DELETE_SHEET", { sheetId: env.model.getters.getActiveSheetId() });
@@ -5796,7 +6073,7 @@
         sequence: 20,
         action: (env) => {
             const sheetIdFrom = env.model.getters.getActiveSheetId();
-            const sheetIdTo = env.model.uuidGenerator.uuidv4();
+            const sheetIdTo = env.model.uuidGenerator.smallUuid();
             env.model.dispatch("DUPLICATE_SHEET", {
                 sheetId: sheetIdFrom,
                 sheetIdTo,
@@ -5844,22 +6121,22 @@
     const CfTerms = {
         Errors: {
             [25 /* CommandResult.InvalidRange */]: _lt("The range is invalid"),
-            [50 /* CommandResult.FirstArgMissing */]: _lt("The argument is missing. Please provide a value"),
-            [51 /* CommandResult.SecondArgMissing */]: _lt("The second argument is missing. Please provide a value"),
-            [52 /* CommandResult.MinNaN */]: _lt("The minpoint must be a number"),
-            [53 /* CommandResult.MidNaN */]: _lt("The midpoint must be a number"),
-            [54 /* CommandResult.MaxNaN */]: _lt("The maxpoint must be a number"),
-            [55 /* CommandResult.ValueUpperInflectionNaN */]: _lt("The first value must be a number"),
-            [56 /* CommandResult.ValueLowerInflectionNaN */]: _lt("The second value must be a number"),
-            [46 /* CommandResult.MinBiggerThanMax */]: _lt("Minimum must be smaller then Maximum"),
-            [49 /* CommandResult.MinBiggerThanMid */]: _lt("Minimum must be smaller then Midpoint"),
-            [48 /* CommandResult.MidBiggerThanMax */]: _lt("Midpoint must be smaller then Maximum"),
-            [47 /* CommandResult.LowerBiggerThanUpper */]: _lt("Lower inflection point must be smaller than upper inflection point"),
-            [57 /* CommandResult.MinInvalidFormula */]: _lt("Invalid Minpoint formula"),
-            [59 /* CommandResult.MaxInvalidFormula */]: _lt("Invalid Maxpoint formula"),
-            [58 /* CommandResult.MidInvalidFormula */]: _lt("Invalid Midpoint formula"),
-            [60 /* CommandResult.ValueUpperInvalidFormula */]: _lt("Invalid upper inflection point formula"),
-            [61 /* CommandResult.ValueLowerInvalidFormula */]: _lt("Invalid lower inflection point formula"),
+            [52 /* CommandResult.FirstArgMissing */]: _lt("The argument is missing. Please provide a value"),
+            [53 /* CommandResult.SecondArgMissing */]: _lt("The second argument is missing. Please provide a value"),
+            [54 /* CommandResult.MinNaN */]: _lt("The minpoint must be a number"),
+            [55 /* CommandResult.MidNaN */]: _lt("The midpoint must be a number"),
+            [56 /* CommandResult.MaxNaN */]: _lt("The maxpoint must be a number"),
+            [57 /* CommandResult.ValueUpperInflectionNaN */]: _lt("The first value must be a number"),
+            [58 /* CommandResult.ValueLowerInflectionNaN */]: _lt("The second value must be a number"),
+            [48 /* CommandResult.MinBiggerThanMax */]: _lt("Minimum must be smaller then Maximum"),
+            [51 /* CommandResult.MinBiggerThanMid */]: _lt("Minimum must be smaller then Midpoint"),
+            [50 /* CommandResult.MidBiggerThanMax */]: _lt("Midpoint must be smaller then Maximum"),
+            [49 /* CommandResult.LowerBiggerThanUpper */]: _lt("Lower inflection point must be smaller than upper inflection point"),
+            [59 /* CommandResult.MinInvalidFormula */]: _lt("Invalid Minpoint formula"),
+            [61 /* CommandResult.MaxInvalidFormula */]: _lt("Invalid Maxpoint formula"),
+            [60 /* CommandResult.MidInvalidFormula */]: _lt("Invalid Midpoint formula"),
+            [62 /* CommandResult.ValueUpperInvalidFormula */]: _lt("Invalid upper inflection point formula"),
+            [63 /* CommandResult.ValueLowerInvalidFormula */]: _lt("Invalid lower inflection point formula"),
             [24 /* CommandResult.EmptyRange */]: _lt("A range needs to be defined"),
             Unexpected: _lt("The rule is invalid for an unknown reason"),
         },
@@ -5887,20 +6164,20 @@
         Errors: {
             Unexpected: _lt("The chart definition is invalid for an unknown reason"),
             // BASIC CHART ERRORS (LINE | BAR | PIE)
-            [31 /* CommandResult.InvalidDataSet */]: _lt("The dataset is invalid"),
-            [32 /* CommandResult.InvalidLabelRange */]: _lt("Labels are invalid"),
+            [33 /* CommandResult.InvalidDataSet */]: _lt("The dataset is invalid"),
+            [34 /* CommandResult.InvalidLabelRange */]: _lt("Labels are invalid"),
             // SCORECARD CHART ERRORS
-            [33 /* CommandResult.InvalidScorecardKeyValue */]: _lt("The key value is invalid"),
-            [34 /* CommandResult.InvalidScorecardBaseline */]: _lt("The baseline value is invalid"),
+            [35 /* CommandResult.InvalidScorecardKeyValue */]: _lt("The key value is invalid"),
+            [36 /* CommandResult.InvalidScorecardBaseline */]: _lt("The baseline value is invalid"),
             // GAUGE CHART ERRORS
-            [35 /* CommandResult.InvalidGaugeDataRange */]: _lt("The data range is invalid"),
-            [36 /* CommandResult.EmptyGaugeRangeMin */]: _lt("A minimum range limit value is needed"),
-            [37 /* CommandResult.GaugeRangeMinNaN */]: _lt("The minimum range limit value must be a number"),
-            [38 /* CommandResult.EmptyGaugeRangeMax */]: _lt("A maximum range limit value is needed"),
-            [39 /* CommandResult.GaugeRangeMaxNaN */]: _lt("The maximum range limit value must be a number"),
-            [40 /* CommandResult.GaugeRangeMinBiggerThanRangeMax */]: _lt("Minimum range limit must be smaller than maximum range limit"),
-            [41 /* CommandResult.GaugeLowerInflectionPointNaN */]: _lt("The lower inflection point value must be a number"),
-            [42 /* CommandResult.GaugeUpperInflectionPointNaN */]: _lt("The upper inflection point value must be a number"),
+            [37 /* CommandResult.InvalidGaugeDataRange */]: _lt("The data range is invalid"),
+            [38 /* CommandResult.EmptyGaugeRangeMin */]: _lt("A minimum range limit value is needed"),
+            [39 /* CommandResult.GaugeRangeMinNaN */]: _lt("The minimum range limit value must be a number"),
+            [40 /* CommandResult.EmptyGaugeRangeMax */]: _lt("A maximum range limit value is needed"),
+            [41 /* CommandResult.GaugeRangeMaxNaN */]: _lt("The maximum range limit value must be a number"),
+            [42 /* CommandResult.GaugeRangeMinBiggerThanRangeMax */]: _lt("Minimum range limit must be smaller than maximum range limit"),
+            [43 /* CommandResult.GaugeLowerInflectionPointNaN */]: _lt("The lower inflection point value must be a number"),
+            [44 /* CommandResult.GaugeUpperInflectionPointNaN */]: _lt("The upper inflection point value must be a number"),
         },
     };
     const NumberFormatTerms = {
@@ -5924,7 +6201,7 @@
         const sheetId = env.model.getters.getActiveSheetId();
         const cmd = dimension === "COL" ? "FREEZE_COLUMNS" : "FREEZE_ROWS";
         const result = env.model.dispatch(cmd, { sheetId, quantity: base });
-        if (result.isCancelledBecause(64 /* CommandResult.MergeOverlap */)) {
+        if (result.isCancelledBecause(66 /* CommandResult.MergeOverlap */)) {
             env.raiseError(MergeErrorMessage);
         }
     }
@@ -6024,11 +6301,13 @@
         name: REMOVE_ROWS_NAME,
         sequence: 80,
         action: REMOVE_ROWS_ACTION,
+        isVisible: (env) => CAN_REMOVE_COLUMNS_ROWS("ROW", env),
     })
         .addChild("edit_delete_column", ["edit"], {
         name: REMOVE_COLUMNS_NAME,
         sequence: 90,
         action: REMOVE_COLUMNS_ACTION,
+        isVisible: (env) => CAN_REMOVE_COLUMNS_ROWS("COL", env),
     })
         .addChild("edit_delete_cell_shift_up", ["edit"], {
         name: _lt("Delete cell and shift up"),
@@ -6433,7 +6712,7 @@
     class SelectionInput extends owl.Component {
         constructor() {
             super(...arguments);
-            this.id = uuidGenerator$1.uuidv4();
+            this.id = uuidGenerator$1.smallUuid();
             this.previousRanges = this.props.ranges || [];
             this.originSheet = this.env.model.getters.getActiveSheetId();
             this.state = owl.useState({
@@ -6568,11 +6847,11 @@
         }
         get isDatasetInvalid() {
             var _a;
-            return !!((_a = this.state.datasetDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(31 /* CommandResult.InvalidDataSet */));
+            return !!((_a = this.state.datasetDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(33 /* CommandResult.InvalidDataSet */));
         }
         get isLabelInvalid() {
             var _a;
-            return !!((_a = this.state.labelsDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(32 /* CommandResult.InvalidLabelRange */));
+            return !!((_a = this.state.labelsDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(34 /* CommandResult.InvalidLabelRange */));
         }
         onUpdateDataSetsHaveTitle(ev) {
             this.props.updateChart(this.props.figureId, {
@@ -6767,8 +7046,8 @@
         const dataSets = [];
         for (const sheetXC of dataSetsString) {
             const dataRange = getters.getRangeFromSheetXC(sheetId, sheetXC);
-            const { unboundedZone: zone, sheetId: dataSetSheetId, invalidSheetName } = dataRange;
-            if (invalidSheetName) {
+            const { unboundedZone: zone, sheetId: dataSetSheetId, invalidSheetName, invalidXc } = dataRange;
+            if (invalidSheetName || invalidXc) {
                 continue;
             }
             // It's a rectangle. We treat all columns (arbitrary) as different data series.
@@ -6793,14 +7072,8 @@
                         : undefined));
                 }
             }
-            else if (zone.left === zone.right && zone.top === zone.bottom) {
-                // A single cell. If it's only the title, the dataset is not added.
-                if (!dataSetsHaveTitle) {
-                    dataSets.push(createDataSet(getters, dataSetSheetId, zone, undefined));
-                }
-            }
             else {
-                /* 1 row or 1 column */
+                /* 1 cell, 1 row or 1 column */
                 dataSets.push(createDataSet(getters, dataSetSheetId, zone, dataSetsHaveTitle
                     ? {
                         top: zone.top,
@@ -6850,8 +7123,10 @@
         }
         const dataRange = ds.dataRange.clone({ zone: dataZone });
         return {
-            label: ds.labelCell ? getters.getRangeString(ds.labelCell, "forceSheetReference") : undefined,
-            range: getters.getRangeString(dataRange, "forceSheetReference"),
+            label: ds.labelCell
+                ? getters.getRangeString(ds.labelCell, "forceSheetReference", true)
+                : undefined,
+            range: getters.getRangeString(dataRange, "forceSheetReference", true),
         };
     }
     /**
@@ -6920,11 +7195,11 @@
         if (definition.dataSets) {
             const invalidRanges = definition.dataSets.find((range) => !rangeReference.test(range)) !== undefined;
             if (invalidRanges) {
-                return 31 /* CommandResult.InvalidDataSet */;
+                return 33 /* CommandResult.InvalidDataSet */;
             }
             const zones = definition.dataSets.map(toUnboundedZone);
             if (zones.some((zone) => zone.top !== zone.bottom && isFullRow(zone))) {
-                return 31 /* CommandResult.InvalidDataSet */;
+                return 33 /* CommandResult.InvalidDataSet */;
             }
         }
         return 0 /* CommandResult.Success */;
@@ -6933,7 +7208,7 @@
         if (definition.labelRange) {
             const invalidLabels = !rangeReference.test(definition.labelRange || "");
             if (invalidLabels) {
-                return 32 /* CommandResult.InvalidLabelRange */;
+                return 34 /* CommandResult.InvalidLabelRange */;
             }
         }
         return 0 /* CommandResult.Success */;
@@ -7040,7 +7315,7 @@
     /**
      * Get a default chart js configuration
      */
-    function getDefaultChartJsRuntime(chart, labels, fontColor) {
+    function getDefaultChartJsRuntime(chart, labels, fontColor, truncateLabels = true) {
         return {
             type: chart.type,
             options: {
@@ -7079,7 +7354,7 @@
                 },
             },
             data: {
-                labels: labels.map(truncateLabel),
+                labels: truncateLabels ? labels.map(truncateLabel) : labels,
                 datasets: [],
             },
         };
@@ -7165,7 +7440,7 @@
             super(definition, sheetId, getters);
             this.type = "bar";
             this.dataSets = createDataSets(getters, definition.dataSets, sheetId, definition.dataSetsHaveTitle);
-            this.labelRange = createRange(getters, sheetId, definition.labelRange);
+            this.labelRange = createValidRange(getters, sheetId, definition.labelRange);
             this.background = definition.background;
             this.verticalAxisPosition = definition.verticalAxisPosition;
             this.legendPosition = definition.legendPosition;
@@ -7234,6 +7509,9 @@
                 .filter((ds) => ds.range !== ""); // && range !== INCORRECT_RANGE_STRING ? show incorrect #ref ?
             return {
                 ...this.getDefinition(),
+                labelRange: this.labelRange
+                    ? this.getters.getRangeString(this.labelRange, this.sheetId, true)
+                    : undefined,
                 backgroundColor: toXlsxHexColor(this.background || BACKGROUND_CHART_COLOR),
                 fontColor: toXlsxHexColor(chartFontColor(this.background)),
                 dataSets,
@@ -7391,7 +7669,7 @@
     });
     function isDataRangeValid(definition) {
         return definition.dataRange && !rangeReference.test(definition.dataRange)
-            ? 35 /* CommandResult.InvalidGaugeDataRange */
+            ? 37 /* CommandResult.InvalidGaugeDataRange */
             : 0 /* CommandResult.Success */;
     }
     function checkRangeLimits(check, batchValidations) {
@@ -7423,7 +7701,7 @@
     function checkRangeMinBiggerThanRangeMax(definition) {
         if (definition.sectionRule) {
             if (Number(definition.sectionRule.rangeMin) >= Number(definition.sectionRule.rangeMax)) {
-                return 40 /* CommandResult.GaugeRangeMinBiggerThanRangeMax */;
+                return 42 /* CommandResult.GaugeRangeMinBiggerThanRangeMax */;
             }
         }
         return 0 /* CommandResult.Success */;
@@ -7432,9 +7710,9 @@
         if (value === "") {
             switch (valueName) {
                 case "rangeMin":
-                    return 36 /* CommandResult.EmptyGaugeRangeMin */;
+                    return 38 /* CommandResult.EmptyGaugeRangeMin */;
                 case "rangeMax":
-                    return 38 /* CommandResult.EmptyGaugeRangeMax */;
+                    return 40 /* CommandResult.EmptyGaugeRangeMax */;
             }
         }
         return 0 /* CommandResult.Success */;
@@ -7443,13 +7721,13 @@
         if (isNaN(value)) {
             switch (valueName) {
                 case "rangeMin":
-                    return 37 /* CommandResult.GaugeRangeMinNaN */;
+                    return 39 /* CommandResult.GaugeRangeMinNaN */;
                 case "rangeMax":
-                    return 39 /* CommandResult.GaugeRangeMaxNaN */;
+                    return 41 /* CommandResult.GaugeRangeMaxNaN */;
                 case "lowerInflectionPointValue":
-                    return 41 /* CommandResult.GaugeLowerInflectionPointNaN */;
+                    return 43 /* CommandResult.GaugeLowerInflectionPointNaN */;
                 case "upperInflectionPointValue":
-                    return 42 /* CommandResult.GaugeUpperInflectionPointNaN */;
+                    return 44 /* CommandResult.GaugeUpperInflectionPointNaN */;
             }
         }
         return 0 /* CommandResult.Success */;
@@ -7458,7 +7736,7 @@
         constructor(definition, sheetId, getters) {
             super(definition, sheetId, getters);
             this.type = "gauge";
-            this.dataRange = createRange(this.getters, this.sheetId, definition.dataRange);
+            this.dataRange = createValidRange(this.getters, this.sheetId, definition.dataRange);
             this.sectionRule = definition.sectionRule;
             this.background = definition.background;
         }
@@ -7647,7 +7925,7 @@
         });
         return {
             chartJsConfig: config,
-            background: getters.getBackgroundOfSingleCellChart(chart.background, dataRange),
+            background: getters.getStyleOfSingleCellChart(chart.background, dataRange).background,
         };
     }
 
@@ -7755,7 +8033,7 @@
             return undefined;
         }
         const labelsTimestamps = labelDates.map((date) => date.getTime());
-        const period = Math.max(...labelsTimestamps) - Math.min(...labelsTimestamps);
+        const period = largeMax(labelsTimestamps) - largeMin(labelsTimestamps);
         const minUnit = getFormatMinDisplayUnit(format);
         if (UNIT_LENGTH.second >= UNIT_LENGTH[minUnit] && Milliseconds.inSeconds(period) < 180) {
             return "second";
@@ -7789,12 +8067,13 @@
             super(definition, sheetId, getters);
             this.type = "line";
             this.dataSets = createDataSets(this.getters, definition.dataSets, sheetId, definition.dataSetsHaveTitle);
-            this.labelRange = createRange(this.getters, sheetId, definition.labelRange);
+            this.labelRange = createValidRange(this.getters, sheetId, definition.labelRange);
             this.background = definition.background;
             this.verticalAxisPosition = definition.verticalAxisPosition;
             this.legendPosition = definition.legendPosition;
             this.labelsAsText = definition.labelsAsText;
             this.stacked = definition.stacked;
+            this.cumulative = definition.cumulative;
         }
         static validateChartDefinition(validator, definition) {
             return validator.checkValidations(definition, checkDataset, checkLabelRange);
@@ -7814,6 +8093,7 @@
                 verticalAxisPosition: "left",
                 labelRange: context.auxiliaryRange || undefined,
                 stacked: false,
+                cumulative: false,
             };
         }
         getDefinition() {
@@ -7833,6 +8113,7 @@
                 title: this.title,
                 labelsAsText: this.labelsAsText,
                 stacked: this.stacked,
+                cumulative: this.cumulative,
             };
         }
         getContextCreation() {
@@ -7859,6 +8140,9 @@
                 .filter((ds) => ds.range !== ""); // && range !== INCORRECT_RANGE_STRING ? show incorrect #ref ?
             return {
                 ...this.getDefinition(),
+                labelRange: this.labelRange
+                    ? this.getters.getRangeString(this.labelRange, this.sheetId, true)
+                    : undefined,
                 backgroundColor: toXlsxHexColor(this.background || BACKGROUND_CHART_COLOR),
                 fontColor: toXlsxHexColor(chartFontColor(this.background)),
                 dataSets,
@@ -7930,10 +8214,10 @@
         }
         return true;
     }
-    function getLineConfiguration(chart, labels) {
+    function getLineConfiguration(chart, labels, truncateLabels) {
         var _a;
         const fontColor = chartFontColor(chart.background);
-        const config = getDefaultChartJsRuntime(chart, labels, fontColor);
+        const config = getDefaultChartJsRuntime(chart, labels, fontColor, truncateLabels);
         const legend = {
             labels: {
                 fontColor,
@@ -7995,7 +8279,8 @@
         if (axisType === "time") {
             ({ labels, dataSetsValues } = fixEmptyLabelsForDateCharts(labels, dataSetsValues));
         }
-        const config = getLineConfiguration(chart, labels);
+        const truncateLabels = axisType === "category";
+        const config = getLineConfiguration(chart, labels, truncateLabels);
         const labelFormat = getLabelFormat(getters, chart.labelRange);
         if (axisType === "time") {
             config.options.scales.xAxes[0].type = "time";
@@ -8008,6 +8293,16 @@
         }
         const colors = new ChartColors();
         for (let [index, { label, data }] of dataSetsValues.entries()) {
+            if (chart.cumulative) {
+                let accumulator = 0;
+                data = data.map((value) => {
+                    if (!isNaN(value)) {
+                        accumulator += parseFloat(value);
+                        return accumulator;
+                    }
+                    return value;
+                });
+            }
             if (["linear", "time"].includes(axisType)) {
                 // Replace empty string labels by undefined to make sure chartJS doesn't decide that "" is the same as 0
                 data = data.map((y, index) => ({ x: labels[index] || undefined, y }));
@@ -8046,7 +8341,7 @@
             super(definition, sheetId, getters);
             this.type = "pie";
             this.dataSets = createDataSets(getters, definition.dataSets, sheetId, definition.dataSetsHaveTitle);
-            this.labelRange = createRange(getters, sheetId, definition.labelRange);
+            this.labelRange = createValidRange(getters, sheetId, definition.labelRange);
             this.background = definition.background;
             this.legendPosition = definition.legendPosition;
         }
@@ -8109,6 +8404,9 @@
                 .filter((ds) => ds.range !== ""); // && range !== INCORRECT_RANGE_STRING ? show incorrect #ref ?
             return {
                 ...this.getDefinition(),
+                labelRange: this.labelRange
+                    ? this.getters.getRangeString(this.labelRange, this.sheetId, true)
+                    : undefined,
                 backgroundColor: toXlsxHexColor(this.background || BACKGROUND_CHART_COLOR),
                 fontColor: toXlsxHexColor(chartFontColor(this.background)),
                 verticalAxisPosition: "left",
@@ -8152,7 +8450,7 @@
     }
     function getPieColors(colors, dataSetsValues) {
         const pieColors = [];
-        const maxLength = Math.max(...dataSetsValues.map((ds) => ds.data.length));
+        const maxLength = largeMax(dataSetsValues.map((ds) => ds.data.length));
         for (let i = 0; i <= maxLength; i++) {
             pieColors.push(colors.next());
         }
@@ -8170,7 +8468,7 @@
             const dataset = {
                 label,
                 data,
-                borderColor: "#FFFFFF",
+                borderColor: chart.background || "#FFFFFF",
                 backgroundColor,
             };
             config.data.datasets.push(dataset);
@@ -8189,20 +8487,20 @@
     });
     function checkKeyValue(definition) {
         return definition.keyValue && !rangeReference.test(definition.keyValue)
-            ? 33 /* CommandResult.InvalidScorecardKeyValue */
+            ? 35 /* CommandResult.InvalidScorecardKeyValue */
             : 0 /* CommandResult.Success */;
     }
     function checkBaseline(definition) {
         return definition.baseline && !rangeReference.test(definition.baseline)
-            ? 34 /* CommandResult.InvalidScorecardBaseline */
+            ? 36 /* CommandResult.InvalidScorecardBaseline */
             : 0 /* CommandResult.Success */;
     }
     class ScorecardChart$1 extends AbstractChart {
         constructor(definition, sheetId, getters) {
             super(definition, sheetId, getters);
             this.type = "scorecard";
-            this.keyValue = createRange(getters, sheetId, definition.keyValue);
-            this.baseline = createRange(getters, sheetId, definition.baseline);
+            this.keyValue = createValidRange(getters, sheetId, definition.keyValue);
+            this.baseline = createValidRange(getters, sheetId, definition.baseline);
             this.baselineMode = definition.baselineMode;
             this.baselineDescr = definition.baselineDescr;
             this.background = definition.background;
@@ -8308,7 +8606,7 @@
             const baselineZone = chart.baseline.zone;
             baselineCell = getters.getCell(chart.baseline.sheetId, baselineZone.left, baselineZone.top);
         }
-        const background = getters.getBackgroundOfSingleCellChart(chart.background, chart.keyValue);
+        const { background, fontColor } = getters.getStyleOfSingleCellChart(chart.background, chart.keyValue);
         return {
             title: _t(chart.title),
             keyValue: formattedKeyValue || keyValue,
@@ -8316,7 +8614,7 @@
             baselineArrow: getBaselineArrowDirection(baselineCell === null || baselineCell === void 0 ? void 0 : baselineCell.evaluated, keyValueCell === null || keyValueCell === void 0 ? void 0 : keyValueCell.evaluated, chart.baselineMode),
             baselineColor: getBaselineColor(baselineCell === null || baselineCell === void 0 ? void 0 : baselineCell.evaluated, chart.baselineMode, keyValueCell === null || keyValueCell === void 0 ? void 0 : keyValueCell.evaluated, chart.baselineColorUp, chart.baselineColorDown),
             baselineDescr: chart.baselineDescr ? _t(chart.baselineDescr) : "",
-            fontColor: chartFontColor(background),
+            fontColor,
             background,
             baselineStyle: chart.baselineMode !== "percentage" ? baselineCell === null || baselineCell === void 0 ? void 0 : baselineCell.style : undefined,
             keyValueStyle: keyValueCell === null || keyValueCell === void 0 ? void 0 : keyValueCell.style,
@@ -8360,6 +8658,7 @@
     .o-color-picker-toggler {
       display: flex;
       .o-color-picker-toggler-sign {
+        display: flex;
         margin: auto auto;
         width: 55%;
         height: 55%;
@@ -8622,7 +8921,7 @@
         }
         get isDataRangeInvalid() {
             var _a;
-            return !!((_a = this.state.dataRangeDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(35 /* CommandResult.InvalidGaugeDataRange */));
+            return !!((_a = this.state.dataRangeDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(37 /* CommandResult.InvalidGaugeDataRange */));
         }
         onDataRangeChanged(ranges) {
             this.dataRange = ranges[0];
@@ -8709,28 +9008,28 @@
         }
         isRangeMinInvalid() {
             var _a, _b, _c;
-            return !!(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(36 /* CommandResult.EmptyGaugeRangeMin */)) ||
-                ((_b = this.state.sectionRuleDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(37 /* CommandResult.GaugeRangeMinNaN */)) ||
-                ((_c = this.state.sectionRuleDispatchResult) === null || _c === void 0 ? void 0 : _c.isCancelledBecause(40 /* CommandResult.GaugeRangeMinBiggerThanRangeMax */)));
+            return !!(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(38 /* CommandResult.EmptyGaugeRangeMin */)) ||
+                ((_b = this.state.sectionRuleDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(39 /* CommandResult.GaugeRangeMinNaN */)) ||
+                ((_c = this.state.sectionRuleDispatchResult) === null || _c === void 0 ? void 0 : _c.isCancelledBecause(42 /* CommandResult.GaugeRangeMinBiggerThanRangeMax */)));
         }
         isRangeMaxInvalid() {
             var _a, _b, _c;
-            return !!(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(38 /* CommandResult.EmptyGaugeRangeMax */)) ||
-                ((_b = this.state.sectionRuleDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(39 /* CommandResult.GaugeRangeMaxNaN */)) ||
-                ((_c = this.state.sectionRuleDispatchResult) === null || _c === void 0 ? void 0 : _c.isCancelledBecause(40 /* CommandResult.GaugeRangeMinBiggerThanRangeMax */)));
+            return !!(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(40 /* CommandResult.EmptyGaugeRangeMax */)) ||
+                ((_b = this.state.sectionRuleDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(41 /* CommandResult.GaugeRangeMaxNaN */)) ||
+                ((_c = this.state.sectionRuleDispatchResult) === null || _c === void 0 ? void 0 : _c.isCancelledBecause(42 /* CommandResult.GaugeRangeMinBiggerThanRangeMax */)));
         }
         // ---------------------------------------------------------------------------
         // COLOR_SECTION_TEMPLATE
         // ---------------------------------------------------------------------------
         get isLowerInflectionPointInvalid() {
             var _a, _b;
-            return !!(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(41 /* CommandResult.GaugeLowerInflectionPointNaN */)) ||
-                ((_b = this.state.sectionRuleDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(43 /* CommandResult.GaugeLowerBiggerThanUpper */)));
+            return !!(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(43 /* CommandResult.GaugeLowerInflectionPointNaN */)) ||
+                ((_b = this.state.sectionRuleDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(45 /* CommandResult.GaugeLowerBiggerThanUpper */)));
         }
         get isUpperInflectionPointInvalid() {
             var _a, _b;
-            return !!(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(42 /* CommandResult.GaugeUpperInflectionPointNaN */)) ||
-                ((_b = this.state.sectionRuleDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(43 /* CommandResult.GaugeLowerBiggerThanUpper */)));
+            return !!(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(44 /* CommandResult.GaugeUpperInflectionPointNaN */)) ||
+                ((_b = this.state.sectionRuleDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(45 /* CommandResult.GaugeLowerBiggerThanUpper */)));
         }
         updateInflectionPointValue(attr, ev) {
             const sectionRule = deepCopy(this.props.definition.sectionRule);
@@ -8801,6 +9100,11 @@
                 stacked: ev.target.checked,
             });
         }
+        onUpdateCumulative(ev) {
+            this.props.updateChart(this.props.figureId, {
+                cumulative: ev.target.checked,
+            });
+        }
     }
     LineConfigPanel.template = "o-spreadsheet-LineConfigPanel";
 
@@ -8828,11 +9132,11 @@
         }
         get isKeyValueInvalid() {
             var _a;
-            return !!((_a = this.state.keyValueDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(33 /* CommandResult.InvalidScorecardKeyValue */));
+            return !!((_a = this.state.keyValueDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(35 /* CommandResult.InvalidScorecardKeyValue */));
         }
         get isBaselineInvalid() {
             var _a;
-            return !!((_a = this.state.keyValueDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(34 /* CommandResult.InvalidScorecardBaseline */));
+            return !!((_a = this.state.keyValueDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(36 /* CommandResult.InvalidScorecardBaseline */));
         }
         onKeyValueRangeChanged(ranges) {
             this.keyValue = ranges[0];
@@ -9525,7 +9829,7 @@
                         rule: this.getEditorRule(),
                         id: this.state.mode === "edit"
                             ? this.state.currentCF.id
-                            : this.env.model.uuidGenerator.uuidv4(),
+                            : this.env.model.uuidGenerator.smallUuid(),
                     },
                     ranges: this.state.currentCF.ranges.map((xc) => this.env.model.getters.getRangeDataFromXc(sheetId, xc)),
                     sheetId,
@@ -9593,7 +9897,7 @@
             this.state.mode = "add";
             this.state.currentCFType = "CellIsRule";
             this.state.currentCF = {
-                id: this.env.model.uuidGenerator.uuidv4(),
+                id: this.env.model.uuidGenerator.smallUuid(),
                 ranges: this.env.model.getters
                     .getSelectedZones()
                     .map((zone) => this.env.model.getters.zoneToXC(this.env.model.getters.getActiveSheetId(), zone)),
@@ -9672,11 +9976,11 @@
          ****************************************************************************/
         get isValue1Invalid() {
             var _a;
-            return !!((_a = this.state.errors) === null || _a === void 0 ? void 0 : _a.includes(50 /* CommandResult.FirstArgMissing */));
+            return !!((_a = this.state.errors) === null || _a === void 0 ? void 0 : _a.includes(52 /* CommandResult.FirstArgMissing */));
         }
         get isValue2Invalid() {
             var _a;
-            return !!((_a = this.state.errors) === null || _a === void 0 ? void 0 : _a.includes(51 /* CommandResult.SecondArgMissing */));
+            return !!((_a = this.state.errors) === null || _a === void 0 ? void 0 : _a.includes(53 /* CommandResult.SecondArgMissing */));
         }
         toggleStyle(tool) {
             const style = this.state.rules.cellIs.style;
@@ -9693,22 +9997,25 @@
         isValueInvalid(threshold) {
             switch (threshold) {
                 case "minimum":
-                    return (this.state.errors.includes(57 /* CommandResult.MinInvalidFormula */) ||
-                        this.state.errors.includes(49 /* CommandResult.MinBiggerThanMid */) ||
-                        this.state.errors.includes(46 /* CommandResult.MinBiggerThanMax */) ||
-                        this.state.errors.includes(52 /* CommandResult.MinNaN */));
+                    return (this.state.errors.includes(59 /* CommandResult.MinInvalidFormula */) ||
+                        this.state.errors.includes(51 /* CommandResult.MinBiggerThanMid */) ||
+                        this.state.errors.includes(48 /* CommandResult.MinBiggerThanMax */) ||
+                        this.state.errors.includes(54 /* CommandResult.MinNaN */));
                 case "midpoint":
-                    return (this.state.errors.includes(58 /* CommandResult.MidInvalidFormula */) ||
-                        this.state.errors.includes(53 /* CommandResult.MidNaN */) ||
-                        this.state.errors.includes(48 /* CommandResult.MidBiggerThanMax */));
+                    return (this.state.errors.includes(60 /* CommandResult.MidInvalidFormula */) ||
+                        this.state.errors.includes(55 /* CommandResult.MidNaN */) ||
+                        this.state.errors.includes(50 /* CommandResult.MidBiggerThanMax */));
                 case "maximum":
-                    return (this.state.errors.includes(59 /* CommandResult.MaxInvalidFormula */) ||
-                        this.state.errors.includes(54 /* CommandResult.MaxNaN */));
+                    return (this.state.errors.includes(61 /* CommandResult.MaxInvalidFormula */) ||
+                        this.state.errors.includes(56 /* CommandResult.MaxNaN */));
                 default:
                     return false;
             }
         }
         setColorScaleColor(target, color) {
+            if (!isColorValid(color)) {
+                return;
+            }
             const point = this.state.rules.colorScale[target];
             if (point) {
                 point.color = Number.parseInt(color.substr(1), 16);
@@ -9752,13 +10059,13 @@
         isInflectionPointInvalid(inflectionPoint) {
             switch (inflectionPoint) {
                 case "lowerInflectionPoint":
-                    return (this.state.errors.includes(56 /* CommandResult.ValueLowerInflectionNaN */) ||
-                        this.state.errors.includes(61 /* CommandResult.ValueLowerInvalidFormula */) ||
-                        this.state.errors.includes(47 /* CommandResult.LowerBiggerThanUpper */));
+                    return (this.state.errors.includes(58 /* CommandResult.ValueLowerInflectionNaN */) ||
+                        this.state.errors.includes(63 /* CommandResult.ValueLowerInvalidFormula */) ||
+                        this.state.errors.includes(49 /* CommandResult.LowerBiggerThanUpper */));
                 case "upperInflectionPoint":
-                    return (this.state.errors.includes(55 /* CommandResult.ValueUpperInflectionNaN */) ||
-                        this.state.errors.includes(60 /* CommandResult.ValueUpperInvalidFormula */) ||
-                        this.state.errors.includes(47 /* CommandResult.LowerBiggerThanUpper */));
+                    return (this.state.errors.includes(57 /* CommandResult.ValueUpperInflectionNaN */) ||
+                        this.state.errors.includes(62 /* CommandResult.ValueUpperInvalidFormula */) ||
+                        this.state.errors.includes(49 /* CommandResult.LowerBiggerThanUpper */));
                 default:
                     return true;
             }
@@ -9950,7 +10257,7 @@
       }
       .o-input-count {
         width: fit-content;
-        padding: 4 0 4 4;
+        padding: 4px 0 4px 4px;
       }
     }
   }
@@ -9969,9 +10276,14 @@
             this.showFormulaState = this.env.model.getters.shouldShowFormulas();
             owl.onMounted(() => this.focusInput());
             owl.onWillUnmount(() => {
+                clearTimeout(this.debounceTimeoutId);
                 this.env.model.dispatch("CLEAR_SEARCH");
                 this.env.model.dispatch("SET_FORMULA_VISIBILITY", { show: this.showFormulaState });
             });
+            owl.useEffect(() => {
+                this.state.searchOptions.searchFormulas = this.env.model.getters.shouldShowFormulas();
+                this.searchFormulas();
+            }, () => [this.env.model.getters.shouldShowFormulas()]);
         }
         onInput(ev) {
             this.state.toSearch = ev.target.value;
@@ -9988,10 +10300,6 @@
                 ev.preventDefault();
                 this.replace();
             }
-        }
-        onFocusSidePanel() {
-            this.state.searchOptions.searchFormulas = this.env.model.getters.shouldShowFormulas();
-            this.env.model.dispatch("REFRESH_SEARCH");
         }
         searchFormulas() {
             this.env.model.dispatch("SET_FORMULA_VISIBILITY", {
@@ -10012,8 +10320,11 @@
             });
         }
         debouncedUpdateSearch() {
-            clearTimeout(this.inDebounce);
-            this.inDebounce = setTimeout(() => this.updateSearch.call(this), 400);
+            clearTimeout(this.debounceTimeoutId);
+            this.debounceTimeoutId = setTimeout(() => {
+                this.updateSearch();
+                this.debounceTimeoutId = undefined;
+            }, 200);
         }
         replace() {
             this.env.model.dispatch("REPLACE_SEARCH", {
@@ -10074,7 +10385,7 @@
             this.uuidGenerator = new UuidGenerator();
         }
         add(name, value) {
-            const component = { ...value, id: this.uuidGenerator.uuidv4() };
+            const component = { ...value, id: this.uuidGenerator.smallUuid() };
             return super.add(name, component);
         }
     }
@@ -10416,14 +10727,22 @@
     ChartFigure.template = "o-spreadsheet-ChartFigure";
     ChartFigure.components = { Menu };
 
+    /**
+     * Start listening to pointer events and apply the given callbacks.
+     *
+     * @returns A function to remove the listeners.
+     */
     function startDnd(onMouseMove, onMouseUp, onMouseDown = () => { }) {
-        const _onMouseUp = (ev) => {
-            onMouseUp(ev);
+        const removeListeners = () => {
             window.removeEventListener("mousedown", onMouseDown);
             window.removeEventListener("mouseup", _onMouseUp);
             window.removeEventListener("dragstart", _onDragStart);
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("wheel", onMouseMove);
+        };
+        const _onMouseUp = (ev) => {
+            onMouseUp(ev);
+            removeListeners();
         };
         function _onDragStart(ev) {
             ev.preventDefault();
@@ -10433,6 +10752,7 @@
         window.addEventListener("dragstart", _onDragStart);
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("wheel", onMouseMove);
+        return removeListeners;
     }
     /**
      * Function to be used during a mousedown event, this function allows to
@@ -10913,12 +11233,12 @@
         }
     }
     /** Normalize string by setting it to lowercase and replacing accent letters with plain letters */
-    function normalizeString(str) {
+    const normalizeString = memoize(function normalizeString(str) {
         return str
             .toLowerCase()
             .normalize("NFD")
             .replace(/[\u0300-\u036f]/g, "");
-    }
+    });
     /**
      * Normalize a value.
      * If the cell value is a string, this will set it to lowercase and replacing accent letters with plain letters
@@ -11109,7 +11429,7 @@
                 operand = descr;
             }
         }
-        if (isNumber(operand)) {
+        if (isNumber(operand) || isDateTime(operand)) {
             operand = toNumber(operand);
         }
         else if (operand === "TRUE" || operand === "FALSE") {
@@ -11125,6 +11445,9 @@
         return result;
     }
     function operandToRegExp(operand) {
+        if (operand === "*") {
+            return /.+/;
+        }
         let exp = "";
         let predecessor = "";
         for (let char of operand) {
@@ -11148,13 +11471,16 @@
         }
         return new RegExp("^" + exp + "$", "i");
     }
-    function evaluatePredicate(value, criterion) {
+    function evaluatePredicate(value = "", criterion) {
         const { operator, operand } = criterion;
-        if (value === undefined || operand === undefined) {
+        if (operand === undefined) {
             return false;
         }
         if (typeof operand === "number" && operator === "=") {
-            return toString(value) === toString(operand);
+            if (typeof value === "string" && (isNumber(value) || isDateTime(value))) {
+                return toNumber(value) === operand;
+            }
+            return value === operand;
         }
         if (operator === "<>" || operator === "=") {
             let result;
@@ -11281,15 +11607,18 @@
         let currentIndex;
         let currentVal;
         let currentType;
+        const getValue = sortOrder === "desc"
+            ? (i) => getValueInData(data, rangeLength - i - 1)
+            : (i) => getValueInData(data, i);
         while (indexRight - indexLeft >= 0) {
             indexMedian = Math.floor((indexLeft + indexRight) / 2);
             currentIndex = indexMedian;
-            currentVal = getValueInData(data, currentIndex);
+            currentVal = getValue(currentIndex);
             currentType = typeof currentVal;
             // 1 - linear search to find value with the same type
             while (indexLeft < currentIndex && targetType !== currentType) {
                 currentIndex--;
-                currentVal = getValueInData(data, currentIndex);
+                currentVal = getValue(currentIndex);
                 currentType = typeof currentVal;
             }
             if (currentType !== targetType || currentVal === undefined) {
@@ -11304,8 +11633,7 @@
             else if (mode === "nextSmaller" && currentVal <= target) {
                 if (matchVal === undefined ||
                     matchVal < currentVal ||
-                    (matchVal === currentVal && sortOrder === "asc" && matchValIndex < currentIndex) ||
-                    (matchVal === currentVal && sortOrder === "desc" && matchValIndex > currentIndex)) {
+                    (matchVal === currentVal && matchValIndex < currentIndex)) {
                     matchVal = currentVal;
                     matchValIndex = currentIndex;
                 }
@@ -11313,15 +11641,13 @@
             else if (mode === "nextGreater" && currentVal >= target) {
                 if (matchVal === undefined ||
                     matchVal > currentVal ||
-                    (matchVal === currentVal && sortOrder === "asc" && matchValIndex < currentIndex) ||
-                    (matchVal === currentVal && sortOrder === "desc" && matchValIndex > currentIndex)) {
+                    (matchVal === currentVal && matchValIndex < currentIndex)) {
                     matchVal = currentVal;
                     matchValIndex = currentIndex;
                 }
             }
             // 3 - give new indexes for the Binary search
-            if ((sortOrder === "asc" && currentVal > target) ||
-                (sortOrder === "desc" && currentVal <= target)) {
+            if (currentVal > target || (mode === "strict" && currentVal === target)) {
                 indexRight = currentIndex - 1;
             }
             else {
@@ -11329,7 +11655,10 @@
             }
         }
         // note that valMinIndex could be 0
-        return matchValIndex !== undefined ? matchValIndex : -1;
+        if (matchValIndex === undefined) {
+            return -1;
+        }
+        return sortOrder === "desc" ? rangeLength - matchValIndex - 1 : matchValIndex;
     }
     /**
      * Perform a linear search and return the index of the match.
@@ -12054,6 +12383,26 @@
         isExported: true,
     };
     // -----------------------------------------------------------------------------
+    // LOG
+    // -----------------------------------------------------------------------------
+    const LOG = {
+        description: _lt("The logarithm of a number, for a given base."),
+        args: args(`
+    value (number) ${_lt("The value for which to calculate the logarithm, base e.")}
+    base (number, default=10) ${_lt("The base of the logarithm.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (value, base = 10) {
+            const _value = toNumber(value);
+            const _base = toNumber(base);
+            assert(() => _value > 0, _lt("The value (%s) must be strictly positive.", _value.toString()));
+            assert(() => _base > 0, _lt("The base (%s) must be strictly positive.", _base.toString()));
+            assert(() => _base !== 1, _lt("The base must be different from 1."));
+            return Math.log10(_value) / Math.log10(_base);
+        },
+        isExported: true,
+    };
+    // -----------------------------------------------------------------------------
     // MOD
     // -----------------------------------------------------------------------------
     const MOD = {
@@ -12522,6 +12871,7 @@
         ISO_CEILING: ISO_CEILING,
         ISODD: ISODD,
         LN: LN,
+        LOG: LOG,
         MOD: MOD,
         ODD: ODD,
         PI: PI,
@@ -13762,7 +14112,7 @@
             if (_year < 1900) {
                 _year += 1900;
             }
-            const jsDate = new Date(_year, _month - 1, _day);
+            const jsDate = new DateTime(_year, _month - 1, _day);
             const result = jsDateToRoundNumber(jsDate);
             assert(() => result >= 0, _lt(`The function [[FUNCTION_NAME]] result must be greater than or equal 01/01/1900.`));
             return result;
@@ -13874,7 +14224,7 @@
             const _months = Math.trunc(toNumber(months));
             const yStart = _startDate.getFullYear();
             const mStart = _startDate.getMonth();
-            const jsDate = new Date(yStart, mStart + _months + 1, 0);
+            const jsDate = new DateTime(yStart, mStart + _months + 1, 0);
             return jsDateToRoundNumber(jsDate);
         },
         isExported: true,
@@ -13913,17 +14263,17 @@
             // The first week of the year is the week that contains the first
             // Thursday of the year.
             let firstThursday = 1;
-            while (new Date(y, 0, firstThursday).getDay() !== 4) {
+            while (new DateTime(y, 0, firstThursday).getDay() !== 4) {
                 firstThursday += 1;
             }
-            const firstDayOfFirstWeek = new Date(y, 0, firstThursday - 3);
+            const firstDayOfFirstWeek = new DateTime(y, 0, firstThursday - 3);
             // The last week of the year is the week that contains the last Thursday of
             // the year.
             let lastThursday = 31;
-            while (new Date(y, 11, lastThursday).getDay() !== 4) {
+            while (new DateTime(y, 11, lastThursday).getDay() !== 4) {
                 lastThursday -= 1;
             }
-            const lastDayOfLastWeek = new Date(y, 11, lastThursday + 3);
+            const lastDayOfLastWeek = new DateTime(y, 11, lastThursday + 3);
             // B - If our date > lastDayOfLastWeek then it's in the weeks of the year after
             // If our date < firstDayOfFirstWeek then it's in the weeks of the year before
             let offsetYear;
@@ -13949,17 +14299,17 @@
                 case 1:
                     // firstDay is the 1st day of the 1st week of the year after
                     // firstDay = lastDayOfLastWeek + 1 Day
-                    firstDay = new Date(y, 11, lastThursday + 3 + 1);
+                    firstDay = new DateTime(y, 11, lastThursday + 3 + 1);
                     break;
                 case -1:
                     // firstDay is the 1st day of the 1st week of the previous year.
                     // The first week of the previous year is the week that contains the
                     // first Thursday of the previous year.
                     let firstThursdayPreviousYear = 1;
-                    while (new Date(y - 1, 0, firstThursdayPreviousYear).getDay() !== 4) {
+                    while (new DateTime(y - 1, 0, firstThursdayPreviousYear).getDay() !== 4) {
                         firstThursdayPreviousYear += 1;
                     }
-                    firstDay = new Date(y - 1, 0, firstThursdayPreviousYear - 3);
+                    firstDay = new DateTime(y - 1, 0, firstThursdayPreviousYear - 3);
                     break;
             }
             const diff = (_date.getTime() - firstDay.getTime()) / MS_PER_DAY;
@@ -14098,8 +14448,8 @@
                 });
             }
             const invertDate = _startDate.getTime() > _endDate.getTime();
-            const stopDate = new Date((invertDate ? _startDate : _endDate).getTime());
-            let stepDate = new Date((invertDate ? _endDate : _startDate).getTime());
+            const stopDate = DateTime.fromTimestamp((invertDate ? _startDate : _endDate).getTime());
+            let stepDate = DateTime.fromTimestamp((invertDate ? _endDate : _startDate).getTime());
             const timeStopDate = stopDate.getTime();
             let timeStepDate = stepDate.getTime();
             let netWorkingDay = 0;
@@ -14123,8 +14473,7 @@
         returns: ["DATE"],
         computeFormat: () => "m/d/yyyy hh:mm:ss",
         compute: function () {
-            let today = new Date();
-            today.setMilliseconds(0);
+            let today = DateTime.now();
             const delta = today.getTime() - INITIAL_1900_DAY.getTime();
             const time = today.getHours() / 24 + today.getMinutes() / 1440 + today.getSeconds() / 86400;
             return Math.floor(delta / MS_PER_DAY) + time;
@@ -14198,8 +14547,8 @@
         returns: ["DATE"],
         computeFormat: () => "m/d/yyyy",
         compute: function () {
-            const today = new Date();
-            const jsDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+            const today = DateTime.now();
+            const jsDate = new DateTime(today.getFullYear(), today.getMonth(), today.getDate());
             return jsDateToRoundNumber(jsDate);
         },
         isExported: true,
@@ -14254,10 +14603,10 @@
             }
             const y = _date.getFullYear();
             let dayStart = 1;
-            let startDayOfFirstWeek = new Date(y, 0, dayStart);
+            let startDayOfFirstWeek = new DateTime(y, 0, dayStart);
             while (startDayOfFirstWeek.getDay() !== startDayOfWeek) {
                 dayStart += 1;
-                startDayOfFirstWeek = new Date(y, 0, dayStart);
+                startDayOfFirstWeek = new DateTime(y, 0, dayStart);
             }
             const dif = (_date.getTime() - startDayOfFirstWeek.getTime()) / MS_PER_DAY;
             if (dif < 0) {
@@ -14311,7 +14660,7 @@
                     timesHoliday.add(holiday.getTime());
                 });
             }
-            let stepDate = new Date(_startDate.getTime());
+            let stepDate = DateTime.fromTimestamp(_startDate.getTime());
             let timeStepDate = stepDate.getTime();
             const unitDay = Math.sign(_numDays);
             let stepDay = Math.abs(_numDays);
@@ -14377,7 +14726,7 @@
             const _startDate = toJsDate(date);
             const yStart = _startDate.getFullYear();
             const mStart = _startDate.getMonth();
-            const jsDate = new Date(yStart, mStart, 1);
+            const jsDate = new DateTime(yStart, mStart, 1);
             return jsDateToRoundNumber(jsDate);
         },
     };
@@ -14421,7 +14770,7 @@
         compute: function (date) {
             const quarter = QUARTER.compute(date);
             const year = YEAR.compute(date);
-            const jsDate = new Date(year, (quarter - 1) * 3, 1);
+            const jsDate = new DateTime(year, (quarter - 1) * 3, 1);
             return jsDateToRoundNumber(jsDate);
         },
     };
@@ -14438,7 +14787,7 @@
         compute: function (date) {
             const quarter = QUARTER.compute(date);
             const year = YEAR.compute(date);
-            const jsDate = new Date(year, quarter * 3, 0);
+            const jsDate = new DateTime(year, quarter * 3, 0);
             return jsDateToRoundNumber(jsDate);
         },
     };
@@ -14454,7 +14803,7 @@
         computeFormat: () => "m/d/yyyy",
         compute: function (date) {
             const year = YEAR.compute(date);
-            const jsDate = new Date(year, 0, 1);
+            const jsDate = new DateTime(year, 0, 1);
             return jsDateToRoundNumber(jsDate);
         },
     };
@@ -14470,7 +14819,7 @@
         computeFormat: () => "m/d/yyyy",
         compute: function (date) {
             const year = YEAR.compute(date);
-            const jsDate = new Date(year + 1, 0, 0);
+            const jsDate = new DateTime(year + 1, 0, 0);
             return jsDateToRoundNumber(jsDate);
         },
     };
@@ -14604,7 +14953,7 @@
     function assertSettlementLessThanOneYearBeforeMaturity(settlement, maturity) {
         const startDate = toJsDate(settlement);
         const endDate = toJsDate(maturity);
-        const startDatePlusOneYear = new Date(startDate);
+        const startDatePlusOneYear = toJsDate(settlement);
         startDatePlusOneYear.setFullYear(startDate.getFullYear() + 1);
         assert(() => endDate.getTime() <= startDatePlusOneYear.getTime(), _lt("The settlement date (%s) must at most one year after the maturity date (%s).", settlement.toString(), maturity.toString()));
     }
@@ -17018,6 +17367,36 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         isExported: true,
     };
     // -----------------------------------------------------------------------------
+    // INDEX
+    // -----------------------------------------------------------------------------
+    const INDEX = {
+        description: _lt(`Returns the content of a cell, specified by row and column offset.`),
+        args: args(`
+      reference (any, range) ${_lt("The range of cells from which the value is returned.")}
+      row (number) ${_lt("The index of the row to be returned from within the reference range of cells.")}
+      column (number) ${_lt("The index of the column to be returned from within the reference range of cells.")}
+`),
+        returns: ["ANY"],
+        computeFormat: (reference, row, column) => {
+            var _a;
+            const _row = toNumber(row.value);
+            const _column = toNumber(column.value);
+            return (_a = reference[_column - 1][_row - 1]) === null || _a === void 0 ? void 0 : _a.format;
+        },
+        compute: function (reference, row, column) {
+            const _reference = isMatrix(reference) ? reference : [[reference]];
+            const _row = toNumber(row);
+            const _column = toNumber(column);
+            assert(() => _column >= 0 &&
+                _column - 1 < _reference.length &&
+                _row >= 0 &&
+                _row - 1 < _reference[0].length, _lt("Index out of range."));
+            assert(() => row !== 0 && column !== 0, _lt("This function can only return a single cell value, not an array. Provide valid row and column indices."));
+            return _reference[_column - 1][_row - 1];
+        },
+        isExported: true,
+    };
+    // -----------------------------------------------------------------------------
     // LOOKUP
     // -----------------------------------------------------------------------------
     const LOOKUP = {
@@ -17206,6 +17585,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         COLUMN: COLUMN,
         COLUMNS: COLUMNS,
         HLOOKUP: HLOOKUP,
+        INDEX: INDEX,
         LOOKUP: LOOKUP,
         MATCH: MATCH,
         ROW: ROW,
@@ -18091,13 +18471,12 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
     }
     const whiteSpaceRegexp = /\s/;
     function tokenizeSpace(chars) {
-        let length = 0;
+        let spaces = "";
         while (chars[0] && chars[0].match(whiteSpaceRegexp)) {
-            length++;
-            chars.shift();
+            spaces += chars.shift();
         }
-        if (length) {
-            return { type: "SPACE", value: " ".repeat(length) };
+        if (spaces) {
+            return { type: "SPACE", value: spaces };
         }
         return null;
     }
@@ -18107,6 +18486,147 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             return { type: "INVALID_REFERENCE", value: INCORRECT_RANGE_STRING };
         }
         return null;
+    }
+
+    var State;
+    (function (State) {
+        /**
+         * Initial state.
+         * Expecting any reference for the left part of a range
+         * e.g. "A1", "1", "A", "Sheet1!A1", "Sheet1!A"
+         */
+        State[State["LeftRef"] = 0] = "LeftRef";
+        /**
+         * Expecting any reference for the right part of a range
+         * e.g. "A1", "1", "A", "Sheet1!A1", "Sheet1!A"
+         */
+        State[State["RightRef"] = 1] = "RightRef";
+        /**
+         * Expecting the separator without any constraint on the right part
+         */
+        State[State["Separator"] = 2] = "Separator";
+        /**
+         * Expecting the separator for a full column range
+         */
+        State[State["FullColumnSeparator"] = 3] = "FullColumnSeparator";
+        /**
+         * Expecting the separator for a full row range
+         */
+        State[State["FullRowSeparator"] = 4] = "FullRowSeparator";
+        /**
+         * Expecting the right part of a full column range
+         * e.g. "1", "A1"
+         */
+        State[State["RightColumnRef"] = 5] = "RightColumnRef";
+        /**
+         * Expecting the right part of a full row range
+         * e.g. "A", "A1"
+         */
+        State[State["RightRowRef"] = 6] = "RightRowRef";
+        /**
+         * Final state. A range has been matched
+         */
+        State[State["Found"] = 7] = "Found";
+    })(State || (State = {}));
+    const goTo = (state, guard = () => true) => [
+        {
+            goTo: state,
+            guard,
+        },
+    ];
+    const goToMulti = (state, guard = () => true) => ({
+        goTo: state,
+        guard,
+    });
+    const machine = {
+        [State.LeftRef]: {
+            REFERENCE: goTo(State.Separator),
+            NUMBER: goTo(State.FullRowSeparator),
+            SYMBOL: [
+                goToMulti(State.FullColumnSeparator, (token) => isColReference(token.value)),
+                goToMulti(State.FullRowSeparator, (token) => isRowReference(token.value)),
+            ],
+        },
+        [State.FullColumnSeparator]: {
+            SPACE: goTo(State.FullColumnSeparator),
+            OPERATOR: goTo(State.RightColumnRef, (token) => token.value === ":"),
+        },
+        [State.FullRowSeparator]: {
+            SPACE: goTo(State.FullRowSeparator),
+            OPERATOR: goTo(State.RightRowRef, (token) => token.value === ":"),
+        },
+        [State.Separator]: {
+            SPACE: goTo(State.Separator),
+            OPERATOR: goTo(State.RightRef, (token) => token.value === ":"),
+        },
+        [State.RightRef]: {
+            SPACE: goTo(State.RightRef),
+            NUMBER: goTo(State.Found),
+            REFERENCE: goTo(State.Found, (token) => isSingleCellReference(token.value)),
+            SYMBOL: goTo(State.Found, (token) => isColHeader(token.value) || isRowHeader(token.value)),
+        },
+        [State.RightColumnRef]: {
+            SPACE: goTo(State.RightColumnRef),
+            SYMBOL: goTo(State.Found, (token) => isColHeader(token.value)),
+            REFERENCE: goTo(State.Found, (token) => isSingleCellReference(token.value)),
+        },
+        [State.RightRowRef]: {
+            SPACE: goTo(State.RightRowRef),
+            NUMBER: goTo(State.Found),
+            REFERENCE: goTo(State.Found, (token) => isSingleCellReference(token.value)),
+            SYMBOL: goTo(State.Found, (token) => isRowHeader(token.value)),
+        },
+        [State.Found]: {},
+    };
+    /**
+     * Check if the list of tokens starts with a sequence of tokens representing
+     * a range.
+     * If a range is found, the sequence is removed from the list and is returned
+     * as a single token.
+     */
+    function matchReference(tokens) {
+        var _a;
+        let head = 0;
+        let transitions = machine[State.LeftRef];
+        let matchedTokens = "";
+        while (transitions !== undefined) {
+            const token = tokens[head++];
+            if (!token) {
+                return null;
+            }
+            const transition = (_a = transitions[token.type]) === null || _a === void 0 ? void 0 : _a.find((transition) => transition.guard(token));
+            const nextState = transition ? transition.goTo : undefined;
+            switch (nextState) {
+                case undefined:
+                    return null;
+                case State.Found:
+                    matchedTokens += token.value;
+                    tokens.splice(0, head);
+                    return {
+                        type: "REFERENCE",
+                        value: matchedTokens,
+                    };
+                default:
+                    transitions = machine[nextState];
+                    matchedTokens += token.value;
+                    break;
+            }
+        }
+        return null;
+    }
+    /**
+     * Take the result of the tokenizer and transform it to be usable in the
+     * manipulations of range
+     *
+     * @param formula
+     */
+    function rangeTokenize(formula) {
+        const tokens = tokenize(formula);
+        const result = [];
+        while (tokens.length) {
+            result.push(matchReference(tokens) || tokens.shift());
+        }
+        return result;
     }
 
     const functionRegex = /[a-zA-Z0-9\_]+(\.[a-zA-Z0-9\_]+)*/;
@@ -18192,7 +18712,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     return { type: "FUNCALL", value: current.value, args };
                 }
             case "INVALID_REFERENCE":
-                throw new InvalidReferenceError();
+                return {
+                    type: "REFERENCE",
+                    value: CellErrorType.InvalidReference,
+                };
             case "REFERENCE":
                 if (((_b = tokens[0]) === null || _b === void 0 ? void 0 : _b.value) === ":" && ((_c = tokens[1]) === null || _c === void 0 ? void 0 : _c.type) === "REFERENCE") {
                     tokens.shift();
@@ -18275,11 +18798,11 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
      * Parse an expression (as a string) into an AST.
      */
     function parse(str) {
-        return parseTokens(tokenize(str));
+        return parseTokens(rangeTokenize(str));
     }
     function parseTokens(tokens) {
         tokens = tokens.filter((x) => x.type !== "SPACE");
-        if (tokens[0].type === "OPERATOR" && tokens[0].value === "=") {
+        if (tokens[0] && tokens[0].type === "OPERATOR" && tokens[0].value === "=") {
             tokens.splice(0, 1);
         }
         const result = parseExpression(tokens, 0);
@@ -18385,146 +18908,6 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             needParenthesis = true;
         }
         return needParenthesis ? `(${astToFormula(rightOperation)})` : astToFormula(rightOperation);
-    }
-
-    var State;
-    (function (State) {
-        /**
-         * Initial state.
-         * Expecting any reference for the left part of a range
-         * e.g. "A1", "1", "A", "Sheet1!A1", "Sheet1!A"
-         */
-        State[State["LeftRef"] = 0] = "LeftRef";
-        /**
-         * Expecting any reference for the right part of a range
-         * e.g. "A1", "1", "A", "Sheet1!A1", "Sheet1!A"
-         */
-        State[State["RightRef"] = 1] = "RightRef";
-        /**
-         * Expecting the separator without any constraint on the right part
-         */
-        State[State["Separator"] = 2] = "Separator";
-        /**
-         * Expecting the separator for a full column range
-         */
-        State[State["FullColumnSeparator"] = 3] = "FullColumnSeparator";
-        /**
-         * Expecting the separator for a full row range
-         */
-        State[State["FullRowSeparator"] = 4] = "FullRowSeparator";
-        /**
-         * Expecting the right part of a full column range
-         * e.g. "1", "A1"
-         */
-        State[State["RightColumnRef"] = 5] = "RightColumnRef";
-        /**
-         * Expecting the right part of a full row range
-         * e.g. "A", "A1"
-         */
-        State[State["RightRowRef"] = 6] = "RightRowRef";
-        /**
-         * Final state. A range has been matched
-         */
-        State[State["Found"] = 7] = "Found";
-    })(State || (State = {}));
-    const goTo = (state, guard = () => true) => [
-        {
-            goTo: state,
-            guard,
-        },
-    ];
-    const goToMulti = (state, guard = () => true) => ({
-        goTo: state,
-        guard,
-    });
-    const machine = {
-        [State.LeftRef]: {
-            REFERENCE: goTo(State.Separator),
-            NUMBER: goTo(State.FullRowSeparator),
-            SYMBOL: [
-                goToMulti(State.FullColumnSeparator, (token) => isColReference(token.value)),
-                goToMulti(State.FullRowSeparator, (token) => isRowReference(token.value)),
-            ],
-        },
-        [State.FullColumnSeparator]: {
-            SPACE: goTo(State.FullColumnSeparator),
-            OPERATOR: goTo(State.RightColumnRef, (token) => token.value === ":"),
-        },
-        [State.FullRowSeparator]: {
-            SPACE: goTo(State.FullRowSeparator),
-            OPERATOR: goTo(State.RightRowRef, (token) => token.value === ":"),
-        },
-        [State.Separator]: {
-            SPACE: goTo(State.Separator),
-            OPERATOR: goTo(State.RightRef, (token) => token.value === ":"),
-        },
-        [State.RightRef]: {
-            SPACE: goTo(State.RightRef),
-            NUMBER: goTo(State.Found),
-            REFERENCE: goTo(State.Found, (token) => isSingleCellReference(token.value)),
-            SYMBOL: goTo(State.Found, (token) => isColHeader(token.value)),
-        },
-        [State.RightColumnRef]: {
-            SPACE: goTo(State.RightColumnRef),
-            SYMBOL: goTo(State.Found, (token) => isColHeader(token.value)),
-            REFERENCE: goTo(State.Found, (token) => isSingleCellReference(token.value)),
-        },
-        [State.RightRowRef]: {
-            SPACE: goTo(State.RightRowRef),
-            NUMBER: goTo(State.Found),
-            REFERENCE: goTo(State.Found, (token) => isSingleCellReference(token.value)),
-        },
-        [State.Found]: {},
-    };
-    /**
-     * Check if the list of tokens starts with a sequence of tokens representing
-     * a range.
-     * If a range is found, the sequence is removed from the list and is returned
-     * as a single token.
-     */
-    function matchReference(tokens) {
-        var _a;
-        let head = 0;
-        let transitions = machine[State.LeftRef];
-        const matchedTokens = [];
-        while (transitions !== undefined) {
-            const token = tokens[head++];
-            if (!token) {
-                return null;
-            }
-            const transition = (_a = transitions[token.type]) === null || _a === void 0 ? void 0 : _a.find((transition) => transition.guard(token));
-            const nextState = transition ? transition.goTo : undefined;
-            switch (nextState) {
-                case undefined:
-                    return null;
-                case State.Found:
-                    matchedTokens.push(token);
-                    tokens.splice(0, head);
-                    return {
-                        type: "REFERENCE",
-                        value: concat(matchedTokens.map((token) => token.value)),
-                    };
-                default:
-                    transitions = machine[nextState];
-                    matchedTokens.push(token);
-                    break;
-            }
-        }
-        return null;
-    }
-    /**
-     * Take the result of the tokenizer and transform it to be usable in the
-     * manipulations of range
-     *
-     * @param formula
-     */
-    function rangeTokenize(formula) {
-        const tokens = tokenize(formula);
-        const result = [];
-        while (tokens.length) {
-            result.push(matchReference(tokens) || tokens.shift());
-        }
-        return result;
     }
 
     const functions$2 = functionRegistry.content;
@@ -18982,6 +19365,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 return xc.slice(0, indexOfNumber) + "$" + xc.slice(indexOfNumber);
             case "colrow":
                 indexOfNumber = xc.search(/[0-9]/);
+                if (indexOfNumber === -1 || indexOfNumber === 0) {
+                    // no row number (eg. A) or no column (eg. 1)
+                    return "$" + xc;
+                }
                 xc = xc.slice(0, indexOfNumber) + "$" + xc.slice(indexOfNumber);
                 return "$" + xc;
             case "none":
@@ -19285,9 +19672,6 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     break;
             }
         }
-        unsubscribe() {
-            this.mode = "inactive";
-        }
         // ---------------------------------------------------------------------------
         // Getters
         // ---------------------------------------------------------------------------
@@ -19364,7 +19748,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         validateSelection(length, start, end) {
             return start >= 0 && start <= length && end >= 0 && end <= length
                 ? 0 /* CommandResult.Success */
-                : 45 /* CommandResult.WrongComposerSelection */;
+                : 47 /* CommandResult.WrongComposerSelection */;
         }
         onColumnsRemoved(cmd) {
             if (cmd.elements.includes(this.col) && this.mode !== "inactive") {
@@ -19648,9 +20032,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
          */
         getReferencedRanges() {
             const editionSheetId = this.getters.getEditionSheet();
-            return this.currentTokens
+            const referenceRanges = this.currentTokens
                 .filter((token) => token.type === "REFERENCE")
                 .map((token) => this.getters.getRangeFromSheetXC(editionSheetId, token.value));
+            return referenceRanges.filter((range) => !range.invalidSheetName && !range.invalidXc);
         }
         /**
          * Function used to determine when composer selection can start.
@@ -20118,11 +20503,11 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
   }
 
   /* Custom css to highlight topbar composer on focus */
-  .o-topbar-toolbar .o-composer-container:focus-within {
-    border: 1px solid ${SELECTION_BORDER_COLOR};
+  .o-topbar-toolbar .o-composer-container[active] {
+    border: 1px solid ${SELECTION_BORDER_COLOR} !important;
   }
 
-  .o-topbar-toolbar .o-composer-container {
+  .o-topbar-toolbar .o-composer-container[active] {
     z-index: ${ComponentsImportance.TopBarComposer};
   }
 `;
@@ -20130,6 +20515,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         constructor() {
             super(...arguments);
             this.composerRef = owl.useRef("o_composer");
+            this.spreadsheetRect = useSpreadsheetRect();
             this.contentHelper = new ContentEditableHelper(this.composerRef.el);
             this.composerState = owl.useState({
                 positionStart: 0,
@@ -20165,38 +20551,45 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             };
         }
         get assistantStyle() {
+            const composerRect = this.composerRef.el.getBoundingClientRect();
+            const assistantStyle = {
+                width: `${ASSISTANT_WIDTH}px`,
+            };
             if (this.props.delimitation && this.props.rect) {
                 const { x: cellX, y: cellY, height: cellHeight } = this.props.rect;
                 const remainingHeight = this.props.delimitation.height - (cellY + cellHeight);
-                let assistantStyle = "";
                 if (cellY > remainingHeight) {
                     // render top
-                    assistantStyle += `
-          top: -8px;
-          transform: translate(0, -100%);
-        `;
+                    assistantStyle.top = "-8px";
+                    assistantStyle.transform = "translate(0, -100%)";
                 }
                 if (cellX + ASSISTANT_WIDTH > this.props.delimitation.width) {
                     // render left
-                    assistantStyle += `right:0px;`;
+                    assistantStyle.right = "0px";
                 }
-                return (assistantStyle += `width:${ASSISTANT_WIDTH}px;`);
+                return cssPropertiesToCss(assistantStyle);
             }
-            return `width:${ASSISTANT_WIDTH}px;`;
+            if (composerRect.left + ASSISTANT_WIDTH > this.spreadsheetRect.width) {
+                assistantStyle.right = "0px";
+            }
+            return cssPropertiesToCss(assistantStyle);
         }
         setup() {
             owl.onMounted(() => {
                 const el = this.composerRef.el;
+                if (this.props.isDefaultFocus) {
+                    this.env.focusableElement.setFocusableElement(el);
+                }
                 this.contentHelper.updateEl(el);
                 this.processContent();
-            });
-            owl.onWillUnmount(() => {
-                var _a, _b;
-                (_b = (_a = this.props).onComposerUnmounted) === null || _b === void 0 ? void 0 : _b.call(_a);
             });
             owl.onPatched(() => {
                 if (!this.isKeyStillDown) {
                     this.processContent();
+                }
+                // Required because typing '=SUM' and double-clicking another cell leaves ShowProvider and ShowDescription true
+                if (this.env.model.getters.getEditionMode() === "inactive") {
+                    this.processTokenAtCursor();
                 }
             });
         }
@@ -20204,7 +20597,8 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         // Handlers
         // ---------------------------------------------------------------------------
         processArrowKeys(ev) {
-            if (this.env.model.getters.isSelectingForComposer()) {
+            if (this.env.model.getters.isSelectingForComposer() ||
+                this.env.model.getters.getEditionMode() === "inactive") {
                 this.functionDescriptionState.showDescription = false;
                 // Prevent the default content editable behavior which moves the cursor
                 // but don't stop the event and let it bubble to the grid which will
@@ -20232,25 +20626,28 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     this.autocompleteAPI.moveDown();
                 }
             }
+            this.updateCursorIfNeeded();
         }
         processTabKey(ev) {
             ev.preventDefault();
             ev.stopPropagation();
-            if (this.autoCompleteState.showProvider && this.autocompleteAPI) {
-                const autoCompleteValue = this.autocompleteAPI.getValueToFill();
-                if (autoCompleteValue) {
-                    this.autoComplete(autoCompleteValue);
-                    return;
+            if (this.env.model.getters.getEditionMode() !== "inactive") {
+                if (this.autoCompleteState.showProvider && this.autocompleteAPI) {
+                    const autoCompleteValue = this.autocompleteAPI.getValueToFill();
+                    if (autoCompleteValue) {
+                        this.autoComplete(autoCompleteValue);
+                        return;
+                    }
                 }
-            }
-            else {
-                // when completing with tab, if there is no value to complete, the active cell will be moved to the right.
-                // we can't let the model think that it is for a ref selection.
-                // todo: check if this can be removed someday
-                this.env.model.dispatch("STOP_COMPOSER_RANGE_SELECTION");
+                else {
+                    // when completing with tab, if there is no value to complete, the active cell will be moved to the right.
+                    // we can't let the model think that it is for a ref selection.
+                    // todo: check if this can be removed someday
+                    this.env.model.dispatch("STOP_COMPOSER_RANGE_SELECTION");
+                }
+                this.env.model.dispatch("STOP_EDITION");
             }
             const direction = ev.shiftKey ? "left" : "right";
-            this.env.model.dispatch("STOP_EDITION");
             this.env.model.selection.moveAnchorCell(direction, 1);
         }
         processEnterKey(ev) {
@@ -20282,30 +20679,62 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             this.compositionActive = false;
         }
         onKeydown(ev) {
+            if (this.env.model.getters.getEditionMode() === "inactive") {
+                return;
+            }
             let handler = this.keyMapping[ev.key];
             if (handler) {
                 handler.call(this, ev);
             }
             else {
                 ev.stopPropagation();
+                this.updateCursorIfNeeded();
             }
-            const { start, end } = this.contentHelper.getCurrentSelection();
-            if (!this.env.model.getters.isSelectingForComposer()) {
+        }
+        updateCursorIfNeeded() {
+            const moveCursor = !this.env.model.getters.isSelectingForComposer() &&
+                !(this.env.model.getters.getEditionMode() === "inactive");
+            if (moveCursor) {
+                const { start, end } = this.contentHelper.getCurrentSelection();
                 this.env.model.dispatch("CHANGE_COMPOSER_CURSOR_SELECTION", { start, end });
                 this.isKeyStillDown = true;
+            }
+        }
+        onPaste(ev) {
+            if (this.env.model.getters.getEditionMode() !== "inactive") {
+                // let the browser clipboard work
+                ev.stopPropagation();
+            }
+            else {
+                // the user meant to paste in the sheet, not open the composer with the pasted content
+                // While we're not editing, we still have the focus and should therefore prevent
+                // the native "paste" to occur.
+                ev.preventDefault();
             }
         }
         /*
          * Triggered automatically by the content-editable between the keydown and key up
          * */
-        onInput() {
-            if (this.props.focus === "inactive" || !this.shouldProcessInputEvents) {
+        onInput(ev) {
+            var _a, _b;
+            if (!this.shouldProcessInputEvents) {
                 return;
             }
+            ev.stopPropagation();
+            let content;
+            if (this.env.model.getters.getEditionMode() === "inactive") {
+                content = ev.data || "";
+            }
+            else {
+                const el = this.composerRef.el;
+                content = el.childNodes.length ? el.textContent : "";
+            }
+            if (this.props.focus === "inactive") {
+                return (_b = (_a = this.props).onComposerCellFocused) === null || _b === void 0 ? void 0 : _b.call(_a, content);
+            }
             this.env.model.dispatch("STOP_COMPOSER_RANGE_SELECTION");
-            const el = this.composerRef.el;
             this.env.model.dispatch("SET_CURRENT_CONTENT", {
-                content: el.childNodes.length ? el.textContent : "",
+                content,
                 selection: this.contentHelper.getCurrentSelection(),
             });
         }
@@ -20352,9 +20781,8 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             }
             const newSelection = this.contentHelper.getCurrentSelection();
             this.env.model.dispatch("STOP_COMPOSER_RANGE_SELECTION");
-            if (this.props.focus === "inactive") {
-                this.props.onComposerContentFocused(newSelection);
-            }
+            this.props.onComposerContentFocused();
+            if (this.props.focus === "inactive") ;
             this.env.model.dispatch("CHANGE_COMPOSER_CURSOR_SELECTION", newSelection);
             this.processTokenAtCursor();
         }
@@ -20363,6 +20791,12 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         }
         onCompleted(text) {
             text && this.autoComplete(text);
+        }
+        onContextMenu(ev) {
+            var _a, _b;
+            if (this.env.model.getters.getEditionMode() === "inactive") {
+                (_b = (_a = this.props).onInputContextMenu) === null || _b === void 0 ? void 0 : _b.call(_a, ev);
+            }
         }
         // ---------------------------------------------------------------------------
         // Private
@@ -20374,6 +20808,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             this.contentHelper.removeAll(); // removes the content of the composer, to be added just after
             this.shouldProcessInputEvents = false;
             if (this.props.focus !== "inactive") {
+                this.contentHelper.el.focus();
                 this.contentHelper.selectRange(0, 0); // move the cursor inside the composer at 0 0.
             }
             const content = this.getContent();
@@ -20542,10 +20977,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
     Composer.defaultProps = {
         inputStyle: "",
         focus: "inactive",
+        isDefaultFocus: false,
     };
 
-    const SCROLLBAR_WIDTH = 14;
-    const SCROLLBAR_HIGHT = 15;
     const COMPOSER_BORDER_WIDTH = 3 * 0.4 * window.devicePixelRatio || 1;
     css /* scss */ `
   div.o-grid-composer {
@@ -20560,40 +20994,50 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
      * It also applies the style of the cell to the composer input.
      */
     class GridComposer extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.rect = undefined;
+            this.isEditing = false;
+        }
+        get defaultRect() {
+            return { x: 0, y: 0, width: 0, height: 0 };
+        }
         setup() {
-            this.gridComposerRef = owl.useRef("gridComposer");
-            this.composerState = owl.useState({
-                rect: null,
-                delimitation: null,
-            });
-            const { col, row } = this.env.model.getters.getPosition();
-            this.zone = this.env.model.getters.expandZone(this.env.model.getters.getActiveSheetId(), {
-                left: col,
-                right: col,
-                top: row,
-                bottom: row,
-            });
-            this.rect = this.env.model.getters.getVisibleRect(this.zone);
-            owl.onMounted(() => {
-                const el = this.gridComposerRef.el;
-                //TODO Should be more correct to have a props that give the parent's clientHeight and clientWidth
-                const maxHeight = el.parentElement.clientHeight - this.rect.y - SCROLLBAR_HIGHT;
-                el.style.maxHeight = (maxHeight + "px");
-                const maxWidth = el.parentElement.clientWidth - this.rect.x - SCROLLBAR_WIDTH;
-                el.style.maxWidth = (maxWidth + "px");
-                this.composerState.rect = {
-                    x: this.rect.x,
-                    y: this.rect.y,
-                    width: el.clientWidth,
-                    height: el.clientHeight,
-                };
-                this.composerState.delimitation = {
-                    width: el.parentElement.clientWidth,
-                    height: el.parentElement.clientHeight,
-                };
+            owl.onWillUpdateProps(() => {
+                const isEditing = this.env.model.getters.getEditionMode() !== "inactive";
+                if (this.isEditing !== isEditing) {
+                    this.isEditing = isEditing;
+                    if (!isEditing) {
+                        this.rect = undefined;
+                        this.env.focusableElement.focus();
+                        return;
+                    }
+                    const position = this.env.model.getters.getPosition();
+                    const zone = this.env.model.getters.expandZone(this.env.model.getters.getActiveSheetId(), positionToZone(position));
+                    this.rect = this.env.model.getters.getVisibleRect(zone);
+                }
             });
         }
+        get composerProps() {
+            const { width, height } = this.env.model.getters.getSheetViewDimensionWithHeaders();
+            return {
+                rect: this.rect && { ...this.rect },
+                delimitation: {
+                    width,
+                    height,
+                },
+                inputStyle: this.composerStyle,
+                focus: this.props.focus,
+                isDefaultFocus: true,
+                onComposerContentFocused: this.props.onComposerContentFocused,
+                onComposerCellFocused: this.props.onComposerCellFocused,
+                onInputContextMenu: this.props.onInputContextMenu,
+            };
+        }
         get containerStyle() {
+            if (this.env.model.getters.getEditionMode() === "inactive" || !this.rect) {
+                return `z-index: -1000;`;
+            }
             const isFormula = this.env.model.getters.getCurrentContent().startsWith("=");
             const cell = this.env.model.getters.getActiveCell();
             let style = {};
@@ -20616,11 +21060,17 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             if (!isFormula) {
                 textAlign = style.align || (cell === null || cell === void 0 ? void 0 : cell.defaultAlign) || "left";
             }
+            const sheetDimensions = this.env.model.getters.getSheetViewDimensionWithHeaders();
+            const maxWidth = sheetDimensions.width - this.rect.x;
+            const maxHeight = sheetDimensions.height - this.rect.y;
             return `
       left: ${left - 1}px;
       top: ${top}px;
       min-width: ${width + 2}px;
       min-height: ${height + 1}px;
+
+      max-width: ${maxWidth}px;
+      max-height: ${maxHeight}px;
 
       background: ${background};
       color: ${color};
@@ -20860,6 +21310,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     el === null || el === void 0 ? void 0 : el.focus({ preventScroll: true });
                 }
             }, () => [this.env.model.getters.getSelectedFigureId(), this.props.figure.id, this.figureRef.el]);
+            owl.onWillUnmount(() => {
+                this.props.onFigureDeleted();
+            });
         }
         clickAnchor(dirX, dirY, ev) {
             this.props.onClickAnchor(dirX, dirY, ev);
@@ -20869,7 +21322,8 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         }
         onKeyDown(ev) {
             const figure = this.props.figure;
-            switch (ev.key) {
+            const keyDownShortcut = keyboardEventToShortcutString(ev);
+            switch (keyDownShortcut) {
                 case "Delete":
                     this.env.model.dispatch("DELETE_FIGURE", {
                         sheetId: this.env.model.getters.getActiveSheetId(),
@@ -20877,6 +21331,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     });
                     this.props.onFigureDeleted();
                     ev.preventDefault();
+                    ev.stopPropagation();
                     break;
                 case "ArrowDown":
                 case "ArrowLeft":
@@ -20896,6 +21351,23 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                         y: figure.y + delta[1],
                     });
                     ev.preventDefault();
+                    ev.stopPropagation();
+                    break;
+                case "Ctrl+A":
+                    // Maybe in the future we will implement a way to select all figures
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                    break;
+                case "Ctrl+Y":
+                case "Ctrl+Z":
+                    if (keyDownShortcut === "Ctrl+Y") {
+                        this.env.model.dispatch("REQUEST_REDO");
+                    }
+                    else if (keyDownShortcut === "Ctrl+Z") {
+                        this.env.model.dispatch("REQUEST_UNDO");
+                    }
+                    ev.preventDefault();
+                    ev.stopPropagation();
                     break;
             }
         }
@@ -20984,6 +21456,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 y: 0,
                 width: 0,
                 height: 0,
+                cancelDnd: undefined,
             });
         }
         setup() {
@@ -20997,11 +21470,24 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 // new rendering
                 this.render();
             });
+            owl.onWillUpdateProps(() => {
+                const sheetId = this.env.model.getters.getActiveSheetId();
+                if (this.dnd.figId && !this.env.model.getters.getFigure(sheetId, this.dnd.figId)) {
+                    if (this.dnd.cancelDnd) {
+                        this.dnd.cancelDnd();
+                    }
+                    this.dnd.figId = undefined;
+                    this.dnd.cancelDnd = undefined;
+                }
+            });
         }
         getVisibleFigures() {
             const visibleFigures = this.env.model.getters.getVisibleFigures();
             if (this.dnd.figId && !visibleFigures.some((figure) => figure.id === this.dnd.figId)) {
-                visibleFigures.push(this.env.model.getters.getFigure(this.env.model.getters.getActiveSheetId(), this.dnd.figId));
+                const draggedFigure = this.env.model.getters.getFigure(this.env.model.getters.getActiveSheetId(), this.dnd.figId);
+                if (draggedFigure) {
+                    visibleFigures.push(draggedFigure);
+                }
             }
             return visibleFigures;
         }
@@ -21035,7 +21521,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             return containers;
         }
         getContainerStyle(container) {
-            const { width: viewWidth, height: viewHeight } = this.env.model.getters.getMainViewportRect();
+            const { width: viewWidth, height: viewHeight } = this.env.model.getters.getSheetViewDimension();
             const { x: viewportX, y: viewportY } = this.env.model.getters.getMainViewportCoordinates();
             const left = ["bottomRight", "topRight"].includes(container) ? viewportX : 0;
             const width = viewWidth - left;
@@ -21114,12 +21600,13 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 this.dnd.figId = undefined;
                 this.env.model.dispatch("UPDATE_FIGURE", { sheetId, id: figure.id, x, y });
             };
-            startDnd(onMouseMove, onMouseUp);
+            this.dnd.cancelDnd = startDnd(onMouseMove, onMouseUp);
         }
         startResize(figure, dirX, dirY, ev) {
             ev.stopPropagation();
             const initialX = ev.clientX;
             const initialY = ev.clientY;
+            const { scrollX, scrollY } = this.env.model.getters.getActiveSheetScrollInfo();
             const { x: dndInitialX, y: dndInitialY } = this.internalToScreenCoordinates(figure);
             this.dnd.x = dndInitialX;
             this.dnd.y = dndInitialY;
@@ -21137,6 +21624,15 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 }
                 if (dirY < 0) {
                     this.dnd.y = dndInitialY - deltaY;
+                }
+                // Adjusts figure dimensions to ensure it remains within header boundaries and viewport during resizing.
+                if (this.dnd.x + scrollX <= 0) {
+                    this.dnd.width = this.dnd.width + this.dnd.x + scrollX;
+                    this.dnd.x = -scrollX;
+                }
+                if (this.dnd.y + scrollY <= 0) {
+                    this.dnd.height = this.dnd.height + this.dnd.y + scrollY;
+                    this.dnd.y = -scrollY;
                 }
             };
             const onMouseUp = (ev) => {
@@ -21158,7 +21654,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     ...update,
                 });
             };
-            startDnd(onMouseMove, onMouseUp);
+            this.dnd.cancelDnd = startDnd(onMouseMove, onMouseUp);
         }
         getDndFigure() {
             const figure = this.getVisibleFigures().find((fig) => fig.id === this.dnd.figId);
@@ -21228,10 +21724,13 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             row: undefined,
         };
         const { Date } = window;
-        let x = 0;
-        let y = 0;
+        let x = undefined;
+        let y = undefined;
         let lastMoved = 0;
         function getPosition() {
+            if (x === undefined || y === undefined) {
+                return { col: -1, row: -1 };
+            }
             const col = env.model.getters.getColIndex(x);
             const row = env.model.getters.getRowIndex(y);
             return { col, row };
@@ -21251,9 +21750,11 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             }
         }
         function updateMousePosition(e) {
-            x = e.offsetX;
-            y = e.offsetY;
-            lastMoved = Date.now();
+            if (gridRef.el === e.target) {
+                x = e.offsetX;
+                y = e.offsetY;
+                lastMoved = Date.now();
+            }
         }
         function recompute() {
             const { col, row } = getPosition();
@@ -21349,7 +21850,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 return;
             }
             const [col, row] = this.getCartesianCoordinates(ev);
-            this.props.onCellClicked(col, row, { shiftKey: ev.shiftKey, ctrlKey: ev.ctrlKey });
+            this.props.onCellClicked(col, row, {
+                expandZone: ev.shiftKey,
+                addZone: isCtrlKey(ev),
+            });
         }
         onDoubleClick(ev) {
             const [col, row] = this.getCartesianCoordinates(ev);
@@ -21421,6 +21925,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 draggerShadowThickness: 0,
                 delta: 0,
                 base: 0,
+                position: "before",
             });
         }
         _computeHandleDisplay(ev) {
@@ -21512,7 +22017,14 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 return;
             }
             if (this.state.waitingForMove === true) {
-                this.startMovement(ev);
+                if (!this.env.model.getters.isGridSelectionActive()) {
+                    this._selectElement(index, false);
+                }
+                else {
+                    // FIXME: Consider reintroducing this feature for all type of selection if we find
+                    // a way to have the grid selection follow the other selections evolution
+                    this.startMovement(ev);
+                }
                 return;
             }
             if (this.env.model.getters.getEditionMode() === "editing") {
@@ -21539,11 +22051,13 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                         this.state.draggerLinePosition = dimensions.start;
                         this.state.draggerShadowPosition = dimensions.start;
                         this.state.base = elementIndex;
+                        this.state.position = "before";
                     }
                     else if (this._getSelectedZoneEnd() < elementIndex) {
                         this.state.draggerLinePosition = dimensions.end;
                         this.state.draggerShadowPosition = dimensions.end - this.state.draggerShadowThickness;
-                        this.state.base = elementIndex + 1;
+                        this.state.base = elementIndex;
+                        this.state.position = "after";
                     }
                     else {
                         this.state.draggerLinePosition = startDimensions.start;
@@ -21567,7 +22081,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 this._increaseSelection(index);
             }
             else {
-                this._selectElement(index, ev.ctrlKey);
+                this._selectElement(index, isCtrlKey(ev));
             }
             this.lastSelectedElementIndex = index;
             const mouseMoveSelect = (col, row) => {
@@ -21580,7 +22094,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             const mouseUpSelect = () => {
                 this.state.isSelecting = false;
                 this.lastSelectedElementIndex = null;
-                this.env.model.dispatch(ev.ctrlKey ? "PREPARE_SELECTION_INPUT_EXPANSION" : "STOP_SELECTION_INPUT");
+                this.env.model.dispatch(isCtrlKey(ev) ? "PREPARE_SELECTION_INPUT_EXPANSION" : "STOP_SELECTION_INPUT");
                 this._computeGrabDisplay(ev);
             };
             dragAndDropBeyondTheViewport(this.env, mouseMoveSelect, mouseUpSelect);
@@ -21721,13 +22235,14 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 dimension: "COL",
                 base: this.state.base,
                 elements,
+                position: this.state.position,
             });
             if (!result.isSuccessful && result.reasons.includes(2 /* CommandResult.WillRemoveExistingMerge */)) {
                 this.env.raiseError(MergeErrorMessage);
             }
         }
-        _selectElement(index, ctrlKey) {
-            this.env.model.selection.selectColumn(index, ctrlKey ? "newAnchor" : "overrideSelection");
+        _selectElement(index, addDistinctHeader) {
+            this.env.model.selection.selectColumn(index, addDistinctHeader ? "newAnchor" : "overrideSelection");
         }
         _increaseSelection(index) {
             this.env.model.selection.selectColumn(index, "updateAnchor");
@@ -21890,13 +22405,14 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 dimension: "ROW",
                 base: this.state.base,
                 elements,
+                position: this.state.position,
             });
             if (!result.isSuccessful && result.reasons.includes(2 /* CommandResult.WillRemoveExistingMerge */)) {
                 this.env.raiseError(MergeErrorMessage);
             }
         }
-        _selectElement(index, ctrlKey) {
-            this.env.model.selection.selectRow(index, ctrlKey ? "newAnchor" : "overrideSelection");
+        _selectElement(index, addDistinctHeader) {
+            this.env.model.selection.selectRow(index, addDistinctHeader ? "newAnchor" : "overrideSelection");
         }
         _increaseSelection(index) {
             this.env.model.selection.selectRow(index, "updateAnchor");
@@ -21975,6 +22491,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             canvas.width = width * dpr;
             canvas.height = height * dpr;
             canvas.setAttribute("style", `width:${width}px;height:${height}px;`);
+            if (width === 0 || height === 0) {
+                return;
+            }
             // Imagine each pixel as a large square. The whole-number coordinates (0, 1, 2…)
             // are the edges of the squares. If you draw a one-unit-wide line between whole-number
             // coordinates, it will overlap opposite sides of the pixel square, and the resulting
@@ -21992,8 +22511,8 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             return val * (deltaMode === 0 ? 1 : DEFAULT_CELL_HEIGHT);
         }
         const onMouseWheel = (ev) => {
-            const deltaX = normalize(ev.shiftKey ? ev.deltaY : ev.deltaX, ev.deltaMode);
-            const deltaY = normalize(ev.shiftKey ? ev.deltaX : ev.deltaY, ev.deltaMode);
+            const deltaX = normalize(ev.shiftKey && !isMacOS() ? ev.deltaY : ev.deltaX, ev.deltaMode);
+            const deltaY = normalize(ev.shiftKey && !isMacOS() ? ev.deltaX : ev.deltaY, ev.deltaMode);
             handler(deltaX, deltaY);
         };
         return onMouseWheel;
@@ -22233,8 +22752,8 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
     &.corner {
       right: 0px;
       bottom: 0px;
-      height: ${SCROLLBAR_WIDTH$1}px;
-      width: ${SCROLLBAR_WIDTH$1}px;
+      height: ${SCROLLBAR_WIDTH}px;
+      width: ${SCROLLBAR_WIDTH}px;
       border-top: 1px solid #e2e3e3;
       border-left: 1px solid #e2e3e3;
     }
@@ -22299,7 +22818,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             return {
                 left: `${this.props.position.left + x}px`,
                 bottom: "0px",
-                height: `${SCROLLBAR_WIDTH$1}px`,
+                height: `${SCROLLBAR_WIDTH}px`,
                 right: `0px`,
             };
         }
@@ -22341,7 +22860,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             return {
                 top: `${this.props.position.top + y}px`,
                 right: "0px",
-                width: `${SCROLLBAR_WIDTH$1}px`,
+                width: `${SCROLLBAR_WIDTH}px`,
                 bottom: `0px`,
             };
         }
@@ -22499,16 +23018,15 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 menuItems: [],
             });
             this.gridRef = owl.useRef("grid");
-            this.hiddenInput = owl.useRef("hiddenInput");
             this.canvasPosition = useAbsolutePosition(this.gridRef);
             this.hoveredCell = owl.useState({ col: undefined, row: undefined });
             owl.useExternalListener(document.body, "cut", this.copy.bind(this, true));
             owl.useExternalListener(document.body, "copy", this.copy.bind(this, false));
             owl.useExternalListener(document.body, "paste", this.paste);
-            owl.onMounted(() => this.focus());
-            this.props.exposeFocus(() => this.focus());
+            owl.onMounted(() => this.focusDefaultElement());
+            this.props.exposeFocus(() => this.focusDefaultElement());
             useGridDrawing("canvas", this.env.model, () => this.env.model.getters.getSheetViewDimensionWithHeaders());
-            owl.useEffect(() => this.focus(), () => [this.env.model.getters.getActiveSheetId()]);
+            owl.useEffect(() => this.focusDefaultElement(), () => [this.env.model.getters.getActiveSheetId()]);
             this.onMouseWheel = useWheelHandler((deltaX, deltaY) => {
                 this.moveCanvas(deltaX, deltaY);
                 this.hoveredCell.col = undefined;
@@ -22523,19 +23041,18 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             return `
       top: ${HEADER_HEIGHT}px;
       left: ${HEADER_WIDTH}px;
-      height: calc(100% - ${HEADER_HEIGHT + SCROLLBAR_WIDTH$1}px);
-      width: calc(100% - ${HEADER_WIDTH + SCROLLBAR_WIDTH$1}px);
+      height: calc(100% - ${HEADER_HEIGHT + SCROLLBAR_WIDTH}px);
+      width: calc(100% - ${HEADER_WIDTH + SCROLLBAR_WIDTH}px);
     `;
         }
         onClosePopover() {
             this.closeOpenedPopover();
-            this.focus();
+            this.focusDefaultElement();
         }
-        focus() {
-            var _a;
+        focusDefaultElement() {
             if (!this.env.model.getters.getSelectedFigureId() &&
                 this.env.model.getters.getEditionMode() === "inactive") {
-                (_a = this.hiddenInput.el) === null || _a === void 0 ? void 0 : _a.focus();
+                this.env.focusableElement.focus();
             }
         }
         get gridEl() {
@@ -22587,18 +23104,18 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         // ---------------------------------------------------------------------------
         // Zone selection with mouse
         // ---------------------------------------------------------------------------
-        onCellClicked(col, row, { ctrlKey, shiftKey }) {
-            if (ctrlKey) {
+        onCellClicked(col, row, { addZone, expandZone }) {
+            if (addZone) {
                 this.env.model.dispatch("PREPARE_SELECTION_INPUT_EXPANSION");
             }
             this.closeOpenedPopover();
             if (this.env.model.getters.getEditionMode() === "editing") {
                 this.env.model.dispatch("STOP_EDITION");
             }
-            if (shiftKey) {
+            if (expandZone) {
                 this.env.model.selection.setAnchorCorner(col, row);
             }
-            else if (ctrlKey) {
+            else if (addZone) {
                 this.env.model.selection.addCellToSelection(col, row);
             }
             else {
@@ -22652,10 +23169,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             };
             const direction = arrowMap[ev.key];
             if (ev.shiftKey) {
-                this.env.model.selection.resizeAnchorZone(direction, ev.ctrlKey ? "end" : 1);
+                this.env.model.selection.resizeAnchorZone(direction, isCtrlKey(ev) ? "end" : 1);
             }
             else {
-                this.env.model.selection.moveAnchorCell(direction, ev.ctrlKey ? "end" : 1);
+                this.env.model.selection.moveAnchorCell(direction, isCtrlKey(ev) ? "end" : 1);
             }
             if (this.env.model.getters.isPaintingFormat()) {
                 this.env.model.dispatch("PASTE", {
@@ -22669,9 +23186,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 return;
             }
             let keyDownString = "";
-            if (ev.ctrlKey)
-                keyDownString += "CTRL+";
-            if (ev.metaKey)
+            if (isCtrlKey(ev))
                 keyDownString += "CTRL+";
             if (ev.altKey)
                 keyDownString += "ALT+";
@@ -22684,19 +23199,6 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 ev.stopPropagation();
                 handler();
                 return;
-            }
-        }
-        onInput(ev) {
-            // the user meant to paste in the sheet, not open the composer with the pasted content
-            if (!ev.isComposing && ev.inputType === "insertFromPaste") {
-                return;
-            }
-            if (ev.data) {
-                // if the user types a character on the grid, it means he wants to start composing the selected cell with that
-                // character
-                ev.preventDefault();
-                ev.stopPropagation();
-                this.props.onGridComposerCellFocused(ev.data);
             }
         }
         // ---------------------------------------------------------------------------
@@ -22714,8 +23216,8 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             else if (this.env.model.getters.getActiveRows().has(row)) {
                 type = "ROW";
             }
-            const { x, y, width, height } = this.env.model.getters.getVisibleRect(lastZone);
-            this.toggleContextMenu(type, x + width, y + height);
+            const { x, y, width } = this.env.model.getters.getVisibleRect(lastZone);
+            this.toggleContextMenu(type, this.canvasPosition.x + x + width, this.canvasPosition.y + y);
         }
         onCellRightClicked(col, row, { x, y }) {
             const zones = this.env.model.getters.getSelectedZones();
@@ -22779,7 +23281,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         }
         closeMenu() {
             this.menuState.isOpen = false;
-            this.focus();
+            this.focusDefaultElement();
         }
     }
     Grid.template = "o-spreadsheet-Grid";
@@ -22909,15 +23411,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
     }
     class LinkCell extends AbstractCell {
         constructor(id, content, properties = {}) {
-            var _a;
             const link = parseMarkdownLink(content);
-            properties = {
-                ...properties,
-                style: {
-                    ...properties.style,
-                    textColor: ((_a = properties.style) === null || _a === void 0 ? void 0 : _a.textColor) || LINK_COLOR,
-                },
-            };
             link.label = _t(link.label);
             super(id, lazy({ value: link.label, type: CellValueType.text }), properties);
             this.link = link;
@@ -23302,6 +23796,8 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         "BITOR",
         "BITRSHIFT",
         "BITXOR",
+        "BYCOL",
+        "BYROW",
         "CEILING.MATH",
         "CEILING.PRECISE",
         "CHISQ.DIST",
@@ -23309,6 +23805,8 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         "CHISQ.INV",
         "CHISQ.INV.RT",
         "CHISQ.TEST",
+        "CHOOSECOLS",
+        "CHOOSEROWS",
         "COMBINA",
         "CONCAT",
         "CONFIDENCE.NORM",
@@ -23321,14 +23819,17 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         "CSCH",
         "DAYS",
         "DECIMAL",
+        "DROP",
         "ERF.PRECISE",
         "ERFC.PRECISE",
+        "EXPAND",
         "EXPON.DIST",
         "F.DIST",
         "F.DIST.RT",
         "F.INV",
         "F.INV.RT",
         "F.TEST",
+        "FIELDVALUE",
         "FILTERXML",
         "FLOOR.MATH",
         "FLOOR.PRECISE",
@@ -23343,6 +23844,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         "GAMMA.INV",
         "GAMMALN.PRECISE",
         "GAUSS",
+        "HSTACK",
         "HYPGEOM.DIST",
         "IFNA",
         "IFS",
@@ -23355,9 +23857,14 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         "IMSINH",
         "IMTAN",
         "ISFORMULA",
+        "ISOMITTED",
         "ISOWEEKNUM",
+        "LAMBDA",
+        "LET",
         "LOGNORM.DIST",
         "LOGNORM.INV",
+        "MAKEARRAY",
+        "MAP",
         "MAXIFS",
         "MINIFS",
         "MODE.MULT",
@@ -23377,17 +23884,26 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         "PERMUTATIONA",
         "PHI",
         "POISSON.DIST",
+        "PQSOURCE",
+        "PYTHON_STR",
+        "PYTHON_TYPE",
+        "PYTHON_TYPENAME",
         "QUARTILE.EXC",
         "QUARTILE.INC",
         "QUERYSTRING",
+        "RANDARRAY",
         "RANK.AVG",
         "RANK.EQ",
+        "REDUCE",
         "RRI",
+        "SCAN",
         "SEC",
         "SECH",
+        "SEQUENCE",
         "SHEET",
         "SHEETS",
         "SKEW.P",
+        "SORTBY",
         "STDEV.P",
         "STDEV.S",
         "SWITCH",
@@ -23397,13 +23913,24 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         "T.INV",
         "T.INV.2T",
         "T.TEST",
+        "TAKE",
+        "TEXTAFTER",
+        "TEXTBEFORE",
         "TEXTJOIN",
+        "TEXTSPLIT",
+        "TOCOL",
+        "TOROW",
         "UNICHAR",
         "UNICODE",
+        "UNIQUE",
         "VAR.P",
         "VAR.S",
+        "VSTACK",
         "WEBSERVICE",
         "WEIBULL.DIST",
+        "WRAPCOLS",
+        "WRAPROWS",
+        "XLOOKUP",
         "XOR",
         "Z.TEST",
     ];
@@ -24349,29 +24876,12 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             return width;
         return Math.round((width / WIDTH_FACTOR) * 100) / 100;
     }
-    function convertBorderDescr(descr) {
-        if (!descr) {
-            return undefined;
-        }
-        return {
-            style: descr[0],
-            color: { rgb: descr[1] },
-        };
-    }
     function extractStyle(cell, data) {
         let style = {};
         if (cell.style) {
             style = data.styles[cell.style];
         }
         const format = extractFormat(cell, data);
-        const exportedBorder = {};
-        if (cell.border) {
-            const border = data.borders[cell.border];
-            exportedBorder.left = convertBorderDescr(border.left);
-            exportedBorder.right = convertBorderDescr(border.right);
-            exportedBorder.bottom = convertBorderDescr(border.bottom);
-            exportedBorder.top = convertBorderDescr(border.top);
-        }
         const styles = {
             font: {
                 size: (style === null || style === void 0 ? void 0 : style.fontSize) || DEFAULT_FONT_SIZE,
@@ -24385,7 +24895,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 }
                 : { reservedAttribute: "none" },
             numFmt: format ? { format: format, id: 0 /* id not used for export */ } : undefined,
-            border: exportedBorder || {},
+            border: cell.border || 0,
             alignment: {
                 vertical: "center",
                 horizontal: style.align,
@@ -24414,23 +24924,19 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         return undefined;
     }
     function normalizeStyle(construct, styles) {
-        const { id: fontId } = pushElement(styles["font"], construct.fonts);
-        const { id: fillId } = pushElement(styles["fill"], construct.fills);
-        const { id: borderId } = pushElement(styles["border"], construct.borders);
         // Normalize this
         const numFmtId = convertFormat(styles["numFmt"], construct.numFmts);
         const style = {
-            fontId,
-            fillId,
-            borderId,
+            fontId: pushElement(styles.font, construct.fonts),
+            fillId: pushElement(styles.fill, construct.fills),
+            borderId: styles.border,
             numFmtId,
             alignment: {
                 vertical: styles.alignment.vertical,
                 horizontal: styles.alignment.horizontal,
             },
         };
-        const { id } = pushElement(style, construct.styles);
-        return id;
+        return pushElement(style, construct.styles);
     }
     function convertFormat(format, numFmtStructure) {
         if (!format) {
@@ -24438,8 +24944,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         }
         let formatId = XLSX_FORMAT_MAP[format.format];
         if (!formatId) {
-            const { id } = pushElement(format, numFmtStructure);
-            formatId = id + FIRST_NUMFMT_ID;
+            formatId = pushElement(format, numFmtStructure) + FIRST_NUMFMT_ID;
         }
         return formatId;
     }
@@ -24464,20 +24969,15 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         return id;
     }
     function pushElement(property, propertyList) {
-        for (let [key, value] of Object.entries(propertyList)) {
-            if (JSON.stringify(value) === JSON.stringify(property)) {
-                return { id: parseInt(key, 10), list: propertyList };
+        let len = propertyList.length;
+        const operator = typeof property === "object" ? deepEquals : (a, b) => a === b;
+        for (let i = 0; i < len; i++) {
+            if (operator(property, propertyList[i])) {
+                return i;
             }
         }
-        let elemId = propertyList.findIndex((elem) => JSON.stringify(elem) === JSON.stringify(property));
-        if (elemId === -1) {
-            propertyList.push(property);
-            elemId = propertyList.length - 1;
-        }
-        return {
-            id: elemId,
-            list: propertyList,
-        };
+        propertyList[propertyList.length] = property;
+        return propertyList.length - 1;
     }
     const chartIds = [];
     /**
@@ -24605,6 +25105,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
     }
     function convertChartData(chartData) {
         var _a;
+        if (chartData.dataSets.length === 0) {
+            return undefined;
+        }
         const labelRange = (_a = chartData.dataSets[0].label) === null || _a === void 0 ? void 0 : _a.replace(/\$/g, "");
         let dataSets = chartData.dataSets.map((data) => data.range.replace(/\$/g, ""));
         // For doughnut charts, in chartJS first dataset = outer dataset, in excel first dataset = inner dataset
@@ -24621,6 +25124,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             verticalAxisPosition: chartData.verticalAxisPosition,
             legendPosition: chartData.legendPosition,
             stacked: chartData.stacked || false,
+            cumulative: chartData.cumulative || false,
             labelsAsText: false,
         };
     }
@@ -24880,7 +25384,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
     function getSheetDims(sheet) {
         const dims = [0, 0];
         for (let row of sheet.rows) {
-            dims[0] = Math.max(dims[0], ...row.cells.map((cell) => toCartesian(cell.xc).col));
+            dims[0] = Math.max(dims[0], largeMax(row.cells.map((cell) => toCartesian(cell.xc).col)));
             dims[1] = Math.max(dims[1], row.index);
         }
         dims[0] = Math.max(dims[0], EXCEL_IMPORT_DEFAULT_NUMBER_OF_COLS);
@@ -25123,12 +25627,15 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         };
     }
     function xmlEscape(str) {
-        return String(str)
+        return (String(str)
             .replace(/\&/g, "&amp;")
             .replace(/\</g, "&lt;")
             .replace(/\>/g, "&gt;")
             .replace(/\"/g, "&quot;")
-            .replace(/\'/g, "&apos;");
+            .replace(/\'/g, "&apos;")
+            // Delete all ASCII control characters except for TAB (\x09), LF (\x0A) and CR (\x0D)
+            // They are not valid at all in XML 1.0 (even escaped)
+            .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, ""));
     }
     function formatAttributes(attrs) {
         return new XMLString(attrs.map(([key, val]) => `${key}="${xmlEscape(val)}"`).join(" "));
@@ -25147,7 +25654,25 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         }
         return document;
     }
-    function getDefaultXLSXStructure() {
+    function convertBorderDescr(descr) {
+        if (!descr) {
+            return undefined;
+        }
+        return {
+            style: descr[0],
+            color: { rgb: descr[1] },
+        };
+    }
+    function getDefaultXLSXStructure(data) {
+        const xlsxBorders = Object.values(data.borders).map((border) => {
+            return {
+                left: convertBorderDescr(border.left),
+                right: convertBorderDescr(border.right),
+                bottom: convertBorderDescr(border.bottom),
+                top: convertBorderDescr(border.top),
+            };
+        });
+        const borders = [{}, ...xlsxBorders];
         return {
             relsFiles: [],
             sharedStrings: [],
@@ -25170,7 +25695,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 },
             ],
             fills: [{ reservedAttribute: "none" }, { reservedAttribute: "gray125" }],
-            borders: [{}],
+            borders,
             numFmts: [],
             dxfs: [],
         };
@@ -26471,7 +26996,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
      * a breaking change is made in the way the state is handled, and an upgrade
      * function should be defined
      */
-    const CURRENT_VERSION = 12;
+    const CURRENT_VERSION = 12.5;
     const INITIAL_SHEET_ID = "Sheet1";
     /**
      * This function tries to load anything that could look like a valid
@@ -26737,6 +27262,31 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 return data;
             },
         },
+        {
+            description: "Fix datafilter duplication",
+            from: 12,
+            to: 12.5,
+            applyMigration(data) {
+                for (let sheet of data.sheets || []) {
+                    let knownDataFilterZones = [];
+                    for (let filterTable of sheet.filterTables || []) {
+                        const zone = toZone(filterTable.range);
+                        // See commit message for the details
+                        const intersectZoneIndex = knownDataFilterZones.findIndex((knownZone) => overlap(knownZone, zone));
+                        if (intersectZoneIndex !== -1) {
+                            knownDataFilterZones[intersectZoneIndex] = zone;
+                        }
+                        else {
+                            knownDataFilterZones.push(zone);
+                        }
+                    }
+                    sheet.filterTables = knownDataFilterZones.map((zone) => ({
+                        range: zoneToXc(zone),
+                    }));
+                }
+                return data;
+            },
+        },
     ];
     /**
      * This function is used to repair faulty data independently of the migration.
@@ -26758,7 +27308,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         for (const sheet of data.sheets || []) {
             for (const figure of sheet.figures || []) {
                 if (figureIds.has(figure.id)) {
-                    figure.id += uuidGenerator.uuidv4();
+                    figure.id += uuidGenerator.smallUuid();
                 }
                 figureIds.add(figure.id);
             }
@@ -26982,6 +27532,14 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         // ---------------------------------------------------------------------------
         // Command Handling
         // ---------------------------------------------------------------------------
+        allowDispatch(cmd) {
+            switch (cmd.type) {
+                case "SET_BORDER":
+                    return this.checkBordersUnchanged(cmd);
+                default:
+                    return 0 /* CommandResult.Success */;
+            }
+        }
         handle(cmd) {
             switch (cmd.type) {
                 case "ADD_MERGE":
@@ -27018,12 +27576,37 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     this.clearBorders(cmd.sheetId, cmd.target);
                     break;
                 case "REMOVE_COLUMNS_ROWS":
-                    for (let el of cmd.elements) {
+                    const elements = [...cmd.elements].sort((a, b) => b - a);
+                    for (const group of groupConsecutive(elements)) {
                         if (cmd.dimension === "COL") {
-                            this.shiftBordersHorizontally(cmd.sheetId, el + 1, -1);
+                            if (group[0] >= this.getters.getNumberCols(cmd.sheetId)) {
+                                for (let row = 0; row < this.getters.getNumberRows(cmd.sheetId); row++) {
+                                    this.history.update("borders", cmd.sheetId, group[0] + 1, row, "vertical", undefined);
+                                }
+                            }
+                            if (group[group.length - 1] === 0) {
+                                for (let row = 0; row < this.getters.getNumberRows(cmd.sheetId); row++) {
+                                    this.history.update("borders", cmd.sheetId, 0, row, "vertical", undefined);
+                                }
+                            }
+                            const zone = this.getters.getColsZone(cmd.sheetId, group[group.length - 1] + 1, group[0]);
+                            this.clearInsideBorders(cmd.sheetId, [zone]);
+                            this.shiftBordersHorizontally(cmd.sheetId, group[0] + 1, -group.length);
                         }
                         else {
-                            this.shiftBordersVertically(cmd.sheetId, el + 1, -1);
+                            if (group[0] >= this.getters.getNumberRows(cmd.sheetId)) {
+                                for (let col = 0; col < this.getters.getNumberCols(cmd.sheetId); col++) {
+                                    this.history.update("borders", cmd.sheetId, col, group[0] + 1, "horizontal", undefined);
+                                }
+                            }
+                            if (group[group.length - 1] === 0) {
+                                for (let col = 0; col < this.getters.getNumberCols(cmd.sheetId); col++) {
+                                    this.history.update("borders", cmd.sheetId, col, 0, "horizontal", undefined);
+                                }
+                            }
+                            const zone = this.getters.getRowsZone(cmd.sheetId, group[group.length - 1] + 1, group[0]);
+                            this.clearInsideBorders(cmd.sheetId, [zone]);
+                            this.shiftBordersVertically(cmd.sheetId, group[0] + 1, -group.length);
                         }
                     }
                     break;
@@ -27163,6 +27746,22 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             return Object.keys(sheetBorders).map((index) => parseInt(index, 10));
         }
         /**
+         * Get all the rows which contains at least a border
+         */
+        getRowsWithBorders(sheetId) {
+            var _a;
+            const sheetBorders = (_a = this.borders[sheetId]) === null || _a === void 0 ? void 0 : _a.filter(isDefined$1);
+            if (!sheetBorders)
+                return [];
+            const rowsWithBorders = new Set();
+            for (const rowBorders of sheetBorders) {
+                for (const rowBorder in rowBorders) {
+                    rowsWithBorders.add(parseInt(rowBorder, 10));
+                }
+            }
+            return Array.from(rowsWithBorders);
+        }
+        /**
          * Get the range of all the rows in the sheet
          */
         getRowsRange(sheetId) {
@@ -27211,7 +27810,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     destructive: false,
                 });
             }
-            this.getRowsRange(sheetId)
+            this.getRowsWithBorders(sheetId)
                 .filter((row) => row >= start)
                 .sort((a, b) => (delta < 0 ? a - b : b - a)) // start by the end when moving up
                 .forEach((row) => {
@@ -27303,6 +27902,18 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             }
         }
         /**
+         * Remove the borders inside of a zone
+         */
+        clearInsideBorders(sheetId, zones) {
+            for (let zone of zones) {
+                for (let row = zone.top; row <= zone.bottom; row++) {
+                    for (let col = zone.left; col <= zone.right; col++) {
+                        this.history.update("borders", sheetId, col, row, undefined);
+                    }
+                }
+            }
+        }
+        /**
          * Add a border to the existing one to a cell
          */
         addBorder(sheetId, col, row, border) {
@@ -27377,6 +27988,15 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 this.setBorders(sheetId, [{ ...zone, left: right }], "right");
             }
         }
+        checkBordersUnchanged(cmd) {
+            var _a, _b, _c, _d;
+            const currentBorder = this.getCellBorder(cmd.sheetId, cmd.col, cmd.row);
+            const areAllNewBordersUndefined = !((_a = cmd.border) === null || _a === void 0 ? void 0 : _a.bottom) && !((_b = cmd.border) === null || _b === void 0 ? void 0 : _b.left) && !((_c = cmd.border) === null || _c === void 0 ? void 0 : _c.right) && !((_d = cmd.border) === null || _d === void 0 ? void 0 : _d.top);
+            if ((!currentBorder && areAllNewBordersUndefined) || deepEquals(currentBorder, cmd.border)) {
+                return 89 /* CommandResult.NoChanges */;
+            }
+            return 0 /* CommandResult.Success */;
+        }
         // ---------------------------------------------------------------------------
         // Import/Export
         // ---------------------------------------------------------------------------
@@ -27412,7 +28032,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
              */
             function getBorderId(border) {
                 for (let [key, value] of Object.entries(borders)) {
-                    if (stringify(value) === stringify(border)) {
+                    if (deepEquals(value, border)) {
                         return parseInt(key, 10);
                     }
                 }
@@ -27445,7 +28065,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
     }
     BordersPlugin.getters = ["getCellBorder"];
 
-    const nbspRegexp = new RegExp(String.fromCharCode(160), "g");
+    const LINK_STYLE = { textColor: LINK_COLOR };
     /**
      * Core Plugin
      *
@@ -27455,6 +28075,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
     class CellPlugin extends CorePlugin {
         constructor() {
             super(...arguments);
+            this.nextId = 1;
             this.cells = {};
             this.createCell = cellFactory(this.getters);
         }
@@ -27478,10 +28099,16 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         // Command Handling
         // ---------------------------------------------------------------------------
         allowDispatch(cmd) {
+            var _a;
             switch (cmd.type) {
                 case "UPDATE_CELL":
+                    return this.checkValidations(cmd, this.checkCellOutOfSheet, this.checkUselessUpdateCell);
                 case "CLEAR_CELL":
-                    return this.checkCellOutOfSheet(cmd.sheetId, cmd.col, cmd.row);
+                    return this.checkValidations(cmd, this.checkCellOutOfSheet, this.checkUselessClearCell);
+                case "UPDATE_CELL_POSITION":
+                    return !cmd.cellId || ((_a = this.cells[cmd.sheetId]) === null || _a === void 0 ? void 0 : _a[cmd.cellId])
+                        ? 0 /* CommandResult.Success */
+                        : 28 /* CommandResult.InvalidCellId */;
                 default:
                     return 0 /* CommandResult.Success */;
             }
@@ -27520,6 +28147,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                         format: "",
                     });
                     break;
+                case "DELETE_SHEET": {
+                    this.history.update("cells", cmd.sheetId, undefined);
+                }
             }
         }
         /**
@@ -27622,7 +28252,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         importCell(sheetId, cellData, normalizedStyles, normalizedFormats) {
             const style = (cellData.style && normalizedStyles[cellData.style]) || undefined;
             const format = (cellData.format && normalizedFormats[cellData.format]) || undefined;
-            const cellId = this.uuidGenerator.uuidv4();
+            const cellId = this.getNextUid();
             const properties = { format, style };
             return this.createCell(cellId, (cellData === null || cellData === void 0 ? void 0 : cellData.content) || "", properties, sheetId);
         }
@@ -27635,6 +28265,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     const exportedCellData = sheet.cells[xc];
                     exportedCellData.value = cell.evaluated.value;
                     exportedCellData.isFormula = cell.isFormula();
+                    if (cell.isFormula()) {
+                        exportedCellData.content = this.buildFormulaContent(sheet.id, cell, cell.dependencies, true);
+                    }
                     if (cell.format !== cell.evaluated.format) {
                         exportedCellData.computedFormat = cell.evaluated.format;
                     }
@@ -27653,24 +28286,20 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
          */
         getCellById(cellId) {
             // this must be as fast as possible
-            for (const sheetId in this.cells) {
-                const sheet = this.cells[sheetId];
-                const cell = sheet[cellId];
-                if (cell) {
-                    return cell;
-                }
-            }
-            return undefined;
+            const position = this.getters.getCellPosition(cellId);
+            const sheet = this.cells[position.sheetId];
+            return sheet[cellId];
         }
         /*
          * Reconstructs the original formula string based on a normalized form and its dependencies
          */
-        buildFormulaContent(sheetId, cell, dependencies) {
-            const ranges = dependencies || [...cell.dependencies];
+        buildFormulaContent(sheetId, cell, dependencies, useFixedZone = false) {
+            const ranges = dependencies || cell.dependencies;
+            let rangeIndex = 0;
             return concat(cell.compiledFormula.tokens.map((token) => {
                 if (token.type === "REFERENCE") {
-                    const range = ranges.shift();
-                    return this.getters.getRangeString(range, sheetId);
+                    const range = ranges[rangeIndex++];
+                    return this.getters.getRangeString(range, sheetId, useFixedZone);
                 }
                 return token.value;
             }));
@@ -27679,7 +28308,11 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             return this.buildFormulaContent(sheetId, cell);
         }
         getCellStyle(cell) {
-            return (cell && cell.style) || {};
+            if (!cell) {
+                return {};
+            }
+            const linkStyle = cell.isLink() ? LINK_STYLE : {};
+            return { ...linkStyle, ...cell.style };
         }
         /**
          * Converts a zone to a XC coordinate system
@@ -27767,14 +28400,16 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             }
             return format;
         }
+        getNextUid() {
+            const id = this.nextId.toString();
+            this.history.update("nextId", this.nextId + 1);
+            return id;
+        }
         updateCell(sheetId, col, row, after) {
-            var _a;
             const before = this.getters.getCell(sheetId, col, row);
             const hasContent = "content" in after || "formula" in after;
             // Compute the new cell properties
-            const afterContent = hasContent
-                ? ((_a = after.content) === null || _a === void 0 ? void 0 : _a.replace(nbspRegexp, "")) || ""
-                : (before === null || before === void 0 ? void 0 : before.content) || "";
+            const afterContent = (hasContent ? after.content : before === null || before === void 0 ? void 0 : before.content) || "";
             let style;
             if (after.style !== undefined) {
                 style = after.style || undefined;
@@ -27805,7 +28440,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 }
                 return;
             }
-            const cellId = (before === null || before === void 0 ? void 0 : before.id) || this.uuidGenerator.uuidv4();
+            const cellId = (before === null || before === void 0 ? void 0 : before.id) || this.getNextUid();
             const didContentChange = hasContent;
             const properties = { format, style };
             const cell = this.createCell(cellId, afterContent, properties, sheetId);
@@ -27819,12 +28454,34 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             this.history.update("cells", sheetId, cell.id, cell);
             this.dispatch("UPDATE_CELL_POSITION", { cellId: cell.id, col, row, sheetId });
         }
-        checkCellOutOfSheet(sheetId, col, row) {
+        checkCellOutOfSheet(cmd) {
+            const { sheetId, col, row } = cmd;
             const sheet = this.getters.tryGetSheet(sheetId);
             if (!sheet)
                 return 27 /* CommandResult.InvalidSheetId */;
             const sheetZone = this.getters.getSheetZone(sheetId);
             return isInside(col, row, sheetZone) ? 0 /* CommandResult.Success */ : 18 /* CommandResult.TargetOutOfSheet */;
+        }
+        checkUselessClearCell(cmd) {
+            const cell = this.getters.getCell(cmd.sheetId, cmd.col, cmd.row);
+            if (!cell)
+                return 89 /* CommandResult.NoChanges */;
+            if (!cell.content && !cell.style && !cell.format) {
+                return 89 /* CommandResult.NoChanges */;
+            }
+            return 0 /* CommandResult.Success */;
+        }
+        checkUselessUpdateCell(cmd) {
+            const cell = this.getters.getCell(cmd.sheetId, cmd.col, cmd.row);
+            const hasContent = "content" in cmd || "formula" in cmd;
+            const hasStyle = "style" in cmd;
+            const hasFormat = "format" in cmd;
+            if ((!hasContent || (cell === null || cell === void 0 ? void 0 : cell.content) === cmd.content) &&
+                (!hasStyle || deepEquals(cell === null || cell === void 0 ? void 0 : cell.style, cmd.style)) &&
+                (!hasFormat || (cell === null || cell === void 0 ? void 0 : cell.format) === cmd.format)) {
+                return 89 /* CommandResult.NoChanges */;
+            }
+            return 0 /* CommandResult.Success */;
         }
     }
     CellPlugin.getters = [
@@ -28031,13 +28688,13 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         }
         checkChartDuplicate(cmd) {
             return this.getters.getFigureSheetId(cmd.id)
-                ? 83 /* CommandResult.DuplicatedChartId */
+                ? 85 /* CommandResult.DuplicatedChartId */
                 : 0 /* CommandResult.Success */;
         }
         checkChartExists(cmd) {
             return this.getters.getFigureSheetId(cmd.id)
                 ? 0 /* CommandResult.Success */
-                : 84 /* CommandResult.ChartDoesNotExist */;
+                : 86 /* CommandResult.ChartDoesNotExist */;
         }
     }
     ChartPlugin.getters = [
@@ -28152,7 +28809,13 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             }
         }
         exportForExcel(data) {
-            this.export(data);
+            if (data.sheets) {
+                for (let sheet of data.sheets) {
+                    if (this.cfRules[sheet.id]) {
+                        sheet.conditionalFormats = this.cfRules[sheet.id].map((rule) => this.mapToConditionalFormat(sheet.id, rule, { useFixedReference: true }));
+                    }
+                }
+            }
         }
         // ---------------------------------------------------------------------------
         // Getters
@@ -28202,11 +28865,11 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         // ---------------------------------------------------------------------------
         // Private
         // ---------------------------------------------------------------------------
-        mapToConditionalFormat(sheetId, cf) {
+        mapToConditionalFormat(sheetId, cf, options = { useFixedReference: false }) {
             return {
                 ...cf,
                 ranges: cf.ranges.map((range) => {
-                    return this.getters.getRangeString(range, sheetId);
+                    return this.getters.getRangeString(range, sheetId, options.useFixedReference);
                 }),
             };
         }
@@ -28239,10 +28902,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 return 27 /* CommandResult.InvalidSheetId */;
             const ruleIndex = this.cfRules[sheetId].findIndex((cf) => cf.id === cfId);
             if (ruleIndex === -1)
-                return 70 /* CommandResult.InvalidConditionalFormatId */;
+                return 72 /* CommandResult.InvalidConditionalFormatId */;
             const cfIndex2 = direction === "up" ? ruleIndex - 1 : ruleIndex + 1;
             if (cfIndex2 < 0 || cfIndex2 >= this.cfRules[sheetId].length) {
-                return 70 /* CommandResult.InvalidConditionalFormatId */;
+                return 72 /* CommandResult.InvalidConditionalFormatId */;
             }
             return 0 /* CommandResult.Success */;
         }
@@ -28283,10 +28946,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     const errors = [];
                     const isEmpty = (value) => value === undefined || value === "";
                     if (expectedNumber >= 1 && isEmpty(rule.values[0])) {
-                        errors.push(50 /* CommandResult.FirstArgMissing */);
+                        errors.push(52 /* CommandResult.FirstArgMissing */);
                     }
                     if (expectedNumber >= 2 && isEmpty(rule.values[1])) {
-                        errors.push(51 /* CommandResult.SecondArgMissing */);
+                        errors.push(53 /* CommandResult.SecondArgMissing */);
                     }
                     return errors.length ? errors : 0 /* CommandResult.Success */;
                 }
@@ -28298,15 +28961,15 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 (threshold.value === "" || isNaN(threshold.value))) {
                 switch (thresholdName) {
                     case "min":
-                        return 52 /* CommandResult.MinNaN */;
+                        return 54 /* CommandResult.MinNaN */;
                     case "max":
-                        return 54 /* CommandResult.MaxNaN */;
+                        return 56 /* CommandResult.MaxNaN */;
                     case "mid":
-                        return 53 /* CommandResult.MidNaN */;
+                        return 55 /* CommandResult.MidNaN */;
                     case "upperInflectionPoint":
-                        return 55 /* CommandResult.ValueUpperInflectionNaN */;
+                        return 57 /* CommandResult.ValueUpperInflectionNaN */;
                     case "lowerInflectionPoint":
-                        return 56 /* CommandResult.ValueLowerInflectionNaN */;
+                        return 58 /* CommandResult.ValueLowerInflectionNaN */;
                 }
             }
             return 0 /* CommandResult.Success */;
@@ -28320,15 +28983,15 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             catch (error) {
                 switch (thresholdName) {
                     case "min":
-                        return 57 /* CommandResult.MinInvalidFormula */;
+                        return 59 /* CommandResult.MinInvalidFormula */;
                     case "max":
-                        return 59 /* CommandResult.MaxInvalidFormula */;
+                        return 61 /* CommandResult.MaxInvalidFormula */;
                     case "mid":
-                        return 58 /* CommandResult.MidInvalidFormula */;
+                        return 60 /* CommandResult.MidInvalidFormula */;
                     case "upperInflectionPoint":
-                        return 60 /* CommandResult.ValueUpperInvalidFormula */;
+                        return 62 /* CommandResult.ValueUpperInvalidFormula */;
                     case "lowerInflectionPoint":
-                        return 61 /* CommandResult.ValueLowerInvalidFormula */;
+                        return 63 /* CommandResult.ValueLowerInvalidFormula */;
                 }
             }
             return 0 /* CommandResult.Success */;
@@ -28345,7 +29008,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             if (["number", "percentage", "percentile"].includes(rule.lowerInflectionPoint.type) &&
                 rule.lowerInflectionPoint.type === rule.upperInflectionPoint.type &&
                 Number(minValue) > Number(maxValue)) {
-                return 47 /* CommandResult.LowerBiggerThanUpper */;
+                return 49 /* CommandResult.LowerBiggerThanUpper */;
             }
             return 0 /* CommandResult.Success */;
         }
@@ -28355,7 +29018,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             if (["number", "percentage", "percentile"].includes(rule.minimum.type) &&
                 rule.minimum.type === rule.maximum.type &&
                 stringToNumber(minValue) >= stringToNumber(maxValue)) {
-                return 46 /* CommandResult.MinBiggerThanMax */;
+                return 48 /* CommandResult.MinBiggerThanMax */;
             }
             return 0 /* CommandResult.Success */;
         }
@@ -28367,7 +29030,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 ["number", "percentage", "percentile"].includes(rule.midpoint.type) &&
                 rule.midpoint.type === rule.maximum.type &&
                 stringToNumber(midValue) >= stringToNumber(maxValue)) {
-                return 48 /* CommandResult.MidBiggerThanMax */;
+                return 50 /* CommandResult.MidBiggerThanMax */;
             }
             return 0 /* CommandResult.Success */;
         }
@@ -28379,7 +29042,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 ["number", "percentage", "percentile"].includes(rule.midpoint.type) &&
                 rule.minimum.type === rule.midpoint.type &&
                 stringToNumber(minValue) >= stringToNumber(midValue)) {
-                return 49 /* CommandResult.MinBiggerThanMid */;
+                return 51 /* CommandResult.MinBiggerThanMid */;
             }
             return 0 /* CommandResult.Success */;
         }
@@ -28424,6 +29087,15 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     return this.checkFigureExists(cmd.sheetId, cmd.id);
                 default:
                     return 0 /* CommandResult.Success */;
+            }
+        }
+        beforeHandle(cmd) {
+            switch (cmd.type) {
+                case "DELETE_SHEET":
+                    this.getters.getFigures(cmd.sheetId).forEach((figure) => {
+                        this.dispatch("DELETE_FIGURE", { id: figure.id, sheetId: cmd.sheetId });
+                    });
+                    break;
             }
         }
         handle(cmd) {
@@ -28480,13 +29152,13 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         checkFigureExists(sheetId, figureId) {
             var _a;
             if (((_a = this.figures[sheetId]) === null || _a === void 0 ? void 0 : _a[figureId]) === undefined) {
-                return 69 /* CommandResult.FigureDoesNotExist */;
+                return 71 /* CommandResult.FigureDoesNotExist */;
             }
             return 0 /* CommandResult.Success */;
         }
         checkFigureDuplicate(figureId) {
             if (Object.values(this.figures).find((sheet) => sheet === null || sheet === void 0 ? void 0 : sheet[figureId])) {
-                return 81 /* CommandResult.DuplicatedFigureId */;
+                return 83 /* CommandResult.DuplicatedFigureId */;
             }
             return 0 /* CommandResult.Success */;
         }
@@ -28534,10 +29206,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             this.filters = [];
             this.zone = zone;
             const uuid = new UuidGenerator();
-            this.id = uuid.uuidv4();
+            this.id = uuid.smallUuid();
             for (const i of range(zone.left, zone.right + 1)) {
                 const filterZone = { ...this.zone, left: i, right: i };
-                this.filters.push(new Filter(uuid.uuidv4(), filterZone));
+                this.filters.push(new Filter(uuid.smallUuid(), filterZone));
             }
         }
         /** Get zone of the table without the headers */
@@ -28588,12 +29260,12 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             switch (cmd.type) {
                 case "CREATE_FILTER_TABLE":
                     if (!areZonesContinuous(...cmd.target)) {
-                        return 80 /* CommandResult.NonContinuousTargets */;
+                        return 82 /* CommandResult.NonContinuousTargets */;
                     }
                     const zone = union(...cmd.target);
                     const checkFilterOverlap = () => {
                         if (this.getFilterTables(cmd.sheetId).some((filter) => overlap(filter.zone, zone))) {
-                            return 77 /* CommandResult.FilterOverlap */;
+                            return 79 /* CommandResult.FilterOverlap */;
                         }
                         return 0 /* CommandResult.Success */;
                     };
@@ -28601,7 +29273,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                         const mergesInTarget = this.getters.getMergesInZone(cmd.sheetId, zone);
                         for (let merge of mergesInTarget) {
                             if (overlap(zone, merge)) {
-                                return 79 /* CommandResult.MergeInFilter */;
+                                return 81 /* CommandResult.MergeInFilter */;
                             }
                         }
                         return 0 /* CommandResult.Success */;
@@ -28611,7 +29283,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     for (let merge of cmd.target) {
                         for (let filterTable of this.getFilterTables(cmd.sheetId)) {
                             if (overlap(filterTable.zone, merge)) {
-                                return 79 /* CommandResult.MergeInFilter */;
+                                return 81 /* CommandResult.MergeInFilter */;
                             }
                         }
                     }
@@ -28630,7 +29302,14 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     this.history.update("tables", filterTables);
                     break;
                 case "DUPLICATE_SHEET":
-                    this.history.update("tables", cmd.sheetIdTo, deepCopy(this.tables[cmd.sheetId]));
+                    const tables = {};
+                    for (const filterTable of Object.values(this.tables[cmd.sheetId] || {})) {
+                        if (filterTable) {
+                            const newFilterTable = deepCopy(filterTable);
+                            tables[newFilterTable.id] = newFilterTable;
+                        }
+                    }
+                    this.history.update("tables", cmd.sheetIdTo, tables);
                     break;
                 case "ADD_COLUMNS_ROWS":
                     this.onAddColumnsRows(cmd);
@@ -28710,7 +29389,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 if (filters.length < zoneToDimension(zone).width) {
                     for (let col = zone.left; col <= zone.right; col++) {
                         if (!filters.find((filter) => filter.col === col)) {
-                            filters.push(new Filter(this.uuidGenerator.uuidv4(), { ...zone, left: col, right: col }));
+                            filters.push(new Filter(this.uuidGenerator.smallUuid(), { ...zone, left: col, right: col }));
                         }
                     }
                     filters.sort((f1, f2) => f1.col - f2.col);
@@ -28721,6 +29400,13 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         }
         onDeleteColumnsRows(cmd) {
             for (const table of this.getFilterTables(cmd.sheetId)) {
+                // Remove the filter tables whose data filter headers are in the removed rows.
+                if (cmd.dimension === "ROW" && cmd.elements.includes(table.zone.top)) {
+                    const tables = { ...this.tables[cmd.sheetId] };
+                    delete tables[table.id];
+                    this.history.update("tables", cmd.sheetId, tables);
+                    continue;
+                }
                 const zone = reduceZoneOnDeletion(table.zone, cmd.dimension === "COL" ? "left" : "top", cmd.elements);
                 if (!zone) {
                     const tables = { ...this.tables[cmd.sheetId] };
@@ -28815,7 +29501,17 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             }
         }
         exportForExcel(data) {
-            this.export(data);
+            for (const sheet of data.sheets) {
+                for (const filterTable of this.getFilterTables(sheet.id)) {
+                    if (zoneToDimension(filterTable.zone).height === 1) {
+                        continue;
+                    }
+                    sheet.filterTables.push({
+                        range: zoneToXc(filterTable.zone),
+                        filters: [],
+                    });
+                }
+            }
         }
     }
     FiltersPlugin.getters = [
@@ -28834,7 +29530,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             this.sizes = {};
         }
         handle(cmd) {
-            var _a, _b, _c;
+            var _a, _b;
             switch (cmd.type) {
                 case "CREATE_SHEET": {
                     const computedSizes = this.computeSheetSizes(cmd.sheetId);
@@ -28871,7 +29567,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     for (let headerIndex of [...cmd.elements].sort((a, b) => b - a)) {
                         sizes.splice(headerIndex, 1);
                     }
-                    const min = Math.min(...cmd.elements);
+                    const min = largeMin(cmd.elements);
                     sizes = sizes.map((size, row) => {
                         if (cmd.dimension === "ROW" && row >= min) {
                             // invalidate sizes
@@ -28889,7 +29585,11 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     let sizes = [...this.sizes[cmd.sheetId][cmd.dimension]];
                     const addIndex = getAddHeaderStartIndex(cmd.position, cmd.base);
                     const baseSize = sizes[cmd.base];
-                    sizes.splice(addIndex, 0, ...Array(cmd.quantity).fill(baseSize));
+                    const sizesToInsert = range(0, cmd.quantity).map(() => ({
+                        manualSize: baseSize.manualSize,
+                        computedSize: lazy(baseSize.computedSize()),
+                    }));
+                    sizes.splice(addIndex, 0, ...sizesToInsert);
                     sizes = sizes.map((size, row) => {
                         if (cmd.dimension === "ROW" && row > cmd.base + cmd.quantity) {
                             // invalidate sizes
@@ -28922,7 +29622,8 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     }
                     break;
                 case "UPDATE_CELL":
-                    if (!((_c = (_b = (_a = this.sizes[cmd.sheetId]) === null || _a === void 0 ? void 0 : _a["ROW"]) === null || _b === void 0 ? void 0 : _b[cmd.row]) === null || _c === void 0 ? void 0 : _c.manualSize)) {
+                    const row = (_b = (_a = this.sizes[cmd.sheetId]) === null || _a === void 0 ? void 0 : _a["ROW"]) === null || _b === void 0 ? void 0 : _b[cmd.row];
+                    if (row && !row.manualSize) {
                         const { sheetId, row } = cmd;
                         this.history.update("sizes", sheetId, "ROW", row, "computedSize", lazy(() => this.getRowTallestCellSize(sheetId, row)));
                     }
@@ -29092,10 +29793,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                         : this.getters.getNumberRows(cmd.sheetId);
                     const hiddenElements = new Set((hiddenGroup || []).flat().concat(cmd.elements));
                     if (hiddenElements.size >= elements) {
-                        return 65 /* CommandResult.TooManyHiddenElements */;
+                        return 67 /* CommandResult.TooManyHiddenElements */;
                     }
-                    else if (Math.min(...cmd.elements) < 0 || Math.max(...cmd.elements) > elements) {
-                        return 85 /* CommandResult.InvalidHeaderIndex */;
+                    else if (largeMin(cmd.elements) < 0 || largeMax(cmd.elements) > elements) {
+                        return 87 /* CommandResult.InvalidHeaderIndex */;
                     }
                     else {
                         return 0 /* CommandResult.Success */;
@@ -29105,7 +29806,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     if (!this.getters.tryGetSheet(cmd.sheetId)) {
                         return 27 /* CommandResult.InvalidSheetId */;
                     }
-                    if (!this.canRemoveHeaders(cmd.sheetId, cmd.dimension, cmd.elements)) {
+                    if (this.checkElementsIncludeAllVisibleHeaders(cmd.sheetId, cmd.dimension, cmd.elements)) {
                         return 8 /* CommandResult.NotEnoughElements */;
                     }
                     return 0 /* CommandResult.Success */;
@@ -29155,9 +29856,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             }
             return;
         }
-        canRemoveHeaders(sheetId, dimension, elements) {
+        checkElementsIncludeAllVisibleHeaders(sheetId, dimension, elements) {
             const visibleHeaders = this.getAllVisibleHeaders(sheetId, dimension);
-            return !includesAll(elements, visibleHeaders);
+            return includesAll(elements, visibleHeaders);
         }
         isRowHiddenByUser(sheetId, index) {
             return this.hiddenHeaders[sheetId].ROW[index];
@@ -29253,7 +29954,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         }
     }
     HeaderVisibilityPlugin.getters = [
-        "canRemoveHeaders",
+        "checkElementsIncludeAllVisibleHeaders",
         "getHiddenColsGroups",
         "getHiddenRowsGroups",
         "isRowHiddenByUser",
@@ -29498,7 +30199,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             for (const zone of target) {
                 for (const zone2 of target) {
                     if (zone !== zone2 && overlap(zone, zone2)) {
-                        return 64 /* CommandResult.MergeOverlap */;
+                        return 66 /* CommandResult.MergeOverlap */;
                     }
                 }
             }
@@ -29512,7 +30213,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             for (const zone of target) {
                 if ((zone.left < xSplit && zone.right >= xSplit) ||
                     (zone.top < ySplit && zone.bottom >= ySplit)) {
-                    return 74 /* CommandResult.FrozenPaneOverlap */;
+                    return 76 /* CommandResult.FrozenPaneOverlap */;
                 }
             }
             return 0 /* CommandResult.Success */;
@@ -29730,6 +30431,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 case "CREATE_SHEET": {
                     return this.checkValidations(cmd, this.checkSheetName, this.checkSheetPosition);
                 }
+                case "DUPLICATE_SHEET": {
+                    return this.sheets[cmd.sheetIdTo] ? 12 /* CommandResult.DuplicatedSheetId */ : 0 /* CommandResult.Success */;
+                }
                 case "MOVE_SHEET":
                     const currentIndex = this.orderedSheetIds.indexOf(cmd.sheetId);
                     if (cmd.direction === "left") {
@@ -29751,26 +30455,29 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 case "RENAME_SHEET":
                     return this.isRenameAllowed(cmd);
                 case "DELETE_SHEET":
-                    return this.orderedSheetIds.length > 1
+                    return this.getVisibleSheetIds().length > 1
                         ? 0 /* CommandResult.Success */
                         : 9 /* CommandResult.NotEnoughSheets */;
                 case "ADD_COLUMNS_ROWS":
                     const elements = cmd.dimension === "COL"
                         ? this.getNumberCols(cmd.sheetId)
                         : this.getNumberRows(cmd.sheetId);
-                    if (cmd.base < 0 || cmd.base > elements) {
-                        return 85 /* CommandResult.InvalidHeaderIndex */;
+                    if (cmd.base < 0 || cmd.base >= elements) {
+                        return 87 /* CommandResult.InvalidHeaderIndex */;
                     }
                     else if (cmd.quantity <= 0) {
-                        return 86 /* CommandResult.InvalidQuantity */;
+                        return 88 /* CommandResult.InvalidQuantity */;
                     }
                     return 0 /* CommandResult.Success */;
                 case "REMOVE_COLUMNS_ROWS": {
                     const elements = cmd.dimension === "COL"
                         ? this.getNumberCols(cmd.sheetId)
                         : this.getNumberRows(cmd.sheetId);
-                    if (Math.min(...cmd.elements) < 0 || Math.max(...cmd.elements) > elements) {
-                        return 85 /* CommandResult.InvalidHeaderIndex */;
+                    if (largeMin(cmd.elements) < 0 || largeMax(cmd.elements) > elements) {
+                        return 87 /* CommandResult.InvalidHeaderIndex */;
+                    }
+                    else if (this.checkElementsIncludeAllNonFrozenHeaders(cmd.sheetId, cmd.dimension, cmd.elements)) {
+                        return 8 /* CommandResult.NotEnoughElements */;
                     }
                     else {
                         return 0 /* CommandResult.Success */;
@@ -30071,6 +30778,20 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             }
             this.history.update("sheets", sheetId, "panes", panes);
         }
+        /**
+         * Checks if all non-frozen header indices are present in the provided elements of selected rows/columns.
+         * This validation ensures that all rows or columns cannot be deleted when frozen panes exist.
+         */
+        checkElementsIncludeAllNonFrozenHeaders(sheetId, dimension, elements) {
+            const paneDivisions = this.getters.getPaneDivisions(sheetId);
+            const startIndex = dimension === "ROW" ? paneDivisions.ySplit : paneDivisions.xSplit;
+            const endIndex = this.getters.getNumberHeaders(sheetId, dimension);
+            if (!startIndex) {
+                return false;
+            }
+            const indicesToCheck = range(startIndex, endIndex);
+            return includesAll(elements, indicesToCheck);
+        }
         // ---------------------------------------------------------------------------
         // Row/Col manipulation
         // ---------------------------------------------------------------------------
@@ -30210,18 +30931,18 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         checkRowFreezeQuantity(cmd) {
             return cmd.quantity >= 1 && cmd.quantity < this.getNumberRows(cmd.sheetId)
                 ? 0 /* CommandResult.Success */
-                : 73 /* CommandResult.InvalidFreezeQuantity */;
+                : 75 /* CommandResult.InvalidFreezeQuantity */;
         }
         checkColFreezeQuantity(cmd) {
             return cmd.quantity >= 1 && cmd.quantity < this.getNumberCols(cmd.sheetId)
                 ? 0 /* CommandResult.Success */
-                : 73 /* CommandResult.InvalidFreezeQuantity */;
+                : 75 /* CommandResult.InvalidFreezeQuantity */;
         }
         checkRowFreezeOverlapMerge(cmd) {
             const merges = this.getters.getMerges(cmd.sheetId);
             for (let merge of merges) {
                 if (merge.top < cmd.quantity && cmd.quantity <= merge.bottom) {
-                    return 64 /* CommandResult.MergeOverlap */;
+                    return 66 /* CommandResult.MergeOverlap */;
                 }
             }
             return 0 /* CommandResult.Success */;
@@ -30230,7 +30951,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             const merges = this.getters.getMerges(cmd.sheetId);
             for (let merge of merges) {
                 if (merge.left < cmd.quantity && cmd.quantity <= merge.right) {
-                    return 64 /* CommandResult.MergeOverlap */;
+                    return 66 /* CommandResult.MergeOverlap */;
                 }
             }
             return 0 /* CommandResult.Success */;
@@ -30354,10 +31075,13 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             // begin with the end.
             rows.sort((a, b) => b - a);
             for (let group of groupConsecutive(rows)) {
+                // indexes are sorted in the descending order
+                const from = group[group.length - 1];
+                const to = group[0];
                 // Move the cells.
-                this.moveCellOnRowsDeletion(sheet, group[group.length - 1], group[0]);
-                // Effectively delete the element and recompute the left-right/top-bottom.
-                group.map((row) => this.updateRowsStructureOnDeletion(row, sheet));
+                this.moveCellOnRowsDeletion(sheet, from, to);
+                // Effectively delete the rows
+                this.updateRowsStructureOnDeletion(sheet, from, to);
             }
             const count = rows.filter((row) => row < sheet.panes.ySplit).length;
             if (count) {
@@ -30379,8 +31103,6 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             this.addEmptyRows(sheet, quantity);
             // Move the cells.
             this.moveCellsOnAddition(sheet, index, quantity, "rows");
-            // Recompute the left-right/top-bottom.
-            this.updateRowsStructureOnAddition(sheet, row, quantity);
             if (index < sheet.panes.ySplit) {
                 this.setPaneDivisions(sheet.id, sheet.panes.ySplit + quantity, "ROW");
             }
@@ -30400,12 +31122,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                             });
                         }
                         if (colIndex > deletedColumn) {
-                            this.dispatch("UPDATE_CELL_POSITION", {
-                                sheetId: sheet.id,
-                                cellId: cellId,
-                                col: colIndex - 1,
-                                row: rowIndex,
-                            });
+                            this.setNewPosition(cellId, sheet.id, colIndex - 1, rowIndex);
                         }
                     }
                 }
@@ -30415,7 +31132,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
          * Move the cells after a column or rows insertion
          */
         moveCellsOnAddition(sheet, addedElement, quantity, dimension) {
-            const commands = [];
+            const updates = [];
             for (let rowIndex = 0; rowIndex < sheet.rows.length; rowIndex++) {
                 const row = sheet.rows[rowIndex];
                 if (dimension !== "rows" || rowIndex >= addedElement) {
@@ -30424,20 +31141,20 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                         const cellId = row.cells[i];
                         if (cellId) {
                             if (dimension === "rows" || colIndex >= addedElement) {
-                                commands.push({
-                                    type: "UPDATE_CELL_POSITION",
+                                updates.push({
                                     sheetId: sheet.id,
                                     cellId: cellId,
                                     col: colIndex + (dimension === "columns" ? quantity : 0),
                                     row: rowIndex + (dimension === "rows" ? quantity : 0),
+                                    type: "UPDATE_CELL_POSITION",
                                 });
                             }
                         }
                     }
                 }
             }
-            for (let cmd of commands.reverse()) {
-                this.dispatch(cmd.type, cmd);
+            for (let update of updates.reverse()) {
+                this.updateCellPosition(update);
             }
         }
         /**
@@ -30470,44 +31187,24 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                         const colIndex = Number(i);
                         const cellId = row.cells[i];
                         if (cellId) {
-                            this.dispatch("UPDATE_CELL_POSITION", {
-                                sheetId: sheet.id,
-                                cellId: cellId,
-                                col: colIndex,
-                                row: rowIndex - numberRows,
-                            });
+                            this.setNewPosition(cellId, sheet.id, colIndex, rowIndex - numberRows);
                         }
                     }
                 }
             }
         }
-        updateRowsStructureOnDeletion(index, sheet) {
+        updateRowsStructureOnDeletion(sheet, deleteFromRow, deleteToRow) {
             const rows = [];
-            const cellsQueue = sheet.rows.map((row) => row.cells);
+            const cellsQueue = sheet.rows.map((row) => row.cells).reverse();
             for (let i in sheet.rows) {
-                if (Number(i) === index) {
+                const row = Number(i);
+                if (row >= deleteFromRow && row <= deleteToRow) {
                     continue;
                 }
                 rows.push({
-                    cells: cellsQueue.shift(),
+                    cells: cellsQueue.pop(),
                 });
             }
-            this.history.update("sheets", sheet.id, "rows", rows);
-        }
-        /**
-         * Update the rows of the sheet after an addition:
-         * - Rename the rows
-         *
-         * @param sheet Sheet on which the deletion occurs
-         * @param addedRow Index of the added row
-         * @param rowsToAdd Number of the rows to add
-         */
-        updateRowsStructureOnAddition(sheet, addedRow, rowsToAdd) {
-            const rows = [];
-            const cellsQueue = sheet.rows.map((row) => row.cells);
-            sheet.rows.forEach(() => rows.push({
-                cells: cellsQueue.shift(),
-            }));
             this.history.update("sheets", sheet.id, "rows", rows);
         }
         /**
@@ -30564,6 +31261,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 zones.push(...cmd.target);
             }
             if ("ranges" in cmd && Array.isArray(cmd.ranges)) {
+                if (cmd.ranges.some((rangeData) => !this.getters.tryGetSheet(rangeData._sheetId))) {
+                    return 27 /* CommandResult.InvalidSheetId */;
+                }
                 zones.push(...cmd.ranges.map((rangeData) => this.getters.getRangeFromRangeData(rangeData).zone));
             }
             if (!zones.every(isZoneValid)) {
@@ -30605,6 +31305,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         "getSheetSize",
         "getSheetZone",
         "getPaneDivisions",
+        "checkElementsIncludeAllNonFrozenHeaders",
     ];
 
     /**
@@ -30684,7 +31385,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     if (this.lastCellSelected.col !== undefined && this.lastCellSelected.row !== undefined) {
                         return 0 /* CommandResult.Success */;
                     }
-                    return 44 /* CommandResult.InvalidAutofillSelection */;
+                    return 46 /* CommandResult.InvalidAutofillSelection */;
                 case "AUTOFILL_AUTO":
                     const zone = this.getters.getSelectedZone();
                     return zone.top === zone.bottom
@@ -31138,13 +31839,13 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             const cells = this.getters.getCellsInZone(sheet.id, zone);
             const cellPositions = range(end, -1, -1);
             const invalidCells = cellPositions.filter((position) => { var _a; return cells[position] && !((_a = cells[position]) === null || _a === void 0 ? void 0 : _a.isAutoSummable); });
-            const maxValidPosition = Math.max(...invalidCells);
+            const maxValidPosition = largeMax(invalidCells);
             const numberSequences = groupConsecutive(cellPositions.filter((position) => this.isNumber(cells[position])));
             const firstSequence = numberSequences[0] || [];
-            if (Math.max(...firstSequence) < maxValidPosition) {
+            if (largeMax(firstSequence) < maxValidPosition) {
                 return Infinity;
             }
-            return Math.min(...firstSequence);
+            return largeMin(firstSequence);
         }
         shouldFindData(sheetId, zone) {
             return this.getters.isEmpty(sheetId, zone) || this.getters.isSingleCellOrMerge(sheetId, zone);
@@ -31284,7 +31985,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                         cellPopoverRegistry.get(cmd.popoverType);
                     }
                     catch (error) {
-                        return 71 /* CommandResult.InvalidCellPopover */;
+                        return 73 /* CommandResult.InvalidCellPopover */;
                     }
                     return 0 /* CommandResult.Success */;
                 default:
@@ -31508,7 +32209,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             for (const zone of this.getPasteZones(target)) {
                 if ((zone.left < xSplit && zone.right >= xSplit) ||
                     (zone.top < ySplit && zone.bottom >= ySplit)) {
-                    return 74 /* CommandResult.FrozenPaneOverlap */;
+                    return 76 /* CommandResult.FrozenPaneOverlap */;
                 }
             }
             return 0 /* CommandResult.Success */;
@@ -31571,7 +32272,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             });
             for (const filterTable of this.copiedTables) {
                 this.dispatch("REMOVE_FILTER_TABLE", {
-                    sheetId: this.getters.getActiveSheetId(),
+                    sheetId: this.sheetId,
                     target: [filterTable.zone],
                 });
             }
@@ -31868,7 +32569,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         }
         isPasteAllowed(target, option) {
             if (target.length === 0) {
-                return 72 /* CommandResult.EmptyTarget */;
+                return 74 /* CommandResult.EmptyTarget */;
             }
             if ((option === null || option === void 0 ? void 0 : option.pasteOption) !== undefined) {
                 return 22 /* CommandResult.WrongFigurePasteOption */;
@@ -31885,7 +32586,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 y: this.getters.getRowDimensions(sheetId, target[0].top).start,
             };
             const newChart = this.copiedChart.copyInSheetId(sheetId);
-            const newId = new UuidGenerator().uuidv4();
+            const newId = new UuidGenerator().smallUuid();
             this.dispatch("CREATE_CHART", {
                 id: newId,
                 sheetId,
@@ -31986,7 +32687,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         allowDispatch(cmd) {
             switch (cmd.type) {
                 case "CUT":
-                    const zones = cmd.target || this.getters.getSelectedZones();
+                    const zones = this.getters.getSelectedZones();
                     const state = this.getClipboardState(zones, cmd.type);
                     return state.isCutAllowed(zones);
                 case "PASTE":
@@ -32013,11 +32714,11 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             return 0 /* CommandResult.Success */;
         }
         handle(cmd) {
-            var _a, _b;
+            var _a, _b, _c, _d;
             switch (cmd.type) {
                 case "COPY":
                 case "CUT":
-                    const zones = ("target" in cmd && cmd.target) || this.getters.getSelectedZones();
+                    const zones = this.getters.getSelectedZones();
                     this.state = this.getClipboardState(zones, cmd.type);
                     this.status = "visible";
                     break;
@@ -32054,7 +32755,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 case "ADD_COLUMNS_ROWS": {
                     this.status = "invisible";
                     // If we add a col/row inside or before the cut area, we invalidate the clipboard
-                    if (((_a = this.state) === null || _a === void 0 ? void 0 : _a.operation) !== "CUT") {
+                    if (((_a = this.state) === null || _a === void 0 ? void 0 : _a.operation) !== "CUT" || cmd.sheetId !== ((_b = this.state) === null || _b === void 0 ? void 0 : _b.sheetId)) {
                         return;
                     }
                     const isClipboardDirty = this.state.isColRowDirtyingClipboard(cmd.position === "before" ? cmd.base : cmd.base + 1, cmd.dimension);
@@ -32066,7 +32767,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 case "REMOVE_COLUMNS_ROWS": {
                     this.status = "invisible";
                     // If we remove a col/row inside or before the cut area, we invalidate the clipboard
-                    if (((_b = this.state) === null || _b === void 0 ? void 0 : _b.operation) !== "CUT") {
+                    if (((_c = this.state) === null || _c === void 0 ? void 0 : _c.operation) !== "CUT" || cmd.sheetId !== ((_d = this.state) === null || _d === void 0 ? void 0 : _d.sheetId)) {
                         return;
                     }
                     for (let el of cmd.elements) {
@@ -32375,13 +33076,18 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         // Getters
         // ---------------------------------------------------------------------------
         evaluateFormula(formulaString, sheetId = this.getters.getActiveSheetId()) {
-            const compiledFormula = compile(formulaString);
-            const params = this.getCompilationParameters(() => { });
-            const ranges = [];
-            for (let xc of compiledFormula.dependencies) {
-                ranges.push(this.getters.getRangeFromSheetXC(sheetId, xc));
+            try {
+                const compiledFormula = compile(formulaString);
+                const params = this.getCompilationParameters(() => { });
+                const ranges = [];
+                for (let xc of compiledFormula.dependencies) {
+                    ranges.push(this.getters.getRangeFromSheetXC(sheetId, xc));
+                }
+                return compiledFormula.execute(ranges, ...params).value;
             }
-            return compiledFormula.execute(ranges, ...params).value;
+            catch (error) {
+                return error instanceof EvaluationError ? error.errorType : CellErrorType.GenericError;
+            }
         }
         /**
          * Return the value of each cell in the range as they are displayed in the grid.
@@ -32497,6 +33203,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 }
                 return cell.evaluated;
             }
+            const rangeCache = {};
             /**
              * Return the values of the cell(s) used in reference, but always in the format of a range even
              * if a single cell is referenced. It is a list of col values. This is useful for the formulas that describe parameters as
@@ -32506,28 +33213,31 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
              * that are actually present in the grid.
              */
             function range(range) {
+                assertRangeValid(range);
                 const sheetId = range.sheetId;
-                if (!isZoneValid(range.zone)) {
-                    throw new InvalidReferenceError();
-                }
                 // Performance issue: Avoid fetching data on positions that are out of the spreadsheet
                 // e.g. A1:ZZZ9999 in a sheet with 10 cols and 10 rows should ignore everything past J10 and return a 10x10 array
                 const sheetZone = getters.getSheetZone(sheetId);
-                const result = [];
                 const zone = intersection(range.zone, sheetZone);
                 if (!zone) {
-                    result.push([]);
-                    return result;
+                    return [[]];
                 }
+                const { top, left, bottom, right } = zone;
+                const cacheKey = `${sheetId}-${top}-${left}-${bottom}-${right}`;
+                if (cacheKey in rangeCache) {
+                    return rangeCache[cacheKey];
+                }
+                const result = new Array(right - left + 1);
                 // Performance issue: nested loop is faster than a map here
-                for (let col = zone.left; col <= zone.right; col++) {
-                    const rowValues = [];
-                    for (let row = zone.top; row <= zone.bottom; row++) {
+                for (let col = left; col <= right; col++) {
+                    const rowValues = new Array(bottom - top + 1);
+                    for (let row = top; row <= bottom; row++) {
                         const cell = evalContext.getters.getCell(range.sheetId, col, row);
-                        rowValues.push(cell ? getEvaluatedCell(cell) : undefined);
+                        rowValues[row - top] = cell ? getEvaluatedCell(cell) : undefined;
                     }
-                    result.push(rowValues);
+                    result[col - left] = rowValues;
                 }
+                rangeCache[cacheKey] = result;
                 return result;
             }
             /**
@@ -32539,12 +33249,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
              *        The `compute` of the formula's function must process it completely
              */
             function refFn(range, isMeta, functionName, paramNumber) {
+                assertRangeValid(range);
                 if (isMeta) {
                     // Use zoneToXc of zone instead of getRangeString to avoid sending unbounded ranges
                     return { value: zoneToXc(range.zone) };
-                }
-                if (!isZoneValid(range.zone)) {
-                    throw new InvalidReferenceError();
                 }
                 // if the formula definition could have accepted a range, we would pass through the _range function and not here
                 if (range.zone.bottom !== range.zone.top || range.zone.left !== range.zone.right) {
@@ -32552,10 +33260,15 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                         ? _lt("Function %s expects the parameter %s to be a single value or a single cell reference, not a range.", functionName.toString(), paramNumber.toString())
                         : _lt("Function %s expects its parameters to be single values or single cell references, not ranges.", functionName.toString()));
                 }
+                return readCell(range);
+            }
+            function assertRangeValid(range) {
+                if (!isZoneValid(range.zone)) {
+                    throw new InvalidReferenceError();
+                }
                 if (range.invalidSheetName) {
                     throw new Error(_lt("Invalid sheet name: %s", range.invalidSheetName));
                 }
-                return readCell(range);
             }
             return [refFn, range, evalContext];
         }
@@ -32603,27 +33316,29 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             return this.charts[figureId];
         }
         /**
-         * Get the background color of a chart based on the color of the first cell of the main range
-         * of the chart. In order of priority, it will return :
-         *
-         *  - the chart background color if one is defined
-         *  - the fill color of the cell if one is defined
-         *  - the fill color of the cell from conditional formats if one is defined
-         *  - the default chart color if no other color is defined
+         * Get the background and textColor of a chart based on the color of the first cell of the main range of the chart.
          */
-        getBackgroundOfSingleCellChart(chartBackground, mainRange) {
+        getStyleOfSingleCellChart(chartBackground, mainRange) {
             if (chartBackground)
-                return chartBackground;
+                return { background: chartBackground, fontColor: chartFontColor(chartBackground) };
             if (!mainRange) {
-                return BACKGROUND_CHART_COLOR;
+                return {
+                    background: BACKGROUND_CHART_COLOR,
+                    fontColor: chartFontColor(BACKGROUND_CHART_COLOR),
+                };
             }
             const col = mainRange.zone.left;
             const row = mainRange.zone.top;
-            const style = this.getters.getCellComputedStyle(mainRange.sheetId, col, row);
-            return style.fillColor || BACKGROUND_CHART_COLOR;
+            const sheetId = mainRange.sheetId;
+            const style = this.getters.getCellComputedStyle(sheetId, col, row);
+            const background = style.fillColor || BACKGROUND_CHART_COLOR;
+            return {
+                background,
+                fontColor: style.textColor || chartFontColor(background),
+            };
         }
     }
-    EvaluationChartPlugin.getters = ["getChartRuntime", "getBackgroundOfSingleCellChart"];
+    EvaluationChartPlugin.getters = ["getChartRuntime", "getStyleOfSingleCellChart"];
 
     // -----------------------------------------------------------------------------
     // Constants
@@ -32635,6 +33350,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             // stores the computed styles in the format of computedStyles.sheetName[col][row] = Style
             this.computedStyles = {};
             this.computedIcons = {};
+            this.uuidGenerator = new UuidGenerator();
             /**
              * Execute the predicate to know if a conditional formatting rule should be applied to a cell
              */
@@ -32774,39 +33490,34 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             this.computedIcons[activeSheetId] = {};
             const computedStyle = this.computedStyles[activeSheetId];
             for (let cf of this.getters.getConditionalFormats(activeSheetId).reverse()) {
-                try {
-                    switch (cf.rule.type) {
-                        case "ColorScaleRule":
-                            for (let range of cf.ranges) {
-                                this.applyColorScale(range, cf.rule);
-                            }
-                            break;
-                        case "IconSetRule":
-                            for (let range of cf.ranges) {
-                                this.applyIcon(range, cf.rule);
-                            }
-                            break;
-                        default:
-                            for (let ref of cf.ranges) {
-                                const zone = this.getters.getRangeFromSheetXC(activeSheetId, ref).zone;
-                                for (let row = zone.top; row <= zone.bottom; row++) {
-                                    for (let col = zone.left; col <= zone.right; col++) {
-                                        const pr = this.rulePredicate[cf.rule.type];
-                                        let cell = this.getters.getCell(activeSheetId, col, row);
-                                        if (pr && pr(cell, cf.rule)) {
-                                            if (!computedStyle[col])
-                                                computedStyle[col] = [];
-                                            // we must combine all the properties of all the CF rules applied to the given cell
-                                            computedStyle[col][row] = Object.assign(((_a = computedStyle[col]) === null || _a === void 0 ? void 0 : _a[row]) || {}, cf.rule.style);
-                                        }
+                switch (cf.rule.type) {
+                    case "ColorScaleRule":
+                        for (let range of cf.ranges) {
+                            this.applyColorScale(range, cf.rule);
+                        }
+                        break;
+                    case "IconSetRule":
+                        for (let range of cf.ranges) {
+                            this.applyIcon(range, cf.rule);
+                        }
+                        break;
+                    default:
+                        for (let ref of cf.ranges) {
+                            const zone = this.getters.getRangeFromSheetXC(activeSheetId, ref).zone;
+                            for (let row = zone.top; row <= zone.bottom; row++) {
+                                for (let col = zone.left; col <= zone.right; col++) {
+                                    const pr = this.rulePredicate[cf.rule.type];
+                                    let cell = this.getters.getCell(activeSheetId, col, row);
+                                    if (pr && pr(cell, cf.rule)) {
+                                        if (!computedStyle[col])
+                                            computedStyle[col] = [];
+                                        // we must combine all the properties of all the CF rules applied to the given cell
+                                        computedStyle[col][row] = Object.assign(((_a = computedStyle[col]) === null || _a === void 0 ? void 0 : _a[row]) || {}, cf.rule.style);
                                     }
                                 }
                             }
-                            break;
-                    }
-                }
-                catch (_) {
-                    // we don't care about the errors within the evaluation of a rule
+                        }
+                        break;
                 }
             }
         }
@@ -32817,20 +33528,20 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 .filter(this.isCellValueNumber);
             switch (threshold.type) {
                 case "value":
-                    const result = functionName === "max" ? Math.max(...rangeValues) : Math.min(...rangeValues);
+                    const result = functionName === "max" ? largeMax(rangeValues) : largeMin(rangeValues);
                     return result;
                 case "number":
                     return Number(threshold.value);
                 case "percentage":
-                    const min = Math.min(...rangeValues);
-                    const max = Math.max(...rangeValues);
+                    const min = largeMin(rangeValues);
+                    const max = largeMax(rangeValues);
                     const delta = max - min;
                     return min + (delta * Number(threshold.value)) / 100;
                 case "percentile":
                     return percentile(rangeValues, Number(threshold.value) / 100, true);
                 case "formula":
                     const value = threshold.value && this.getters.evaluateFormula(threshold.value);
-                    return !(value instanceof Promise) ? value : null;
+                    return typeof value === "number" ? value : null;
                 default:
                     return null;
             }
@@ -32961,6 +33672,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             }
             currentRanges = currentRanges.concat(toAdd);
             const newRangesXC = recomputeZones(currentRanges, toRemove);
+            if (newRangesXC.length === 0) {
+                this.dispatch("REMOVE_CONDITIONAL_FORMAT", { id: cf.id, sheetId });
+                return;
+            }
             this.dispatch("ADD_CONDITIONAL_FORMAT", {
                 cf: {
                     id: cf.id,
@@ -32986,8 +33701,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                             this.adaptRules(origin.sheetId, cf, [xc], toRemoveRange);
                         }
                         else {
-                            this.adaptRules(target.sheetId, cf, [xc], []);
                             this.adaptRules(origin.sheetId, cf, [], toRemoveRange);
+                            const cfToCopyTo = this.getCFToCopyTo(target.sheetId, cf);
+                            this.adaptRules(target.sheetId, cfToCopyTo, [xc], []);
                         }
                     }
                 }
@@ -32995,6 +33711,14 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         }
         isCellValueNumber(value) {
             return typeof value === "number";
+        }
+        getCFToCopyTo(targetSheetId, originCF) {
+            const cfInTarget = this.getters
+                .getConditionalFormats(targetSheetId)
+                .find((cf) => cf.stopIfTrue === originCF.stopIfTrue && deepEquals(cf.rule, originCF.rule));
+            return cfInTarget
+                ? cfInTarget
+                : { ...originCF, id: this.uuidGenerator.smallUuid(), ranges: [] };
         }
     }
     EvaluationConditionalFormatPlugin.getters = ["getConditionalIcon", "getCellComputedStyle"];
@@ -33010,7 +33734,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             switch (cmd.type) {
                 case "UPDATE_FILTER":
                     if (!this.getters.getFilterId(cmd.sheetId, cmd.col, cmd.row)) {
-                        return 78 /* CommandResult.FilterNotFound */;
+                        return 80 /* CommandResult.FilterNotFound */;
                     }
                     break;
             }
@@ -33038,6 +33762,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     this.filterValues[cmd.sheetId] = {};
                     break;
                 case "HIDE_COLUMNS_ROWS":
+                case "UNHIDE_COLUMNS_ROWS":
+                case "ADD_COLUMNS_ROWS":
+                case "REMOVE_COLUMNS_ROWS":
                     this.updateHiddenRows();
                     break;
                 case "UPDATE_FILTER":
@@ -33179,14 +33906,19 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                         if (!filter)
                             continue;
                         const valuesInFilterZone = filter.filteredZone
-                            ? positions(filter.filteredZone)
-                                .map((pos) => { var _a; return (_a = this.getters.getCell(sheetData.id, pos.col, pos.row)) === null || _a === void 0 ? void 0 : _a.formattedValue; })
-                                .filter(isNonEmptyString)
+                            ? positions(filter.filteredZone).map((pos) => { var _a; return (_a = this.getters.getCell(sheetData.id, pos.col, pos.row)) === null || _a === void 0 ? void 0 : _a.formattedValue; })
                             : [];
-                        // In xlsx, filtered values = values that are displayed, not values that are hidden
-                        const xlsxFilteredValues = valuesInFilterZone.filter((val) => !filteredValues.includes(val));
-                        filters.push({ colId: i, filteredValues: [...new Set(xlsxFilteredValues)] });
-                        // In xlsx, filter header should ALWAYS be a string and should be unique
+                        if (filteredValues.length) {
+                            const xlsxDisplayedValues = valuesInFilterZone
+                                .filter(isNonEmptyString)
+                                .filter((val) => !filteredValues.includes(val));
+                            filters.push({
+                                colId: i,
+                                displayedValues: [...new Set(xlsxDisplayedValues)],
+                                displayBlanks: !filteredValues.includes("") && valuesInFilterZone.some((val) => !val),
+                            });
+                        }
+                        // In xlsx, filter header should ALWAYS be a string and should be unique in the table
                         const headerPosition = { col: filter.col, row: filter.zoneWithHeaders.top };
                         const headerString = (_a = this.getters.getCell(sheetData.id, headerPosition.col, headerPosition.row)) === null || _a === void 0 ? void 0 : _a.formattedValue;
                         const headerName = this.getUniqueColNameForExcel(i, headerString, headerNames);
@@ -33257,6 +33989,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 searchFormulas: false,
             };
             this.toSearch = "";
+            this.isSearchDirty = false;
         }
         // ---------------------------------------------------------------------------
         // Command Handling
@@ -33281,16 +34014,27 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 case "REPLACE_ALL_SEARCH":
                     this.replaceAll(cmd.replaceWith);
                     break;
+                case "EVALUATE_CELLS":
+                case "UPDATE_CELL":
+                case "REMOVE_FILTER_TABLE":
+                case "UPDATE_FILTER":
+                    this.isSearchDirty = true;
+                    break;
                 case "UNDO":
                 case "REDO":
                 case "REMOVE_COLUMNS_ROWS":
+                case "HIDE_COLUMNS_ROWS":
+                case "UNHIDE_COLUMNS_ROWS":
                 case "ADD_COLUMNS_ROWS":
-                    this.clearSearch();
-                    break;
                 case "ACTIVATE_SHEET":
-                case "REFRESH_SEARCH":
                     this.refreshSearch();
                     break;
+            }
+        }
+        finalize() {
+            if (this.isSearchDirty) {
+                this.refreshSearch();
+                this.isSearchDirty = false;
             }
         }
         // ---------------------------------------------------------------------------
@@ -33342,18 +34086,20 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
          * Find matches using the current regex
          */
         findMatches() {
-            const activeSheetId = this.getters.getActiveSheetId();
-            const cells = this.getters.getCells(activeSheetId);
+            const sheetId = this.getters.getActiveSheetId();
+            const cells = this.getters.getCells(sheetId);
             const matches = [];
             if (this.toSearch) {
                 for (const cell of Object.values(cells)) {
+                    const { col, row } = this.getters.getCellPosition(cell.id);
+                    const isColHidden = this.getters.isColHidden(sheetId, col);
+                    const isRowHidden = this.getters.isRowHidden(sheetId, row);
+                    if (isColHidden || isRowHidden) {
+                        continue;
+                    }
                     if (cell &&
                         this.currentSearchRegex &&
-                        this.currentSearchRegex.test(this.searchOptions.searchFormulas
-                            ? cell.isFormula()
-                                ? cell.content
-                                : String(cell.evaluated.value)
-                            : String(cell.evaluated.value))) {
+                        this.currentSearchRegex.test(this.searchOptions.searchFormulas ? cell.content : String(cell.evaluated.value))) {
                         const position = this.getters.getCellPosition(cell.id);
                         const match = { col: position.col, row: position.row, selected: false };
                         matches.push(match);
@@ -33755,12 +34501,21 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         drawGrid(renderingContext, layer) {
             switch (layer) {
                 case 0 /* LAYERS.Background */:
-                    this.boxes = this.getGridBoxes();
                     this.drawBackground(renderingContext);
-                    this.drawCellBackground(renderingContext);
-                    this.drawBorders(renderingContext);
-                    this.drawTexts(renderingContext);
-                    this.drawIcon(renderingContext);
+                    for (const zone of this.getters.getAllActiveViewportsZones()) {
+                        const { ctx } = renderingContext;
+                        ctx.save();
+                        ctx.beginPath();
+                        const rect = this.getters.getVisibleRect(zone);
+                        ctx.rect(rect.x, rect.y, rect.width, rect.height);
+                        ctx.clip();
+                        this.boxes = this.getGridBoxes(zone);
+                        this.drawCellBackground(renderingContext);
+                        this.drawBorders(renderingContext);
+                        this.drawTexts(renderingContext);
+                        this.drawIcon(renderingContext);
+                        ctx.restore();
+                    }
                     this.drawFrozenPanes(renderingContext);
                     break;
                 case 7 /* LAYERS.Headers */:
@@ -33958,10 +34713,8 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             const { ctx, thinLineWidth } = renderingContext;
             const visibleCols = this.getters.getSheetViewVisibleCols();
             const left = visibleCols[0];
-            const right = visibleCols[visibleCols.length - 1];
             const visibleRows = this.getters.getSheetViewVisibleRows();
             const top = visibleRows[0];
-            const bottom = visibleRows[visibleRows.length - 1];
             const { width, height } = this.getters.getSheetViewDimensionWithHeaders();
             const selection = this.getters.getSelectedZones();
             const selectedCols = getZonesCols(selection);
@@ -33977,7 +34730,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             ctx.lineWidth = thinLineWidth;
             ctx.strokeStyle = "#333";
             // Columns headers background
-            for (let col = left; col <= right; col++) {
+            for (const col of visibleCols) {
                 const colZone = { left: col, right: col, top: 0, bottom: numberOfRows - 1 };
                 const { x, width } = this.getters.getVisibleRect(colZone);
                 const colHasFilter = this.getters.doesZonesContainFilter(sheetId, [colZone]);
@@ -33997,7 +34750,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 ctx.fillRect(x, 0, width, HEADER_HEIGHT);
             }
             // Rows headers background
-            for (let row = top; row <= bottom; row++) {
+            for (const row of visibleRows) {
                 const rowZone = { top: row, bottom: row, left: 0, right: numberOfCols - 1 };
                 const { y, height } = this.getters.getVisibleRect(rowZone);
                 const rowHasFilter = this.getters.doesZonesContainFilter(sheetId, [rowZone]);
@@ -34026,21 +34779,21 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             ctx.stroke();
             ctx.beginPath();
             // column text + separator
-            for (const i of visibleCols) {
-                const colSize = this.getters.getColSize(sheetId, i);
-                const colName = numberToLetters(i);
-                ctx.fillStyle = activeCols.has(i) ? "#fff" : TEXT_HEADER_COLOR;
-                let colStart = this.getHeaderOffset("COL", left, i);
+            for (const col of visibleCols) {
+                const colSize = this.getters.getColSize(sheetId, col);
+                const colName = numberToLetters(col);
+                ctx.fillStyle = activeCols.has(col) ? "#fff" : TEXT_HEADER_COLOR;
+                let colStart = this.getHeaderOffset("COL", left, col);
                 ctx.fillText(colName, colStart + colSize / 2, HEADER_HEIGHT / 2);
                 ctx.moveTo(colStart + colSize, 0);
                 ctx.lineTo(colStart + colSize, HEADER_HEIGHT);
             }
             // row text + separator
-            for (const i of visibleRows) {
-                const rowSize = this.getters.getRowSize(sheetId, i);
-                ctx.fillStyle = activeRows.has(i) ? "#fff" : TEXT_HEADER_COLOR;
-                let rowStart = this.getHeaderOffset("ROW", top, i);
-                ctx.fillText(String(i + 1), HEADER_WIDTH / 2, rowStart + rowSize / 2);
+            for (const row of visibleRows) {
+                const rowSize = this.getters.getRowSize(sheetId, row);
+                ctx.fillStyle = activeRows.has(row) ? "#fff" : TEXT_HEADER_COLOR;
+                let rowStart = this.getHeaderOffset("ROW", top, row);
+                ctx.fillText(String(row + 1), HEADER_WIDTH / 2, rowStart + rowSize / 2);
                 ctx.moveTo(0, rowStart + rowSize);
                 ctx.lineTo(HEADER_WIDTH, rowStart + rowSize);
             }
@@ -34125,7 +34878,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             const row = zone.top;
             const cell = this.getters.getCell(sheetId, col, row);
             const showFormula = this.getters.shouldShowFormulas();
-            const { x, y, width, height } = this.getters.getVisibleRect(zone);
+            const { x, y, width, height } = this.getters.getRect(zone);
             const box = {
                 x,
                 y,
@@ -34237,12 +34990,16 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             }
             return box;
         }
-        getGridBoxes() {
+        getGridBoxes(zone) {
             const boxes = [];
-            const visibleCols = this.getters.getSheetViewVisibleCols();
+            const visibleCols = this.getters
+                .getSheetViewVisibleCols()
+                .filter((col) => col >= zone.left && col <= zone.right);
             const left = visibleCols[0];
             const right = visibleCols[visibleCols.length - 1];
-            const visibleRows = this.getters.getSheetViewVisibleRows();
+            const visibleRows = this.getters
+                .getSheetViewVisibleRows()
+                .filter((row) => row >= zone.top && row <= zone.bottom);
             const top = visibleRows[0];
             const bottom = visibleRows[visibleRows.length - 1];
             const viewport = { left, right, top, bottom };
@@ -34483,35 +35240,26 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                             gridSelection: deepCopy(gridSelection),
                         };
                     }
-                    if (!this.getters.tryGetSheet(this.getters.getActiveSheetId())) {
-                        const currentSheetIds = this.getters.getVisibleSheetIds();
-                        this.activeSheet = this.getters.getSheet(currentSheetIds[0]);
-                        if (this.activeSheet.id in this.sheetsData) {
-                            const { anchor } = this.clipSelection(this.activeSheet.id, this.sheetsData[this.activeSheet.id].gridSelection);
-                            this.selectCell(anchor.cell.col, anchor.cell.row);
-                        }
-                        else {
-                            this.selectCell(0, 0);
-                        }
-                        const { col, row } = this.gridSelection.anchor.cell;
-                        this.moveClient({
-                            sheetId: this.getters.getActiveSheetId(),
-                            col,
-                            row,
-                        });
-                    }
+                    this.fallbackToVisibleSheet();
                     const sheetId = this.getters.getActiveSheetId();
                     this.gridSelection.zones = this.gridSelection.zones.map((z) => this.getters.expandZone(sheetId, z));
                     this.gridSelection.anchor.zone = this.getters.expandZone(sheetId, this.gridSelection.anchor.zone);
                     this.setSelectionMixin(this.gridSelection.anchor, this.gridSelection.zones);
+                    this.selectedFigureId = null;
                     break;
             }
+        }
+        finalize() {
+            this.fallbackToVisibleSheet();
             /** Any change to the selection has to be  reflected in the selection processor. */
             this.selection.resetDefaultAnchor(this, deepCopy(this.gridSelection.anchor));
         }
         // ---------------------------------------------------------------------------
         // Getters
         // ---------------------------------------------------------------------------
+        isGridSelectionActive() {
+            return this.selection.isListening(this);
+        }
         getActiveSheet() {
             return this.activeSheet;
         }
@@ -34582,11 +35330,18 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             }
         }
         getStatisticFnResults() {
+            const sheetId = this.getters.getActiveSheetId();
             // get deduplicated cells in zones
             const cells = new Set(this.gridSelection.zones
-                .map((zone) => this.getters.getCellsInZone(this.getters.getActiveSheetId(), zone))
+                .map((zone) => this.getters.getCellsInZone(sheetId, zone))
                 .flat()
-                .filter((cell) => cell !== undefined));
+                .filter((cell) => {
+                if (!cell) {
+                    return false;
+                }
+                const { col, row } = this.getters.getCellPosition(cell === null || cell === void 0 ? void 0 : cell.id);
+                return !this.getters.isRowHidden(sheetId, row) && !this.getters.isColHidden(sheetId, col);
+            }));
             let cellsTypes = new Set();
             let cellsValues = [];
             for (let cell of cells) {
@@ -34731,7 +35486,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 sheetId: cmd.sheetId,
                 base: cmd.base,
                 quantity: thickness,
-                position: "before",
+                position: cmd.position,
             });
             const isCol = cmd.dimension === "COL";
             const start = cmd.elements[0];
@@ -34739,28 +35494,27 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             const isBasedBefore = cmd.base < start;
             const deltaCol = isBasedBefore && isCol ? thickness : 0;
             const deltaRow = isBasedBefore && !isCol ? thickness : 0;
-            this.dispatch("CUT", {
-                target: [
-                    {
-                        left: isCol ? start + deltaCol : 0,
-                        right: isCol ? end + deltaCol : this.getters.getNumberCols(cmd.sheetId) - 1,
-                        top: !isCol ? start + deltaRow : 0,
-                        bottom: !isCol ? end + deltaRow : this.getters.getNumberRows(cmd.sheetId) - 1,
-                    },
-                ],
-            });
-            this.dispatch("PASTE", {
-                target: [
-                    {
-                        left: isCol ? cmd.base : 0,
-                        right: isCol ? cmd.base + thickness - 1 : this.getters.getNumberCols(cmd.sheetId) - 1,
-                        top: !isCol ? cmd.base : 0,
-                        bottom: !isCol ? cmd.base + thickness - 1 : this.getters.getNumberRows(cmd.sheetId) - 1,
-                    },
-                ],
-            });
+            const target = [
+                {
+                    left: isCol ? start + deltaCol : 0,
+                    right: isCol ? end + deltaCol : this.getters.getNumberCols(cmd.sheetId) - 1,
+                    top: !isCol ? start + deltaRow : 0,
+                    bottom: !isCol ? end + deltaRow : this.getters.getNumberRows(cmd.sheetId) - 1,
+                },
+            ];
+            const state = new ClipboardCellsState(target, "CUT", this.getters, this.dispatch, this.selection);
+            const base = isBasedBefore ? cmd.base : cmd.base + 1;
+            const pasteTarget = [
+                {
+                    left: isCol ? base : 0,
+                    right: isCol ? base + thickness - 1 : this.getters.getNumberCols(cmd.sheetId) - 1,
+                    top: !isCol ? base : 0,
+                    bottom: !isCol ? base + thickness - 1 : this.getters.getNumberRows(cmd.sheetId) - 1,
+                },
+            ];
+            state.paste(pasteTarget, { selectTarget: true });
             const toRemove = isBasedBefore ? cmd.elements.map((el) => el + thickness) : cmd.elements;
-            let currentIndex = cmd.base;
+            let currentIndex = isBasedBefore ? cmd.base : cmd.base + 1;
             for (const element of toRemove) {
                 const size = cmd.dimension === "COL"
                     ? this.getters.getColSize(cmd.sheetId, element)
@@ -34792,7 +35546,31 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 doesElementsHaveCommonMerges(id, cmd.base - 1, cmd.base)) {
                 return 2 /* CommandResult.WillRemoveExistingMerge */;
             }
+            const headers = [cmd.base, ...cmd.elements];
+            const maxHeaderValue = isCol ? this.getters.getNumberCols(id) : this.getters.getNumberRows(id);
+            if (headers.some((h) => h < 0 || h >= maxHeaderValue)) {
+                return 87 /* CommandResult.InvalidHeaderIndex */;
+            }
             return 0 /* CommandResult.Success */;
+        }
+        fallbackToVisibleSheet() {
+            if (!this.getters.tryGetSheet(this.getters.getActiveSheetId())) {
+                const currentSheetIds = this.getters.getVisibleSheetIds();
+                this.activeSheet = this.getters.getSheet(currentSheetIds[0]);
+                if (this.activeSheet.id in this.sheetsData) {
+                    const { anchor } = this.clipSelection(this.activeSheet.id, this.sheetsData[this.activeSheet.id].gridSelection);
+                    this.selectCell(anchor.cell.col, anchor.cell.row);
+                }
+                else {
+                    this.selectCell(0, 0);
+                }
+                const { col, row } = this.gridSelection.anchor.cell;
+                this.moveClient({
+                    sheetId: this.getters.getActiveSheetId(),
+                    col,
+                    row,
+                });
+            }
         }
         //-------------------------------------------
         // Helpers for extensions
@@ -34890,6 +35668,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         "getSheetPosition",
         "isSelected",
         "getElementsFromSelection",
+        "isGridSelectionActive",
     ];
 
     const uuidGenerator = new UuidGenerator();
@@ -34920,21 +35699,6 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         // ---------------------------------------------------------------------------
         // Command Handling
         // ---------------------------------------------------------------------------
-        allowDispatch(cmd) {
-            switch (cmd.type) {
-                case "ADD_EMPTY_RANGE":
-                    if (this.inputHasSingleRange && this.ranges.length === 1) {
-                        return 29 /* CommandResult.MaximumRangesReached */;
-                    }
-                    break;
-                case "CHANGE_RANGE":
-                    if (this.inputHasSingleRange && cmd.value.split(",").length > 1) {
-                        return 29 /* CommandResult.MaximumRangesReached */;
-                    }
-                    break;
-            }
-            return 0 /* CommandResult.Success */;
-        }
         handleEvent(event) {
             const xc = zoneToXc(event.anchor.zone);
             const inputSheetId = this.activeSheet;
@@ -34990,9 +35754,6 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 }
             }
         }
-        unsubscribe() {
-            this.unfocus();
-        }
         // ---------------------------------------------------------------------------
         // Getters || only callable by the parent
         // ---------------------------------------------------------------------------
@@ -35035,7 +35796,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         setContent(index, xc) {
             this.ranges[index] = {
                 ...this.ranges[index],
-                id: uuidGenerator.uuidv4(),
+                id: uuidGenerator.smallUuid(),
                 xc,
             };
         }
@@ -35129,15 +35890,15 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
      * This plugin handles this internal state.
      */
     class SelectionInputsManagerPlugin extends UIPlugin {
+        get currentInput() {
+            return this.focusedInputId ? this.inputs[this.focusedInputId] : null;
+        }
         constructor(getters, state, dispatch, config, selection) {
             super(getters, state, dispatch, config, selection);
             this.state = state;
             this.config = config;
             this.inputs = {};
             this.focusedInputId = null;
-        }
-        get currentInput() {
-            return this.focusedInputId ? this.inputs[this.focusedInputId] : null;
         }
         // ---------------------------------------------------------------------------
         // Command Handling
@@ -35146,14 +35907,33 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             var _a, _b;
             switch (cmd.type) {
                 case "FOCUS_RANGE":
+                case "CHANGE_RANGE":
+                case "ADD_EMPTY_RANGE":
+                case "REMOVE_RANGE":
+                    if (!this.inputs[cmd.id]) {
+                        return 31 /* CommandResult.InvalidInputId */;
+                    }
+            }
+            switch (cmd.type) {
+                case "FOCUS_RANGE":
                     const index = (_a = this.currentInput) === null || _a === void 0 ? void 0 : _a.getIndex(cmd.rangeId);
                     if (this.focusedInputId === cmd.id && ((_b = this.currentInput) === null || _b === void 0 ? void 0 : _b.focusedRangeIndex) === index) {
-                        return 28 /* CommandResult.InputAlreadyFocused */;
+                        return 29 /* CommandResult.InputAlreadyFocused */;
                     }
                     break;
-            }
-            if (this.currentInput) {
-                return this.currentInput.allowDispatch(cmd);
+                case "ADD_EMPTY_RANGE":
+                    const input = this.inputs[cmd.id];
+                    if (input.inputHasSingleRange && input.ranges.length === 1) {
+                        return 30 /* CommandResult.MaximumRangesReached */;
+                    }
+                    break;
+                case "CHANGE_RANGE": {
+                    const input = this.inputs[cmd.id];
+                    if (input.inputHasSingleRange && cmd.value.split(",").length > 1) {
+                        return 30 /* CommandResult.MaximumRangesReached */;
+                    }
+                    break;
+                }
             }
             return 0 /* CommandResult.Success */;
         }
@@ -35184,9 +35964,6 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     break;
             }
             (_a = this.currentInput) === null || _a === void 0 ? void 0 : _a.handle(cmd);
-        }
-        unsubscribe() {
-            this.unfocus();
         }
         // ---------------------------------------------------------------------------
         // Getters
@@ -35344,6 +36121,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
     }
     function createSheetTransformation(cmd, executed) {
         var _a;
+        if (cmd.sheetId === executed.sheetId) {
+            cmd = { ...cmd, sheetId: `${cmd.sheetId}~` };
+        }
         if (cmd.name === executed.name) {
             return {
                 ...cmd,
@@ -35919,21 +36699,14 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             if (!message)
                 return;
             if (message.type === "REMOTE_REVISION") {
-                const revision = this.revisions.get(message.nextRevisionId);
+                let revision = this.revisions.get(message.nextRevisionId);
                 if (revision.commands.length === 0) {
                     /**
-                     * The command is empty, we have to drop all the next local revisions
+                     * The command is empty, we have to rebase all the next local revisions
                      * to avoid issues with undo/redo
                      */
-                    this.revisions.drop(revision.id);
-                    const revisionIds = this.pendingMessages
-                        .filter((message) => message.type === "REMOTE_REVISION")
-                        .map((message) => message.nextRevisionId);
-                    this.trigger("pending-revisions-dropped", { revisionIds });
-                    this.waitingAck = false;
-                    this.waitingUndoRedoAck = false;
-                    this.pendingMessages = [];
-                    return;
+                    this.revisions.rebase(revision.id);
+                    revision = this.revisions.get(message.nextRevisionId);
                 }
                 message = {
                     ...message,
@@ -35957,7 +36730,6 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             switch (message.type) {
                 case "REMOTE_REVISION":
                 case "REVISION_REDONE":
-                case "REVISION_UNDONE":
                 case "SNAPSHOT_CREATED":
                     this.waitingAck = false;
                     this.pendingMessages = this.pendingMessages.filter((msg) => msg.nextRevisionId !== message.nextRevisionId);
@@ -35965,6 +36737,25 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     this.processedRevisions.add(message.nextRevisionId);
                     this.sendPendingMessage();
                     break;
+                case "REVISION_UNDONE": {
+                    this.waitingAck = false;
+                    this.pendingMessages = this.pendingMessages.filter((msg) => msg.nextRevisionId !== message.nextRevisionId);
+                    const firstPendingRevisionId = this.pendingMessages.findIndex((message) => message.type === "REMOTE_REVISION");
+                    if (firstPendingRevisionId !== -1) {
+                        /**
+                         * Some revisions undergo transformations that may cause issues with
+                         * undo/redo if the transformation is destructive (we don't get back
+                         * the original command by transforming it with the inverse).
+                         * To prevent these problems, we must rebase all subsequent local
+                         * revisions.
+                         */
+                        this.revisions.rebase(this.pendingMessages[firstPendingRevisionId].nextRevisionId);
+                    }
+                    this.serverRevisionId = message.nextRevisionId;
+                    this.processedRevisions.add(message.nextRevisionId);
+                    this.sendPendingMessage();
+                    break;
+                }
             }
         }
         isAlreadyProcessed(message) {
@@ -35975,6 +36766,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 case "REMOTE_REVISION":
                 case "REVISION_REDONE":
                 case "REVISION_UNDONE":
+                case "SNAPSHOT_CREATED":
                     return this.processedRevisions.has(message.nextRevisionId);
                 default:
                     return false;
@@ -36107,8 +36899,17 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             this.getters = getters;
             this.sheetId = sheetId;
             this.boundaries = boundaries;
-            this.viewportWidth = sizeInGrid.width;
-            this.viewportHeight = sizeInGrid.height;
+            if (sizeInGrid.width < 0 || sizeInGrid.height < 0) {
+                throw new Error("Viewport size cannot be negative");
+            }
+            this.viewportWidth = sizeInGrid.height && sizeInGrid.width;
+            this.viewportHeight = sizeInGrid.width && sizeInGrid.height;
+            this.top = boundaries.top;
+            this.bottom = boundaries.bottom;
+            this.left = boundaries.left;
+            this.right = boundaries.right;
+            this.offsetX = offsets.x;
+            this.offsetY = offsets.y;
             this.offsetScrollbarX = offsets.x;
             this.offsetScrollbarY = offsets.y;
             this.canScrollVertically = options.canScrollVertically;
@@ -36200,30 +37001,26 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             const { end } = this.getters.getColDimensions(sheetId, targetCol);
             const maxCol = this.getters.getNumberCols(sheetId);
             if (this.offsetX + this.offsetCorrectionX + this.viewportWidth < end) {
-                for (let col = this.left; this.offsetX + this.offsetCorrectionX + this.viewportWidth < end; col++) {
-                    if (col > maxCol) {
-                        break;
-                    }
-                    if (this.getters.isColHidden(sheetId, col)) {
-                        continue;
-                    }
-                    this.offsetX = this.getters.getColDimensions(sheetId, col).end - this.offsetCorrectionX;
-                    this.offsetScrollbarX = this.offsetX;
-                    this.adjustViewportZoneX();
+                let finalTarget = targetCol;
+                while (this.getters.isColHidden(sheetId, finalTarget) && targetCol < maxCol) {
+                    finalTarget++;
                 }
+                const finalTargetEnd = this.getters.getColDimensions(sheetId, finalTarget).end;
+                const startIndex = this.searchHeaderIndex("COL", finalTargetEnd - this.viewportWidth - this.offsetCorrectionX, this.boundaries.left, true);
+                this.offsetX =
+                    this.getters.getColDimensions(sheetId, startIndex).end - this.offsetCorrectionX;
+                this.offsetScrollbarX = this.offsetX;
+                this.adjustViewportZoneX();
             }
             else if (this.left > targetCol) {
-                for (let col = this.left; col >= targetCol; col--) {
-                    if (col < 0) {
-                        break;
-                    }
-                    if (this.getters.isColHidden(sheetId, col)) {
-                        continue;
-                    }
-                    this.offsetX = this.getters.getColDimensions(sheetId, col).start - this.offsetCorrectionX;
-                    this.offsetScrollbarX = this.offsetX;
-                    this.adjustViewportZoneX();
+                let finalTarget = targetCol;
+                while (this.getters.isColHidden(sheetId, finalTarget) && targetCol > 0) {
+                    finalTarget--;
                 }
+                this.offsetX =
+                    this.getters.getColDimensions(sheetId, finalTarget).start - this.offsetCorrectionX;
+                this.offsetScrollbarX = this.offsetX;
+                this.adjustViewportZoneX();
             }
         }
         adjustPositionY(targetRow) {
@@ -36231,30 +37028,26 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             const { end } = this.getters.getRowDimensions(sheetId, targetRow);
             const maxRow = this.getters.getNumberRows(sheetId);
             if (this.offsetY + this.viewportHeight + this.offsetCorrectionY < end) {
-                for (let row = this.top; this.offsetY + this.viewportHeight + this.offsetCorrectionY < end; row++) {
-                    if (row > maxRow) {
-                        break;
-                    }
-                    if (this.getters.isRowHidden(sheetId, row)) {
-                        continue;
-                    }
-                    this.offsetY = this.getters.getRowDimensions(sheetId, row).end - this.offsetCorrectionY;
-                    this.offsetScrollbarY = this.offsetY;
-                    this.adjustViewportZoneY();
+                let finalTarget = targetRow;
+                while (this.getters.isRowHidden(sheetId, finalTarget) && targetRow < maxRow) {
+                    finalTarget++;
                 }
+                const finalTargetEnd = this.getters.getRowDimensions(sheetId, finalTarget).end;
+                const startIndex = this.searchHeaderIndex("ROW", finalTargetEnd - this.viewportHeight - this.offsetCorrectionY, this.boundaries.top, true);
+                this.offsetY =
+                    this.getters.getRowDimensions(sheetId, startIndex).end - this.offsetCorrectionY;
+                this.offsetScrollbarY = this.offsetY;
+                this.adjustViewportZoneY();
             }
             else if (this.top > targetRow) {
-                for (let row = this.top; row >= targetRow; row--) {
-                    if (row < 0) {
-                        break;
-                    }
-                    if (this.getters.isRowHidden(sheetId, row)) {
-                        continue;
-                    }
-                    this.offsetY = this.getters.getRowDimensions(sheetId, row).start - this.offsetCorrectionY;
-                    this.offsetScrollbarY = this.offsetY;
-                    this.adjustViewportZoneY();
+                let finalTarget = targetRow;
+                while (this.getters.isRowHidden(sheetId, finalTarget) && targetRow > 0) {
+                    finalTarget--;
                 }
+                this.offsetY =
+                    this.getters.getRowDimensions(sheetId, finalTarget).start - this.offsetCorrectionY;
+                this.offsetScrollbarY = this.offsetY;
+                this.adjustViewportZoneY();
             }
         }
         setViewportOffset(offsetX, offsetY) {
@@ -36270,7 +37063,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
          * @param zone
          * @returns Computes the absolute coordinate of a given zone inside the viewport
          */
-        getRect(zone) {
+        getVisibleRect(zone) {
             const targetZone = intersection(zone, this.zone);
             if (targetZone) {
                 const x = this.getters.getColRowOffset("COL", this.zone.left, targetZone.left) +
@@ -36278,12 +37071,20 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 const y = this.getters.getColRowOffset("ROW", this.zone.top, targetZone.top) + this.offsetCorrectionY;
                 const width = Math.min(this.getters.getColRowOffset("COL", targetZone.left, targetZone.right + 1), this.viewportWidth);
                 const height = Math.min(this.getters.getColRowOffset("ROW", targetZone.top, targetZone.bottom + 1), this.viewportHeight);
-                return {
-                    x,
-                    y,
-                    width,
-                    height,
-                };
+                return { x, y, width, height };
+            }
+            else {
+                return undefined;
+            }
+        }
+        getFullRect(zone) {
+            const targetZone = intersection(zone, this.zone);
+            if (targetZone) {
+                const x = this.getters.getColRowOffset("COL", this.zone.left, zone.left) + this.offsetCorrectionX;
+                const y = this.getters.getColRowOffset("ROW", this.zone.top, zone.top) + this.offsetCorrectionY;
+                const width = this.getters.getColRowOffset("COL", zone.left, zone.right + 1);
+                const height = this.getters.getColRowOffset("ROW", zone.top, zone.bottom + 1);
+                return { x, y, width, height };
             }
             else {
                 return undefined;
@@ -36297,6 +37098,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         }
         // PRIVATE
         searchHeaderIndex(dimension, position, startIndex = 0, absolute = false) {
+            if (this.viewportWidth <= 0 || this.viewportHeight <= 0) {
+                return -1;
+            }
             let size = 0;
             const sheetId = this.sheetId;
             const headers = this.getters.getNumberHeaders(sheetId, dimension);
@@ -36335,7 +37139,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             this.adjustViewportZoneY();
         }
         /** Corrects the viewport's horizontal offset based on the current structure
-         *  To make sure that at least on column is visible inside the viewport.
+         *  To make sure that at least one column is visible inside the viewport.
          */
         adjustViewportOffsetX() {
             if (this.canScrollHorizontally) {
@@ -36352,7 +37156,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             this.adjustViewportZoneX();
         }
         /** Corrects the viewport's vertical offset based on the current structure
-         *  To make sure that at least on row is visible inside the viewport.
+         *  To make sure that at least one row is visible inside the viewport.
          */
         adjustViewportOffsetY() {
             if (this.canScrollVertically) {
@@ -36374,8 +37178,14 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             const sheetId = this.sheetId;
             this.left = this.searchHeaderIndex("COL", this.offsetScrollbarX, this.boundaries.left);
             this.right = Math.min(this.boundaries.right, this.searchHeaderIndex("COL", this.viewportWidth, this.left));
+            if (!this.viewportWidth) {
+                return;
+            }
+            if (this.left === -1) {
+                this.left = this.boundaries.left;
+            }
             if (this.right === -1) {
-                this.right = this.getters.getNumberCols(sheetId) - 1;
+                this.right = this.boundaries.right;
             }
             this.offsetX =
                 this.getters.getColDimensions(sheetId, this.left).start -
@@ -36387,8 +37197,14 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             const sheetId = this.sheetId;
             this.top = this.searchHeaderIndex("ROW", this.offsetScrollbarY, this.boundaries.top);
             this.bottom = Math.min(this.boundaries.bottom, this.searchHeaderIndex("ROW", this.viewportHeight, this.top));
+            if (!this.viewportHeight) {
+                return;
+            }
+            if (this.top === -1) {
+                this.top = this.boundaries.top;
+            }
             if (this.bottom === -1) {
-                this.bottom = this.getters.getNumberRows(sheetId) - 1;
+                this.bottom = this.boundaries.bottom;
             }
             this.offsetY =
                 this.getters.getRowDimensions(sheetId, this.top).start -
@@ -36472,12 +37288,13 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 case "AlterZoneCorner":
                     break;
                 case "ZonesSelected":
+                    const sheetId = this.getters.getActiveSheetId();
                     let { col, row } = findCellInNewZone(event.previousAnchor.zone, event.anchor.zone);
                     if (event.mode === "updateAnchor") {
                         const oldZone = event.previousAnchor.zone;
                         const newZone = event.anchor.zone;
                         // altering a zone should not move the viewport in a dimension that wasn't changed
-                        const { top, bottom, left, right } = this.getters.getActiveMainViewport();
+                        const { top, bottom, left, right } = this.getMainInternalViewport(sheetId);
                         if (oldZone.left === newZone.left && oldZone.right === newZone.right) {
                             col = left > col || col > right ? left : col;
                         }
@@ -36485,16 +37302,14 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                             row = top > row || row > bottom ? top : row;
                         }
                     }
-                    const sheetId = this.getters.getActiveSheetId();
                     col = Math.min(col, this.getters.getNumberCols(sheetId) - 1);
                     row = Math.min(row, this.getters.getNumberRows(sheetId) - 1);
-                    this.refreshViewport(this.getters.getActiveSheetId(), { col, row });
+                    this.refreshViewport(sheetId, { col, row });
                     break;
             }
         }
         handle(cmd) {
             var _a;
-            this.cleanViewports();
             switch (cmd.type) {
                 case "START":
                     this.selection.observe(this, {
@@ -36513,16 +37328,16 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     this.setSheetViewOffset(cmd.offsetX, cmd.offsetY);
                     break;
                 case "SHIFT_VIEWPORT_DOWN":
-                    const { top } = this.getActiveMainViewport();
                     const sheetId = this.getters.getActiveSheetId();
-                    const shiftedOffsetY = this.clipOffsetY(this.getters.getRowDimensions(sheetId, top).start + this.sheetViewHeight);
-                    this.shiftVertically(shiftedOffsetY);
+                    const { top, viewportHeight, offsetCorrectionY } = this.getMainInternalViewport(sheetId);
+                    const topRowDims = this.getters.getRowDimensions(sheetId, top);
+                    this.shiftVertically(topRowDims.start + viewportHeight - offsetCorrectionY);
                     break;
                 case "SHIFT_VIEWPORT_UP": {
-                    const { top } = this.getActiveMainViewport();
                     const sheetId = this.getters.getActiveSheetId();
-                    const shiftedOffsetY = this.clipOffsetY(this.getters.getRowDimensions(sheetId, top).end - this.sheetViewHeight);
-                    this.shiftVertically(shiftedOffsetY);
+                    const { top, viewportHeight, offsetCorrectionY } = this.getMainInternalViewport(sheetId);
+                    const topRowDims = this.getters.getRowDimensions(sheetId, top);
+                    this.shiftVertically(topRowDims.end - offsetCorrectionY - viewportHeight);
                     break;
                 }
                 case "REMOVE_COLUMNS_ROWS":
@@ -36538,6 +37353,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     if ("content" in cmd || "format" in cmd || ((_a = cmd.style) === null || _a === void 0 ? void 0 : _a.fontSize) !== undefined) {
                         this.sheetsWithDirtyViewports.add(cmd.sheetId);
                     }
+                    break;
+                case "DELETE_SHEET":
+                    this.cleanViewports();
+                    this.sheetsWithDirtyViewports.delete(cmd.sheetId);
                     break;
                 case "ACTIVATE_SHEET":
                     this.setViewports();
@@ -36637,12 +37456,12 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         getSheetViewVisibleCols() {
             const sheetId = this.getters.getActiveSheetId();
             const viewports = this.getSubViewports(sheetId);
-            return [...new Set(viewports.map((v) => range(v.left, v.right + 1)).flat())].filter((col) => !this.getters.isHeaderHidden(sheetId, "COL", col));
+            return [...new Set(viewports.map((v) => range(v.left, v.right + 1)).flat())].filter((col) => col >= 0 && !this.getters.isHeaderHidden(sheetId, "COL", col));
         }
         getSheetViewVisibleRows() {
             const sheetId = this.getters.getActiveSheetId();
             const viewports = this.getSubViewports(sheetId);
-            return [...new Set(viewports.map((v) => range(v.top, v.bottom + 1)).flat())].filter((row) => !this.getters.isHeaderHidden(sheetId, "ROW", row));
+            return [...new Set(viewports.map((v) => range(v.top, v.bottom + 1)).flat())].filter((row) => row >= 0 && !this.getters.isHeaderHidden(sheetId, "ROW", row));
         }
         /**
          * Return the main viewport maximum size relative to the client size.
@@ -36665,19 +37484,19 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 maxOffsetY: Math.max(0, height - viewport.viewportHeight + 1),
             };
         }
-        getColRowOffsetInViewport(dimension, referenceIndex, index) {
-            const sheetId = this.getters.getActiveSheetId();
-            const visibleCols = this.getters.getSheetViewVisibleCols();
-            const visibleRows = this.getters.getSheetViewVisibleRows();
-            if (index < referenceIndex) {
-                return -this.getColRowOffsetInViewport(dimension, index, referenceIndex);
+        getColRowOffsetInViewport(dimension, referenceHeaderIndex, targetHeaderIndex) {
+            if (targetHeaderIndex < referenceHeaderIndex) {
+                return -this.getColRowOffsetInViewport(dimension, targetHeaderIndex, referenceHeaderIndex);
             }
+            const sheetId = this.getters.getActiveSheetId();
+            const visibleHeaders = dimension === "COL"
+                ? this.getters.getSheetViewVisibleCols()
+                : this.getters.getSheetViewVisibleRows();
+            const startIndex = visibleHeaders.findIndex((header) => referenceHeaderIndex >= header);
+            const endIndex = visibleHeaders.findIndex((header) => targetHeaderIndex <= header);
+            const relevantIndexes = visibleHeaders.slice(startIndex, endIndex);
             let offset = 0;
-            const visibleIndexes = dimension === "COL" ? visibleCols : visibleRows;
-            for (let i = referenceIndex; i < index; i++) {
-                if (!visibleIndexes.includes(i)) {
-                    continue;
-                }
+            for (const i of relevantIndexes) {
                 offset +=
                     dimension === "COL"
                         ? this.getters.getColSize(sheetId, i)
@@ -36727,7 +37546,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             }
             return { canEdgeScroll, direction, delay };
         }
-        getEdgeScrollRow(y, previousY, tartingY) {
+        getEdgeScrollRow(y, previousY, startingY) {
             let canEdgeScroll = false;
             let direction = 0;
             let delay = 0;
@@ -36748,7 +37567,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 delay = scrollDelay(y - height);
                 direction = 1;
             }
-            else if (y < offsetCorrectionY && tartingY >= offsetCorrectionY && currentOffsetY > 0) {
+            else if (y < offsetCorrectionY && startingY >= offsetCorrectionY && currentOffsetY > 0) {
                 // 2
                 canEdgeScroll = true;
                 delay = scrollDelay(offsetCorrectionY - y);
@@ -36767,22 +37586,15 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
          */
         getVisibleRect(zone) {
             const sheetId = this.getters.getActiveSheetId();
-            const viewportRects = this.getSubViewports(sheetId)
-                .map((viewport) => viewport.getRect(zone))
-                .filter(isDefined$1);
-            if (viewportRects.length === 0) {
-                return { x: 0, y: 0, width: 0, height: 0 };
-            }
-            const x = Math.min(...viewportRects.map((rect) => rect.x));
-            const y = Math.min(...viewportRects.map((rect) => rect.y));
-            const width = Math.max(...viewportRects.map((rect) => rect.x + rect.width)) - x;
-            const height = Math.max(...viewportRects.map((rect) => rect.y + rect.height)) - y;
-            return {
-                x: x + this.gridOffsetX,
-                y: y + this.gridOffsetY,
-                width,
-                height,
-            };
+            return this.mapViewportsToRect(sheetId, (viewport) => viewport.getVisibleRect(zone));
+        }
+        /**
+         * Computes the actual size and position (:Rect) of the zone on the canvas
+         * regardless of the viewport dimensions.
+         */
+        getRect(zone) {
+            const sheetId = this.getters.getActiveSheetId();
+            return this.mapViewportsToRect(sheetId, (viewport) => viewport.getFullRect(zone));
         }
         /**
          * Returns the position of the MainViewport relatively to the start of the grid (without headers)
@@ -36795,6 +37607,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             const x = this.getters.getColDimensions(sheetId, xSplit).start;
             const y = this.getters.getRowDimensions(sheetId, ySplit).start;
             return { x, y };
+        }
+        getAllActiveViewportsZones() {
+            const sheetId = this.getters.getActiveSheetId();
+            return this.getSubViewports(sheetId);
         }
         // ---------------------------------------------------------------------------
         // Private
@@ -36810,7 +37626,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         }
         checkPositiveDimension(cmd) {
             if (cmd.width < 0 || cmd.height < 0) {
-                return 67 /* CommandResult.InvalidViewportSize */;
+                return 69 /* CommandResult.InvalidViewportSize */;
             }
             return 0 /* CommandResult.Success */;
         }
@@ -36820,7 +37636,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 cmd.gridOffsetY === this.gridOffsetY &&
                 cmd.width === width &&
                 cmd.height === height) {
-                return 75 /* CommandResult.ValuesNotChanged */;
+                return 77 /* CommandResult.ValuesNotChanged */;
             }
             return 0 /* CommandResult.Success */;
         }
@@ -36828,7 +37644,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             const pane = this.getMainInternalViewport(this.getters.getActiveSheetId());
             if ((!pane.canScrollHorizontally && offsetX > 0) ||
                 (!pane.canScrollVertically && offsetY > 0)) {
-                return 68 /* CommandResult.InvalidScrollingDirection */;
+                return 70 /* CommandResult.InvalidScrollingDirection */;
             }
             return 0 /* CommandResult.Success */;
         }
@@ -36847,14 +37663,14 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         }
         /** gets rid of deprecated sheetIds */
         cleanViewports() {
-            const sheetIds = this.getters.getSheetIds();
-            for (let sheetId of Object.keys(this.viewports)) {
-                if (!sheetIds.includes(sheetId)) {
-                    delete this.viewports[sheetId];
-                }
+            const newViewport = {};
+            for (const sheetId of this.getters.getSheetIds()) {
+                newViewport[sheetId] = this.viewports[sheetId];
             }
+            this.viewports = newViewport;
         }
         resetSheetViews() {
+            this.cleanViewports();
             for (let sheetId of Object.keys(this.viewports)) {
                 const position = this.getters.getSheetPosition(sheetId);
                 this.resetViewports(sheetId);
@@ -36872,25 +37688,14 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             this.recomputeViewports();
         }
         recomputeViewports() {
-            for (let sheetId of Object.keys(this.viewports)) {
+            for (const sheetId of this.getters.getSheetIds()) {
                 this.resetViewports(sheetId);
             }
         }
         setSheetViewOffset(offsetX, offsetY) {
             const sheetId = this.getters.getActiveSheetId();
             const { maxOffsetX, maxOffsetY } = this.getMaximumSheetOffset();
-            Object.values(this.getSubViewports(sheetId)).forEach((viewport) => viewport.setViewportOffset(clip(offsetX, 0, maxOffsetX), clip(offsetY, 0, maxOffsetY)));
-        }
-        /**
-         * Clip the vertical offset within the allowed range.
-         * Not above the sheet, nor below the sheet.
-         */
-        clipOffsetY(offsetY) {
-            const { height } = this.getMainViewportRect();
-            const maxOffset = height - this.sheetViewHeight;
-            offsetY = Math.min(offsetY, maxOffset);
-            offsetY = Math.max(offsetY, 0);
-            return offsetY;
+            this.getSubViewports(sheetId).forEach((viewport) => viewport.setViewportOffset(clip(offsetX, 0, maxOffsetX), clip(offsetY, 0, maxOffsetY)));
         }
         getViewportOffset(sheetId) {
             var _a, _b;
@@ -36900,11 +37705,16 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             };
         }
         resetViewports(sheetId) {
+            if (!this.getters.tryGetSheet(sheetId)) {
+                return;
+            }
             const { xSplit, ySplit } = this.getters.getPaneDivisions(sheetId);
             const nCols = this.getters.getNumberCols(sheetId);
             const nRows = this.getters.getNumberRows(sheetId);
-            const colOffset = this.getters.getColRowOffset("COL", 0, xSplit, sheetId);
-            const rowOffset = this.getters.getColRowOffset("ROW", 0, ySplit, sheetId);
+            const colOffset = Math.min(this.getters.getColRowOffset("COL", 0, xSplit, sheetId), this.sheetViewWidth);
+            const rowOffset = Math.min(this.getters.getColRowOffset("ROW", 0, ySplit, sheetId), this.sheetViewHeight);
+            const unfrozenWidth = Math.max(this.sheetViewWidth - colOffset, 0);
+            const unfrozenHeight = Math.max(this.sheetViewHeight - rowOffset, 0);
             const { xRatio, yRatio } = this.getFrozenSheetViewRatio(sheetId);
             const canScrollHorizontally = xRatio < 1.0;
             const canScrollVertically = yRatio < 1.0;
@@ -36915,14 +37725,14 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     new InternalViewport(this.getters, sheetId, { left: 0, right: xSplit - 1, top: 0, bottom: ySplit - 1 }, { width: colOffset, height: rowOffset }, { canScrollHorizontally: false, canScrollVertically: false }, { x: 0, y: 0 })) ||
                     undefined,
                 topRight: (ySplit &&
-                    new InternalViewport(this.getters, sheetId, { left: xSplit, right: nCols - 1, top: 0, bottom: ySplit - 1 }, { width: this.sheetViewWidth - colOffset, height: rowOffset }, { canScrollHorizontally, canScrollVertically: false }, { x: canScrollHorizontally ? previousOffset.x : 0, y: 0 })) ||
+                    new InternalViewport(this.getters, sheetId, { left: xSplit, right: nCols - 1, top: 0, bottom: ySplit - 1 }, { width: unfrozenWidth, height: rowOffset }, { canScrollHorizontally, canScrollVertically: false }, { x: canScrollHorizontally ? previousOffset.x : 0, y: 0 })) ||
                     undefined,
                 bottomLeft: (xSplit &&
-                    new InternalViewport(this.getters, sheetId, { left: 0, right: xSplit - 1, top: ySplit, bottom: nRows - 1 }, { width: colOffset, height: this.sheetViewHeight - rowOffset }, { canScrollHorizontally: false, canScrollVertically }, { x: 0, y: canScrollVertically ? previousOffset.y : 0 })) ||
+                    new InternalViewport(this.getters, sheetId, { left: 0, right: xSplit - 1, top: ySplit, bottom: nRows - 1 }, { width: colOffset, height: unfrozenHeight }, { canScrollHorizontally: false, canScrollVertically }, { x: 0, y: canScrollVertically ? previousOffset.y : 0 })) ||
                     undefined,
                 bottomRight: new InternalViewport(this.getters, sheetId, { left: xSplit, right: nCols - 1, top: ySplit, bottom: nRows - 1 }, {
-                    width: this.sheetViewWidth - colOffset,
-                    height: this.sheetViewHeight - rowOffset,
+                    width: unfrozenWidth,
+                    height: unfrozenHeight,
                 }, { canScrollHorizontally, canScrollVertically }, {
                     x: canScrollHorizontally ? previousOffset.x : 0,
                     y: canScrollVertically ? previousOffset.y : 0,
@@ -36934,7 +37744,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
          * Adjust the viewport such that the anchor position is visible
          */
         refreshViewport(sheetId, anchorPosition) {
-            Object.values(this.getSubViewports(sheetId)).forEach((viewport) => {
+            this.getSubViewports(sheetId).forEach((viewport) => {
                 viewport.adjustViewportZone();
                 viewport.adjustPosition(anchorPosition);
             });
@@ -36945,12 +37755,15 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
          * viewport top.
          */
         shiftVertically(offset) {
-            const { top } = this.getActiveMainViewport();
+            const sheetId = this.getters.getActiveSheetId();
+            const { top } = this.getMainInternalViewport(sheetId);
             const { scrollX } = this.getActiveSheetScrollInfo();
             this.setSheetViewOffset(scrollX, offset);
             const { anchor } = this.getters.getSelection();
-            const deltaRow = this.getActiveMainViewport().top - top;
-            this.selection.selectCell(anchor.cell.col, anchor.cell.row + deltaRow);
+            if (anchor.cell.row >= this.getters.getPaneDivisions(sheetId).ySplit) {
+                const deltaRow = this.getMainInternalViewport(sheetId).top - top;
+                this.selection.selectCell(anchor.cell.col, anchor.cell.row + deltaRow);
+            }
         }
         getVisibleFigures() {
             const sheetId = this.getters.getActiveSheetId();
@@ -36982,6 +37795,32 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             const height = this.sheetViewHeight + this.gridOffsetY;
             return { xRatio: offsetCorrectionX / width, yRatio: offsetCorrectionY / height };
         }
+        mapViewportsToRect(sheetId, rectCallBack) {
+            let x = Infinity;
+            let y = Infinity;
+            let width = 0;
+            let height = 0;
+            let hasViewports = false;
+            for (const viewport of this.getSubViewports(sheetId)) {
+                const rect = rectCallBack(viewport);
+                if (rect) {
+                    hasViewports = true;
+                    x = Math.min(x, rect.x);
+                    y = Math.min(y, rect.y);
+                    width = Math.max(width, rect.x + rect.width);
+                    height = Math.max(height, rect.y + rect.height);
+                }
+            }
+            if (!hasViewports) {
+                return { x: 0, y: 0, width: 0, height: 0 };
+            }
+            return {
+                x: x + this.gridOffsetX,
+                y: y + this.gridOffsetY,
+                width: width - x,
+                height: height - y,
+            };
+        }
     }
     SheetViewPlugin.getters = [
         "getColIndex",
@@ -37002,6 +37841,8 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         "getSheetViewVisibleCols",
         "getSheetViewVisibleRows",
         "getFrozenSheetViewRatio",
+        "getAllActiveViewportsZones",
+        "getRect",
     ];
 
     class SortPlugin extends UIPlugin {
@@ -37030,7 +37871,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             for (let row = zone.top; row <= zone.bottom; row++) {
                 for (let col = zone.left; col <= zone.right; col++) {
                     if (!this.getters.isInMerge(sheetId, col, row)) {
-                        return 62 /* CommandResult.InvalidSortZone */;
+                        return 64 /* CommandResult.InvalidSortZone */;
                     }
                 }
             }
@@ -37051,7 +37892,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 ];
                 return widthCurrent === widthFirst && heightCurrent === heightFirst;
             })) {
-                return 62 /* CommandResult.InvalidSortZone */;
+                return 64 /* CommandResult.InvalidSortZone */;
             }
             return 0 /* CommandResult.Success */;
         }
@@ -37234,6 +38075,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             const sortedIndexOfSortTypeCells = sortCells(sortingCells, sortDirection, Boolean(options.emptyCellAsZero));
             const sortedIndex = sortedIndexOfSortTypeCells.map((x) => x.index);
             const [width, height] = [cells.length, cells[0].length];
+            const cellUpdates = [];
             for (let c = 0; c < width; c++) {
                 for (let r = 0; r < height; r++) {
                     let cell = cells[c][sortedIndex[r]];
@@ -37244,7 +38086,6 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                         col: newCol,
                         row: newRow,
                         content: "",
-                        value: "",
                     };
                     if (cell) {
                         let content = cell.content;
@@ -37258,11 +38099,11 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                         newCellValues.style = cell.style;
                         newCellValues.content = content;
                         newCellValues.format = cell.format;
-                        newCellValues.value = cell.evaluated.value;
                     }
-                    this.dispatch("UPDATE_CELL", newCellValues);
+                    cellUpdates.push(newCellValues);
                 }
             }
+            cellUpdates.forEach((cmdPayload) => this.dispatch("UPDATE_CELL", cmdPayload));
         }
         /**
          * Return the distances between main merge cells in the zone.
@@ -37357,14 +38198,12 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     }
                     break;
                 case "AUTORESIZE_ROWS":
-                    for (let row of cmd.rows) {
-                        this.dispatch("RESIZE_COLUMNS_ROWS", {
-                            elements: [row],
-                            dimension: "ROW",
-                            size: null,
-                            sheetId: cmd.sheetId,
-                        });
-                    }
+                    this.dispatch("RESIZE_COLUMNS_ROWS", {
+                        elements: cmd.rows,
+                        dimension: "ROW",
+                        size: null,
+                        sheetId: cmd.sheetId,
+                    });
                     break;
             }
         }
@@ -37511,7 +38350,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         getColMaxWidth(sheetId, index) {
             const cellsPositions = positions(this.getters.getColsZone(sheetId, index, index));
             const sizes = cellsPositions.map((position) => this.getCellWidth(sheetId, position));
-            return Math.max(0, ...sizes);
+            return Math.max(0, largeMax(sizes));
         }
         splitWordToSpecificWidth(ctx, word, width, style) {
             const wordWidth = computeTextWidth(ctx, word, style);
@@ -37587,6 +38426,19 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         },
         sequence: 5,
     });
+
+    class FocusableElement {
+        constructor() {
+            this.focusableElement = undefined;
+        }
+        setFocusableElement(element) {
+            this.focusableElement = element;
+        }
+        focus() {
+            var _a;
+            (_a = this.focusableElement) === null || _a === void 0 ? void 0 : _a.focus();
+        }
+    }
 
     // -----------------------------------------------------------------------------
     // SpreadSheet
@@ -37706,7 +38558,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         addSheet() {
             const activeSheetId = this.env.model.getters.getActiveSheetId();
             const position = this.env.model.getters.getSheetIds().findIndex((sheetId) => sheetId === activeSheetId) + 1;
-            const sheetId = this.env.model.uuidGenerator.uuidv4();
+            const sheetId = this.env.model.uuidGenerator.smallUuid();
             const name = this.env.model.getters.getNextSheetName(this.env._t("Sheet"));
             this.env.model.dispatch("CREATE_SHEET", { sheetId, position, name });
             this.env.model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: activeSheetId, sheetIdTo: sheetId });
@@ -38024,6 +38876,11 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
     .o-sidePanelButton:enabled {
       cursor: pointer;
     }
+
+    .o-sidePanelButton:disabled {
+      color: ${DISABLED_TEXT_COLOR};
+    }
+
     .o-sidePanelButton:last-child {
       margin-right: 0px;
     }
@@ -38190,7 +39047,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
     };
     function interactiveAddMerge(env, sheetId, target) {
         const result = env.model.dispatch("ADD_MERGE", { sheetId, target });
-        if (result.isCancelledBecause(79 /* CommandResult.MergeInFilter */)) {
+        if (result.isCancelledBecause(81 /* CommandResult.MergeInFilter */)) {
             env.raiseError(AddMergeInteractiveContent.MergeInFilter);
         }
         else if (result.isCancelledBecause(3 /* CommandResult.MergeIsDestructive */)) {
@@ -38726,8 +39583,8 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
       &.corner {
         right: 0px;
         bottom: 0px;
-        height: ${SCROLLBAR_WIDTH$1}px;
-        width: ${SCROLLBAR_WIDTH$1}px;
+        height: ${SCROLLBAR_WIDTH}px;
+        width: ${SCROLLBAR_WIDTH}px;
         border-top: 1px solid #e2e3e3;
         border-left: 1px solid #e2e3e3;
       }
@@ -38771,9 +39628,14 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 toggleSidePanel: this.toggleSidePanel.bind(this),
                 _t: Spreadsheet._t,
                 clipboard: navigator.clipboard,
+                focusableElement: new FocusableElement(),
             });
             owl.useExternalListener(window, "resize", () => this.render(true));
             owl.useExternalListener(window, "beforeunload", this.unbindModelEvents.bind(this));
+            // For some reason, the wheel event is not properly registered inside templates
+            // in Chromium-based browsers based on chromium 125
+            // This hack ensures the event declared in the template is properly registered/working
+            owl.useExternalListener(document.body, "wheel", () => { });
             this.bindModelEvents();
             owl.onMounted(() => {
                 this.checkViewportSize();
@@ -38854,7 +39716,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         }
         onKeydown(ev) {
             let keyDownString = "";
-            if (ev.ctrlKey || ev.metaKey) {
+            if (isCtrlKey(ev)) {
                 keyDownString += "CTRL+";
             }
             keyDownString += ev.key.toUpperCase();
@@ -38873,17 +39735,18 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             this.model.dispatch("UNFOCUS_SELECTION_INPUT");
             this.composer.topBarFocus = "contentFocus";
             this.composer.gridFocusMode = "inactive";
-            this.setComposerContent({ selection } || {});
+            this.setComposerContent({ selection });
         }
-        onGridComposerContentFocused() {
+        onGridComposerContentFocused(selection) {
             if (this.model.getters.isReadonly()) {
                 return;
             }
             this.model.dispatch("UNFOCUS_SELECTION_INPUT");
             this.composer.topBarFocus = "inactive";
             this.composer.gridFocusMode = "contentFocus";
-            this.setComposerContent({});
+            this.setComposerContent({ selection });
         }
+        // TODO: either both are defined or none of them. change those args to an object
         onGridComposerCellFocused(content, selection) {
             if (this.model.getters.isReadonly()) {
                 return;
@@ -39317,7 +40180,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         }
         /**
          * Drop the operation and all following operations in every
-         * branch
+         * branches
          */
         drop(operationId) {
             for (const branch of this.branches) {
@@ -39614,9 +40477,16 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             this.fastForward();
             this.insert(redoId, this.buildEmpty(redoId), insertAfter);
         }
-        drop(operationId) {
+        rebase(operationId) {
+            const operation = this.get(operationId);
+            const execution = [...this.tree.execution(this.HEAD_BRANCH).startAfter(operationId)];
             this.revertBefore(operationId);
+            const baseId = this.HEAD_OPERATION.id;
             this.tree.drop(operationId);
+            this.insert(operationId, operation, baseId);
+            for (const { operation } of execution) {
+                this.insert(operation.id, operation.data, this.HEAD_OPERATION.id);
+            }
         }
         /**
          * Revert the state as it was *before* the given operation was executed.
@@ -39698,9 +40568,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
      * Apply the changes of the given HistoryChange to the state
      */
     function applyChange(change, target) {
-        let val = change.root;
-        let key = change.path[change.path.length - 1];
-        for (let pathIndex = 0; pathIndex < change.path.slice(0, -1).length; pathIndex++) {
+        let val = change.path[0];
+        const key = change.path[change.path.length - 1];
+        for (let pathIndex = 1; pathIndex < change.path.slice(0, -1).length; pathIndex++) {
             const p = change.path[pathIndex];
             if (val[p] === undefined) {
                 const nextPath = change.path[pathIndex + 1];
@@ -39739,7 +40609,6 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             this.session.on("new-local-state-update", this, this.onNewLocalStateUpdate);
             this.session.on("revision-undone", this, ({ commands }) => this.selectiveUndo(commands));
             this.session.on("revision-redone", this, ({ commands }) => this.selectiveRedo(commands));
-            this.session.on("pending-revisions-dropped", this, ({ revisionIds }) => this.drop(revisionIds));
             this.session.on("snapshot", this, () => {
                 this.undoStack = [];
                 this.redoStack = [];
@@ -39792,10 +40661,6 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         canRedo() {
             return this.redoStack.length > 0;
         }
-        drop(revisionIds) {
-            this.undoStack = this.undoStack.filter((id) => !revisionIds.includes(id));
-            this.redoStack = [];
-        }
         onNewLocalStateUpdate({ id }) {
             this.undoStack.push(id);
             this.redoStack = [];
@@ -39842,8 +40707,8 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                         let newRange = range;
                         let changeType = "NONE";
                         for (let group of groups) {
-                            const min = Math.min(...group);
-                            const max = Math.max(...group);
+                            const min = largeMin(group);
+                            const max = largeMax(group);
                             if (range.zone[start] <= min && min <= range.zone[end]) {
                                 const toRemove = Math.min(range.zone[end], max) - min + 1;
                                 changeType = "RESIZE";
@@ -40040,7 +40905,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
          * @param sheetXC the string description of a range, in the form SheetName!XC:XC
          */
         getRangeFromSheetXC(defaultSheetId, sheetXC) {
-            if (!rangeReference.test(sheetXC)) {
+            if (!rangeReference.test(sheetXC) || !this.getters.tryGetSheet(defaultSheetId)) {
                 return new RangeImpl({
                     sheetId: "",
                     zone: { left: -1, top: -1, right: -1, bottom: -1 },
@@ -40089,13 +40954,17 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
          *
          * @param range the range (received from getRangeFromXC or getRangeFromZone)
          * @param forSheetId the id of the sheet where the range string is supposed to be used.
+         * @param [useFixedZone=false] if true, the range will be returned with fixed row and column
          */
-        getRangeString(range, forSheetId) {
+        getRangeString(range, forSheetId, useFixedZone = false) {
             if (!range) {
                 return INCORRECT_RANGE_STRING;
             }
             if (range.invalidXc) {
                 return range.invalidXc;
+            }
+            if (!this.getters.tryGetSheet(range.sheetId)) {
+                return INCORRECT_RANGE_STRING;
             }
             if (range.zone.bottom - range.zone.top < 0 || range.zone.right - range.zone.left < 0) {
                 return INCORRECT_RANGE_STRING;
@@ -40117,7 +40986,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             if (prefixSheet && !sheetName) {
                 return INCORRECT_RANGE_STRING;
             }
-            let rangeString = this.getRangePartString(rangeImpl, 0);
+            let rangeString = this.getRangePartString(rangeImpl, 0, useFixedZone);
             if (rangeImpl.parts && rangeImpl.parts.length === 2) {
                 // this if converts A2:A2 into A2 except if any part of the original range had fixed row or column (with $)
                 if (rangeImpl.zone.top !== rangeImpl.zone.bottom ||
@@ -40127,7 +40996,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     rangeImpl.parts[1].rowFixed ||
                     rangeImpl.parts[1].colFixed) {
                     rangeString += ":";
-                    rangeString += this.getRangePartString(rangeImpl, 1);
+                    rangeString += this.getRangePartString(rangeImpl, 1, useFixedZone);
                 }
             }
             return `${prefixSheet ? sheetName + "!" : ""}${rangeString}`;
@@ -40157,13 +41026,14 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         /**
          * Get a Xc string that represent a part of a range
          */
-        getRangePartString(range, part) {
-            const colFixed = range.parts && range.parts[part].colFixed ? "$" : "";
+        getRangePartString(range, part, useFixedZone = false) {
+            var _a, _b;
+            const colFixed = range.parts && ((_a = range.parts[part]) === null || _a === void 0 ? void 0 : _a.colFixed) ? "$" : "";
             const col = part === 0 ? numberToLetters(range.zone.left) : numberToLetters(range.zone.right);
-            const rowFixed = range.parts && range.parts[part].rowFixed ? "$" : "";
+            const rowFixed = range.parts && ((_b = range.parts[part]) === null || _b === void 0 ? void 0 : _b.rowFixed) ? "$" : "";
             const row = part === 0 ? String(range.zone.top + 1) : String(range.zone.bottom + 1);
             let str = "";
-            if (range.isFullCol) {
+            if (range.isFullCol && !useFixedZone) {
                 if (part === 0 && range.unboundedZone.hasHeader) {
                     str = colFixed + col + rowFixed + row;
                 }
@@ -40171,7 +41041,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     str = colFixed + col;
                 }
             }
-            else if (range.isFullRow) {
+            else if (range.isFullRow && !useFixedZone) {
                 if (part === 0 && range.unboundedZone.hasHeader) {
                     str = colFixed + col + rowFixed + row;
                 }
@@ -40254,18 +41124,17 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             if (this.observers.find((sub) => sub.owner === owner)) {
                 throw new Error("You are already subscribed forever");
             }
-            if ((_a = this.mainSubscription) === null || _a === void 0 ? void 0 : _a.owner) {
+            if (((_a = this.mainSubscription) === null || _a === void 0 ? void 0 : _a.owner) && this.mainSubscription.owner !== owner) {
                 (_c = (_b = this.mainSubscription.callbacks).release) === null || _c === void 0 ? void 0 : _c.call(_b);
             }
             this.mainSubscription = { owner, callbacks };
         }
         release(owner) {
-            var _a, _b, _c, _d;
+            var _a;
             if (((_a = this.mainSubscription) === null || _a === void 0 ? void 0 : _a.owner) !== owner ||
                 this.observers.find((sub) => sub.owner === owner)) {
                 return;
             }
-            (_d = (_b = this.mainSubscription) === null || _b === void 0 ? void 0 : (_c = _b.callbacks).release) === null || _d === void 0 ? void 0 : _d.call(_c);
             this.mainSubscription = this.defaultSubscription;
         }
         /**
@@ -40372,7 +41241,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
          */
         moveAnchorCell(direction, step = 1) {
             if (step !== "end" && step <= 0) {
-                return new DispatchResult(82 /* CommandResult.InvalidSelectionStep */);
+                return new DispatchResult(84 /* CommandResult.InvalidSelectionStep */);
             }
             const { col, row } = this.getNextAvailablePosition(direction, step);
             return this.selectCell(col, row);
@@ -40418,7 +41287,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
          */
         resizeAnchorZone(direction, step = 1) {
             if (step !== "end" && step <= 0) {
-                return new DispatchResult(82 /* CommandResult.InvalidSelectionStep */);
+                return new DispatchResult(84 /* CommandResult.InvalidSelectionStep */);
             }
             const sheetId = this.getters.getActiveSheetId();
             const anchor = this.anchor;
@@ -40597,6 +41466,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 mode: "overrideSelection",
                 anchor: { zone, cell: this.anchor.cell },
             });
+        }
+        isListening(owner) {
+            return this.stream.isListening(owner);
         }
         /**
          * Process a new anchor selection event. If the new anchor is inside
@@ -40827,13 +41699,14 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         }
         addChange(...args) {
             const val = args.pop();
-            const [root, ...path] = args;
+            const root = args[0];
             let value = root;
-            let key = path[path.length - 1];
-            for (let pathIndex = 0; pathIndex <= path.length - 2; pathIndex++) {
-                const p = path[pathIndex];
+            let key = args[args.length - 1];
+            const pathLength = args.length - 2;
+            for (let pathIndex = 1; pathIndex <= pathLength; pathIndex++) {
+                const p = args[pathIndex];
                 if (value[p] === undefined) {
-                    const nextPath = path[pathIndex + 1];
+                    const nextPath = args[pathIndex + 1];
                     value[p] = createEmptyStructure(nextPath);
                 }
                 value = value[p];
@@ -40842,8 +41715,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 return;
             }
             this.changes.push({
-                root,
-                path,
+                path: args,
                 before: value[key],
                 after: val,
             });
@@ -41097,7 +41969,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
     }
     function addDoughnutChart(chart, chartSheetIndex, data, { holeSize } = { holeSize: 50 }) {
         const colors = new ChartColors();
-        const maxLength = Math.max(...chart.dataSets.map((ds) => getRangeSize(ds.range, chartSheetIndex, data)));
+        const maxLength = largeMax(chart.dataSets.map((ds) => getRangeSize(ds.range, chartSheetIndex, data)));
         const doughnutColors = range(0, maxLength).map(() => toXlsxHexColor(colors.next()));
         const dataSetsNodes = [];
         for (const [dsIndex, dataset] of Object.entries(chart.dataSets).reverse()) {
@@ -41217,29 +42089,28 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         const isExported = tokens
             .filter((tk) => tk.type === "FUNCTION")
             .every((tk) => functions[tk.value.toUpperCase()].isExported);
+        const type = getCellType(cell.value);
+        const exportedValue = adaptFormulaValueToExcel(cell.value);
         if (isExported) {
-            let cycle = escapeXml ``;
             const XlsxFormula = adaptFormulaToExcel(formula);
-            // hack for cycles : if we don't set a value (be it 0 or #VALUE!), it will appear as invisible on excel,
-            // Making it very hard for the client to find where the recursion is.
-            if (cell.value === CellErrorType.CircularDependency) {
-                attrs.push(["t", "str"]);
-                cycle = escapeXml /*xml*/ `<v>${cell.value}</v>`;
-            }
             node = escapeXml /*xml*/ `
       <f>
         ${XlsxFormula}
       </f>
-      ${cycle}
+      ${escapeXml /*xml*/ `<v>${exportedValue}</v>`}
     `;
+            attrs.push(["t", type]);
             return { attrs, node };
         }
         else {
-            // Shouldn't we always output the value then ?
-            const value = cell.value;
-            const type = getCellType(value);
+            // If the cell contains a non-exported formula and that is evaluates to
+            // nothing* ,we don't export it.
+            // * non-falsy value are relevant and so are 0 and FALSE, which only leaves
+            // the empty string.
+            if (exportedValue === "")
+                return undefined;
             attrs.push(["t", type]);
-            node = escapeXml /*xml*/ `<v>${value}</v>`;
+            node = escapeXml /*xml*/ `<v>${exportedValue}</v>`;
             return { attrs, node };
         }
     }
@@ -41251,8 +42122,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             attrs.push(["t", "b"]);
         }
         else if (forceString || !isNumber(value)) {
-            const { id } = pushElement(content, sharedStrings);
-            value = id.toString();
+            value = pushElement(content, sharedStrings);
             attrs.push(["t", "s"]);
         }
         return { attrs, node: escapeXml /*xml*/ `<v>${value}</v>` };
@@ -41275,7 +42145,13 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             ast = addMissingRequiredArgs(ast);
             return ast;
         });
+        ast = convertAstNodes(ast, "REFERENCE", (ast) => {
+            return ast.value === CellErrorType.InvalidReference ? { ...ast, value: "#REF!" } : ast;
+        });
         return ast ? astToFormula(ast) : formulaText;
+    }
+    function adaptFormulaValueToExcel(formulaValue) {
+        return formulaValue === CellErrorType.InvalidReference ? "#REF!" : formulaValue;
     }
     /**
      * Some Excel function need required args that might not be mandatory in o-spreadsheet.
@@ -41377,8 +42253,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         if (rule.style.fillColor) {
             dxf.fill = { fgColor: { rgb: rule.style.fillColor } };
         }
-        const { id } = pushElement(dxf, dxfs);
-        ruleAttributes.push(["dxfId", id]);
+        ruleAttributes.push(["dxfId", pushElement(dxf, dxfs)]);
         return escapeXml /*xml*/ `
     <conditionalFormatting sqref="${cf.ranges.join(" ")}">
       <cfRule ${formatAttributes(ruleAttributes)}>
@@ -41877,15 +42752,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
   `;
     }
     function addFilterColumns(table) {
-        const tableZone = toZone(table.range);
         const columns = [];
-        for (const i of range(0, zoneToDimension(tableZone).width)) {
-            const filter = table.filters[i];
-            if (!filter || !filter.filteredValues.length) {
-                continue;
-            }
+        for (const filter of table.filters) {
             const colXml = escapeXml /*xml*/ `
-      <filterColumn ${formatAttributes([["colId", i]])}>
+      <filterColumn ${formatAttributes([["colId", filter.colId]])}>
         ${addFilter(filter)}
       </filterColumn>
       `;
@@ -41894,9 +42764,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         return columns;
     }
     function addFilter(filter) {
-        const filterValues = filter.filteredValues.map((val) => escapeXml /*xml*/ `<filter ${formatAttributes([["val", val]])}/>`);
+        const filterValues = filter.displayedValues.map((val) => escapeXml /*xml*/ `<filter ${formatAttributes([["val", val]])}/>`);
+        const filterAttributes = filter.displayBlanks ? [["blank", 1]] : [];
         return escapeXml /*xml*/ `
-  <filters>
+  <filters ${formatAttributes(filterAttributes)}>
       ${joinXmlNodes(filterValues)}
   </filters>
 `;
@@ -41965,7 +42836,11 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     let cellNode = escapeXml ``;
                     // Either formula or static value inside the cell
                     if (cell.isFormula) {
-                        ({ attrs: additionalAttrs, node: cellNode } = addFormula(cell));
+                        const res = addFormula(cell);
+                        if (!res) {
+                            continue;
+                        }
+                        ({ attrs: additionalAttrs, node: cellNode } = res);
                     }
                     else if (cell.content && isMarkdownLink(cell.content)) {
                         const { label } = parseMarkdownLink(cell.content);
@@ -41976,11 +42851,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                         ({ attrs: additionalAttrs, node: cellNode } = addContent(cell.content, construct.sharedStrings, isTableHeader));
                     }
                     attributes.push(...additionalAttrs);
-                    cellNodes.push(escapeXml /*xml*/ `
-          <c ${formatAttributes(attributes)}>
-            ${cellNode}
-          </c>
-        `);
+                    // prettier-ignore
+                    cellNodes.push(escapeXml /*xml*/ `<c ${formatAttributes(attributes)}>
+  ${cellNode}
+</c>`);
                 }
             }
             if (cellNodes.length || row.size !== DEFAULT_CELL_HEIGHT || row.isHidden) {
@@ -42094,7 +42968,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
      */
     function getXLSX(data) {
         const files = [];
-        const construct = getDefaultXLSXStructure();
+        const construct = getDefaultXLSXStructure(data);
         files.push(createWorkbook(data, construct));
         files.push(...createWorksheets(data, construct));
         files.push(createStylesSheet(construct));
@@ -42359,10 +43233,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 const command = { type, ...payload };
                 let status = this.status;
                 if (this.getters.isReadonly() && !canExecuteInReadonly(command)) {
-                    return new DispatchResult(66 /* CommandResult.Readonly */);
+                    return new DispatchResult(68 /* CommandResult.Readonly */);
                 }
                 if (!this.session.canApplyOptimisticUpdate()) {
-                    return new DispatchResult(63 /* CommandResult.WaitingSessionConfirmation */);
+                    return new DispatchResult(65 /* CommandResult.WaitingSessionConfirmation */);
                 }
                 switch (status) {
                     case 0 /* Status.Ready */:
@@ -42466,6 +43340,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             this.selection.observe(this, {
                 handleEvent: () => this.trigger("update"),
             });
+            // move in "Loading" mode where we ignore redundant calls to finalize triggered by the
+            // replay of stateUpdateMessages in the session
+            this.isLoading = true;
             // This should be done after construction of LocalHistory due to order of
             // events
             this.setupSessionEvents();
@@ -42478,6 +43355,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             // mark all models as "raw", so they will not be turned into reactive objects
             // by owl, since we do not rely on reactivity
             owl.markRaw(this);
+            this.isLoading = false;
+            // ensure propre recomputation of plugin states after the message replays
+            this.finalize();
         }
         joinSession() {
             this.session.join(this.config.client);
@@ -42558,7 +43438,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         }
         setupConfig(config) {
             const client = config.client || {
-                id: this.uuidGenerator.uuidv4(),
+                id: this.uuidGenerator.smallUuid(),
                 name: _lt("Anonymous").toString(),
             };
             const transportService = config.transportService || new LocalTransportService();
@@ -42581,9 +43461,15 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
          */
         checkDispatchAllowed(command) {
             const results = this.handlers.map((handler) => handler.allowDispatch(command));
-            return new DispatchResult(results.flat());
+            if (results.some((r) => r !== 0 /* CommandResult.Success */)) {
+                return new DispatchResult(results.flat());
+            }
+            return DispatchResult.Success;
         }
         finalize() {
+            if (this.isLoading) {
+                return;
+            }
             this.status = 3 /* Status.Finalizing */;
             for (const h of this.handlers) {
                 h.finalize();
@@ -42688,7 +43574,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         BOTTOMBAR_HEIGHT,
         DEFAULT_CELL_WIDTH,
         DEFAULT_CELL_HEIGHT,
-        SCROLLBAR_WIDTH: SCROLLBAR_WIDTH$1,
+        SCROLLBAR_WIDTH,
     };
     const registries = {
         autofillModifiersRegistry,
@@ -42747,6 +43633,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         rgbaToHex,
         colorToRGBA,
         positionToZone,
+        deepEquals,
     };
     const components = {
         ChartPanel,
@@ -42801,9 +43688,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
     Object.defineProperty(exports, '__esModule', { value: true });
 
 
-    __info__.version = '16.0.12';
-    __info__.date = '2023-06-02T10:15:35.826Z';
-    __info__.hash = '9718465';
+    __info__.version = '16.0.62';
+    __info__.date = '2025-02-14T08:45:17.303Z';
+    __info__.hash = '34f2802';
 
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);

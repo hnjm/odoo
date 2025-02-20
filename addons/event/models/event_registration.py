@@ -2,10 +2,20 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from dateutil.relativedelta import relativedelta
+import pytz
 
 from odoo import _, api, fields, models, SUPERUSER_ID
-from odoo.tools import format_date
+from odoo.tools import format_date, email_normalize, email_normalize_all
 from odoo.exceptions import AccessError, ValidationError
+
+# phone_validation is not officially in the depends of event, but we would like
+# to have the formatting available in event, not in event_sms -> do a conditional
+# import just to be sure
+try:
+    from odoo.addons.phone_validation.tools.phone_validation import phone_format
+except ImportError:
+    def phone_format(number, country_code, country_phone_code, force_format='INTERNATIONAL', raise_exception=True):
+        return number
 
 
 class EventRegistration(models.Model):
@@ -49,6 +59,18 @@ class EventRegistration(models.Model):
         ('draft', 'Unconfirmed'), ('cancel', 'Cancelled'),
         ('open', 'Confirmed'), ('done', 'Attended')],
         string='Status', default='draft', readonly=True, copy=False, tracking=True)
+
+    def default_get(self, fields):
+        ret_vals = super().default_get(fields)
+        utm_mixin_fields = ("campaign_id", "medium_id", "source_id")
+        utm_fields = ("utm_campaign_id", "utm_medium_id", "utm_source_id")
+        if not any(field in utm_fields for field in fields):
+            return ret_vals
+        utm_mixin_defaults = self.env['utm.mixin'].default_get(utm_mixin_fields)
+        for (mixin_field, field) in zip(utm_mixin_fields, utm_fields):
+            if field in fields and utm_mixin_defaults.get(mixin_field):
+                ret_vals[field] = utm_mixin_defaults[mixin_field]
+        return ret_vals
 
     @api.depends('partner_id')
     def _compute_name(self):
@@ -110,12 +132,43 @@ class EventRegistration(models.Model):
                 return dict((fname, contact[fname]) for fname in fnames if contact[fname])
         return {}
 
+    @api.onchange('phone', 'event_id', 'partner_id')
+    def _onchange_phone_validation(self):
+        if self.phone:
+            country = self.partner_id.country_id or self.event_id.country_id or self.env.company.country_id
+            self.phone = self._phone_format(self.phone, country)
+
+    @api.onchange('mobile', 'event_id', 'partner_id')
+    def _onchange_mobile_validation(self):
+        if self.mobile:
+            country = self.partner_id.country_id or self.event_id.country_id or self.env.company.country_id
+            self.mobile = self._phone_format(self.mobile, country)
+
     # ------------------------------------------------------------
     # CRUD
     # ------------------------------------------------------------
 
     @api.model_create_multi
     def create(self, vals_list):
+        # format numbers: prefetch side records, then try to format according to country
+        all_partner_ids = set(values['partner_id'] for values in vals_list if values.get('partner_id'))
+        all_event_ids = set(values['event_id'] for values in vals_list if values.get('event_id'))
+        for values in vals_list:
+            if not values.get('phone') and not values.get('mobile'):
+                continue
+
+            related_country = self.env['res.country']
+            if values.get('partner_id'):
+                related_country = self.env['res.partner'].with_prefetch(all_partner_ids).browse(values['partner_id']).country_id
+            if not related_country and values.get('event_id'):
+                related_country = self.env['event.event'].with_prefetch(all_event_ids).browse(values['event_id']).country_id
+            if not related_country:
+                related_country = self.env.company.country_id
+
+            for fname in {'mobile', 'phone'}:
+                if values.get(fname):
+                    values[fname] = self._phone_format(values[fname], related_country)
+
         registrations = super(EventRegistration, self).create(vals_list)
 
         # auto_confirm if possible; if not automatically confirmed, call mail schedulers in case
@@ -185,6 +238,20 @@ class EventRegistration(models.Model):
         """ Checks that all registrations are for `auto-confirm` events. """
         return all(event.auto_confirm for event in self.event_id)
 
+    def _phone_format(self, number, country):
+        """ Call phone_validation formatting tool function. Returns original
+        number in case formatting cannot be done (no country, wrong info, ...) """
+        if not number or not country:
+            return number
+        new_number = phone_format(
+            number,
+            country.code,
+            country.phone_code,
+            force_format='E164',
+            raise_exception=False,
+        )
+        return new_number if new_number else number
+
     # ------------------------------------------------------------
     # ACTIONS / BUSINESS
     # ------------------------------------------------------------
@@ -216,6 +283,7 @@ class EventRegistration(models.Model):
             default_template_id=template and template.id,
             default_composition_mode='comment',
             default_email_layout_xmlid="mail.mail_notification_light",
+            name_with_seats_availability=False,
         )
         return {
             'name': _('Compose Email'),
@@ -272,24 +340,31 @@ class EventRegistration(models.Model):
     def _message_get_default_recipients(self):
         # Prioritize registration email over partner_id, which may be shared when a single
         # partner booked multiple seats
-        return {r.id: {
-            'partner_ids': [],
-            'email_to': r.email,
-            'email_cc': False}
-            for r in self}
+        return {r.id:
+            {
+                'partner_ids': [],
+                'email_to': ','.join(email_normalize_all(r.email)) or r.email,
+                'email_cc': False,
+            } for r in self
+        }
 
     def _message_post_after_hook(self, message, msg_vals):
         if self.email and not self.partner_id:
             # we consider that posting a message with a specified recipient (not a follower, a specific one)
             # on a document without customer means that it was created through the chatter using
             # suggested recipients. This heuristic allows to avoid ugly hacks in JS.
-            new_partner = message.partner_ids.filtered(lambda partner: partner.email == self.email)
+            email_normalized = email_normalize(self.email)
+            new_partner = message.partner_ids.filtered(
+                lambda partner: partner.email == self.email or (email_normalized and partner.email_normalized == email_normalized)
+            )
             if new_partner:
+                if new_partner[0].email_normalized:
+                    email_domain = ('email', 'in', [new_partner[0].email, new_partner[0].email_normalized])
+                else:
+                    email_domain = ('email', '=', new_partner[0].email)
                 self.search([
-                    ('partner_id', '=', False),
-                    ('email', '=', new_partner.email),
-                    ('state', 'not in', ['cancel']),
-                ]).write({'partner_id': new_partner.id})
+                    ('partner_id', '=', False), email_domain, ('state', 'not in', ['cancel']),
+                ]).write({'partner_id': new_partner[0].id})
         return super(EventRegistration, self)._message_post_after_hook(message, msg_vals)
 
     # ------------------------------------------------------------
@@ -298,9 +373,9 @@ class EventRegistration(models.Model):
 
     def get_date_range_str(self, lang_code=False):
         self.ensure_one()
-        today = fields.Datetime.now()
-        event_date = self.event_begin_date
-        diff = (event_date.date() - today.date())
+        today_tz = pytz.utc.localize(fields.Datetime.now()).astimezone(pytz.timezone(self.event_id.date_tz))
+        event_date_tz = pytz.utc.localize(self.event_begin_date).astimezone(pytz.timezone(self.event_id.date_tz))
+        diff = (event_date_tz.date() - today_tz.date())
         if diff.days <= 0:
             return _('today')
         elif diff.days == 1:
@@ -309,7 +384,7 @@ class EventRegistration(models.Model):
             return _('in %d days') % (diff.days, )
         elif (diff.days < 14):
             return _('next week')
-        elif event_date.month == (today + relativedelta(months=+1)).month:
+        elif event_date_tz.month == (today_tz + relativedelta(months=+1)).month:
             return _('next month')
         else:
             return _('on %(date)s', date=format_date(self.env, self.event_begin_date, lang_code=lang_code, date_format='medium'))

@@ -4,15 +4,16 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Benson <Benson.Dr@Gmail.com>, 2023
+# Tony Ng, 2023
+# Wil Odoo, 2025
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:02+0000\n"
+"POT-Creation-Date: 2024-02-06 13:32+0000\n"
 "PO-Revision-Date: 2022-09-22 05:57+0000\n"
-"Last-Translator: Benson <Benson.Dr@Gmail.com>, 2023\n"
+"Last-Translator: Wil Odoo, 2025\n"
 "Language-Team: Chinese (Taiwan) (https://app.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,12 +26,12 @@ msgstr ""
 msgid ""
 "<i>Your order has been saved.</i> Please come to the store to pay for your "
 "products"
-msgstr ""
+msgstr "<b>已儲存你的訂單。</b>請前往商店，為選購產品付款"
 
 #. module: website_sale_picking
 #: model_terms:ir.ui.view,arch_db:website_sale_picking.payment_confirmation_status
 msgid "<span class=\"text-muted\"> (On site picking)</span>"
-msgstr ""
+msgstr "<span class=\"text-muted\">（到場自取）</span>"
 
 #. module: website_sale_picking
 #: model:ir.model,name:website_sale_picking.model_res_config_settings
@@ -40,15 +41,15 @@ msgstr "配置設定"
 #. module: website_sale_picking
 #: model:ir.model.fields,field_description:website_sale_picking.field_payment_provider__custom_mode
 msgid "Custom Mode"
-msgstr ""
+msgstr "自訂模式"
 
 #. module: website_sale_picking
 #: model_terms:ir.ui.view,arch_db:website_sale_picking.res_config_settings_view_form
 msgid "Customize Pickup Sites"
-msgstr ""
+msgstr "自訂取貨地點"
 
 #. module: website_sale_picking
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_sale_picking/static/src/js/checkout_form.js:0
 #, python-format
 msgid ""
@@ -57,46 +58,44 @@ msgid ""
 msgstr "如果您認為這是一個錯誤，請聯繫網站管理員。"
 
 #. module: website_sale_picking
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_sale_picking/static/src/js/checkout_form.js:0
 #, python-format
 msgid "No suitable payment option could be found."
-msgstr ""
+msgstr "找不到合適付款方式。"
 
 #. module: website_sale_picking
 #: model:ir.model.fields.selection,name:website_sale_picking.selection__payment_provider__custom_mode__onsite
 msgid "On Site"
-msgstr "On Site"
+msgstr "到場"
 
 #. module: website_sale_picking
-#: model:product.product,name:website_sale_picking.onsite_delivery_product
 #: model:product.template,name:website_sale_picking.onsite_delivery_product_product_template
 msgid "On site picking"
-msgstr ""
+msgstr "到場自取"
 
 #. module: website_sale_picking
 #: model:payment.provider,name:website_sale_picking.payment_provider_onsite
-#: model_terms:product.product,description:website_sale_picking.onsite_delivery_product
 #: model_terms:product.template,description:website_sale_picking.onsite_delivery_product_product_template
 msgid "Pay in store when picking the product"
-msgstr ""
+msgstr "取貨時店內付款"
 
 #. module: website_sale_picking
 #: model:ir.model,name:website_sale_picking.model_payment_provider
 msgid "Payment Provider"
-msgstr "支付提供商"
+msgstr "付款服務商"
 
 #. module: website_sale_picking
 #: model:ir.model.fields,field_description:website_sale_picking.field_res_config_settings__picking_site_ids
 #: model:ir.model.fields,field_description:website_sale_picking.field_website__picking_site_ids
 #: model_terms:ir.ui.view,arch_db:website_sale_picking.res_config_settings_view_form
 msgid "Picking sites"
-msgstr ""
+msgstr "取貨地點"
 
 #. module: website_sale_picking
 #: model:ir.model.fields.selection,name:website_sale_picking.selection__delivery_carrier__delivery_type__onsite
 msgid "Pickup in store"
-msgstr ""
+msgstr "到店自取"
 
 #. module: website_sale_picking
 #: model:ir.model.fields,field_description:website_sale_picking.field_delivery_carrier__delivery_type
@@ -109,16 +108,11 @@ msgid "Shipping Methods"
 msgstr "運送方式"
 
 #. module: website_sale_picking
+#. odoo-python
 #: code:addons/website_sale_picking/models/delivery_carrier.py:0
 #, python-format
 msgid "The picking site and warehouse must share the same company"
-msgstr ""
-
-#. module: website_sale_picking
-#: model:product.product,uom_name:website_sale_picking.onsite_delivery_product
-#: model:product.template,uom_name:website_sale_picking.onsite_delivery_product_product_template
-msgid "Units"
-msgstr "單位"
+msgstr "取貨地點與倉庫必須是同一家公司"
 
 #. module: website_sale_picking
 #: model:ir.model.fields,field_description:website_sale_picking.field_delivery_carrier__warehouse_id
@@ -131,10 +125,11 @@ msgid "Website"
 msgstr "網站"
 
 #. module: website_sale_picking
+#. odoo-python
 #: code:addons/website_sale_picking/controllers/main.py:0
 #, python-format
 msgid "You cannot pay onsite if the delivery is not onsite"
-msgstr ""
+msgstr "若不是到場取貨，便不可選擇到店付款"
 
 #. module: website_sale_picking
 #: model_terms:payment.provider,auth_msg:website_sale_picking.payment_provider_onsite
@@ -154,4 +149,4 @@ msgstr "交易完成，您的線上付款已成功處理完畢。 感謝您的�
 #. module: website_sale_picking
 #: model:delivery.carrier,name:website_sale_picking.default_onsite_carrier
 msgid "[On Site Pick] My Shop 1"
-msgstr ""
+msgstr "[自取] 我的商店 1"

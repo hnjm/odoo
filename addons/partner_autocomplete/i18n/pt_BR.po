@@ -4,14 +4,16 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# a75f12d3d37ea5bf159c4b3e85eb30e7_0fa6927, 2023
+# Kevilyn Rosa, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-10 10:23+0000\n"
+"POT-Creation-Date: 2024-02-06 13:32+0000\n"
 "PO-Revision-Date: 2022-09-22 05:53+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Kevilyn Rosa, 2023\n"
 "Language-Team: Portuguese (Brazil) (https://app.transifex.com/odoo/teams/41243/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,11 +28,11 @@ msgid "Additional info"
 msgstr "Informação adicional"
 
 #. module: partner_autocomplete
-#. openerp-web
+#. odoo-javascript
 #: code:addons/partner_autocomplete/static/src/xml/partner_autocomplete.xml:0
 #, python-format
 msgid "Buy more credits"
-msgstr ""
+msgstr "Comprar mais créditos"
 
 #. module: partner_autocomplete
 #: model:ir.model,name:partner_autocomplete.model_res_company
@@ -38,10 +40,13 @@ msgid "Companies"
 msgstr "Empresas"
 
 #. module: partner_autocomplete
+#. odoo-python
 #: code:addons/partner_autocomplete/models/res_company.py:0
 #, python-format
 msgid "Company auto-completed by Odoo Partner Autocomplete Service"
 msgstr ""
+"Empresa preenchida automaticamente pelo serviço de preenchimento automático "
+"de parceiros do Odoo"
 
 #. module: partner_autocomplete
 #: model:ir.model.fields,field_description:partner_autocomplete.field_res_company__partner_gid
@@ -78,7 +83,7 @@ msgstr "Nome exibido"
 #. module: partner_autocomplete
 #: model:ir.model.fields,field_description:partner_autocomplete.field_res_company__iap_enrich_auto_done
 msgid "Enrich Done"
-msgstr ""
+msgstr "Enriquecimento realizado"
 
 #. module: partner_autocomplete
 #: model:ir.model,name:partner_autocomplete.model_ir_http
@@ -86,16 +91,16 @@ msgid "HTTP Routing"
 msgstr "Roteamento HTTP"
 
 #. module: partner_autocomplete
-#. openerp-web
+#. odoo-javascript
 #: code:addons/partner_autocomplete/static/src/js/partner_autocomplete_core.js:0
 #, python-format
 msgid "IAP Account Token missing"
-msgstr ""
+msgstr "Falta o token da conta IAP"
 
 #. module: partner_autocomplete
 #: model:ir.model,name:partner_autocomplete.model_iap_autocomplete_api
 msgid "IAP Partner Autocomplete API"
-msgstr ""
+msgstr "API de preenchimento automático do parceiro IAP"
 
 #. module: partner_autocomplete
 #: model:ir.model.fields,field_description:partner_autocomplete.field_res_partner_autocomplete_sync__id
@@ -128,17 +133,19 @@ msgid "Last Updated on"
 msgstr "Última atualização em"
 
 #. module: partner_autocomplete
+#. odoo-python
 #: code:addons/partner_autocomplete/models/iap_autocomplete_api.py:0
 #, python-format
 msgid "No account token"
-msgstr ""
+msgstr "Nenhum token de conta"
 
 #. module: partner_autocomplete
-#. openerp-web
+#. odoo-javascript
 #: code:addons/partner_autocomplete/static/src/js/partner_autocomplete_core.js:0
 #, python-format
 msgid "Not enough credits for Partner Autocomplete"
 msgstr ""
+"Não há créditos suficientes para o preenchimento automático do parceiro"
 
 #. module: partner_autocomplete
 #: model:ir.model.fields,field_description:partner_autocomplete.field_res_partner_autocomplete_sync__partner_id
@@ -148,7 +155,6 @@ msgstr "Parceiro"
 #. module: partner_autocomplete
 #: model:ir.actions.server,name:partner_autocomplete.ir_cron_partner_autocomplete_ir_actions_server
 #: model:ir.cron,cron_name:partner_autocomplete.ir_cron_partner_autocomplete
-#: model:ir.cron,name:partner_autocomplete.ir_cron_partner_autocomplete
 msgid "Partner Autocomplete : Sync with remote DB"
 msgstr ""
 "Preenchimento automático do parceiro: sincronização com banco de dados "
@@ -160,6 +166,7 @@ msgid "Partner Autocomplete Sync"
 msgstr "Sincronização de preenchimento automático do parceiro"
 
 #. module: partner_autocomplete
+#. odoo-python
 #: code:addons/partner_autocomplete/models/res_partner.py:0
 #, python-format
 msgid "Partner created by Odoo Partner Autocomplete Service"
@@ -167,7 +174,7 @@ msgstr ""
 "Parceiro criado pelo Serviço de preenchimento automático de parceiros Odoo"
 
 #. module: partner_autocomplete
-#. openerp-web
+#. odoo-javascript
 #: code:addons/partner_autocomplete/static/src/xml/partner_autocomplete.xml:0
 #: code:addons/partner_autocomplete/static/src/xml/partner_autocomplete.xml:0
 #, python-format
@@ -175,7 +182,7 @@ msgid "Placeholder"
 msgstr "Marcador de posição"
 
 #. module: partner_autocomplete
-#. openerp-web
+#. odoo-javascript
 #: code:addons/partner_autocomplete/static/src/js/partner_autocomplete_fieldchar.js:0
 #: code:addons/partner_autocomplete/static/src/js/partner_autocomplete_many2one.js:0
 #, python-format
@@ -183,14 +190,15 @@ msgid "Searching Autocomplete..."
 msgstr "Pesquisando para o preenchimento automático ..."
 
 #. module: partner_autocomplete
-#. openerp-web
+#. odoo-javascript
 #: code:addons/partner_autocomplete/static/src/xml/partner_autocomplete.xml:0
 #, python-format
 msgid "Set Your Account Token"
-msgstr ""
+msgstr "Definir o token de sua conta"
 
 #. module: partner_autocomplete
+#. odoo-python
 #: code:addons/partner_autocomplete/models/iap_autocomplete_api.py:0
 #, python-format
 msgid "Test mode"
-msgstr ""
+msgstr "Modo de teste"

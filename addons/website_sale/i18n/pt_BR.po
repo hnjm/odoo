@@ -5,22 +5,24 @@
 # Translators:
 # Éder Brito <britoederr@gmail.com>, 2022
 # Luis Felipe Miléo <mileo@kmee.com.br>, 2022
-# grazziano <gra.negocia@gmail.com>, 2022
+# grazziano <grazziano.do+transifex@gmail.com>, 2022
 # Marcel Savegnago <marcel.savegnago@gmail.com>, 2022
-# Marcos Rodrigues, 2022
 # Felipe Leal Coutinho <felipe@felipelc.com>, 2022
 # Martin Trigaux, 2022
 # Jolien De Paepe, 2023
 # Kevilyn Rosa, 2023
-# Layna Nascimento, 2023
+# Adriano Prado <adrianojprado@gmail.com>, 2023
+# a75f12d3d37ea5bf159c4b3e85eb30e7_0fa6927, 2023
+# Wil Odoo, 2024
+# Maitê Dietze, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-23 08:22+0000\n"
+"POT-Creation-Date: 2024-02-06 13:31+0000\n"
 "PO-Revision-Date: 2022-09-22 05:57+0000\n"
-"Last-Translator: Layna Nascimento, 2023\n"
+"Last-Translator: Maitê Dietze, 2024\n"
 "Language-Team: Portuguese (Brazil) (https://app.transifex.com/odoo/teams/41243/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -56,7 +58,7 @@ msgstr "%s avaliações"
 #: model_terms:ir.ui.view,arch_db:website_sale.address_on_payment
 #: model_terms:ir.ui.view,arch_db:website_sale.confirmation
 msgid "&amp; Shipping"
-msgstr "&amp; Envio"
+msgstr "e Envio"
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.products
@@ -444,6 +446,11 @@ msgstr ""
 "                                                    <span class=\"fa fa-chevron-right\"/>"
 
 #. module: website_sale
+#: model_terms:ir.ui.view,arch_db:website_sale.cart_lines
+msgid "<span>Quantity</span>"
+msgstr "<span>Quantidade</span>"
+
+#. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.cart
 msgid ""
 "<span>Sign In</span>\n"
@@ -476,11 +483,6 @@ msgid "<span>Video Preview</span>"
 msgstr "<span>Pré-visualização do vídeo</span>"
 
 #. module: website_sale
-#: model_terms:ir.ui.view,arch_db:website_sale.res_config_settings_view_form_web_terms
-msgid "<strong class=\"align-top\">URL: </strong>"
-msgstr "<strong class=\"align-top\">URL: </strong>"
-
-#. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.suggested_products_list
 msgid "<strong>Add to Cart</strong>"
 msgstr "<strong>Adicionar ao carrinho</strong>"
@@ -491,7 +493,7 @@ msgid ""
 "<strong>No suitable payment option could be found.</strong><br/>\n"
 "                                    If you believe that it is an error, please contact the website administrator."
 msgstr ""
-"<strong>Nenhuma opção de pagamento adequada foi encontrada.</strong><br/>\n"
+"<strong>Não foi possível encontrar uma opção de pagamento adequada.</strong><br/>\n"
 "                                    Se você acredita que isso é um erro, entre em contato com o administrador do site."
 
 #. module: website_sale
@@ -642,8 +644,8 @@ msgid "Abandoned Cart"
 msgstr "Carrinho Abandonado"
 
 #. module: website_sale
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/website_sale/models/crm_team.py:0
 #: code:addons/website_sale/static/src/xml/website_sale_dashboard.xml:0
 #: model:ir.actions.act_window,name:website_sale.action_view_abandoned_tree
@@ -786,7 +788,7 @@ msgstr "Adicionar ao carrinho"
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.snippets
 msgid "Add to Cart Button"
-msgstr "Adicionar botão de carrinho"
+msgstr "Botão de adicionar ao carrinho"
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.wizard_checkout
@@ -796,7 +798,7 @@ msgstr "Endereço"
 #. module: website_sale
 #: model:ir.model.fields,field_description:website_sale.field_res_config_settings__module_website_sale_autocomplete
 msgid "Address Autocomplete"
-msgstr "Autocompletar endereço"
+msgstr "Preenchimento automático de endereço"
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.product
@@ -885,7 +887,7 @@ msgstr "Valor médio dos pedidos"
 #. module: website_sale
 #: model:ir.model.fields,field_description:website_sale.field_product_template__rating_avg
 msgid "Average Rating"
-msgstr "Classificação média"
+msgstr "Avaliação média"
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.snippet_options
@@ -895,14 +897,14 @@ msgstr "Fundo"
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.snippet_options
 msgid "Badge"
-msgstr "Medalha"
+msgstr "Crachá"
 
 #. module: website_sale
 #. odoo-javascript
 #: code:addons/website_sale/static/src/js/website_sale.editor.js:0
 #, python-format
 msgid "Badge Text"
-msgstr "Texto do emblema"
+msgstr "Texto do crachá"
 
 #. module: website_sale
 #: model:ir.model.fields,field_description:website_sale.field_product_product__base_unit_count
@@ -1072,10 +1074,8 @@ msgstr "Pode Publicar"
 #. odoo-python
 #: code:addons/website_sale/controllers/main.py:0
 #, python-format
-msgid "Can not resequence embedded image/video with a non compatible image."
-msgstr ""
-"Não é possível ressequenciar um vídeo/imagem incorporado com uma imagem não "
-"compatível."
+msgid "You can't use a video as the product's main image."
+msgstr "Não é possível usar um vídeo como imagem principal do produto."
 
 #. module: website_sale
 #. odoo-javascript
@@ -1202,11 +1202,11 @@ msgstr ""
 #: code:addons/website_sale/controllers/main.py:0
 #, python-format
 msgid ""
-"Changing your name is not allowed once invoices have been issued for your "
+"Changing your name is not allowed once documents have been issued for your "
 "account. Please contact us directly for this operation."
 msgstr ""
-"A alteração do nome não é permitida após a emissão de faturas para sua "
-"conta. Entre em contato conosco diretamente para esta operação."
+"Não é permitido alterar seu nome após a emissão de documentos para sua "
+"conta. Entre em contato conosco diretamente para essa operação."
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.snippet_options
@@ -1297,7 +1297,10 @@ msgid "Companies"
 msgstr "Empresas"
 
 #. module: website_sale
+#. odoo-javascript
+#: code:addons/website_sale/static/src/js/website_sale_form_editor.js:0
 #: model_terms:ir.ui.view,arch_db:website_sale.address
+#, python-format
 msgid "Company Name"
 msgstr "Nome da empresa"
 
@@ -1551,6 +1554,13 @@ msgid "DHL Express Connector"
 msgstr "Conector DHL Express"
 
 #. module: website_sale
+#: model_terms:ir.ui.view,arch_db:website_sale.product
+msgid "DROP BUILDING BLOCKS HERE TO MAKE THEM AVAILABLE ACROSS ALL PRODUCTS"
+msgstr ""
+"SOLTE BLOCOS DE CONSTRUÇÃO AQUI PARA DISPONIBILIZÁ-LOS PARA TODOS OS "
+"PRODUTOS"
+
+#. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.snippet_options
 msgid "Default"
 msgstr "Padrão"
@@ -1718,8 +1728,7 @@ msgstr ""
 #, python-format
 msgid "Do not have access, skip this data for user's digest email"
 msgstr ""
-"Se não tem acesso, pule esses dados para o e-mail com o Resumo do Usuário "
-"(User´s Digest)"
+"Se não tem acesso, pule esses dados para o e-mail com o resumo do usuário"
 
 #. module: website_sale
 #. odoo-javascript
@@ -1801,11 +1810,6 @@ msgstr "e-Commerce: recuperar carrinho"
 #: model_terms:ir.ui.view,arch_db:website_sale.snippet_options
 msgid "Edit"
 msgstr "Editar"
-
-#. module: website_sale
-#: model_terms:ir.ui.view,arch_db:website_sale.res_config_settings_view_form_web_terms
-msgid "Edit in Website Builder"
-msgstr "Editar no Criador de Sites"
 
 #. module: website_sale
 #. odoo-javascript
@@ -2035,6 +2039,19 @@ msgid ""
 msgstr ""
 "Se definido, é enviado a usuários autenticados que abandonaram seus "
 "carrinhos"
+
+#. module: website_sale
+#. odoo-python
+#: code:addons/website_sale/controllers/main.py:0
+#, python-format
+msgid ""
+"If you are ordering for an external person, please place your order via the "
+"backend. If you wish to change your name or email address, please do so in "
+"the account settings or contact your administrator."
+msgstr ""
+"Se você estiver fazendo o pedido para uma pessoa externa, faça seu pedido "
+"por meio do back-end. Se você deseja alterar seu nome ou endereço de e-mail,"
+" faça-o nas configurações da conta ou entre em contato com o administrador."
 
 #. module: website_sale
 #: model:ir.model.fields,field_description:website_sale.field_product_image__image_1920
@@ -2308,6 +2325,8 @@ msgstr "Imagem principal"
 #: model_terms:ir.ui.view,arch_db:website_sale.res_config_settings_view_form
 msgid "Manage Promotions, coupons, loyalty cards, Gift cards &amp; eWallet"
 msgstr ""
+"Gerenciar promoções, cupons, cartões de fidelidade, cartões-presente e "
+"eWallet"
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.res_config_settings_view_form
@@ -2454,8 +2473,8 @@ msgstr "Nenhum produto definido"
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.products
-msgid "No product defined in category \""
-msgstr "Nenhum produto definido na categoria  \""
+msgid "No product defined in this category."
+msgstr "Nenhum produto definido nessa categoria."
 
 #. module: website_sale
 #: model_terms:ir.actions.act_window,help:website_sale.website_sale_visitor_product_action
@@ -2540,7 +2559,7 @@ msgstr "Um produto pode ter atributos diferentes (tamanho, cor etc.)"
 #. module: website_sale
 #: model:ir.ui.menu,name:website_sale.menu_report_sales
 msgid "Online Sales"
-msgstr "Vendas Online"
+msgstr "Vendas online"
 
 #. module: website_sale
 #: model:ir.actions.act_window,name:website_sale.sale_report_action_dashboard
@@ -2716,12 +2735,12 @@ msgstr "Provedores de serviços de pagamento"
 #. module: website_sale
 #: model:ir.ui.menu,name:website_sale.menu_ecommerce_payment_tokens
 msgid "Payment Tokens"
-msgstr "Tokens de Pagamentos"
+msgstr "Tokens de pagamentos"
 
 #. module: website_sale
 #: model:ir.ui.menu,name:website_sale.menu_ecommerce_payment_transactions
 msgid "Payment Transactions"
-msgstr "Transações de Pagamento"
+msgstr "Transações de pagamento"
 
 #. module: website_sale
 #. odoo-javascript
@@ -2743,9 +2762,16 @@ msgid "Phone"
 msgstr "Telefone"
 
 #. module: website_sale
+#. odoo-javascript
+#: code:addons/website_sale/static/src/js/website_sale_form_editor.js:0
+#, python-format
+msgid "Phone Number"
+msgstr "Número De Telefone"
+
+#. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.snippet_options
 msgid "Pills"
-msgstr "Comprimidos"
+msgstr "Pílulas"
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.view_product_image_form
@@ -2796,7 +2822,7 @@ msgstr "Mês Anterior"
 #: code:addons/website_sale/controllers/backend.py:0
 #, python-format
 msgid "Previous Week"
-msgstr "Próxima Semana"
+msgstr "Semana anterior"
 
 #. module: website_sale
 #. odoo-python
@@ -2993,7 +3019,7 @@ msgstr "Etiqueta do produto"
 #: model:ir.model.fields,field_description:website_sale.field_product_ribbon__product_tag_ids
 #: model:ir.ui.menu,name:website_sale.product_catalog_product_tags
 msgid "Product Tags"
-msgstr "Tags do produto"
+msgstr "Marcadores de produto"
 
 #. module: website_sale
 #: model:ir.model.fields,field_description:website_sale.field_product_image__product_tmpl_id
@@ -3157,7 +3183,6 @@ msgstr "Qtd:"
 #. odoo-javascript
 #: code:addons/website_sale/static/src/xml/website_sale_dashboard.xml:0
 #: code:addons/website_sale/static/src/xml/website_sale_reorder_modal.xml:0
-#: model_terms:ir.ui.view,arch_db:website_sale.cart_lines
 #: model_terms:ir.ui.view,arch_db:website_sale.cart_summary
 #, python-format
 msgid "Quantity"
@@ -3243,12 +3268,12 @@ msgstr "Produtos visualizados recentemente"
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.view_sales_order_filter_ecommerce_abondand
 msgid "Recovery Email Sent"
-msgstr "Enviar E-mail de Recuperação"
+msgstr "E-mail de recuperação enviado"
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.view_sales_order_filter_ecommerce_abondand
 msgid "Recovery Email to Send"
-msgstr "E-mail de Recuperação para Enviar"
+msgstr "E-mail de recuperação a enviar"
 
 #. module: website_sale
 #. odoo-python
@@ -3312,7 +3337,7 @@ msgstr "Rever Pedido"
 #: model:ir.model.fields,field_description:website_sale.field_product_tag__ribbon_id
 #: model:ir.model.fields,field_description:website_sale.field_product_template__website_ribbon_id
 msgid "Ribbon"
-msgstr "Fita"
+msgstr "Faixa"
 
 #. module: website_sale
 #: model:ir.model.fields,field_description:website_sale.field_product_ribbon__bg_color
@@ -3769,11 +3794,6 @@ msgid "Suggested accessories in the eCommerce cart"
 msgstr "Acessórios sugeridos no carrinho de compras do e-Commerce"
 
 #. module: website_sale
-#: model_terms:ir.ui.view,arch_db:website_sale.address
-msgid "TIN / VAT"
-msgstr "CPF"
-
-#. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.snippet_options
 msgid "Tag"
 msgstr "Marcador"
@@ -3791,7 +3811,7 @@ msgstr "Indicação de imposto"
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.total
 msgid "Taxes:"
-msgstr "Taxa"
+msgstr "Impostos:"
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.snippet_options
@@ -3858,8 +3878,7 @@ msgstr "A URL completa para acessar o documento através do site."
 msgid ""
 "The given combination does not exist therefore it cannot be added to cart."
 msgstr ""
-"A combinação fornecida não existe, portanto, não pode ser adicionada ao "
-"carrinho."
+"Essa combinação não existe, portanto, não pode ser adicionada ao carrinho."
 
 #. module: website_sale
 #. odoo-python
@@ -3867,8 +3886,7 @@ msgstr ""
 #, python-format
 msgid "The given product does not exist therefore it cannot be added to cart."
 msgstr ""
-"O produto fornecido não existe, portanto, não pode ser adicionado ao "
-"carrinho."
+"Este produto não existe, portanto, não pode ser adicionado ao carrinho."
 
 #. module: website_sale
 #. odoo-python
@@ -4129,9 +4147,14 @@ msgstr ""
 "visitantes"
 
 #. module: website_sale
+#: model_terms:ir.ui.view,arch_db:website_sale.address
+msgid "VAT"
+msgstr "Imposto"
+
+#. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.s_add_to_cart_options
 msgid "Variant"
-msgstr "Subtipo"
+msgstr "Variante"
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.snippet_options
@@ -4255,7 +4278,7 @@ msgstr "Estamos aguardando confirmação do banco ou do provedor de pagamento"
 #: model_terms:ir.ui.view,arch_db:website_sale.sale_report_view_search_website
 #: model_terms:ir.ui.view,arch_db:website_sale.website_sale_pricelist_form_view
 msgid "Website"
-msgstr "Website"
+msgstr "Site"
 
 #. module: website_sale
 #: model:ir.model,name:website_sale.model_product_public_category
@@ -4283,7 +4306,7 @@ msgstr "Loja do site"
 #. module: website_sale
 #: model:ir.model,name:website_sale.model_website_snippet_filter
 msgid "Website Snippet Filter"
-msgstr "Filtro de Snippet do Site"
+msgstr "Filtro de bloco de código do site"
 
 #. module: website_sale
 #: model:ir.model.fields,field_description:website_sale.field_product_product__website_url
@@ -4312,7 +4335,7 @@ msgstr "Palavras-chave do Site"
 #: model:ir.model.fields,field_description:website_sale.field_product_public_category__website_meta_title
 #: model:ir.model.fields,field_description:website_sale.field_product_template__website_meta_title
 msgid "Website meta title"
-msgstr "Meta título site"
+msgstr "Metatítulo do site"
 
 #. module: website_sale
 #: model:ir.model.fields,field_description:website_sale.field_product_public_category__website_meta_og_img
@@ -4434,8 +4457,22 @@ msgid ""
 "Your Dynamic Snippet will be displayed here...\n"
 "                                This message is displayed because youy did not provide both a filter and a template to use."
 msgstr ""
-"Seu snippet dinâmico será exibido aqui...\n"
+"Seu bloco de código dinâmico será exibido aqui...\n"
 "                                Esta mensagem é exibida porque você não forneceu ambos um filtro e um modelo a ser utilizado."
+
+#. module: website_sale
+#. odoo-javascript
+#: code:addons/website_sale/static/src/js/website_sale_form_editor.js:0
+#, python-format
+msgid "Your Email"
+msgstr "Seu e-mail"
+
+#. module: website_sale
+#. odoo-javascript
+#: code:addons/website_sale/static/src/js/website_sale_form_editor.js:0
+#, python-format
+msgid "Your Name"
+msgstr "Seu nome"
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.cart_lines
@@ -4458,11 +4495,6 @@ msgstr "Seu carrinho anterior já foi concluído."
 #: model_terms:ir.ui.view,arch_db:website_sale.address
 msgid "Zip Code"
 msgstr "Código Postal"
-
-#. module: website_sale
-#: model_terms:ir.ui.view,arch_db:website_sale.add_grid_or_list_option
-msgid "border-primary"
-msgstr "border-primary"
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.res_config_settings_view_form
@@ -4491,19 +4523,19 @@ msgstr "ex., abajur, lixeira"
 #: model:ir.ui.menu,name:website_sale.menu_ecommerce_settings
 #, python-format
 msgid "eCommerce"
-msgstr "eCommerce"
+msgstr "e-Commerce"
 
 #. module: website_sale
 #: model:ir.actions.act_window,name:website_sale.product_public_category_action
 #: model:ir.ui.menu,name:website_sale.menu_catalog_categories
 msgid "eCommerce Categories"
-msgstr "Categorias de Comércio Eletrônico"
+msgstr "Categorias do e-Commerce"
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.attribute_tree_view
 #: model_terms:ir.ui.view,arch_db:website_sale.product_attribute_view_form
 msgid "eCommerce Filter Visibility"
-msgstr "Visibilidade do filtro do e-Commerce"
+msgstr "Visibilidade do filtro no e-Commerce"
 
 #. module: website_sale
 #: model:ir.model.fields,field_description:website_sale.field_digest_digest__kpi_website_sale_total

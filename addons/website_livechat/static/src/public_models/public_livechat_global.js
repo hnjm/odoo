@@ -48,7 +48,8 @@ registerPatch({
                 return this.loadQWebTemplate();
             }
             if (this.options.chat_request_session) {
-                setCookie('im_livechat_session', JSON.stringify(this.options.chat_request_session), 60 * 60, 'required');
+                this.options.chat_request_session.visitor_uid = this.getVisitorUserId();
+                setCookie('im_livechat_session', encodeURIComponent(JSON.stringify(this.options.chat_request_session)), 60 * 60, 'required');
             }
             return this._super();
         },

@@ -3,23 +3,23 @@
 # 	* note
 # 
 # Translators:
-# Константин Коровин <korovin74@gmail.com>, 2022
 # Андрей Гусев <gaussgss@gmail.com>, 2022
+# Irina Fedulova <istartlin@gmail.com>, 2022
 # Vasiliy Korobatov <korobatov@gmail.com>, 2022
 # Ekaterina <nawsikaya@bk.ru>, 2022
 # Ivan Kropotkin <yelizariev@itpp.dev>, 2022
-# Сергей Шебанин <sergey@shebanin.ru>, 2022
 # ILMIR <karamov@it-projects.info>, 2022
 # Martin Trigaux, 2022
-# Irina Fedulova <istartlin@gmail.com>, 2022
+# alenafairy, 2023
+# Сергей Шебанин <sergey@shebanin.ru>, 2024
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:01+0000\n"
+"POT-Creation-Date: 2024-02-06 13:31+0000\n"
 "PO-Revision-Date: 2022-09-22 05:53+0000\n"
-"Last-Translator: Irina Fedulova <istartlin@gmail.com>, 2022\n"
+"Last-Translator: Сергей Шебанин <sergey@shebanin.ru>, 2024\n"
 "Language-Team: Russian (https://app.transifex.com/odoo/teams/41243/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -53,6 +53,8 @@ msgid ""
 "Actions may trigger specific behavior like opening calendar view or "
 "automatically mark as done when a document is uploaded"
 msgstr ""
+"Действия могут вызывать определенное поведение, например, открывать "
+"календарь или автоматически отмечать как выполнено при загрузке документа."
 
 #. module: note
 #: model:ir.model.fields,field_description:note.field_note_note__open
@@ -101,14 +103,14 @@ msgid "Add a new tag"
 msgstr "Добавить новый тег"
 
 #. module: note
-#. openerp-web
+#. odoo-javascript
 #: code:addons/note/static/src/components/activity_menu_view/activity_menu_view.xml:0
 #, python-format
 msgid "Add a note"
-msgstr "Добавить заметку"
+msgstr "Запись в журнале"
 
 #. module: note
-#. openerp-web
+#. odoo-javascript
 #: code:addons/note/static/src/components/activity_menu_view/activity_menu_view.xml:0
 #, python-format
 msgid "Add new note"
@@ -130,7 +132,7 @@ msgid "By sticky note Category"
 msgstr "По категории заметок-наклеек"
 
 #. module: note
-#. openerp-web
+#. odoo-javascript
 #: code:addons/note/static/src/components/activity_menu_view/activity_menu_view.xml:0
 #, python-format
 msgid "Channel"
@@ -150,7 +152,7 @@ msgstr "Компания"
 #. module: note
 #: model:ir.ui.menu,name:note.menu_note_configuration
 msgid "Configuration"
-msgstr "Настройки"
+msgstr "Конфигурация"
 
 #. module: note
 #: model:ir.model.fields,field_description:note.field_note_note__create_uid
@@ -252,7 +254,6 @@ msgstr "Если отмечено, новые сообщения будут тр
 
 #. module: note
 #: model:ir.model.fields,help:note.field_note_note__message_has_error
-#: model:ir.model.fields,help:note.field_note_note__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr "Если отмечено - некоторые сообщения имеют ошибку доставки."
 
@@ -365,6 +366,7 @@ msgid "Note Tag"
 msgstr "Тег заметки"
 
 #. module: note
+#. odoo-python
 #: code:addons/note/models/res_users.py:0
 #: model:ir.actions.act_window,name:note.action_note_note
 #: model:ir.ui.menu,name:note.menu_note_notes
@@ -395,7 +397,7 @@ msgstr "Количество ошибок"
 
 #. module: note
 #: model:ir.model.fields,help:note.field_note_note__message_needaction_counter
-msgid "Number of messages which requires an action"
+msgid "Number of messages requiring action"
 msgstr "Количество сообщений, требующих действия"
 
 #. module: note
@@ -415,7 +417,7 @@ msgid "Related Note"
 msgstr "Связанная заметка"
 
 #. module: note
-#. openerp-web
+#. odoo-javascript
 #: code:addons/note/static/src/components/activity_menu_view/activity_menu_view.xml:0
 #, python-format
 msgid "Remember..."
@@ -433,16 +435,11 @@ msgid "Responsible User"
 msgstr "Ответственный"
 
 #. module: note
-#. openerp-web
+#. odoo-javascript
 #: code:addons/note/static/src/components/activity_menu_view/activity_menu_view.xml:0
 #, python-format
 msgid "SAVE"
 msgstr "СОХРАНИТЬ"
-
-#. module: note
-#: model:ir.model.fields,field_description:note.field_note_note__message_has_sms_error
-msgid "SMS Delivery error"
-msgstr "Ошибка доставки SMS"
 
 #. module: note
 #: model:ir.model.fields,field_description:note.field_note_note__sequence
@@ -524,7 +521,7 @@ msgid "Tags"
 msgstr "Теги"
 
 #. module: note
-#. openerp-web
+#. odoo-javascript
 #: code:addons/note/static/src/models/activity_menu_view.js:0
 #, python-format
 msgid "Today"
@@ -549,13 +546,3 @@ msgstr "Тип активности исключения в записи."
 #: model:ir.model,name:note.model_res_users
 msgid "User"
 msgstr "Пользователь"
-
-#. module: note
-#: model:ir.model.fields,field_description:note.field_note_note__website_message_ids
-msgid "Website Messages"
-msgstr "Сообщения с сайта"
-
-#. module: note
-#: model:ir.model.fields,help:note.field_note_note__website_message_ids
-msgid "Website communication history"
-msgstr "История общения с сайтом"

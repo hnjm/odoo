@@ -181,3 +181,48 @@ class TestHrEmployee(TestHrCommon):
             'partner_id': partner.id,
         })
         self.assertFalse(self.env['res.users'].search([('login', '=', 'test_user')]).employee_id)
+
+    def test_employee_update_work_contact_id(self):
+        """
+            Check that the `work_contact_id` information is no longer
+            updated when an employee's `user_id` is removed.
+        """
+        user = self.env['res.users'].create({
+            'name': 'Test',
+            'login': 'test',
+            'email': 'test@example.com',
+        })
+        employee_A, employee_B = self.env['hr.employee'].create([
+            {
+                'name': 'Employee A',
+                'user_id': user.id,
+                'work_email': 'employee_A@example.com',
+            },
+            {
+                'name': 'Employee B',
+                'user_id': False,
+                'work_email': 'employee_B@example.com',
+            }
+        ])
+        employee_A.user_id = False
+        employee_B.user_id = user.id
+        employee_B.work_email = 'new_email@example.com'
+        self.assertEqual(employee_A.work_email, 'employee_A@example.com')
+        self.assertEqual(employee_B.work_email, 'new_email@example.com')
+
+    def test_unlink_address(self):
+        employee = self.employee_without_image
+        partner = self.env["res.partner"].create({
+            "name": "Mr. Bean",
+            "street": "12 Arbour Road",
+            "city": "London"
+        })
+        employee.address_home_id = partner.id
+        bank = self.env['res.partner.bank'].create({
+            "acc_number": "123",
+            "partner_id": partner.id
+        })
+        employee.bank_account_id = bank.id
+
+        employee.address_home_id = False
+        self.assertFalse(employee.address_home_id)

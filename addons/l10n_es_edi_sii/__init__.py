@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from . import models
+from . import wizards
 from odoo import api, SUPERUSER_ID
 
 
@@ -17,10 +18,11 @@ def _l10n_es_edi_post_init(cr, registry):
     if all_chart_templates:
         tax_templates = env['account.tax.template'].search([
             ('chart_template_id', 'in', all_chart_templates.ids),
-            '|', '|',
+            '|', '|', '|',
             ('l10n_es_type', '!=', False),
             ('l10n_es_exempt_reason', '!=', False),
             ('tax_scope', '!=', False),
+            ('l10n_es_bien_inversion', '!=', False),
         ])
         xml_ids = tax_templates.get_external_id()
         for company in companies:
@@ -32,4 +34,5 @@ def _l10n_es_edi_post_init(cr, registry):
                         'l10n_es_exempt_reason': tax_template.l10n_es_exempt_reason,
                         'tax_scope': tax_template.tax_scope,
                         'l10n_es_type': tax_template.l10n_es_type,
+                        'l10n_es_bien_inversion': tax_template.l10n_es_bien_inversion,
                     })

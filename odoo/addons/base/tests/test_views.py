@@ -14,6 +14,7 @@ from psycopg2.extras import Json
 
 from odoo.exceptions import AccessError, ValidationError
 from odoo.tests import common
+from odoo.addons.base.tests.common import TransactionCaseWithUserDemo
 from odoo.tools import mute_logger, view_validation
 from odoo.addons.base.models.ir_ui_view import (
     transfer_field_to_modifiers, transfer_node_to_modifiers, simplify_modifiers,
@@ -30,7 +31,7 @@ class ViewXMLID(common.TransactionCase):
         self.assertTrue(view.model_data_id)
         self.assertEqual(view.model_data_id.complete_name, 'base.view_company_form')
 
-class ViewCase(common.TransactionCase):
+class ViewCase(TransactionCaseWithUserDemo):
     def setUp(self):
         super(ViewCase, self).setUp()
         self.View = self.env['ir.ui.view']
@@ -741,6 +742,40 @@ class TestTemplating(ViewCase):
     def setUp(self):
         super(TestTemplating, self).setUp()
         self.patch(self.registry, '_init', False)
+
+    def test_branding_t0(self):
+        view1 = self.View.create({
+            'name': "Base view",
+            'type': 'qweb',
+            'arch': """<root>
+                <div role="search">
+                    <input type="search" name="search"/>
+                    <button type="submit">
+                        <i class="oi-search"/>
+                    </button>
+                </div>
+            </root>
+            """
+        })
+        self.View.create({
+            'name': "Extension view",
+            'type': 'qweb',
+            'inherit_id': view1.id,
+            'arch': """<xpath expr="//div[@role='search']" position="replace">
+                <form>
+                    <t>$0</t>
+                </form>
+            </xpath>
+            """
+        })
+        arch_string = view1.with_context(inherit_branding=True).get_combined_arch()
+        arch = etree.fromstring(arch_string)
+        self.View.distribute_branding(arch)
+        [initial] = arch.xpath("//div[@role='search']")
+        self.assertEqual(
+            '1',
+            initial.get('data-oe-no-branding'),
+            'Injected view must be marked as no-branding')
 
     def test_branding_inherit(self):
         view1 = self.View.create({
@@ -2426,7 +2461,7 @@ class TestViews(ViewCase):
                 </form>
             """,
         })
-        user_demo = self.env.ref('base.user_demo')
+        user_demo = self.user_demo
         # Make sure demo doesn't have the base.group_system
         self.assertFalse(self.env['res.partner'].with_user(user_demo).env.user.has_group('base.group_system'))
         arch = self.env['res.partner'].with_user(user_demo).get_view(view_id=view.id)['arch']
@@ -3941,7 +3976,7 @@ class TestValidationTools(common.BaseCase):
             {'x', 'y', 'z'},
         )
 
-class TestAccessRights(common.TransactionCase):
+class TestAccessRights(TransactionCaseWithUserDemo):
 
     @common.users('demo')
     def test_access(self):
@@ -3967,7 +4002,7 @@ class TestAllViews(common.TransactionCase):
                 view._check_xml()
 
 @common.tagged('post_install', '-at_install', '-standard', 'render_all_views')
-class TestRenderAllViews(common.TransactionCase):
+class TestRenderAllViews(TransactionCaseWithUserDemo):
 
     @common.users('demo', 'admin')
     def test_render_all_views(self):

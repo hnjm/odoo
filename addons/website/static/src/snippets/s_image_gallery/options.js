@@ -5,6 +5,7 @@ const { MediaDialogWrapper } = require('@web_editor/components/media_dialog/medi
 const { ComponentWrapper } = require('web.OwlCompatibility');
 var core = require('web.core');
 var options = require('web_editor.snippets.options');
+const wUtils = require("website.utils");
 
 var _t = core._t;
 var qweb = core.qweb;
@@ -15,6 +16,21 @@ options.registry.gallery = options.Class.extend({
      */
     start: function () {
         var self = this;
+        // TODO In master: define distinct classes.
+        // Differentiate both instances of this class: we want to avoid
+        // registering the same event listener twice.
+        this.hasAddImages = this.el.querySelector("we-button[data-add-images]");
+
+        if (!this.hasAddImages) {
+            let layoutPromise;
+            const containerEl = this.$target[0].querySelector(":scope > .container, :scope > .container-fluid, :scope > .o_container_small");
+            if (containerEl.querySelector(":scope > *:not(div)")) {
+                layoutPromise = self._modeWithImageWait(null, self.getMode());
+            } else {
+                layoutPromise = Promise.resolve();
+            }
+            return layoutPromise.then(this._super.apply(this, arguments));
+        }
 
         // Make sure image previews are updated if images are changed
         this.$target.on('image_changed.gallery', 'img', function (ev) {
@@ -42,12 +58,13 @@ options.registry.gallery = options.Class.extend({
             }
         });
 
-        const $container = this.$('> .container, > .container-fluid, > .o_container_small');
-        if ($container.find('> *:not(div)').length) {
-            self.mode(null, self.getMode());
-        }
-
-        return this._super.apply(this, arguments);
+        return this._super.apply(this, arguments).then(() => {
+            // Call specific mode's start if defined (e.g. _slideshowStart)
+            const startMode = this[`_${this.getMode()}Start`];
+            if (startMode) {
+                startMode.bind(this)();
+            }
+        });
     },
     /**
      * @override
@@ -99,27 +116,24 @@ options.registry.gallery = options.Class.extend({
             multiImages: true,
             onlyImages: true,
             save: images => {
-                let $newImageToSelect;
-                for (const image of images) {
-                    const $img = $('<img/>', {
-                        class: $images.length > 0 ? $images[0].className : 'img img-fluid d-block ',
-                        src: image.src,
-                        'data-index': ++index,
-                        alt: image.alt || '',
-                        'data-name': _t('Image'),
-                        style: $images.length > 0 ? $images[0].style.cssText : '',
-                    }).appendTo($container);
-                    if (!$newImageToSelect) {
-                        $newImageToSelect = $img;
+                // TODO In master: restore addImages Promise result.
+                this.trigger_up('snippet_edition_request', {exec: () => {
+                    for (const image of images) {
+                        $('<img/>', {
+                            class: $images.length > 0 ? $images[0].className : 'img img-fluid d-block ',
+                            src: image.src,
+                            'data-index': ++index,
+                            alt: image.alt || '',
+                            'data-name': _t('Image'),
+                            style: $images.length > 0 ? $images[0].style.cssText : '',
+                        }).appendTo($container);
                     }
-                }
-                if (images.length > 0) {
-                    this.mode('reset', this.getMode());
-                    this.trigger_up('cover_update');
-                    // Triggers the re-rendering of the thumbnail
-                    $newImageToSelect.trigger('image_changed');
-
-                }
+                    if (images.length > 0) {
+                        return this._modeWithImageWait('reset', this.getMode()).then(() => {
+                            this.trigger_up('cover_update');
+                        });
+                    }
+                }});
             },
         });
         dialog.mount(this.el);
@@ -134,6 +148,7 @@ options.registry.gallery = options.Class.extend({
         const nbColumns = parseInt(widgetValue || '1');
         this.$target.attr('data-columns', nbColumns);
 
+        // TODO In master return mode's result.
         this.mode(previewMode, this.getMode(), {}); // TODO improve
     },
     /**
@@ -158,14 +173,14 @@ options.registry.gallery = options.Class.extend({
      * Displays the images with the "grid" layout.
      */
     grid: function () {
-        var imgs = this._getImages();
+        const imgs = this._getImgHolderEls();
         var $row = $('<div/>', {class: 'row s_nb_column_fixed'});
         var columns = this._getColumns();
         var colClass = 'col-lg-' + (12 / columns);
         var $container = this._replaceContent($row);
 
         _.each(imgs, function (img, index) {
-            var $img = $(img);
+            const $img = $(img.cloneNode(true));
             var $col = $('<div/>', {class: colClass});
             $col.append($img).appendTo($row);
             if ((index + 1) % columns === 0) {
@@ -180,7 +195,7 @@ options.registry.gallery = options.Class.extend({
      */
     masonry: function () {
         var self = this;
-        var imgs = this._getImages();
+        const imgs = this._getImgHolderEls();
         var columns = this._getColumns();
         var colClass = 'col-lg-' + (12 / columns);
         var cols = [];
@@ -197,12 +212,38 @@ options.registry.gallery = options.Class.extend({
 
         // Dispatch images in columns by always putting the next one in the
         // smallest-height column
+        if (this._masonryAwaitImages) {
+            // TODO In master return promise.
+            this._masonryAwaitImagesPromise = new Promise(async resolve => {
+                for (const imgEl of imgs) {
+                    let min = Infinity;
+                    let smallestColEl;
+                    for (const colEl of cols) {
+                        const imgEls = colEl.querySelectorAll("img");
+                        const lastImgRect = imgEls.length && imgEls[imgEls.length - 1].getBoundingClientRect();
+                        const height = lastImgRect ? Math.round(lastImgRect.top + lastImgRect.height) : 0;
+                        if (height < min) {
+                            min = height;
+                            smallestColEl = colEl;
+                        }
+                    }
+                    smallestColEl.append(imgEl.cloneNode(true));
+                    await wUtils.onceAllImagesLoaded(this.$target);
+                }
+                resolve();
+            });
+            return;
+        }
+        // TODO Remove in master.
+        // Order might be wrong if images were not loaded yet.
         while (imgs.length) {
             var min = Infinity;
             var $lowest;
             _.each(cols, function (col) {
                 var $col = $(col);
                 var height = $col.is(':empty') ? 0 : $col.find('img').last().offset().top + $col.find('img').last().height() - self.$target.offset().top;
+                // Neutralize invisible sub-pixel height differences.
+                height = Math.round(height);
                 if (height < min) {
                     min = height;
                     $lowest = $col;
@@ -211,7 +252,7 @@ options.registry.gallery = options.Class.extend({
             // Only on Chrome: appended images are sometimes invisible and not
             // correctly loaded from cache, we use a clone of the image to force
             // the loading.
-            $lowest.append(imgs.shift().cloneNode());
+            $lowest.append(imgs.shift().cloneNode(true));
         }
     },
     /**
@@ -242,15 +283,16 @@ options.registry.gallery = options.Class.extend({
     nomode: function () {
         var $row = $('<div/>', {class: 'row s_nb_column_fixed'});
         var imgs = this._getImages();
+        const imgHolderEls = this._getImgHolderEls();
 
         this._replaceContent($row);
 
-        _.each(imgs, function (img) {
+        _.each(imgs, function (img, index) {
             var wrapClass = 'col-lg-3';
             if (img.width >= img.height * 2 || img.width > 600) {
                 wrapClass = 'col-lg-6';
             }
-            var $wrap = $('<div/>', {class: wrapClass}).append(img);
+            var $wrap = $('<div/>', {class: wrapClass}).append(imgHolderEls[index]);
             $row.append($wrap);
         });
     },
@@ -279,10 +321,14 @@ options.registry.gallery = options.Class.extend({
      */
     slideshow: function () {
         const imageEls = this._getImages();
+        const imgHolderEls = this._getImgHolderEls();
         const images = _.map(imageEls, img => ({
             // Use getAttribute to get the attribute value otherwise .src
             // returns the absolute url.
             src: img.getAttribute('src'),
+            // TODO: remove me in master. This is not needed anymore as the
+            // images of the rendered `website.gallery.slideshow` are replaced
+            // by the elements of `imgHolderEls`.
             alt: img.getAttribute('alt'),
         }));
         var currentInterval = this.$target.find('.carousel:first').attr('data-bs-interval');
@@ -292,10 +338,23 @@ options.registry.gallery = options.Class.extend({
             title: "",
             interval: currentInterval || 0,
             id: 'slideshow_' + new Date().getTime(),
+            // TODO: in master, remove `attrClass` and `attStyle` from `params`.
+            // This is not needed anymore as the images of the rendered
+            // `website.gallery.slideshow` are replaced by the elements of
+            // `imgHolderEls`.
             attrClass: imageEls.length > 0 ? imageEls[0].className : '',
             attrStyle: imageEls.length > 0 ? imageEls[0].style.cssText : '',
         },
         $slideshow = $(qweb.render('website.gallery.slideshow', params));
+        const imgSlideshowEls = $slideshow[0].querySelectorAll("img[data-o-main-image]");
+        imgSlideshowEls.forEach((imgSlideshowEl, index) => {
+            // Replace the template image by the original one. This is needed in
+            // order to keep the characteristics of the image such as the
+            // filter, the width, the quality, the link on which the users are
+            // redirected once they click on the image etc...
+            imgSlideshowEl.after(imgHolderEls[index]);
+            imgSlideshowEl.remove();
+        });
         this._replaceContent($slideshow);
         _.each(this.$('img'), function (img, index) {
             $(img).attr({contenteditable: true, 'data-index': index});
@@ -304,6 +363,7 @@ options.registry.gallery = options.Class.extend({
 
         // Apply layout animation
         this.$target.off('slide.bs.carousel').off('slid.bs.carousel');
+        this._slideshowStart();
         this.$('li.fa').off('click');
     },
 
@@ -318,12 +378,28 @@ options.registry.gallery = options.Class.extend({
      */
     notify: function (name, data) {
         this._super(...arguments);
+        // TODO Remove in master.
+        if (!this.hasAddImages) {
+            // In stable, the widget is instanciated twice. We do not want
+            // operations, especially moves, to be performed twice.
+            // We therefore ignore the requests from one of the instances.
+            return;
+        }
+        // TODO In master: nest in a snippet_edition_request to await mode.
         if (name === 'image_removed') {
             data.$image.remove(); // Force the removal of the image before reset
-            this.mode('reset', this.getMode());
+            // TODO In master: use async mode.
+            this.trigger_up('snippet_edition_request', {exec: () => {
+                return this._modeWithImageWait('reset', this.getMode());
+            }});
         } else if (name === 'image_index_request') {
             var imgs = this._getImages();
             var position = _.indexOf(imgs, data.$image[0]);
+            if (position === 0 && data.position === "prev") {
+                data.position = "last";
+            } else if (position === imgs.length - 1 && data.position === "next") {
+                data.position = "first";
+            }
             imgs.splice(position, 1);
             switch (data.position) {
                 case 'first':
@@ -347,24 +423,29 @@ options.registry.gallery = options.Class.extend({
                 $(img).attr('data-index', index);
             });
             const currentMode = this.getMode();
-            this.mode('reset', currentMode);
-            if (currentMode === 'slideshow') {
-                const $carousel = this.$target.find('.carousel');
-                $carousel.removeClass('slide');
-                $carousel.carousel(position);
-                this.$target.find('.carousel-indicators li').removeClass('active');
-                this.$target.find('.carousel-indicators li[data-bs-slide-to="' + position + '"]').addClass('active');
-                this.trigger_up('activate_snippet', {
-                    $snippet: this.$target.find('.carousel-item.active img'),
-                    ifInactiveOptions: true,
+            // TODO In master: use async mode.
+            this.trigger_up('snippet_edition_request', {exec: () => {
+                return this._modeWithImageWait('reset', currentMode).then(() => {
+                    if (currentMode === 'slideshow') {
+                        const $carousel = this.$target.find('.carousel');
+                        $carousel.removeClass('slide');
+                        $carousel.carousel(position);
+                        this.$target.find('.carousel-indicators li').removeClass('active');
+                        this.$target.find('.carousel-indicators li[data-bs-slide-to="' + position + '"]').addClass('active');
+                        this.trigger_up('activate_snippet', {
+                            $snippet: this.$target.find('.carousel-item.active img'),
+                            ifInactiveOptions: true,
+                        });
+                        $carousel.addClass('slide');
+                    } else {
+                        const imageEl = this.$target[0].querySelector(`[data-index='${position}']`);
+                        this.trigger_up('activate_snippet', {
+                            $snippet: $(imageEl),
+                            ifInactiveOptions: true,
+                        });
+                    }
                 });
-                $carousel.addClass('slide');
-            } else {
-                this.trigger_up('activate_snippet', {
-                    $snippet: data.$image,
-                    ifInactiveOptions: true,
-                });
-            }
+            }});
         }
     },
 
@@ -433,6 +514,17 @@ options.registry.gallery = options.Class.extend({
         return imgs;
     },
     /**
+     * Returns the images, or the images holder if this holder is an anchor,
+     * sorted by index.
+     *
+     * @private
+     * @returns {Array.<HTMLImageElement|HTMLAnchorElement>}
+     */
+    _getImgHolderEls: function () {
+        const imgEls = this._getImages();
+        return imgEls.map(imgEl => imgEl.closest("a") || imgEl);
+    },
+    /**
      * Returns the index associated to a given image.
      *
      * @private
@@ -462,6 +554,69 @@ options.registry.gallery = options.Class.extend({
         var $container = this.$('> .container, > .container-fluid, > .o_container_small');
         $container.empty().append($content);
         return $container;
+    },
+    /**
+     * Sets up listeners on slideshow to activate selected image.
+     */
+    _slideshowStart() {
+        const $carousel = this.$bsTarget.is(".carousel") ? this.$bsTarget : this.$bsTarget.find(".carousel");
+        let _previousEditor;
+        let _miniatureClicked;
+        const carouselIndicatorsEl = this.$target[0].querySelector(".carousel-indicators");
+        if (carouselIndicatorsEl) {
+            carouselIndicatorsEl.addEventListener("click", () => {
+                _miniatureClicked = true;
+            });
+        }
+        let lastSlideTimeStamp;
+        $carousel.on("slide.bs.carousel.image_gallery", (ev) => {
+            lastSlideTimeStamp = ev.timeStamp;
+            const activeImageEl = this.$target[0].querySelector(".carousel-item.active img");
+            for (const editor of this.options.wysiwyg.snippetsMenu.snippetEditors) {
+                if (editor.isShown() && editor.$target[0] === activeImageEl) {
+                    _previousEditor = editor;
+                    editor.toggleOverlay(false);
+                }
+            }
+        });
+        $carousel.on("slid.bs.carousel.image_gallery", (ev) => {
+            if (!_previousEditor && !_miniatureClicked) {
+                return;
+            }
+            _previousEditor = undefined;
+            _miniatureClicked = false;
+            // slid.bs.carousel is most of the time fired too soon by bootstrap
+            // since it emulates the transitionEnd with a setTimeout. We wait
+            // here an extra 20% of the time before retargeting edition, which
+            // should be enough...
+            const _slideDuration = new Date().getTime() - lastSlideTimeStamp;
+            setTimeout(() => {
+                const activeImageEl = this.$target[0].querySelector(".carousel-item.active img");
+                this.trigger_up("activate_snippet", {
+                    $snippet: $(activeImageEl),
+                    ifInactiveOptions: true,
+                });
+            }, 0.2 * _slideDuration);
+        });
+    },
+    /**
+     * Call mode while ensuring that all images are loaded.
+     *
+     * @see this.selectClass for parameters
+     * @returns {Promise}
+     */
+    _modeWithImageWait(previewMode, widgetValue, params) {
+        // TODO Remove in master.
+        let promise;
+        this._masonryAwaitImages = true;
+        try {
+            this.mode(previewMode, widgetValue, params);
+            promise = this._masonryAwaitImagesPromise;
+        } finally {
+            this._masonryAwaitImages = false;
+            this._masonryAwaitImagesPromise = undefined;
+        }
+        return promise || Promise.resolve();
     },
 });
 

@@ -61,7 +61,8 @@ class MrpWorkorder(models.Model):
                     wo_to_link_mo_analytic_line += wo
                     mo_analytic_line_vals_list.append(wo._prepare_analytic_line_values(mo_account, hours, value))
             if wc_account and wc_account != mo_account:
-                is_zero = float_is_zero(value, precision_rounding=wc_account.currency_id.rounding)
+                wc_currency = wc_account.currency_id or wo.company_id.currency_id
+                is_zero = float_is_zero(value, precision_rounding=wc_currency.rounding)
                 if wo.wc_analytic_account_line_id:
                     wo.wc_analytic_account_line_id.write({
                         'unit_amount': hours,
@@ -76,3 +77,7 @@ class MrpWorkorder(models.Model):
             wo.mo_analytic_account_line_id = analytic_line
         for wo, analytic_line in zip(wo_to_link_wc_analytic_line, wc_analytic_lines):
             wo.wc_analytic_account_line_id = analytic_line
+
+    def unlink(self):
+        (self.mo_analytic_account_line_id | self.wc_analytic_account_line_id).unlink()
+        return super().unlink()

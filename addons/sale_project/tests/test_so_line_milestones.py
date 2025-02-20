@@ -4,7 +4,7 @@
 from odoo.addons.sale.tests.common import TestSaleCommon
 from odoo.exceptions import ValidationError
 from odoo.tests.common import tagged
-from psycopg2.errors import NotNullViolation
+from psycopg2 import Error as Psycopg2Error
 
 
 @tagged('post_install', '-at_install')
@@ -14,6 +14,7 @@ class TestSoLineMilestones(TestSaleCommon):
     def setUpClass(cls, chart_template_ref=None):
         super().setUpClass(chart_template_ref=chart_template_ref)
 
+        cls.env['res.config.settings'].create({'group_project_milestone': True}).execute()
         uom_hour = cls.env.ref('uom.product_uom_hour')
 
         cls.product_delivery_milestones1 = cls.env['product.product'].create({
@@ -161,7 +162,17 @@ class TestSoLineMilestones(TestSaleCommon):
         })
         try:
             sale_order.action_confirm()
-        except (ValidationError, NotNullViolation):
+        except ValidationError:
             self.fail("The sale order should be confirmed, "
-                      "and no ValidationError or NotNullViolation should be raised, "
-                      "for a missing project on the milestone.")
+                    "and no ValidationError should be raised, "
+                    "for a missing project on the milestone.")
+        except Psycopg2Error as e:
+            # Check if the error is a NOT NULL violation
+            NotNullViolationPgCode = '23502'
+            if e.pgcode == NotNullViolationPgCode:
+                self.fail("The sale order should be confirmed, "
+                        "and no NotNullViolation should be raised, "
+                        "for a missing project on the milestone.")
+            else:
+                # Re-raise any other unexpected database error
+                raise

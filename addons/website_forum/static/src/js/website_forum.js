@@ -9,6 +9,7 @@ var wysiwygLoader = require('web_editor.loader');
 var publicWidget = require('web.public.widget');
 const { Markup } = require('web.utils');
 var session = require('web.session');
+const rpc = require('web.rpc');
 var qweb = core.qweb;
 
 var _t = core._t;
@@ -29,7 +30,7 @@ publicWidget.registry.websiteForum = publicWidget.Widget.extend({
         'click .o_js_validation_queue a[href*="/validate"]': '_onValidationQueueClick',
         'click .o_wforum_validate_toggler:not(.karma_required)': '_onAcceptAnswerClick',
         'click .o_wforum_favourite_toggle': '_onFavoriteQuestionClick',
-        'click .comment_delete': '_onDeleteCommentClick',
+        'click .comment_delete:not(.karma_required)': '_onDeleteCommentClick',
         'click .js_close_intro': '_onCloseIntroClick',
         'submit .js_wforum_submit_form:has(:not(.karma_required).o_wforum_submit_post)': '_onSubmitForm',
     },
@@ -54,7 +55,7 @@ publicWidget.registry.websiteForum = publicWidget.Widget.extend({
 
         // Initialize forum's tooltips
         this.$('[data-bs-toggle="tooltip"]').tooltip({delay: 0});
-        this.$('[data-bs-toggle="popover"]').popover({offset: 8});
+        this.$('[data-bs-toggle="popover"]').popover({offset: '8'});
 
         $('input.js_select2').select2({
             tags: true,
@@ -118,25 +119,43 @@ publicWidget.registry.websiteForum = publicWidget.Widget.extend({
             },
         });
 
-        _.each($('textarea.o_wysiwyg_loader'), function (textarea) {
+        _.each($('textarea.o_wysiwyg_loader'), async function (textarea) {
             var $textarea = $(textarea);
             var editorKarma = $textarea.data('karma') || 0; // default value for backward compatibility
             var $form = $textarea.closest('form');
             var hasFullEdit = parseInt($("#karma").val()) >= editorKarma;
-
+            let recordContent = '';
+            let resId = 0;
+            if (window.location.pathname.includes('edit')) {
+                // Id is retrieved from URL, which is either:
+                // - /forum/name-1/post/something-5
+                // - /forum/name-1/post/something-5/edit
+                // TODO: Make this more robust.
+                resId = +window.location.pathname.split('-').slice(-1)[0].split('/')[0];
+                const args = [
+                    [['id', '=', resId]],
+                    ['content'],
+                ];
+                const data = await rpc.query({
+                    model: 'forum.post',
+                    method: 'search_read',
+                    args: args,
+                });
+                if (data && data.length) {
+                    recordContent = data[0]['content'];
+                }
+            }
             var options = {
                 toolbarTemplate: 'website_forum.web_editor_toolbar',
                 recordInfo: {
                     context: self._getContext(),
                     res_model: 'forum.post',
-                    // Id is retrieved from URL, which is either:
-                    // - /forum/name-1/post/something-5
-                    // - /forum/name-1/post/something-5/edit
-                    // TODO: Make this more robust.
-                    res_id: +window.location.pathname.split('-').slice(-1)[0].split('/')[0],
+                    res_id: resId,
                 },
+                value: recordContent,
                 resizable: true,
                 userGeneratedContent: true,
+                height: 350,
             };
             options.allowCommandLink = hasFullEdit;
             options.allowCommandImage = hasFullEdit;
@@ -186,7 +205,9 @@ publicWidget.registry.websiteForum = publicWidget.Widget.extend({
         let $title = $form.find('input[name=post_name]');
         let $textarea = $form.find('textarea[name=content]');
         // It's not really in the textarea that the user write at first
-        let textareaContent = $form.find('.o_wysiwyg_textarea_wrapper').text().trim();
+        const fillableTextAreaEl = $form[0].querySelector(".o_wysiwyg_textarea_wrapper");
+        const isTextAreaFilled = fillableTextAreaEl &&
+            (fillableTextAreaEl.innerText.trim() || fillableTextAreaEl.querySelector("img"));
 
         if ($title.length && $title[0].required) {
             if ($title.val()) {
@@ -200,7 +221,7 @@ publicWidget.registry.websiteForum = publicWidget.Widget.extend({
         // Because the textarea is hidden, we add the red or green border to its container
         if ($textarea[0] && $textarea[0].required) {
             let $textareaContainer = $form.find('.o_wysiwyg_textarea_wrapper');
-            if (!textareaContent.length) {
+            if (!isTextAreaFilled) {
                 $textareaContainer.addClass('border border-danger rounded-top');
                 validForm = false;
             } else {

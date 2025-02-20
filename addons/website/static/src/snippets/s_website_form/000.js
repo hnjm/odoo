@@ -9,6 +9,7 @@ odoo.define('website.s_website_form', function (require) {
     var publicWidget = require('web.public.widget');
     const dom = require('web.dom');
     const concurrency = require('web.concurrency');
+    const wUtils = require('website.utils');
 
     var _t = core._t;
     var qweb = core.qweb;
@@ -40,6 +41,7 @@ odoo.define('website.s_website_form', function (require) {
         selector: '.s_website_form form, form.s_website_form', // !compatibility
         events: {
             'click .s_website_form_send, .o_website_form_send': 'send', // !compatibility
+            'submit': 'send',
         },
 
         /**
@@ -89,7 +91,6 @@ odoo.define('website.s_website_form', function (require) {
             for (const [name, funcs] of visibilityFunctionsByFieldName.entries()) {
                 this._visibilityFunctionByFieldName.set(name, () => funcs.some(func => func()));
             }
-            this._updateFieldsVisibility();
 
             this._onFieldInputDebounced = _.debounce(this._onFieldInput.bind(this), 400);
             this.$el.on('input.s_website_form', '.s_website_form_field', this._onFieldInputDebounced);
@@ -127,20 +128,16 @@ odoo.define('website.s_website_form', function (require) {
             // Because, using t-att- inside form make it non-editable
             // Data-fill-with attribute is given during registry and is used by
             // to know which user data should be used to prfill fields.
-            const dataForEl = document.querySelector(`[data-for='${this.$target[0].id}']`);
+            let dataForValues = wUtils.getParsedDataFor(this.$target[0].id, document);
             this.editTranslations = !!this._getContext(true).edit_translations;
             // On the "edit_translations" mode, a <span/> with a translated term
             // will replace the attribute value, leading to some inconsistencies
             // (setting again the <span> on the attributes after the editor's
             // cleanup, setting wrong values on the attributes after translating
             // default values...)
-            if (!this.editTranslations && (dataForEl || Object.keys(this.preFillValues).length)) {
-                const dataForValues = dataForEl ?
-                    JSON.parse(dataForEl.dataset.values
-                        .replace('False', '""')
-                        .replace('None', '""')
-                        .replace(/'/g, '"')
-                    ) : {};
+            if (!this.editTranslations
+                    && (dataForValues || Object.keys(this.preFillValues).length)) {
+                dataForValues = dataForValues || {};
                 const fieldNames = this.$target.serializeArray().map(el => el.name);
                 // All types of inputs do not have a value property (eg:hidden),
                 // for these inputs any function that is supposed to put a value
@@ -150,7 +147,7 @@ odoo.define('website.s_website_form', function (require) {
                 // the values to submit() for these fields but this could break
                 // customizations that use the current behavior as a feature.
                 for (const name of fieldNames) {
-                    const fieldEl = this.$target[0].querySelector(`[name="${name}"]`);
+                    const fieldEl = this.$target[0].querySelector(`[name="${CSS.escape(name)}"]`);
 
                     // In general, we want the data-for and prefill values to
                     // take priority over set default values. The 'email_to'
@@ -181,6 +178,8 @@ odoo.define('website.s_website_form', function (require) {
                     }
                 }
             }
+            this._updateFieldsVisibility();
+
             if (session.geoip_phone_code) {
                 this.el.querySelectorAll('input[type="tel"]').forEach(telField => {
                     if (!telField.value) {
@@ -305,13 +304,21 @@ odoo.define('website.s_website_form', function (require) {
             // force server date format usage for existing fields
             this.$target.find('.s_website_form_field:not(.s_website_form_custom)')
             .find('.s_website_form_date, .s_website_form_datetime').each(function () {
+                const inputEl = this.querySelector('input');
+
+                // Datetimepicker('viewDate') will return `new Date()` if the
+                // input is empty but we want to keep the empty value
+                if (!inputEl.value) {
+                    return;
+                }
+
                 var date = $(this).datetimepicker('viewDate').clone().locale('en');
                 var format = 'YYYY-MM-DD';
                 if ($(this).hasClass('s_website_form_datetime')) {
                     date = date.utc();
                     format = 'YYYY-MM-DD HH:mm:ss';
                 }
-                form_values[$(this).find('input').attr('name')] = date.format(format);
+                form_values[inputEl.getAttribute('name')] = date.format(format);
             });
 
             if (this._recaptchaLoaded) {
@@ -587,6 +594,13 @@ odoo.define('website.s_website_form', function (require) {
          * @returns {boolean}
          */
         _compareTo(comparator, value = '', comparable, between) {
+            // Value can be null when the compared field is supposed to be
+            // visible, but is not yet retrievable from the FormData() because
+            // the field was conditionally hidden. It can be considered empty.
+            if (value === null) {
+                value = '';
+            }
+
             switch (comparator) {
                 case 'contains':
                     return value.includes(comparable);
@@ -603,13 +617,13 @@ odoo.define('website.s_website_form', function (require) {
                 case '!set':
                     return !value;
                 case 'greater':
-                    return value > comparable;
+                    return parseFloat(value) > parseFloat(comparable);
                 case 'less':
-                    return value < comparable;
+                    return parseFloat(value) < parseFloat(comparable);
                 case 'greater or equal':
-                    return value >= comparable;
+                    return parseFloat(value) >= parseFloat(comparable);
                 case 'less or equal':
-                    return value <= comparable;
+                    return parseFloat(value) <= parseFloat(comparable);
                 case 'fileSet':
                     return value.name !== '';
                 case '!fileSet':
@@ -665,7 +679,9 @@ odoo.define('website.s_website_form', function (require) {
                 }
 
                 const formData = new FormData(this.$target[0]);
-                const currentValueOfDependency = formData.get(dependencyName);
+                const currentValueOfDependency = ["contains","!contains"].includes(comparator)
+                    ? formData.getAll(dependencyName).join()
+                    : formData.get(dependencyName);
                 return this._compareTo(comparator, currentValueOfDependency, visibilityCondition, between);
             };
         },
@@ -673,8 +689,20 @@ odoo.define('website.s_website_form', function (require) {
          * Calculates the visibility for each field with conditional visibility
          */
         _updateFieldsVisibility() {
+            let anyFieldVisibilityUpdated = false;
             for (const [fieldEl, visibilityFunction] of this._visibilityFunctionByFieldEl.entries()) {
-                this._updateFieldVisibility(fieldEl, visibilityFunction());
+                const wasVisible = !fieldEl.closest(".s_website_form_field")
+                    .classList.contains("d-none");
+                const isVisible = !!visibilityFunction();
+                this._updateFieldVisibility(fieldEl, isVisible);
+                anyFieldVisibilityUpdated |= wasVisible !== isVisible;
+            }
+            // Recursive check needed in case of a field (C) that
+            // conditionally displays a prefilled field (B), which in turn
+            // triggers a conditional visibility on another field (A),
+            // registered before B.
+            if (anyFieldVisibilityUpdated) {
+                this._updateFieldsVisibility();
             }
         },
         /**
@@ -686,10 +714,13 @@ odoo.define('website.s_website_form', function (require) {
         _updateFieldVisibility(fieldEl, haveToBeVisible) {
             const fieldContainerEl = fieldEl.closest('.s_website_form_field');
             fieldContainerEl.classList.toggle('d-none', !haveToBeVisible);
-            for (const inputEl of fieldContainerEl.querySelectorAll('.s_website_form_input')) {
-                // Hidden inputs should also be disabled so that their data are
-                // not sent on form submit.
-                inputEl.disabled = !haveToBeVisible;
+            // Do not disable inputs that are required for the model.
+            if (!fieldContainerEl.matches(".s_website_form_model_required")) {
+                for (const inputEl of fieldContainerEl.querySelectorAll(".s_website_form_input")) {
+                    // Hidden inputs should also be disabled so that their data are
+                    // not sent on form submit.
+                    inputEl.disabled = !haveToBeVisible;
+                }
             }
         },
 

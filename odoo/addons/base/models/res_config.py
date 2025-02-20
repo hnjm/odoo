@@ -695,7 +695,7 @@ class ResConfigSettings(models.TransientModel, ResConfigModuleInstallationMixin)
         What if there is another substitution in the message already?
         -------------------------------------------------------------
         You could have a situation where the error message you want to upgrade already contains a substitution. Example:
-            Cannot find any account journal of %s type for this company.\n\nYou can create one in the menu: \nConfiguration\Journals\Journals.
+            Cannot find any account journal of %s type for this company.\n\nYou can create one in the menu: \nConfiguration\\Journals\\Journals.
         What you want to do here is simply to replace the path by %menu:account.menu_account_config)s, and leave the rest alone.
         In order to do that, you can use the double percent (%%) to escape your new substitution, like so:
             Cannot find any account journal of %s type for this company.\n\nYou can create one in the %%(menu:account.menu_account_config)s.
@@ -761,7 +761,7 @@ class ResConfigSettings(models.TransientModel, ResConfigModuleInstallationMixin)
         template_user_id = literal_eval(self.env['ir.config_parameter'].sudo().get_param('base.template_portal_user_id', 'False'))
         template_user = self.env['res.users'].browse(template_user_id)
         if not template_user.exists():
-            raise ValueError(_('Invalid template user. It seems it has been deleted.'))
+            raise UserError(_('Invalid template user. It seems it has been deleted.'))
         action['res_id'] = template_user_id
         action['views'] = [[self.env.ref('base.view_users_form').id, 'form']]
         return action

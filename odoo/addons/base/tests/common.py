@@ -107,25 +107,27 @@ class TransactionCaseWithUserDemo(TransactionCase):
 
 class HttpCaseWithUserDemo(HttpCase):
 
-    def setUp(self):
-        super(HttpCaseWithUserDemo, self).setUp()
-        self.user_admin = self.env.ref('base.user_admin')
-        self.user_admin.write({'name': 'Mitchell Admin'})
-        self.partner_admin = self.user_admin.partner_id
-        self.user_demo = self.env['res.users'].search([('login', '=', 'demo')])
-        self.partner_demo = self.user_demo.partner_id
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.user_admin = cls.env.ref('base.user_admin')
+        cls.user_admin.write({'name': 'Mitchell Admin'})
+        cls.partner_admin = cls.user_admin.partner_id
+        cls.user_demo = cls.env['res.users'].search([('login', '=', 'demo')])
+        cls.partner_demo = cls.user_demo.partner_id
 
-        if not self.user_demo:
-            self.env['ir.config_parameter'].sudo().set_param('auth_password_policy.minlength', 4)
-            self.partner_demo = self.env['res.partner'].create({
+        if not cls.user_demo:
+            cls.env['ir.config_parameter'].sudo().set_param('auth_password_policy.minlength', 4)
+            cls.partner_demo = cls.env['res.partner'].create({
                 'name': 'Marc Demo',
                 'email': 'mark.brown23@example.com',
+                'tz': 'UTC'
             })
-            self.user_demo = self.env['res.users'].create({
+            cls.user_demo = cls.env['res.users'].create({
                 'login': 'demo',
                 'password': 'demo',
-                'partner_id': self.partner_demo.id,
-                'groups_id': [Command.set([self.env.ref('base.group_user').id, self.env.ref('base.group_partner_manager').id])],
+                'partner_id': cls.partner_demo.id,
+                'groups_id': [Command.set([cls.env.ref('base.group_user').id, cls.env.ref('base.group_partner_manager').id])],
             })
 
 
@@ -133,7 +135,7 @@ class SavepointCaseWithUserDemo(TransactionCase):
 
     @classmethod
     def setUpClass(cls):
-        super(SavepointCaseWithUserDemo, cls).setUpClass()
+        super().setUpClass()
 
         cls.user_demo = cls.env['res.users'].search([('login', '=', 'demo')])
         cls.partner_demo = cls.user_demo.partner_id
@@ -254,24 +256,48 @@ class SavepointCaseWithUserDemo(TransactionCase):
             }
         ])
 
-class HttpCaseWithUserPortal(HttpCase):
 
-    def setUp(self):
-        super(HttpCaseWithUserPortal, self).setUp()
-        self.user_portal = self.env['res.users'].search([('login', '=', 'portal')])
-        self.partner_portal = self.user_portal.partner_id
+class TransactionCaseWithUserPortal(TransactionCase):
 
-        if not self.user_portal:
-            self.env['ir.config_parameter'].sudo().set_param('auth_password_policy.minlength', 4)
-            self.partner_portal = self.env['res.partner'].create({
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.user_portal = cls.env['res.users'].sudo().search([('login', '=', 'portal')])
+        cls.partner_portal = cls.user_portal.partner_id
+
+        if not cls.user_portal:
+            cls.env['ir.config_parameter'].sudo().set_param('auth_password_policy.minlength', 4)
+            cls.partner_portal = cls.env['res.partner'].create({
                 'name': 'Joel Willis',
                 'email': 'joel.willis63@example.com',
             })
-            self.user_portal = self.env['res.users'].with_context(no_reset_password=True).create({
+            cls.user_portal = cls.env['res.users'].with_context(no_reset_password=True).create({
                 'login': 'portal',
                 'password': 'portal',
-                'partner_id': self.partner_portal.id,
-                'groups_id': [Command.set([self.env.ref('base.group_portal').id])],
+                'partner_id': cls.partner_portal.id,
+                'groups_id': [Command.set([cls.env.ref('base.group_portal').id])],
+            })
+
+
+class HttpCaseWithUserPortal(HttpCase):
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.user_portal = cls.env['res.users'].sudo().search([('login', '=', 'portal')])
+        cls.partner_portal = cls.user_portal.partner_id
+
+        if not cls.user_portal:
+            cls.env['ir.config_parameter'].sudo().set_param('auth_password_policy.minlength', 4)
+            cls.partner_portal = cls.env['res.partner'].create({
+                'name': 'Joel Willis',
+                'email': 'joel.willis63@example.com',
+            })
+            cls.user_portal = cls.env['res.users'].with_context(no_reset_password=True).create({
+                'login': 'portal',
+                'password': 'portal',
+                'partner_id': cls.partner_portal.id,
+                'groups_id': [Command.set([cls.env.ref('base.group_portal').id])],
             })
 
 
@@ -302,6 +328,7 @@ class MockSmtplibCase:
                     'smtp_from': smtp_from,
                     'smtp_to_list': smtp_to_list,
                     'message': message.as_string(),
+                    'msg_from': message['From'],
                     'from_filter': self.from_filter,
                 })
 
@@ -310,6 +337,7 @@ class MockSmtplibCase:
                     'smtp_from': smtp_from,
                     'smtp_to_list': smtp_to_list,
                     'message': message_str,
+                    'msg_from': None,  # to fix if necessary
                     'from_filter': self.from_filter,
                 })
 
@@ -340,7 +368,9 @@ class MockSmtplibCase:
             self.find_mail_server_mocked = find_mail_server_mocked
             yield
 
-    def assert_email_sent_smtp(self, smtp_from=None, smtp_to_list=None, message_from=None, from_filter=None, emails_count=1):
+    def assert_email_sent_smtp(self, smtp_from=None, smtp_to_list=None, message_from=None,
+                               mail_server=None, from_filter=None,
+                               emails_count=1):
         """Check that the given email has been sent.
 
         If one of the parameter is None, it's just ignored and not used to retrieve the email.
@@ -348,11 +378,17 @@ class MockSmtplibCase:
         :param smtp_from: FROM used for the authentication to the mail server
         :param smtp_to_list: List of destination email address
         :param message_from: FROM used in the SMTP headers
+        :param mail_server: used to compare the 'from_filter' as an alternative
+          to using the from_filter parameter
         :param from_filter: from_filter of the <ir.mail_server> used to send the email
             Can use a lambda to check the value
         :param emails_count: the number of emails which should match the condition
         :return: True if at least one email has been found with those parameters
         """
+        if from_filter is not None and mail_server:
+            raise ValueError('Invalid usage: use either from_filter either mail_server')
+        if from_filter is None and mail_server is not None:
+            from_filter = mail_server.from_filter
         matching_emails = filter(
             lambda email:
                 (smtp_from is None or (
@@ -366,11 +402,24 @@ class MockSmtplibCase:
             self.emails,
         )
 
+        debug_info = ''
         matching_emails_count = len(list(matching_emails))
-
-        self.assertTrue(
-            matching_emails_count == emails_count,
-            msg='Emails not sent, %i emails match the condition but %i are expected' % (matching_emails_count, emails_count),
+        if matching_emails_count != emails_count:
+            emails_from = []
+            for email in self.emails:
+                from_found = next((
+                    line.split('From:')[1].strip() for line in email['message'].splitlines()
+                    if line.startswith('From:')), '')
+                emails_from.append(from_found)
+            debug_info = '\n'.join(
+                f"SMTP-From: {email['smtp_from']}, SMTP-To: {email['smtp_to_list']}, Msg-From: {email_msg_from}, From_filter: {email['from_filter']})"
+                for email, email_msg_from in zip(self.emails, emails_from)
+            )
+        self.assertEqual(
+            matching_emails_count, emails_count,
+            msg=f'Incorrect emails sent: {matching_emails_count} found, {emails_count} expected'
+                f'\nConditions\nSMTP-From: {smtp_from}, SMTP-To: {smtp_to_list}, Msg-From: {message_from}, From_filter: {from_filter}'
+                f'\nNot found in\n{debug_info}'
         )
 
     @classmethod

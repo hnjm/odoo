@@ -121,8 +121,7 @@ var DateTimePicker = function ($, moment) {
         keyState = {},
         keyPressHandled = {};
 
-    var MinViewModeNumber = 0,
-        Default = {
+    var Default = {
         timeZone: '',
         format: false,
         dayViewHeaderFormat: 'MMMM YYYY',
@@ -358,6 +357,7 @@ var DateTimePicker = function ($, moment) {
             this.actualFormat = null;
             this.parseFormats = null;
             this.currentViewMode = null;
+            this.MinViewModeNumber = 0;
 
             this._int();
         }
@@ -599,7 +599,7 @@ var DateTimePicker = function ($, moment) {
                 return;
             }
             if (dir) {
-                this.currentViewMode = Math.max(MinViewModeNumber, Math.min(3, this.currentViewMode + dir));
+                this.currentViewMode = Math.max(this.MinViewModeNumber, Math.min(3, this.currentViewMode + dir));
             }
             this.widget.find('.datepicker > div').hide().filter('.datepicker-' + DatePickerModes[this.currentViewMode].CLASS_NAME).show();
         };
@@ -775,16 +775,16 @@ var DateTimePicker = function ($, moment) {
             this.use24Hours = this.actualFormat.toLowerCase().indexOf('a') < 1 && this.actualFormat.replace(/\[.*?]/g, '').indexOf('h') < 1;
 
             if (this._isEnabled('y')) {
-                MinViewModeNumber = 2;
+                this.MinViewModeNumber = 2;
             }
             if (this._isEnabled('M')) {
-                MinViewModeNumber = 1;
+                this.MinViewModeNumber = 1;
             }
             if (this._isEnabled('d')) {
-                MinViewModeNumber = 0;
+                this.MinViewModeNumber = 0;
             }
 
-            this.currentViewMode = Math.max(MinViewModeNumber, this.currentViewMode);
+            this.currentViewMode = Math.max(this.MinViewModeNumber, this.currentViewMode);
 
             if (!this.unset) {
                 this._setValue(this._dates[0], 0);
@@ -802,17 +802,22 @@ var DateTimePicker = function ($, moment) {
         //public
 
 
-        DateTimePicker.prototype.getMoment = function getMoment(d) {
+        DateTimePicker.prototype.getMoment = function getMoment(d, f) { // ODOO FIX: give optional format
             var returnMoment = void 0;
+
+            // ODOO FIX: default to original `parseFormats` attribute
+            if (!f) {
+                f = this.parseFormats;
+            }
 
             if (d === undefined || d === null) {
                 returnMoment = moment(); //TODO should this use format? and locale?
             } else if (this._hasTimeZone()) {
                 // There is a string to parse and a default time zone
                 // parse with the tz function which takes a default time zone if it is not in the format string
-                returnMoment = moment.tz(d, this.parseFormats, this._options.locale, this._options.useStrict, this._options.timeZone);
+                returnMoment = moment.tz(d, f, this._options.locale, this._options.useStrict, this._options.timeZone); // ODOO FIX: use format argument
             } else {
-                returnMoment = moment(d, this.parseFormats, this._options.locale, this._options.useStrict);
+                returnMoment = moment(d, f, this._options.locale, this._options.useStrict); // ODOO FIX: use format argument
             }
 
             if (this._hasTimeZone()) {
@@ -1251,7 +1256,7 @@ var DateTimePicker = function ($, moment) {
             }
 
             this._options.viewMode = _viewMode;
-            this.currentViewMode = Math.max(DateTimePicker.ViewModes.indexOf(_viewMode) - 1, DateTimePicker.MinViewModeNumber);
+            this.currentViewMode = Math.max(DateTimePicker.ViewModes.indexOf(_viewMode) - 1, this.MinViewModeNumber);
 
             this._showMode();
         };
@@ -1566,11 +1571,6 @@ var DateTimePicker = function ($, moment) {
              * @return {number}
              */
 
-        }, {
-            key: 'MinViewModeNumber',
-            get: function get() {
-                return MinViewModeNumber;
-            }
         }, {
             key: 'Event',
             get: function get() {
@@ -2270,7 +2270,7 @@ var TempusDominusBootstrap4 = function ($) {
                     {
                         var month = $(e.target).closest('tbody').find('span').index($(e.target));
                         this._viewDate.month(month);
-                        if (this.currentViewMode === DateTimePicker.MinViewModeNumber) {
+                        if (this.currentViewMode === this.MinViewModeNumber) {
                             this._setValue(lastPicked.clone().year(this._viewDate.year()).month(this._viewDate.month()), this._getLastPickedDateIndex());
                             if (!this._options.inline) {
                                 this.hide();
@@ -2286,7 +2286,7 @@ var TempusDominusBootstrap4 = function ($) {
                     {
                         var year = parseInt($(e.target).text(), 10) || 0;
                         this._viewDate.year(year);
-                        if (this.currentViewMode === DateTimePicker.MinViewModeNumber) {
+                        if (this.currentViewMode === this.MinViewModeNumber) {
                             this._setValue(lastPicked.clone().year(this._viewDate.year()), this._getLastPickedDateIndex());
                             if (!this._options.inline) {
                                 this.hide();
@@ -2302,7 +2302,7 @@ var TempusDominusBootstrap4 = function ($) {
                     {
                         var _year = parseInt($(e.target).data('selection'), 10) || 0;
                         this._viewDate.year(_year);
-                        if (this.currentViewMode === DateTimePicker.MinViewModeNumber) {
+                        if (this.currentViewMode === this.MinViewModeNumber) {
                             this._setValue(lastPicked.clone().year(this._viewDate.year()), this._getLastPickedDateIndex());
                             if (!this._options.inline) {
                                 this.hide();
@@ -2434,7 +2434,7 @@ var TempusDominusBootstrap4 = function ($) {
                     break;
                 case 'selectHour':
                     {
-                        var hour = parseInt($(e.target).text(), 10);
+                        var hour = this.getMoment($(e.target).text(), this.use24Hours ? 'HH' : 'hh').hour(); // ODOO FIX: use moment format to get the proper value (not necessarily latn numbers)
 
                         if (!this.use24Hours) {
                             if (lastPicked.hours() >= 12) {
@@ -2456,7 +2456,7 @@ var TempusDominusBootstrap4 = function ($) {
                         break;
                     }
                 case 'selectMinute':
-                    this._setValue(lastPicked.clone().minutes(parseInt($(e.target).text(), 10)), this._getLastPickedDateIndex());
+                    this._setValue(lastPicked.clone().minutes(this.getMoment($(e.target).text(), 'mm').minute()), this._getLastPickedDateIndex()); // ODOO FIX: use moment format to get the proper value (not necessarily latn numbers)
                     if (!this._isEnabled('a') && !this._isEnabled('s') && !this._options.keepOpen && !this._options.inline) {
                         this.hide();
                     } else {
@@ -2464,7 +2464,7 @@ var TempusDominusBootstrap4 = function ($) {
                     }
                     break;
                 case 'selectSecond':
-                    this._setValue(lastPicked.clone().seconds(parseInt($(e.target).text(), 10)), this._getLastPickedDateIndex());
+                    this._setValue(lastPicked.clone().seconds(this.getMoment($(e.target).text(), 'ss').second()), this._getLastPickedDateIndex()); // ODOO FIX: use moment format to get the proper value (not necessarily latn numbers)
                     if (!this._isEnabled('a') && !this._options.keepOpen && !this._options.inline) {
                         this.hide();
                     } else {

@@ -9,7 +9,7 @@ import { isBinarySize } from "@web/core/utils/binary";
 import { FileUploader } from "../file_handler";
 import { standardFieldProps } from "../standard_field_props";
 
-import { Component, useState, onWillUpdateProps } from "@odoo/owl";
+import { Component, useState, onWillRender } from "@odoo/owl";
 const { DateTime } = luxon;
 
 export const fileTypeMagicWordMap = {
@@ -42,15 +42,28 @@ export class ImageField extends Component {
         this.state = useState({
             isValid: true,
         });
+        this.lastURL = undefined;
 
-        this.rawCacheKey = this.props.record.data.__last_update;
-        onWillUpdateProps((nextProps) => {
-            const { record } = this.props;
-            const { record: nextRecord } = nextProps;
-            if (record.resId !== nextRecord.resId || nextRecord.mode === "readonly") {
-                this.rawCacheKey = nextRecord.data.__last_update;
-            }
-        });
+        if (this.props.record.fields[this.props.name].related) {
+            this.lastUpdate = DateTime.now();
+            let key = this.props.value;
+            onWillRender(() => {
+                const nextKey = this.props.value;
+
+                if (key !== nextKey) {
+                    this.lastUpdate = DateTime.now();
+                }
+
+                key = nextKey;
+            });
+        }
+    }
+
+    get rawCacheKey() {
+        if (this.props.record.fields[this.props.name].related) {
+            return this.lastUpdate;
+        }
+        return this.props.record.data.__last_update;
     }
 
     get sizeStyle() {
@@ -70,7 +83,7 @@ export class ImageField extends Component {
         return style;
     }
     get hasTooltip() {
-        return this.props.enableZoom && this.props.readonly && this.props.value;
+        return this.props.enableZoom && this.props.value;
     }
     get tooltipAttributes() {
         return {
@@ -80,12 +93,12 @@ export class ImageField extends Component {
     }
 
     getUrl(previewFieldName) {
+        if (this.props.noReload && this.lastURL) {
+            return this.lastURL;
+        }
         if (this.state.isValid && this.props.value) {
             if (isBinarySize(this.props.value)) {
-                if (!this.rawCacheKey) {
-                    this.rawCacheKey = this.props.record.data.__last_update;
-                }
-                return url("/web/image", {
+                this.lastURL = url("/web/image", {
                     model: this.props.record.resModel,
                     id: this.props.record.resId,
                     field: previewFieldName,
@@ -94,8 +107,9 @@ export class ImageField extends Component {
             } else {
                 // Use magic-word technique for detecting image type
                 const magic = fileTypeMagicWordMap[this.props.value[0]] || "png";
-                return `data:image/${magic};base64,${this.props.value}`;
+                this.lastURL = `data:image/${magic};base64,${this.props.value}`;
             }
+            return this.lastURL;
         }
         return placeholder;
     }
@@ -105,15 +119,10 @@ export class ImageField extends Component {
     }
     onFileUploaded(info) {
         this.state.isValid = true;
-        // Invalidate the `rawCacheKey`.
-        this.rawCacheKey = null;
         this.props.update(info.data);
     }
     onLoadFailed() {
         this.state.isValid = false;
-        this.notification.add(this.env._t("Could not display the selected image"), {
-            type: "danger",
-        });
     }
 }
 
@@ -129,6 +138,7 @@ ImageField.props = {
     acceptedFileExtensions: { type: String, optional: true },
     width: { type: Number, optional: true },
     height: { type: Number, optional: true },
+    noReload: { type: Boolean, optional: true },
 };
 ImageField.defaultProps = {
     acceptedFileExtensions: "image/*",
@@ -155,6 +165,7 @@ ImageField.extractProps = ({ attrs }) => {
             attrs.options.size && Boolean(attrs.options.size[1])
                 ? attrs.options.size[1]
                 : attrs.height,
+        noReload: Boolean(attrs.options.no_reload),
     };
 };
 

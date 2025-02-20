@@ -17,7 +17,7 @@ class TranslateWebsiteSystray extends Component {
             const searchParams = new URLSearchParams(search);
             searchParams.set('edit_translations', '1');
             this.websiteService.goToWebsite({
-                path: encodeURI(pathname + `?${searchParams.toString() + hash}`),
+                path: pathname + `?${searchParams.toString() + hash}`,
                 translation: true
             });
         } else {
@@ -29,7 +29,9 @@ TranslateWebsiteSystray.template = "website.TranslateWebsiteSystray";
 
 export const systrayItem = {
     Component: TranslateWebsiteSystray,
-    isDisplayed: env => env.services.website.currentWebsite && env.services.website.currentWebsite.metadata.translatable,
+    isDisplayed: env => env.services.website.isRestrictedEditor
+        && env.services.website.currentWebsite
+        && env.services.website.currentWebsite.metadata.translatable,
 };
 
 registry.category("website_systray").add("TranslateWebsiteSystray", systrayItem, { sequence: 8 });

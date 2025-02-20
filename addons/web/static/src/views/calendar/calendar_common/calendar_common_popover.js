@@ -2,8 +2,10 @@
 
 import { Dialog } from "@web/core/dialog/dialog";
 import { is24HourFormat } from "@web/core/l10n/dates";
+import { registry } from "@web/core/registry";
 import { Field } from "@web/views/fields/field";
 import { Record } from "@web/views/record";
+import { getFormattedDateSpan } from '@web/views/calendar/utils';
 
 import { Component } from "@odoo/owl";
 
@@ -22,6 +24,19 @@ export class CalendarCommonPopover extends Component {
     }
     get isEventDeletable() {
         return this.props.model.canDelete;
+    }
+
+    getFormattedValue(fieldName, record) {
+        const fieldInfo = this.props.model.popoverFields[fieldName];
+        const field = this.props.model.fields[fieldName];
+        let format;
+        const formattersRegistry = registry.category("formatters");
+        if (fieldInfo.widget && formattersRegistry.contains(fieldInfo.widget)) {
+            format = formattersRegistry.get(fieldInfo.widget);
+        } else {
+            format = formattersRegistry.get(field.type);
+        }
+        return format(record.data[fieldName]);
     }
 
     computeDateTimeAndDuration() {
@@ -49,7 +64,7 @@ export class CalendarCommonPopover extends Component {
         }
 
         if (!this.props.model.isDateHidden) {
-            this.date = this.getFormattedDate(start, end, record.isAllDay);
+            this.date = getFormattedDateSpan(start, end);
 
             if (record.isAllDay) {
                 if (isSameDay) {
@@ -59,17 +74,6 @@ export class CalendarCommonPopover extends Component {
                     this.dateDuration = duration.toFormat(`d '${this.env._t("days")}'`);
                 }
             }
-        }
-    }
-    getFormattedDate(start, end, isAllDay) {
-        const isSameDay = start.hasSame(end, "day");
-        if (!isSameDay && start.hasSame(end, "month")) {
-            // Simplify date-range if an event occurs into the same month (eg. "August, 4-5 2019")
-            return start.toFormat("LLLL d") + "-" + end.toFormat("d, y");
-        } else {
-            return isSameDay
-                ? start.toFormat("DDDD")
-                : start.toFormat("DDD") + " - " + end.toFormat("DDD");
         }
     }
 

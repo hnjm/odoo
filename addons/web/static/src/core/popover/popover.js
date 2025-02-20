@@ -22,7 +22,7 @@ export class Popover extends Component {
             right: "end",
         };
         el.classList = [
-            "o_popover popover mw-100 shadow-sm",
+            "o_popover popover mw-25 shadow-sm",
             `bs-popover-${directionMap[direction]}`,
             `o-popover-${direction}`,
             `o-popover--${position}`,
@@ -85,7 +85,13 @@ Popover.props = {
         type: Function,
         optional: true,
     },
-    target: HTMLElement,
+    target: {
+        validate: (el) =>
+            el &&
+            typeof el === "object" &&
+            (el instanceof HTMLElement ||
+                (el.ownerDocument && el instanceof el.ownerDocument.defaultView.HTMLElement)),
+    },
     slots: {
         type: Object,
         optional: true,

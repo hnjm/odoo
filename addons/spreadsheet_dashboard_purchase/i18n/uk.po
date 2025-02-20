@@ -4,14 +4,15 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-26 07:30+0000\n"
+"POT-Creation-Date: 2024-01-25 10:43+0000\n"
 "PO-Revision-Date: 2022-09-29 09:44+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2023\n"
 "Language-Team: Ukrainian (https://app.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,14 +21,14 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
 msgid " days"
 msgstr " дні"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
@@ -37,16 +38,16 @@ msgid "Amount"
 msgstr "Сума"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
 msgid "Buyer"
-msgstr ""
+msgstr "Покупець"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
@@ -54,7 +55,7 @@ msgid "Country"
 msgstr "Країна"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
@@ -62,22 +63,22 @@ msgid "Current"
 msgstr "Поточний"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
 msgid "Days to receive"
-msgstr ""
+msgstr "Днів до отримання"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
 msgid "KPI"
-msgstr ""
+msgstr "KPI"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
@@ -85,21 +86,21 @@ msgid "Lines"
 msgstr "Рядки"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
 msgid "Order"
 msgstr "Замовлення"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
 msgid "Ordered"
 msgstr "Замовлено"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
@@ -110,14 +111,14 @@ msgid "Orders"
 msgstr "Замовлення"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
 msgid "Period"
 msgstr "Період"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
@@ -125,105 +126,105 @@ msgid "Previous"
 msgstr "Попередній"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
 msgid "Purchase Analysis by Partner Country"
-msgstr ""
+msgstr "Аналіз купівлі за країною партнера"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
 msgid "Purchase Analysis by Purchase Representative"
-msgstr ""
+msgstr "Аналіз купівель за представником купівель"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
 msgid "Purchase Analysis by Vendor"
-msgstr ""
+msgstr "Аналіз купівель за постачальником"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
 msgid "Purchase Orders by Untaxed Amount"
-msgstr ""
+msgstr "Замовлення на купівлю за сумою без податків"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
 msgid "Purchased"
 msgstr "Придбано"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
 msgid "Qty ordered"
-msgstr ""
+msgstr "Замовлена кількість"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
 msgid "Quantity ordered"
-msgstr ""
+msgstr "Замовлена кількість"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
 msgid "Source"
 msgstr "Джерело"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
 msgid "Sourcing by Country"
-msgstr ""
+msgstr "Джерело за країною"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
 msgid "Top Buyers"
-msgstr ""
+msgstr "Топ покупців"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
 msgid "Top Orders"
-msgstr ""
+msgstr "Топ замовлень"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
 msgid "Top Vendors"
-msgstr ""
+msgstr "Топ постачальників"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
 msgid "Top Vendors by Amount"
-msgstr ""
+msgstr "Топ постачальників за сумою"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
 msgid "Untaxed total"
-msgstr ""
+msgstr "Сума без податків"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
@@ -232,32 +233,32 @@ msgid "Vendor"
 msgstr "Постачальник"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
 msgid "last period"
-msgstr ""
+msgstr "останній період"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
 msgid "since last period"
-msgstr ""
+msgstr "з попереднього періоду"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
 msgid "stats - current"
-msgstr ""
+msgstr "статуси - поточні"
 
 #. module: spreadsheet_dashboard_purchase
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_purchase/data/files/vendors_dashboard.json:0
 #, python-format
 msgid "stats - previous"
-msgstr ""
+msgstr "статуси - попередні"

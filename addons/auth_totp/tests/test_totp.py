@@ -1,3 +1,4 @@
+import logging
 import json
 import time
 from xmlrpc.client import Fault
@@ -5,18 +6,18 @@ from xmlrpc.client import Fault
 from passlib.totp import TOTP
 
 from odoo import http
-from odoo.exceptions import AccessDenied
-from odoo.service import common as auth, model
-from odoo.tests import tagged, HttpCase, get_db_name
+from odoo.addons.base.tests.common import HttpCaseWithUserDemo
+from odoo.tests import tagged, get_db_name
 from odoo.tools import mute_logger
 
 from ..controllers.home import Home
 
-@tagged('post_install', '-at_install')
-class TestTOTP(HttpCase):
+_logger = logging.getLogger(__name__)
+
+
+class TestTOTPCommon:
     def setUp(self):
         super().setUp()
-
         totp = None
         # might be possible to do client-side using `crypto.subtle` instead of
         # this horror show, but requires working on 64b integers, & BigInt is
@@ -43,6 +44,10 @@ class TestTOTP(HttpCase):
             del Home.totp_hook
             self.env['ir.http']._clear_routing_map()
 
+
+@tagged('post_install', '-at_install')
+class TestTOTP(TestTOTPCommon, HttpCaseWithUserDemo):
+
     def test_totp(self):
         # 1. Enable 2FA
         self.start_tour('/web', 'totp_tour_setup', login='demo')
@@ -56,8 +61,8 @@ class TestTOTP(HttpCase):
             self.xmlrpc_common.authenticate(get_db_name(), 'demo', 'demo', {'interactive': True}),
             'Trying to fake the auth type should not work'
         )
-        uid = self.env.ref('base.user_demo').id
-        with self.assertRaisesRegex(Fault, r'Access Denied'):
+        uid = self.user_demo.id
+        with self.assertRaisesRegex(Fault, r'Access Denied'), mute_logger('odoo.http'):
             self.xmlrpc_object.execute_kw(
                 get_db_name(), uid, 'demo',
                 'res.users', 'read', [uid, ['login']]
@@ -74,7 +79,7 @@ class TestTOTP(HttpCase):
 
         # 6. Check that rpc is now re-allowed
         uid = self.xmlrpc_common.authenticate(get_db_name(), 'demo', 'demo', {})
-        self.assertEqual(uid, self.env.ref('base.user_demo').id)
+        self.assertEqual(uid, self.user_demo.id)
         [r] = self.xmlrpc_object.execute_kw(
             get_db_name(), uid, 'demo',
             'res.users', 'read', [uid, ['login']]
@@ -84,6 +89,11 @@ class TestTOTP(HttpCase):
 
     def test_totp_administration(self):
         self.start_tour('/web', 'totp_tour_setup', login='demo')
+        # If not enabled (like in demo data), landing on res.config will try
+        # to disable module_sale_quotation_builder and raise an issue
+        group_order_template = self.env.ref('sale_management.group_sale_order_template', raise_if_not_found=False)
+        if group_order_template:
+            self.env.ref('base.group_user').write({"implied_ids": [(4, group_order_template.id)]})
         self.start_tour('/web', 'totp_admin_disables', login='admin')
         self.start_tour('/', 'totp_login_disabled', login=None)
 
@@ -93,7 +103,6 @@ class TestTOTP(HttpCase):
         Ensure we don't leak the session info from an half-logged-in
         user.
         """
-
         self.start_tour('/web', 'totp_tour_setup', login='demo')
         self.url_open('/web/session/logout')
 

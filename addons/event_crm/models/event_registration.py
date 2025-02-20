@@ -2,8 +2,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import defaultdict
+from markupsafe import Markup
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models, tools, _
+from odoo.addons.phone_validation.tools import phone_validation
 
 
 class EventRegistration(models.Model):
@@ -146,7 +148,7 @@ class EventRegistration(models.Model):
                 if not lead.partner_id:
                     lead_values['description'] = lead.registration_ids._get_lead_description(_("Participants"), line_counter=True)
                 elif new_vals['partner_id'] != lead.partner_id.id:
-                    lead_values['description'] = lead.description + "<br/>" + lead.registration_ids._get_lead_description(_("Updated registrations"), line_counter=True, line_suffix=_("(updated)"))
+                    lead_values['description'] = (lead.description or '') + "<br/>" + lead.registration_ids._get_lead_description(_("Updated registrations"), line_counter=True, line_suffix=_("(updated)"))
             if lead_values:
                 lead.write(lead_values)
 
@@ -188,16 +190,36 @@ class EventRegistration(models.Model):
 
         :return dict: values used for create / write on a lead
         """
-        valid_partner = related_partner = next(
+        valid_partner = next(
             (reg.partner_id for reg in self if reg.partner_id != self.env.ref('base.public_partner')),
             self.env['res.partner']
         )  # CHECKME: broader than just public partner
 
-        # mono registration mode: keep partner only if email and phone matches, otherwise registration > partner
-        if len(self) == 1:
-            if (related_partner.phone and self.phone and related_partner.phone != self.phone) or \
-                (related_partner.email and self.email and related_partner.email != self.email):
-                valid_partner = self.env['res.partner']
+        # mono registration mode: keep partner only if email and phone matches;
+        # otherwise registration > partner. Note that email format and phone
+        # formatting have to taken into account in comparison
+        if len(self) == 1 and valid_partner:
+            # compare emails: email_normalized or raw
+            if self.email and valid_partner.email:
+                if valid_partner.email_normalized and tools.email_normalize(self.email) != valid_partner.email_normalized:
+                    valid_partner = self.env['res.partner']
+                elif not valid_partner.email_normalized and valid_partner.email != self.email:
+                    valid_partner = self.env['res.partner']
+
+            # compare phone, taking into account formatting
+            if valid_partner and self.phone and valid_partner.phone:
+                phone_formatted = phone_validation.phone_format(
+                    self.phone,
+                    valid_partner.country_id.code or None,
+                    valid_partner.country_id.phone_code or None,
+                    force_format='E164',
+                    raise_exception=False
+                )
+                partner_phone_formatted = valid_partner._phone_format(valid_partner.phone)
+                if phone_formatted and partner_phone_formatted and phone_formatted != partner_phone_formatted:
+                    valid_partner = self.env['res.partner']
+                if (not phone_formatted or not partner_phone_formatted) and self.phone != valid_partner.phone:
+                    valid_partner = self.env['res.partner']
 
         if valid_partner:
             contact_vals = self.env['crm.lead']._prepare_values_from_partner(valid_partner)
@@ -205,7 +227,7 @@ class EventRegistration(models.Model):
             if not valid_partner.email:
                 contact_vals['email_from'] = self._find_first_notnull('email')
             if not valid_partner.phone:
-                contact_vals['email_from'] = self._find_first_notnull('phone')
+                contact_vals['phone'] = self._find_first_notnull('phone')
         else:
             # don't force email_from + partner_id because those fields are now synchronized automatically
             contact_vals = {
@@ -214,8 +236,9 @@ class EventRegistration(models.Model):
                 'phone': self._find_first_notnull('phone'),
                 'lang_id': False,
             }
+        contact_name = valid_partner.name or self._find_first_notnull('name') or self._find_first_notnull('email')
         contact_vals.update({
-            'name': "%s - %s" % (self.event_id.name, valid_partner.name or self._find_first_notnull('name') or self._find_first_notnull('email')),
+            'name': f'{self.event_id[:1].name} - {contact_name}',
             'partner_id': valid_partner.id,
             'mobile': valid_partner.mobile or self._find_first_notnull('mobile'),
         })
@@ -234,17 +257,21 @@ class EventRegistration(models.Model):
                 line_suffix=line_suffix
             ) for registration in self
         ]
-        return ("%s<br/>" % prefix if prefix else "") + (
-            "<ol>" if line_counter else "<ul>") + ("".join(reg_lines)) + ("</ol>" if line_counter else "</ul>")
+        description = (prefix if prefix else '') + Markup("<br/>")
+        if line_counter:
+            description += Markup("<ol>") + Markup('').join(reg_lines) + Markup("</ol>")
+        else:
+            description += Markup("<ul>") + Markup('').join(reg_lines) + Markup("</ul>")
+        return description
 
     def _get_lead_description_registration(self, line_suffix=''):
         """ Build the description line specific to a given registration. """
         self.ensure_one()
-        return "<li>%s (%s)%s</li>" % (
+        return Markup("<li>") + "%s (%s)%s" % (
             self.name or self.partner_id.name or self.email,
             " - ".join(self[field] for field in ('email', 'phone') if self[field]),
-            " %s" % line_suffix if line_suffix else "",
-        )
+            f" {line_suffix}" if line_suffix else "",
+        ) + Markup("</li>")
 
     def _get_lead_tracked_values(self):
         """ Tracked values are based on two subset of fields to track in order
@@ -259,7 +286,7 @@ class EventRegistration(models.Model):
             not rewrite partner values from registration values.
 
         Tracked values are therefore the union of those two field sets. """
-        tracked_fields = list(set(self._get_lead_contact_fields()) or set(self._get_lead_description_fields()))
+        tracked_fields = list(set(self._get_lead_contact_fields()) | set(self._get_lead_description_fields()))
         return dict(
             (registration.id,
              dict((field, self._convert_value(registration[field], field)) for field in tracked_fields)
@@ -325,8 +352,8 @@ class EventRegistration(models.Model):
 
     def _convert_value(self, value, field_name):
         """ Small tool because convert_to_write is touchy """
-        if value and self._fields[field_name].type in ['many2many', 'one2many']:
+        if isinstance(value, models.BaseModel) and self._fields[field_name].type in ['many2many', 'one2many']:
             return value.ids
-        if value and self._fields[field_name].type == 'many2one':
+        if isinstance(value, models.BaseModel) and self._fields[field_name].type == 'many2one':
             return value.id
         return value

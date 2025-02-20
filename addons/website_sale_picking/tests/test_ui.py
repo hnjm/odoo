@@ -1,37 +1,30 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import logging
+
 from odoo.tests import HttpCase, tagged
+
+_logger = logging.getLogger(__name__)
 
 
 @tagged('-at_install', 'post_install')
 class TestUi(HttpCase):
     def setUp(self):
         super(TestUi, self).setUp()
-        # create a Chair floor protection product
-        self.env['product.product'].create({
-            'name': 'Chair floor protection',
+        self.env['product.product'].create([{
+            'name': 'Product Consumable',
             'type': 'consu',
             'website_published': True,
             'list_price': 1000,
-        })
-        # create a Customizable Desk product
-        self.env['product.product'].create({
-            'name': 'Customizable Desk',
-            'type': 'consu',
-            'website_published': True,
-            'list_price': 1000,
-        })
-        # create a Warranty product
-        self.env['product.product'].create({
-            'name': 'Warranty',
+        }, {
+            'name': 'Product Service',
             'type': 'service',
             'website_published': True,
             'list_price': 20,
-        })
+        }])
 
     def test_onsite_payment_tour(self):
-        # Make sure at least one onsite payment option exists.
         self.env['delivery.carrier'].create({
             'delivery_type': 'onsite',
             'is_published': True,

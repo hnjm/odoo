@@ -4,14 +4,16 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Tony Ng, 2023
+# Wil Odoo, 2024
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:02+0000\n"
+"POT-Creation-Date: 2024-02-06 13:32+0000\n"
 "PO-Revision-Date: 2022-09-22 05:56+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Wil Odoo, 2024\n"
 "Language-Team: Chinese (Taiwan) (https://app.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,15 +24,17 @@ msgstr ""
 #. module: website_livechat
 #: model:ir.model.fields,field_description:website_livechat.field_website_visitor__session_count
 msgid "# Sessions"
-msgstr "# 對話視窗"
+msgstr "對話數目"
 
 #. module: website_livechat
+#. odoo-python
 #: code:addons/website_livechat/models/mail_channel.py:0
 #, python-format
 msgid "%s has left the conversation."
 msgstr "%s 已退出對話。"
 
 #. module: website_livechat
+#. odoo-python
 #: code:addons/website_livechat/models/mail_channel.py:0
 #, python-format
 msgid ""
@@ -56,7 +60,7 @@ msgid "Available"
 msgstr "可用"
 
 #. module: website_livechat
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_livechat/static/src/components/visitor_banner/visitor_banner.xml:0
 #, python-format
 msgid "Avatar"
@@ -65,7 +69,7 @@ msgstr "頭像"
 #. module: website_livechat
 #: model_terms:ir.ui.view,arch_db:website_livechat.channel_page
 msgid "Bad"
-msgstr "糟糕"
+msgstr "差"
 
 #. module: website_livechat
 #: model:ir.model.fields,field_description:website_livechat.field_im_livechat_channel__can_publish
@@ -91,12 +95,12 @@ msgstr "對話"
 #. module: website_livechat
 #: model:ir.model,name:website_livechat.model_chatbot_script
 msgid "Chatbot Script"
-msgstr ""
+msgstr "聊天機器人程式碼"
 
 #. module: website_livechat
 #: model:ir.model,name:website_livechat.model_chatbot_script_step
 msgid "Chatbot Script Step"
-msgstr ""
+msgstr "聊天機器人程式碼步驟"
 
 #. module: website_livechat
 #: model_terms:ir.ui.view,arch_db:website_livechat.website_visitor_view_form
@@ -122,7 +126,7 @@ msgstr "討論群組"
 #. module: website_livechat
 #: model_terms:ir.ui.view,arch_db:website_livechat.channel_page
 msgid "Great"
-msgstr "大"
+msgstr "很好"
 
 #. module: website_livechat
 #: model:ir.model,name:website_livechat.model_ir_http
@@ -135,7 +139,7 @@ msgid "Happy face"
 msgstr "笑臉"
 
 #. module: website_livechat
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_livechat/static/src/components/visitor_banner/visitor_banner.xml:0
 #, python-format
 msgid "History"
@@ -152,13 +156,14 @@ msgid "Is Published"
 msgstr "已發佈"
 
 #. module: website_livechat
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_livechat/static/src/components/visitor_banner/visitor_banner.xml:0
 #, python-format
 msgid "Lang"
 msgstr "語言"
 
 #. module: website_livechat
+#. odoo-python
 #: code:addons/website_livechat/models/website.py:0
 #, python-format
 msgid "Live Support"
@@ -185,6 +190,7 @@ msgid "New Channel"
 msgstr "新頻道"
 
 #. module: website_livechat
+#. odoo-python
 #: code:addons/website_livechat/models/website_visitor.py:0
 #, python-format
 msgid "No Livechat Channel allows you to send a chat request for website %s."
@@ -198,10 +204,10 @@ msgstr "尚未評分"
 #. module: website_livechat
 #: model_terms:ir.ui.view,arch_db:website_livechat.channel_page
 msgid "Okay"
-msgstr "Okay"
+msgstr "一般"
 
 #. module: website_livechat
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_livechat/static/src/components/visitor_banner/visitor_banner.xml:0
 #, python-format
 msgid "Online"
@@ -218,6 +224,7 @@ msgid "Operator Name"
 msgstr "客服人員名稱"
 
 #. module: website_livechat
+#. odoo-python
 #: code:addons/website_livechat/models/website_visitor.py:0
 #, python-format
 msgid ""
@@ -276,6 +283,7 @@ msgid "The full URL to access the document through the website."
 msgstr "通過網站存取此文件的完整網址。"
 
 #. module: website_livechat
+#. odoo-python
 #: code:addons/website_livechat/models/mail_channel.py:0
 #, python-format
 msgid "The visitor"
@@ -299,10 +307,10 @@ msgstr "在當前網站可見"
 #. module: website_livechat
 #: model:ir.model.fields,field_description:website_livechat.field_mail_channel__livechat_visitor_id
 msgid "Visitor"
-msgstr "訪問者"
+msgstr "訪客"
 
 #. module: website_livechat
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_livechat/static/src/components/visitor_banner/visitor_banner.xml:0
 #, python-format
 msgid "Visitor is online"
@@ -324,7 +332,7 @@ msgid "Visitors"
 msgstr "訪客"
 
 #. module: website_livechat
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_livechat/static/src/components/visitor_banner/visitor_banner.xml:0
 #: model:ir.model,name:website_livechat.model_website
 #, python-format
@@ -344,14 +352,15 @@ msgstr "網站線上客服頻道"
 #. module: website_livechat
 #: model:ir.model.fields,field_description:website_livechat.field_im_livechat_channel__website_url
 msgid "Website URL"
-msgstr "網站URL"
+msgstr "網站網址"
 
 #. module: website_livechat
+#. odoo-python
 #: code:addons/website_livechat/tests/test_livechat_basic_flow.py:0
 #: model:ir.model,name:website_livechat.model_website_visitor
 #, python-format
 msgid "Website Visitor"
-msgstr "網站訪問者"
+msgstr "網站訪客"
 
 #. module: website_livechat
 #: model:ir.model.fields,field_description:website_livechat.field_im_livechat_channel__website_description
@@ -359,6 +368,7 @@ msgid "Website description"
 msgstr "網站說明"
 
 #. module: website_livechat
+#. odoo-python
 #: code:addons/website_livechat/models/mail_channel.py:0
 #, python-format
 msgid "an operator"

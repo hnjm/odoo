@@ -3,17 +3,18 @@
 # 	* website_sale_slides
 # 
 # Translators:
-# JH CHOI <hwangtog@gmail.com>, 2022
 # Martin Trigaux, 2022
+# JH CHOI <hwangtog@gmail.com>, 2022
 # Sarah Park, 2023
+# Daye Jeong, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:26+0000\n"
+"POT-Creation-Date: 2024-02-06 13:32+0000\n"
 "PO-Revision-Date: 2022-09-22 05:57+0000\n"
-"Last-Translator: Sarah Park, 2023\n"
+"Last-Translator: Daye Jeong, 2023\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -44,28 +45,11 @@ msgstr ""
 "서비스는 귀하가 제공하는 비물질 품목입니다."
 
 #. module: website_sale_slides
-#: model_terms:sale.order,website_description:website_sale_slides.sale_order_course_1
-#: model_terms:sale.order,website_description:website_sale_slides.sale_order_course_2
-msgid "About us"
-msgstr "회사 소개"
-
-#. module: website_sale_slides
+#. odoo-python
 #: code:addons/website_sale_slides/models/product_product.py:0
 #, python-format
 msgid "Access to:%s%s"
 msgstr ""
-
-#. module: website_sale_slides
-#: model_terms:sale.order,website_description:website_sale_slides.sale_order_course_1
-#: model_terms:sale.order,website_description:website_sale_slides.sale_order_course_2
-msgid ""
-"As a leading professional services firm,\n"
-"                                we know that success is all about the\n"
-"                                commitment we put on strong services."
-msgstr ""
-"최고의 전문 서비스 회사로서, \n"
-"                                성공이란 강력한 서비스를 약속하는 것임을 \n"
-"                                알고 있습니다."
 
 #. module: website_sale_slides
 #: model_terms:ir.ui.view,arch_db:website_sale_slides.snippet_options
@@ -73,23 +57,23 @@ msgid "Buy Now Button"
 msgstr "지금 구입하기 버튼"
 
 #. module: website_sale_slides
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_sale_slides/static/src/xml/website_sale_slides_quiz.xml:0
 #, python-format
 msgid "Buy the course to validate your answers!"
-msgstr ""
+msgstr "강좌를 구매하고 답을 확인해보세요!"
 
 #. module: website_sale_slides
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_sale_slides/static/src/xml/slide_course_join.xml:0
 #, python-format
 msgid "Buy this Course"
-msgstr ""
+msgstr "이 강좌 구매하기"
 
 #. module: website_sale_slides
 #: model_terms:ir.actions.act_window,help:website_sale_slides.sale_report_action_slides
 msgid "Come back once your courses starts selling to report on your revenues."
-msgstr ""
+msgstr "강좌가 판매되기 시작하면 수익을 확인할 수 있습니다."
 
 #. module: website_sale_slides
 #: model:ir.model,name:website_sale_slides.model_slide_channel
@@ -98,20 +82,19 @@ msgid "Course"
 msgstr "강좌"
 
 #. module: website_sale_slides
-#: model:product.product,name:website_sale_slides.default_product_course
 #: model:product.template,name:website_sale_slides.default_product_course_product_template
 msgid "Course Access"
-msgstr ""
+msgstr "강좌 엑세스"
 
 #. module: website_sale_slides
 #: model_terms:ir.ui.view,arch_db:website_sale_slides.snippet_options
 msgid "Course Page"
-msgstr ""
+msgstr "강좌 페이지"
 
 #. module: website_sale_slides
 #: model_terms:ir.ui.view,arch_db:website_sale_slides.course_buy_course_button
 msgid "Course Unavailable"
-msgstr ""
+msgstr "강좌를 이용할 수 없습니다"
 
 #. module: website_sale_slides
 #: model:ir.model.fields,field_description:website_sale_slides.field_product_product__channel_ids
@@ -124,7 +107,6 @@ msgid "Currency"
 msgstr "통화"
 
 #. module: website_sale_slides
-#: model:product.product,name:website_sale_slides.product_course_channel_6
 #: model:product.template,name:website_sale_slides.product_course_channel_6_product_template
 msgid "DIY Furniture Course"
 msgstr "가구 DIY 강좌"
@@ -132,7 +114,7 @@ msgstr "가구 DIY 강좌"
 #. module: website_sale_slides
 #: model:ir.model.fields,help:website_sale_slides.field_slide_channel__enroll
 msgid "Defines how people can enroll to your Course."
-msgstr ""
+msgstr "사람들이 코스에 등록하는 방법을 정의합니다."
 
 #. module: website_sale_slides
 #: model:ir.model.fields,field_description:website_sale_slides.field_slide_channel__enroll
@@ -143,44 +125,15 @@ msgstr "등록 정책"
 #. module: website_sale_slides
 #: model_terms:ir.ui.view,arch_db:website_sale_slides.course_slides_list_slide
 msgid "Free Preview"
-msgstr ""
-
-#. module: website_sale_slides
-#: model_terms:sale.order,website_description:website_sale_slides.sale_order_course_1
-#: model_terms:sale.order,website_description:website_sale_slides.sale_order_course_2
-msgid ""
-"Great quotation templates will significantly\n"
-"                                <strong>boost your success rate</strong>. The\n"
-"                                first section is usually about your company,\n"
-"                                your references, your methodology or\n"
-"                                guarantees, your team, SLA, terms and conditions, etc."
-msgstr ""
-"훌륭한 견적 서식은 <strong>성공률을 크게 높여줍니다</strong>. \n"
-"                                 첫 번째 영역은 일반적으로 \n"
-"                                 회사, 참조, 방법론 또는 보증, \n"
-"                                 팀, SLA, 이용 약관 등에 관한 것입니다."
-
-#. module: website_sale_slides
-#: model_terms:sale.order,website_description:website_sale_slides.sale_order_course_1
-#: model_terms:sale.order,website_description:website_sale_slides.sale_order_course_2
-msgid ""
-"If you edit a quotation from the 'Preview' of a quotation, you will\n"
-"                        update that quotation only. If you edit the quotation\n"
-"                        template (from the Configuration menu), all future quotations will\n"
-"                        use this modified template."
-msgstr ""
-"견적의 '미리보기'에서 견적을 편집하면 \n"
-"                        해당 견적만 갱신됩니다. \n"
-"                        환경 설정 메뉴에서 견적 서식을 편집하면 \n"
-"                        이후의 모든 견적에서 이 수정된 서식을 사용합니다."
+msgstr "무료 미리보기"
 
 #. module: website_sale_slides
 #: model_terms:ir.ui.view,arch_db:website_sale_slides.course_buy_course_link
 msgid "Join this Course"
-msgstr ""
+msgstr "이 강좌 시작하기"
 
 #. module: website_sale_slides
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_sale_slides/static/src/xml/website_slides_unsubscribe.xml:0
 #, python-format
 msgid ""
@@ -191,7 +144,7 @@ msgstr "과정을 마치고 나중에 다시 등록하면 다시 요금이 부�
 #. module: website_sale_slides
 #: model_terms:ir.actions.act_window,help:website_sale_slides.sale_report_action_slides
 msgid "No sales data yet!"
-msgstr ""
+msgstr "아직 판매 데이터가 없습니다!"
 
 #. module: website_sale_slides
 #: model:ir.model.fields.selection,name:website_sale_slides.selection__slide_channel__enroll__payment
@@ -201,36 +154,12 @@ msgstr "결제시"
 #. module: website_sale_slides
 #: model_terms:ir.ui.view,arch_db:website_sale_slides.course_purchased_confirmation_message
 msgid "Once your order is paid &amp; confirmed, you will gain access to:"
-msgstr ""
-
-#. module: website_sale_slides
-#: model_terms:sale.order,website_description:website_sale_slides.sale_order_course_1
-#: model_terms:sale.order,website_description:website_sale_slides.sale_order_course_2
-msgid "Our Offer"
-msgstr "제안"
-
-#. module: website_sale_slides
-#: model_terms:sale.order,website_description:website_sale_slides.sale_order_course_1
-#: model_terms:sale.order,website_description:website_sale_slides.sale_order_course_2
-msgid "Our Quality"
-msgstr "품질"
-
-#. module: website_sale_slides
-#: model_terms:sale.order,website_description:website_sale_slides.sale_order_course_1
-#: model_terms:sale.order,website_description:website_sale_slides.sale_order_course_2
-msgid "Our Service"
-msgstr "서비스"
+msgstr "주문이 결제 &amp; 확인되면 다음 항목에 엑세스할 수 있습니다:"
 
 #. module: website_sale_slides
 #: model_terms:ir.ui.view,arch_db:website_sale_slides.course_slides_list_slide
 msgid "Preview"
 msgstr "미리보기"
-
-#. module: website_sale_slides
-#: model_terms:sale.order,website_description:website_sale_slides.sale_order_course_1
-#: model_terms:sale.order,website_description:website_sale_slides.sale_order_course_2
-msgid "Price"
-msgstr "가격"
 
 #. module: website_sale_slides
 #: model:ir.model,name:website_sale_slides.model_product_template
@@ -255,18 +184,6 @@ msgid "Product is required for on payment channels."
 msgstr "결제 채널에 상품이 필요합니다."
 
 #. module: website_sale_slides
-#: model_terms:sale.order,website_description:website_sale_slides.sale_order_course_1
-#: model_terms:sale.order,website_description:website_sale_slides.sale_order_course_2
-msgid ""
-"Product quality is the foundation we\n"
-"                                stand on; we build it with a relentless\n"
-"                                focus on fabric, performance and craftsmanship."
-msgstr ""
-"제품 품질은 우리의 기반입니다. \n"
-"                                우리는 구조, 성능 및 장인 정신에 \n"
-"                                끊임없이 중점을 두고 그것을 구축합니다."
-
-#. module: website_sale_slides
 #: model:ir.ui.menu,name:website_sale_slides.website_slides_menu_report_revenues
 msgid "Revenues"
 msgstr "수익"
@@ -283,26 +200,25 @@ msgid "Sales Order"
 msgstr "판매 주문"
 
 #. module: website_sale_slides
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_sale_slides/static/src/xml/slide_course_join.xml:0
 #, python-format
 msgid "Sign in"
 msgstr "로그인"
 
 #. module: website_sale_slides
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_sale_slides/static/src/xml/website_sale_slides_quiz.xml:0
 #, python-format
 msgid "Sign in and buy the course to take the quiz"
-msgstr ""
+msgstr "퀴즈를 풀려면 로그인 후 강좌를 구매해 주세요"
 
 #. module: website_sale_slides
 #: model_terms:ir.ui.view,arch_db:website_sale_slides.course_purchased_confirmation_message
 msgid "Start Learning"
-msgstr ""
+msgstr "학습 시작하기"
 
 #. module: website_sale_slides
-#: model:product.product,name:website_sale_slides.product_course_channel_1
 #: model:product.template,name:website_sale_slides.product_course_channel_1_product_template
 msgid "Taking care of Trees Course"
 msgstr "나무 돌보기 강좌"
@@ -310,33 +226,19 @@ msgstr "나무 돌보기 강좌"
 #. module: website_sale_slides
 #: model_terms:ir.ui.view,arch_db:website_sale_slides.course_main
 msgid "This course cannot be bought because its linked product"
-msgstr ""
+msgstr "이 강좌는 다른 품목과 연계되어 있어 구매할 수 없습니다."
 
 #. module: website_sale_slides
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_sale_slides/static/src/xml/website_slides_unsubscribe.xml:0
 #, python-format
 msgid "This course is paid."
 msgstr "이 강좌는 유료입니다."
 
 #. module: website_sale_slides
-#: model_terms:sale.order,website_description:website_sale_slides.sale_order_course_1
-#: model_terms:sale.order,website_description:website_sale_slides.sale_order_course_2
-msgid ""
-"This is a <strong>sample quotation template</strong>. You should\n"
-"                                customize it to fit your own needs from the <i>Sales</i>\n"
-"                                application, using the menu: Configuration /\n"
-"                                Quotation Templates."
-msgstr ""
-"이것은 <strong>샘플 견적 서식</strong>입니다. \n"
-"                                 환경 설정 / 견적 서식 메뉴를 사용하여\n"
-"                         <i>판매</i> 응용 프로그램의 필요에 맞게 \n"
-"                                 사용자 정의해야 합니다."
-
-#. module: website_sale_slides
 #: model_terms:ir.ui.view,arch_db:website_sale_slides.slide_channel_view_tree_report
 msgid "Total Revenues"
-msgstr ""
+msgstr "총 수익"
 
 #. module: website_sale_slides
 #: model:ir.model.fields,field_description:website_sale_slides.field_slide_channel__product_sale_revenues
@@ -344,58 +246,21 @@ msgid "Total revenues"
 msgstr "총 수익"
 
 #. module: website_sale_slides
-#: model:product.product,uom_name:website_sale_slides.default_product_course
-#: model:product.product,uom_name:website_sale_slides.product_course_channel_1
-#: model:product.product,uom_name:website_sale_slides.product_course_channel_6
-#: model:product.template,uom_name:website_sale_slides.default_product_course_product_template
-#: model:product.template,uom_name:website_sale_slides.product_course_channel_1_product_template
-#: model:product.template,uom_name:website_sale_slides.product_course_channel_6_product_template
-msgid "Units"
-msgstr "단위"
-
-#. module: website_sale_slides
-#: model_terms:sale.order,website_description:website_sale_slides.sale_order_course_1
-#: model_terms:sale.order,website_description:website_sale_slides.sale_order_course_2
-msgid ""
-"We always ensure that our products are\n"
-"                                set at a fair price so that you will be\n"
-"                                happy to buy them."
-msgstr ""
-"당사는 항상 귀사가 기꺼이 구매할 수 있도록 \n"
-"                                당사 제품이 공정한 가격으로 책정되도록 \n"
-"                                보장합니다."
-
-#. module: website_sale_slides
 #: model:ir.model,name:website_sale_slides.model_website
 msgid "Website"
 msgstr "웹사이트"
 
 #. module: website_sale_slides
-#: model_terms:sale.order,website_description:website_sale_slides.sale_order_course_1
-#: model_terms:sale.order,website_description:website_sale_slides.sale_order_course_2
-msgid ""
-"You can <strong>set a description per product</strong>. Odoo will\n"
-"                        automatically create a quotation using the descriptions\n"
-"                        of all products in the proposal. The table of content\n"
-"                        on the left is generated automatically using the styles you\n"
-"                        used in your description (heading 1, heading 2, ...)"
-msgstr ""
-"<strong>제품별로 설명을 설정</strong>할 수 있습니다. \n"
-"                           Odoo는 제안서의 모든 제품에 대한 설명을 사용하여 \n"
-"                           견적을 자동으로 작성합니다. \n"
-"                           왼쪽의 목차는 설명에 사용한 스타일(heading 1, heading 2, ...)을 \n"
-"                           사용하여  자동으로 생성됩니다."
-
-#. module: website_sale_slides
+#. odoo-python
 #: code:addons/website_sale_slides/models/sale_order.py:0
 #, python-format
 msgid "You can only add a course once in your cart."
-msgstr ""
+msgstr "장바구니에는 강좌를 한 번만 추가할 수 있습니다."
 
 #. module: website_sale_slides
 #: model_terms:ir.ui.view,arch_db:website_sale_slides.course_purchased_confirmation_message
 msgid "You have gained access to the following course(s):"
-msgstr ""
+msgstr "다음 강좌에 액세스할 수 있는 권한을 얻었습니다:"
 
 #. module: website_sale_slides
 #: model:ir.actions.act_window,name:website_sale_slides.sale_report_action_slides
@@ -410,14 +275,14 @@ msgstr "온라인 학습 판매 분석"
 #. module: website_sale_slides
 #: model_terms:ir.ui.view,arch_db:website_sale_slides.course_main
 msgid "is not published."
-msgstr ""
+msgstr "게시되지 않음"
 
 #. module: website_sale_slides
 #: model_terms:ir.ui.view,arch_db:website_sale_slides.course_purchased_confirmation_message
 msgid "step(s)"
-msgstr ""
+msgstr "단계"
 
 #. module: website_sale_slides
 #: model_terms:ir.ui.view,arch_db:website_sale_slides.course_buy_course_link
 msgid "to access resources"
-msgstr ""
+msgstr "리소스에 액세스하려면"

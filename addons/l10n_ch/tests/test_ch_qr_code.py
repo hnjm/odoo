@@ -1,5 +1,7 @@
 # -*- coding:utf-8 -*-
 
+from reportlab.graphics.barcode import createBarcodeDrawing
+
 from odoo import Command
 from odoo.tests import tagged
 from odoo.exceptions import UserError
@@ -77,6 +79,10 @@ class TestSwissQRCode(AccountTestInvoicingCommon):
         # Assigning a QR reference should fix it
         self.ch_qr_invoice.payment_reference = '210000000003139471430009017'
 
+        # even if the invoice is not issued from Switzerland we want to generate the code
+        self.ch_qr_invoice.company_id.partner_id.country_id = self.env.ref('base.fr')
+        self.ch_qr_invoice._generate_qr_code()
+
     def test_ch_qr_code_detection(self):
         """ Checks Swiss QR-code auto-detection when no specific QR-method
         is given to the invoice.
@@ -85,3 +91,23 @@ class TestSwissQRCode(AccountTestInvoicingCommon):
         self._assign_partner_address(self.ch_qr_invoice.partner_id)
         self.ch_qr_invoice._generate_qr_code()
         self.assertEqual(self.ch_qr_invoice.qr_code_method, 'ch_qr', "Swiss QR-code generator should have been chosen for this invoice.")
+
+    def test_ch_qr_code_cross_mask(self):
+        for width, height in ((64, 128), (128, 128), (256, 256), (512, 512)):
+            barcode = createBarcodeDrawing('QR', value='', format='png', width=width, height=height)
+            mask_to_apply = self.env['ir.actions.report'].get_available_barcode_masks()['ch_cross']
+            mask_to_apply(width, height, barcode)
+            zoom_x = width / (32 * (72 / 25.4))
+            zoom_y = height / (32 * (72 / 25.4))
+            self.assertEqual(
+                [zoom_x, 0, 0, zoom_y, 0, 0],
+                barcode.transform,
+            )
+            self.assertEqual(
+                (0, 0, 90.70866141732284, 90.70866141732284),
+                barcode.contents[0].getBounds(),
+            )
+            self.assertEqual(
+                (38.45140157480315, 38.45140157480315, 52.25725984251969, 52.25725984251969),
+                barcode.contents[1].getBounds(),
+            )

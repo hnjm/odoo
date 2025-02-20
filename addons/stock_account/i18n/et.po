@@ -16,14 +16,16 @@
 # Piia Paurson <piia@avalah.ee>, 2022
 # Patrick-Jordan Kiudorv, 2022
 # JanaAvalah, 2023
+# Leaanika Randmets, 2023
+# Stevin Lilla, 2024
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 12:49+0000\n"
+"POT-Creation-Date: 2024-02-06 13:31+0000\n"
 "PO-Revision-Date: 2022-09-22 05:55+0000\n"
-"Last-Translator: JanaAvalah, 2023\n"
+"Last-Translator: Stevin Lilla, 2024\n"
 "Language-Team: Estonian (https://app.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -398,7 +400,6 @@ msgstr "Ladude asukohad"
 #. module: stock_account
 #. odoo-python
 #: code:addons/stock_account/__init__.py:0
-#: code:addons/stock_account/__init__.py:0
 #: code:addons/stock_account/models/account_chart_template.py:0
 #: model:ir.model.fields,field_description:stock_account.field_product_category__property_valuation
 #: model:ir.model.fields,field_description:stock_account.field_product_product__valuation
@@ -622,12 +623,12 @@ msgstr "Järelejäänud väärtus"
 #. module: stock_account
 #: model:ir.model,name:stock_account.model_stock_return_picking
 msgid "Return Picking"
-msgstr "Tagastuskorje"
+msgstr "Tagastussiire"
 
 #. module: stock_account
 #: model:ir.model,name:stock_account.model_stock_return_picking_line
 msgid "Return Picking Line"
-msgstr "Tagasta korjerida"
+msgstr "Tagasta siirderida"
 
 #. module: stock_account
 #. odoo-python
@@ -817,6 +818,15 @@ msgid ""
 msgstr ""
 "Liigutatavad read ei ole järjepidevad: nad ei jaga sama päritolu- või "
 "sihtfirmat."
+
+#. module: stock_account
+#. odoo-python
+#: code:addons/stock_account/wizard/stock_valuation_layer_revaluation.py:0
+#, python-format
+msgid ""
+"The value of a stock valuation layer cannot be negative. Landed cost could "
+"be use to correct a specific transfer."
+msgstr ""
 
 #. module: stock_account
 #: model_terms:ir.actions.act_window,help:stock_account.stock_valuation_layer_action
@@ -1051,6 +1061,17 @@ msgid ""
 msgstr ""
 "Teil pole oma tootekategoorias määratletud ühtegi laosisestuse kontot. Enne "
 "selle toimingu töötlemist peate selle määrama."
+
+#. module: stock_account
+#. odoo-python
+#: code:addons/stock_account/models/product.py:0
+#, python-format
+msgid ""
+"You don't have any output valuation account defined on your product "
+"category. You must define one before processing this operation."
+msgstr ""
+"Teil ei ole ühtegi väljundkontot määratud tootekategooriale. Jätkamiseks "
+"peate määrama vähemalt ühe. "
 
 #. module: stock_account
 #. odoo-python

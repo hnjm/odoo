@@ -4,6 +4,7 @@ var ajax = require('web.ajax');
 var core = require('web.core');
 var Widget = require('web.Widget');
 var publicWidget = require('web.public.widget');
+var {ReCaptcha} = require('google_recaptcha.ReCaptchaV3');
 
 var _t = core._t;
 
@@ -11,11 +12,27 @@ var _t = core._t;
 var EventRegistrationForm = Widget.extend({
 
     /**
+     * @constructor
+     */
+    init: function () {
+        this._super(...arguments);
+        this._recaptcha = new ReCaptcha();
+    },
+
+    /**
+     * @override
+     */
+    willStart: async function () {
+        this._recaptcha.loadLibs();
+        return this._super(...arguments);
+    },
+
+    /**
      * @override
      */
     start: function () {
         var self = this;
-        var res = this._super.apply(this.arguments).then(function () {
+        var res = this._super.apply(this, arguments).then(function () {
             $('#registration_form .a-submit')
                 .off('click')
                 .click(function (ev) {
@@ -52,7 +69,20 @@ var EventRegistrationForm = Widget.extend({
             return new Promise(function () {});
         } else {
             $button.attr('disabled', true);
-            return ajax.jsonRpc($form.attr('action'), 'call', post).then(function (modal) {
+            var action = $form.data('action') || $form.attr('action');
+            var self = this;
+            return ajax.jsonRpc(action, 'call', post).then(async function (modal) {
+                const tokenObj = await self._recaptcha.getToken('website_event_registration');
+                if (tokenObj.error) {
+                    self.displayNotification({
+                        type: 'danger',
+                        title: _t('Error'),
+                        message: tokenObj.error,
+                        sticky: true,
+                    });
+                    $button.prop('disabled', false);
+                    return false;
+                }
                 var $modal = $(modal);
                 $modal.find('.modal-body > div').removeClass('container'); // retrocompatibility - REMOVE ME in master / saas-19
                 $modal.appendTo(document.body);
@@ -66,6 +96,13 @@ var EventRegistrationForm = Widget.extend({
                 $modal.on('click', '.btn-close', function () {
                     $button.prop('disabled', false);
                 });
+                $modal.on('submit', 'form', function (ev) {
+                    const tokenInput = document.createElement('input');
+                    tokenInput.setAttribute('name', 'recaptcha_token_response');
+                    tokenInput.setAttribute('type', 'hidden');
+                    tokenInput.setAttribute('value', tokenObj.token);
+                    ev.currentTarget.appendChild(tokenInput);
+                })
             });
         }
     },

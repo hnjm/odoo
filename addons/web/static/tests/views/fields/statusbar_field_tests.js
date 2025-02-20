@@ -463,7 +463,7 @@ QUnit.module("Fields", (hooks) => {
         });
 
         assert.strictEqual(
-            target.querySelector("[aria-label='Current state']").textContent,
+            target.querySelector("[aria-checked='true']").textContent,
             "aaa",
             "default status is 'aaa'"
         );
@@ -478,7 +478,7 @@ QUnit.module("Fields", (hooks) => {
         await click(target, ".o_statusbar_status .dropdown-toggle");
         await click(target, ".o-dropdown .dropdown-item");
         assert.strictEqual(
-            target.querySelector("[aria-label='Current state']").textContent,
+            target.querySelector("[aria-checked='true']").textContent,
             "second record",
             "status has changed to the selected dropdown item"
         );
@@ -623,4 +623,62 @@ QUnit.module("Fields", (hooks) => {
         await click(clickableButtons[clickableButtons.length - 1]);
         assert.verifySteps(["write"]);
     });
+
+    QUnit.test(
+        "clickable statusbar with readonly modifier set to false is editable",
+        async function (assert) {
+            await makeView({
+                type: "form",
+                resModel: "partner",
+                resId: 2,
+                serverData,
+                arch: `
+                <form>
+                    <header>
+                        <field name="product_id" widget="statusbar" options="{'clickable': true}" attrs="{'readonly': false}"/>
+                    </header>
+                </form>`,
+            });
+            assert.containsN(target, ".o_statusbar_status button:visible", 2);
+            assert.containsNone(target, ".o_statusbar_status button.disabled[disabled]:visible");
+        }
+    );
+
+    QUnit.test(
+        "clickable statusbar with readonly modifier set to true is not editable",
+        async function (assert) {
+            await makeView({
+                type: "form",
+                resModel: "partner",
+                resId: 2,
+                serverData,
+                arch: `
+                <form>
+                    <header>
+                        <field name="product_id" widget="statusbar" options="{'clickable': true}" attrs="{'readonly': true}"/>
+                    </header>
+                </form>`,
+            });
+            assert.containsN(target, ".o_statusbar_status button.disabled[disabled]:visible", 2);
+        }
+    );
+
+    QUnit.test(
+        "non-clickable statusbar with readonly modifier set to false is not editable",
+        async function (assert) {
+            await makeView({
+                type: "form",
+                resModel: "partner",
+                resId: 2,
+                serverData,
+                arch: `
+                <form>
+                    <header>
+                        <field name="product_id" widget="statusbar" options="{'clickable': false}" attrs="{'readonly': false}"/>
+                    </header>
+                </form>`,
+            });
+            assert.containsN(target, ".o_statusbar_status button.disabled[disabled]:visible", 2);
+        }
+    );
 });

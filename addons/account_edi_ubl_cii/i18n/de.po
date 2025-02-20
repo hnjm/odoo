@@ -3,17 +3,17 @@
 # 	* account_edi_ubl_cii
 # 
 # Translators:
-# Martin Trigaux, 2022
 # Friederike Fasterling-Nesselbosch, 2022
-# Larissa Manderfeld, 2023
+# Martin Trigaux, 2023
+# Larissa Manderfeld, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-23 08:22+0000\n"
+"POT-Creation-Date: 2025-02-10 08:26+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Larissa Manderfeld, 2023\n"
+"Last-Translator: Larissa Manderfeld, 2024\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -90,6 +90,14 @@ msgstr ""
 
 #. module: account_edi_ubl_cii
 #. odoo-python
+#: code:addons/account_edi_ubl_cii/models/account_edi_xml_ubl_20.py:0
+#: code:addons/account_edi_ubl_cii/models/account_edi_xml_ubl_20.py:0
+#, python-format
+msgid "Conditional cash/payment discount"
+msgstr "Bedingtes Skonto/Bedingter Zahlungsrabatt"
+
+#. module: account_edi_ubl_cii
+#. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_xml_cii_facturx.py:0
 #: code:addons/account_edi_ubl_cii/models/account_edi_xml_ubl_20.py:0
 #, python-format
@@ -97,8 +105,8 @@ msgid ""
 "Could not retrieve currency: %s. Did you enable the multicurrency option and"
 " activate the currency ?"
 msgstr ""
-"Die Währung konnte nicht abgerufen werden: %s. Haben Sie die "
-"Multiwährungsoption eingeschaltet und die Währung aktiviert?"
+"Die Währung konnte nicht abgerufen werden: %s. Haben Sie die Option für "
+"mehrere Währungen eingeschaltet und die Währung aktiviert?"
 
 #. module: account_edi_ubl_cii
 #. odoo-python
@@ -106,7 +114,7 @@ msgstr ""
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
 #, python-format
 msgid "Could not retrieve the tax: %s %% for line '%s'."
-msgstr "Die Steuer konnte nicht abgerufen werden: %s %% für Zeile '%s'."
+msgstr "Die Steuer konnte nicht abgerufen werden: %s %% für Zeile „%s“."
 
 #. module: account_edi_ubl_cii
 #. odoo-python
@@ -139,7 +147,7 @@ msgstr "E-FFF (BE)"
 #. module: account_edi_ubl_cii
 #: model:ir.model,name:account_edi_ubl_cii.model_account_edi_format
 msgid "EDI format"
-msgstr "EDI Format"
+msgstr "EDI-Format"
 
 #. module: account_edi_ubl_cii
 #: model_terms:ir.ui.view,arch_db:account_edi_ubl_cii.account_invoice_pdfa_3_facturx_metadata
@@ -155,10 +163,19 @@ msgstr "Jede Rechnungszeile darf nur eine einzige Steuer enthalten."
 
 #. module: account_edi_ubl_cii
 #. odoo-python
+#: code:addons/account_edi_ubl_cii/models/account_edi_xml_ubl_bis3.py:0
+#, python-format
+msgid "Each invoice line should have a product or a label."
+msgstr ""
+"Jede Rechnungszeile sollte mindestens ein Produkt und eine Bezeichnung "
+"enthalten."
+
+#. module: account_edi_ubl_cii
+#. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
 #, python-format
 msgid "Each invoice line should have at least one tax."
-msgstr "Jede Rechnungszeile darf nur eine einzige Steuer enthalten."
+msgstr "Jede Rechnungszeile muss mindestens eine Steuer enthalten."
 
 #. module: account_edi_ubl_cii
 #: model:ir.model,name:account_edi_ubl_cii.model_mail_template
@@ -234,8 +251,11 @@ msgstr ""
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
 #, python-format
-msgid "No gross price nor net price found for line in xml"
-msgstr "Kein Bruttopreis oder Nettopreis für Zeile in xml gefunden"
+msgid ""
+"No gross price, net price nor line subtotal amount found for line in xml"
+msgstr ""
+"Weder Bruttopreis oder Nettopreis noch Zeile für Zwischensumme für Zeile in "
+"xml gefunden"
 
 #. module: account_edi_ubl_cii
 #: model_terms:ir.ui.view,arch_db:account_edi_ubl_cii.account_invoice_pdfa_3_facturx_metadata
@@ -243,37 +263,9 @@ msgid "Odoo"
 msgstr "Odoo"
 
 #. module: account_edi_ubl_cii
-#. odoo-python
-#: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
-#, python-format
-msgid "Output VAT, reduced rate, low"
-msgstr "Mehrwertsteuer, ermäßigter Satz, niedrig"
-
-#. module: account_edi_ubl_cii
-#. odoo-python
-#: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
-#, python-format
-msgid "Output VAT, reduced rate, middle"
-msgstr "Mehrwertsteuer, ermäßigter Satz, mittel"
-
-#. module: account_edi_ubl_cii
-#. odoo-python
-#: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
-#, python-format
-msgid "Output VAT, reduced rate, raw fish"
-msgstr "Mehrwertsteuer, ermäßigter Satz, roher Fisch"
-
-#. module: account_edi_ubl_cii
-#. odoo-python
-#: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
-#, python-format
-msgid "Output VAT, regular rate"
-msgstr "Mehrwertsteuer, regulärer Satz"
-
-#. module: account_edi_ubl_cii
 #: model:ir.model,name:account_edi_ubl_cii.model_ir_actions_report
 msgid "Report Action"
-msgstr "Report Action"
+msgstr "Berichtsaktion"
 
 #. module: account_edi_ubl_cii
 #: model:ir.model,name:account_edi_ubl_cii.model_account_edi_xml_ubl_sg
@@ -300,8 +292,22 @@ msgid ""
 "The VAT number of the supplier does not seem to be valid. It should be of "
 "the form: NO179728982MVA."
 msgstr ""
-"Die Mehrwertsteuernummer des Lieferanten scheint nicht gültig zu sein. Sie "
-"sollte diese Form haben: NO179728982MVA."
+"Die MwSt.-Nummer des Lieferanten scheint nicht gültig zu sein. Sie sollte "
+"dieses Format haben: NO179728982MVA."
+
+#. module: account_edi_ubl_cii
+#. odoo-python
+#: code:addons/account_edi_ubl_cii/models/account_edi_xml_ubl_bis3.py:0
+#, python-format
+msgid "The VAT of the %s should be prefixed with its country code."
+msgstr "Die USt-IdNr. von %s sollte den Präfix seines Ländercodes enthalten."
+
+#. module: account_edi_ubl_cii
+#. odoo-python
+#: code:addons/account_edi_ubl_cii/models/account_edi_xml_ubl_bis3.py:0
+#, python-format
+msgid "The country is required for the %s."
+msgstr "Das Land ist für %s erforderlich."
 
 #. module: account_edi_ubl_cii
 #. odoo-python
@@ -309,14 +315,22 @@ msgstr ""
 #: code:addons/account_edi_ubl_cii/models/account_edi_xml_ubl_20.py:0
 #, python-format
 msgid "The currency '%s' is not active."
-msgstr "Die Währung '%s' ist nicht aktiv."
+msgstr "Die Währung „%s“ ist nicht aktiv."
+
+#. module: account_edi_ubl_cii
+#. odoo-python
+#: code:addons/account_edi_ubl_cii/models/account_edi_xml_ubl_bis3.py:0
+#, python-format
+msgid "The customer %s must have a Bronnoysund company registry."
+msgstr ""
+"Der Kunde %s muss im Handelsregister von Bronnoysund eingetragen sein."
 
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_xml_ubl_bis3.py:0
 #, python-format
 msgid "The customer %s must have a KVK or OIN number."
-msgstr "Der Kunde %s muss eine KVK oder OIN Nummer haben."
+msgstr "Der Kunde %s muss eine KVK- oder OIN-Nummer haben."
 
 #. module: account_edi_ubl_cii
 #. odoo-python
@@ -340,7 +354,7 @@ msgstr "Das Feld %s ist erforderlich für %s."
 msgid ""
 "The field 'Sanitized Account Number' is required on the Recipient Bank."
 msgstr ""
-"Das Feld \"Bereinigte Kontonummer\" ist für die Empfängerbank erforderlich."
+"Das Feld „Bereinigte Kontonummer“ ist für die Empfängerbank erforderlich."
 
 #. module: account_edi_ubl_cii
 #. odoo-python
@@ -351,7 +365,7 @@ msgid ""
 "The invoice has been converted into a credit note and the quantities have "
 "been reverted."
 msgstr ""
-"Die Rechnung wurde in eine Gutschrift umgewandelt und die Anzahl rückgängig "
+"Die Rechnung wurde in eine Gutschrift umgewandelt und die Mengen rückgängig "
 "gemacht."
 
 #. module: account_edi_ubl_cii
@@ -362,10 +376,11 @@ msgid ""
 "The journal in which to upload should either be a sale or a purchase "
 "journal."
 msgstr ""
+"Das Journal, in das Sie hochladen, sollte entweder ein Verkaufs- oder ein "
+"Einkaufsjournal sein."
 
 #. module: account_edi_ubl_cii
 #. odoo-python
-#: code:addons/account_edi_ubl_cii/models/account_edi_xml_ubl_bis3.py:0
 #: code:addons/account_edi_ubl_cii/models/account_edi_xml_ubl_bis3.py:0
 #, python-format
 msgid "The supplier %s must have a Bronnoysund company registry."
@@ -377,7 +392,7 @@ msgstr ""
 #: code:addons/account_edi_ubl_cii/models/account_edi_xml_ubl_bis3.py:0
 #, python-format
 msgid "The supplier %s must have a KVK or OIN number."
-msgstr "Der Lieferant %s muss eine KVK oder OIN Nummer haben."
+msgstr "Der Lieferant %s muss eine KVK- oder OIN-Nummer haben."
 
 #. module: account_edi_ubl_cii
 #: model:ir.model,name:account_edi_ubl_cii.model_account_edi_xml_ubl_20
@@ -416,17 +431,12 @@ msgid ""
 msgstr ""
 "Sie sollten mindestens eine Steuer pro Rechnungszeile angeben. [BR-"
 "CO-04]-Jede Rechnungszeile (BG-25) muss mit einem Mehrwertsteuer-"
-"Kategoriecode für die Rechnungsposition (BT-151) kategorisiert werden."
+"Kategoriecode für die Rechnungszeile (BT-151) kategorisiert werden."
 
 #. module: account_edi_ubl_cii
 #: model_terms:ir.ui.view,arch_db:account_edi_ubl_cii.account_invoice_pdfa_3_facturx_metadata
 msgid "factur-x.xml"
 msgstr "factur-x.xml"
-
-#. module: account_edi_ubl_cii
-#: model_terms:ir.ui.view,arch_db:account_edi_ubl_cii.account_invoice_line_facturx_export_22
-msgid "false"
-msgstr "falsch"
 
 #. module: account_edi_ubl_cii
 #: model_terms:ir.ui.view,arch_db:account_edi_ubl_cii.account_invoice_pdfa_3_facturx_metadata

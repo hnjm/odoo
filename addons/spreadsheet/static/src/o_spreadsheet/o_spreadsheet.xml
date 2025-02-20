@@ -148,10 +148,12 @@
           <button class="o-add-button" t-on-click="setCustomColor">Add</button>
         </div>
       </div>
-      <div class="o-separator"/>
-      <div class="o-buttons">
-        <button t-on-click="resetColor" class="o-cancel">Reset</button>
-      </div>
+      <t t-if="!props.disableNoColor">
+        <div class="o-separator"/>
+        <div class="o-buttons">
+          <button t-on-click="resetColor" class="o-cancel">Reset</button>
+        </div>
+      </t>
     </div>
   </t>
 
@@ -175,7 +177,7 @@
   </t>
 
   <t t-name="o-spreadsheet-Composer" owl="1">
-    <div class="o-composer-container">
+    <div class="o-composer-container" t-att-active="props.focus !== 'inactive'">
       <div
         t-att-class="{ 'o-composer': true, 'text-muted': env.model.getters.isReadonly(), 'unfocusable': env.model.getters.isReadonly() }"
         t-att-style="props.inputStyle"
@@ -189,9 +191,10 @@
         t-on-keyup="onKeyup"
         t-on-click="onClick"
         t-on-blur="onBlur"
-        t-on-paste.stop=""
+        t-on-paste="onPaste"
         t-on-compositionstart="onCompositionStart"
         t-on-compositionend="onCompositionEnd"
+        t-on-contextmenu="onContextMenu"
       />
 
       <div
@@ -279,14 +282,7 @@
 
   <t t-name="o-spreadsheet-GridComposer" owl="1">
     <div class="o-grid-composer" t-att-style="containerStyle" t-ref="gridComposer">
-      <Composer
-        focus="props.focus"
-        inputStyle="composerStyle"
-        rect="composerState.rect"
-        delimitation="composerState.delimitation"
-        onComposerUnmounted="props.onComposerUnmounted"
-        onComposerContentFocused="props.onComposerContentFocused"
-      />
+      <Composer t-props="composerProps"/>
     </div>
   </t>
 
@@ -313,14 +309,14 @@
         <div
           t-foreach="getClickableCells()"
           t-as="clickableCell"
-          t-key="clickableCell.cell.id"
+          t-key="clickableCell_index"
           class="o-dashboard-clickable-cell"
           t-on-click="() => this.selectClickableCell(clickableCell)"
           t-on-contextmenu.prevent=""
           t-att-style="getCellClickableStyle(clickableCell.coordinates)"
         />
+        <FilterIconsOverlay/>
       </div>
-      <FilterIconsOverlay/>
       <VerticalScrollBar/>
       <HorizontalScrollBar/>
       <div class="o-scrollbar corner"/>
@@ -377,7 +373,7 @@
         t-ref="figure"
         t-att-style="props.style"
         tabindex="0"
-        t-on-keydown.stop="(ev) => this.onKeyDown(ev)"
+        t-on-keydown="(ev) => this.onKeyDown(ev)"
         t-on-keyup.stop="">
         <t
           t-component="figureRegistry.get(props.figure.tag).Component"
@@ -510,7 +506,7 @@
 
   <t t-name="o-spreadsheet-FilterMenu" owl="1">
     <div class="o-filter-menu d-flex flex-column bg-white" t-on-wheel.stop="">
-      <div>
+      <div t-if="!isReadonly">
         <div class="o-filter-menu-item" t-on-click="() => this.sortFilterZone('ascending')">
           Sort ascending (A ⟶ Z)
         </div>
@@ -518,7 +514,7 @@
           Sort descending (Z ⟶ A)
         </div>
       </div>
-      <div class="o-separator"/>
+      <div class="o-separator" t-if="!isReadonly"/>
       <div class="o-filter-menu-actions">
         <div class="o-filter-menu-action-text" t-on-click="selectAll">Select all</div>
         <div class="o-filter-menu-action-text" t-on-click="clearAll">Clear</div>
@@ -592,7 +588,7 @@
       class="o-grid"
       tabindex="-1"
       t-att-class="{'o-two-columns': !props.sidePanelIsOpen}"
-      t-on-click="focus"
+      t-on-click="focusDefaultElement"
       t-on-keydown="onKeydown"
       t-on-wheel="onMouseWheel"
       t-ref="grid">
@@ -605,26 +601,15 @@
         onGridMoved.bind="moveCanvas"
         gridOverlayDimensions="gridOverlayDimensions"
         sidePanelIsOpen="props.sidePanelIsOpen"
-        onFigureDeleted.bind="focus"
+        onFigureDeleted.bind="focusDefaultElement"
       />
       <HeadersOverlay onOpenContextMenu="(type, x, y) => this.toggleContextMenu(type, x, y)"/>
-
-      <t t-if="env.model.getters.getEditionMode() !== 'inactive'">
-        <GridComposer
-          onComposerUnmounted="() => this.focus()"
-          onComposerContentFocused="props.onComposerContentFocused"
-          focus="props.focusComposer"
-        />
-      </t>
-      <t else="1">
-        <input
-          class="position-absolute"
-          style="z-index:-1000;"
-          t-on-input="onInput"
-          t-on-contextmenu="onInputContextMenu"
-          t-ref="hiddenInput"
-        />
-      </t>
+      <GridComposer
+        onComposerContentFocused="props.onComposerContentFocused"
+        onComposerCellFocused="props.onGridComposerCellFocused"
+        focus="props.focusComposer"
+        onInputContextMenu.bind="onInputContextMenu"
+      />
       <canvas t-ref="canvas"/>
       <t
         t-foreach="env.model.getters.getClientsToDisplay()"
@@ -1206,10 +1191,9 @@
       />
     </svg>
   </t>
-  /** Font Awesome by Dave Gandy
- *  http://fontawesome.io/
- *  https://fontawesome.com/license
- */
+  <!-- Font Awesome by Dave Gandy
+http://fontawesome.io/
+https://fontawesome.com/license -->
   <t t-name="o-spreadsheet-Icon.CARET_UP" owl="1">
     <svg class="caret-up" viewBox="0 0 320 512">
       <path
@@ -1973,6 +1957,18 @@
             Stacked linechart
           </label>
         </div>
+        <div class="o-checkbox">
+          <label>
+            <input
+              type="checkbox"
+              name="cumulative"
+              t-att-checked="props.definition.cumulative"
+              t-on-change="onUpdateCumulative"
+              class="align-middle"
+            />
+            Cumulative data
+          </label>
+        </div>
       </div>
       <div class="o-section o-data-series">
         <div class="o-section-title">Data Series</div>
@@ -2411,6 +2407,7 @@
             dropdownDirection="'left'"
             onColorPicked="(color) => this.setColorScaleColor(thresholdType, color)"
             currentColor="getThresholdColor(threshold)"
+            disableNoColor="true"
           />
         </div>
       </div>
@@ -2795,11 +2792,7 @@
   </t>
 
   <t t-name="o-spreadsheet-FindAndReplacePanel" owl="1">
-    <div
-      class="o-find-and-replace"
-      tabindex="0"
-      t-on-focusin="onFocusSidePanel"
-      t-ref="findAndReplace">
+    <div class="o-find-and-replace" tabindex="0" t-ref="findAndReplace">
       <div class="o-section">
         <div class="o-section-title">Search</div>
         <div class="o-input-search-container">
@@ -2974,6 +2967,7 @@
             position="state.menuState.position"
             menuItems="state.menuState.menuItems"
             onClose="() => this.closeMenus()"
+            onMenuClicked="() => this.props.onClick()"
           />
         </div>
         <div class="o-topbar-topright">
@@ -3248,7 +3242,7 @@
   </t>
 </odoo>
 <!--
-  __info__.version = '16.0.12';
-  __info__.date = '2023-06-02T10:15:38.506Z';
-  __info__.hash = '9718465';
+  __info__.version = '16.0.62';
+  __info__.date = '2025-02-14T08:45:18.663Z';
+  __info__.hash = '34f2802';
 -->

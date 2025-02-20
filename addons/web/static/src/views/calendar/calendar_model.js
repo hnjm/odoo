@@ -24,7 +24,7 @@ export class CalendarModel extends Model {
         const formViewIdFromConfig = formViewFromConfig ? formViewFromConfig[0] : false;
         this.meta = {
             ...params,
-            firstDayOfWeek: localization.weekStart,
+            firstDayOfWeek: (localization.weekStart || 0) % 7,
             formViewId: params.formViewId || formViewIdFromConfig,
         };
 
@@ -345,8 +345,8 @@ export class CalendarModel extends Model {
         }
 
         if (["week", "month"].includes(scale)) {
-            const weekday = start.weekday < firstDayOfWeek ? firstDayOfWeek - 7 : firstDayOfWeek;
-            start = start.set({ weekday });
+            const currentWeekOffset = (start.weekday - firstDayOfWeek + 7) % 7;
+            start = start.minus({ days: currentWeekOffset });
             end = start.plus({ weeks: scale === "week" ? 1 : 6, days: -1 });
         }
 
@@ -442,7 +442,11 @@ export class CalendarModel extends Model {
         return this.orm.call(this.meta.resModel, "get_unusual_days", [
             serializeDateTime(data.range.start),
             serializeDateTime(data.range.end),
-        ]);
+        ],{
+            context: {
+                'employee_id': this.employeeId,
+            }
+        });
     }
     /**
      * @protected
@@ -511,7 +515,7 @@ export class CalendarModel extends Model {
 
         const showTime =
             !(fieldMapping.all_day && rawRecord[fieldMapping.all_day]) &&
-            scale === "month" &&
+            scale !== "year" &&
             startType !== "date" &&
             start.day === end.day;
 
@@ -655,7 +659,8 @@ export class CalendarModel extends Model {
         const { colorFieldName } = filterInfo;
         const shouldFetchColor =
             colorFieldName &&
-            `${fieldName}.${colorFieldName}` !== fields[fieldMapping.color].related;
+            (!fieldMapping.color ||
+                `${fieldName}.${colorFieldName}` !== fields[fieldMapping.color].related);
         let rawColors = [];
         if (shouldFetchColor) {
             const relatedIds = rawFilters.map(({ id }) => id);

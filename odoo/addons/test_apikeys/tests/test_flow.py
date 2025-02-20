@@ -1,10 +1,15 @@
+import logging
 import json
 
 from odoo import api
-from odoo.tests import tagged, HttpCase, get_db_name
+from odoo.tests import tagged, get_db_name
+from odoo.addons.base.tests.common import HttpCaseWithUserDemo
+
+_logger = logging.getLogger(__name__)
+
 
 @tagged('post_install', '-at_install')
-class TestAPIKeys(HttpCase):
+class TestAPIKeys(HttpCaseWithUserDemo):
     def setUp(self):
         super().setUp()
 

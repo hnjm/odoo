@@ -4,6 +4,7 @@
 from base64 import b64decode, b64encode
 from datetime import datetime
 from re import sub as regex_sub
+from collections import defaultdict
 
 from lxml import etree
 from odoo import _, api, fields, models
@@ -80,7 +81,8 @@ class AccountMove(models.Model):
     @api.depends('move_type', 'company_id')
     def _compute_l10n_es_tbai_is_required(self):
         for move in self:
-            move.l10n_es_tbai_is_required = move.is_sale_document() \
+            move.l10n_es_tbai_is_required = (move.is_sale_document() or move.is_purchase_document() and move.company_id.l10n_es_tbai_tax_agency == 'bizkaia'
+                                             and not any(t.l10n_es_type == 'ignore' for t in move.invoice_line_ids.tax_ids))\
                 and move.country_code == 'ES' \
                 and move.company_id.l10n_es_tbai_tax_agency
 
@@ -126,11 +128,31 @@ class AccountMove(models.Model):
     def _get_l10n_es_tbai_sequence_and_number(self):
         """Get the TicketBAI sequence a number values for this invoice."""
         self.ensure_one()
-        sequence, number = self.name.rsplit('/', 1)  # NOTE non-decimal characters should not appear in the number
-        sequence = regex_sub(r"[^0-9A-Za-z.\_\-\/]", "", sequence)  # remove forbidden characters
-        sequence = regex_sub(r"\s+", " ", sequence)  # no more than one consecutive whitespace allowed
-        # NOTE (optional) not recommended to use chars out of ([0123456789ABCDEFGHJKLMNPQRSTUVXYZ.\_\-\/ ])
-        sequence += "TEST" if self.company_id.l10n_es_edi_test_env else ""
+        if self.is_purchase_document(): # Batuz
+            # Check if we are cancelling or not
+            doc = self.env['account.edi.document'].search([('state', '=', 'to_cancel'),
+                                                           ('edi_format_id.code', '=', 'es_tbai')], limit=1)
+            if doc and self.l10n_es_tbai_post_xml:
+                vals = self._get_l10n_es_tbai_values_from_xml({
+                    'sequence': './/CabeceraFactura/SerieFactura',
+                    'number': './/CabeceraFactura/NumFactura',
+                })
+                if vals['sequence'] and vals['number']:
+                    return vals['sequence'], vals['number']
+
+            number = self.ref
+            sequence = "TEST" if self.company_id.l10n_es_edi_test_env else ""
+        else:
+            sequence = self.sequence_prefix.rstrip('/')
+
+            # NOTE non-decimal characters should not appear in the number
+            seq_length = self._get_sequence_format_param(self.name)[1]['seq_length']
+            number = f"{self.sequence_number:0{seq_length}d}"
+
+            sequence = regex_sub(r"[^0-9A-Za-z.\_\-\/]", "", sequence)  # remove forbidden characters
+            sequence = regex_sub(r"\s+", " ", sequence)  # no more than one consecutive whitespace allowed
+            # NOTE (optional) not recommended to use chars out of ([0123456789ABCDEFGHJKLMNPQRSTUVXYZ.\_\-\/ ])
+            sequence += "TEST" if self.company_id.l10n_es_edi_test_env else ""
         return sequence, number
 
     def _get_l10n_es_tbai_signature_and_date(self):
@@ -154,6 +176,9 @@ class AccountMove(models.Model):
     def _get_l10n_es_tbai_id(self):
         """Get the TicketBAI ID (TBAID) as defined in the TicketBAI doc."""
         self.ensure_one()
+        if not self._l10n_es_tbai_is_in_chain():
+            return ''
+
         signature, registration_date = self._get_l10n_es_tbai_signature_and_date()
         company = self.company_id
         tbai_id_no_crc = '-'.join([
@@ -221,3 +246,33 @@ class AccountMove(models.Model):
 
     def _is_l10n_es_tbai_simplified(self):
         return self.commercial_partner_id == self.env.ref("l10n_es_edi_sii.partner_simplified")
+
+    def _get_vendor_bill_tax_values(self):
+        self.ensure_one()
+        results = defaultdict(lambda: {'base_amount': 0.0, 'tax_amount': 0.0})
+        amount_total = 0.0
+        for line in self.line_ids.filtered(lambda l: l.display_type in ('product', 'tax')):
+            if any(t.l10n_es_type == 'ignore' for t in line.tax_ids) or line.tax_line_id.l10n_es_type == 'ignore':
+                continue
+            if line.tax_line_id.l10n_es_type != 'retencion':
+                amount_total += line.balance
+            for tax in line.tax_ids.filtered(lambda t: t.l10n_es_type not in ('recargo', 'retencion')):
+                results[tax]['base_amount'] += line.balance
+
+            tax = line.tax_line_id
+            if (tax and tax.l10n_es_type not in ('recargo', 'retencion') and
+                line.tax_repartition_line_id.factor_percent != -100.0):
+                results[tax]['tax_amount'] += line.balance
+        iva_values = []
+        for tax in results:
+            code = "C" # Bienes Corrientes
+            if tax.l10n_es_bien_inversion:
+                code = "I" # Investment Goods
+            if tax.tax_scope == 'service':
+                code = 'G' # Gastos
+            iva_values.append({'base': results[tax]['base_amount'],
+                               'code': code,
+                               'tax': results[tax]['tax_amount'],
+                               'rec': tax})
+        return {'iva_values': iva_values,
+                'amount_total': amount_total}

@@ -224,6 +224,8 @@ class ExportXlsxWriter:
                 cell_value = pycompat.to_text(cell_value)
             except UnicodeDecodeError:
                 raise UserError(_("Binary fields can not be exported to Excel unless their content is base64-encoded. That does not seem to be the case for %s.", self.field_names)[column])
+        elif isinstance(cell_value, (list, tuple)):
+            cell_value = pycompat.to_text(cell_value)
 
         if isinstance(cell_value, str):
             if len(cell_value) > self.worksheet.xls_strmax:
@@ -329,6 +331,8 @@ class Export(http.Controller):
             if import_compat and not field_name == 'id':
                 if exclude and field_name in exclude:
                     continue
+                if field.get('type') in ('properties', 'properties_definition'):
+                    continue
                 if field.get('readonly'):
                     # If none of the field's states unsets readonly, skip the field
                     if all(dict(attrs).get('readonly', True)
@@ -370,7 +374,7 @@ class Export(http.Controller):
 
         return [
             {'name': field['name'], 'label': fields_data[field['name']]}
-            for field in export_fields_list
+            for field in export_fields_list if field['name'] in fields_data
         ]
 
     def fields_info(self, model, export_fields):
@@ -483,7 +487,7 @@ class ExportFormat(object):
         if not import_compat and groupby:
             groupby_type = [Model._fields[x.split(':')[0]].type for x in groupby]
             domain = [('id', 'in', ids)] if ids else domain
-            groups_data = Model.read_group(domain, [x if x != '.id' else 'id' for x in field_names], groupby, lazy=False)
+            groups_data = Model.with_context(active_test=False).read_group(domain, [x if x != '.id' else 'id' for x in field_names], groupby, lazy=False)
 
             # read_group(lazy=False) returns a dict only for final groups (with actual data),
             # not for intermediary groups. The full group tree must be re-constructed.
@@ -585,8 +589,6 @@ class ExcelExport(ExportFormat, http.Controller):
         with ExportXlsxWriter(fields, len(rows)) as xlsx_writer:
             for row_index, row in enumerate(rows):
                 for cell_index, cell_value in enumerate(row):
-                    if isinstance(cell_value, (list, tuple)):
-                        cell_value = pycompat.to_text(cell_value)
                     xlsx_writer.write_cell(row_index + 1, cell_index, cell_value)
 
         return xlsx_writer.value

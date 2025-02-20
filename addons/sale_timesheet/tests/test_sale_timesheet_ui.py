@@ -1,7 +1,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 # -*- coding: utf-8 -*-
 
+import logging
+
 from odoo.tests import HttpCase, tagged
+
+_logger = logging.getLogger(__name__)
 
 
 @tagged('-at_install', 'post_install')
@@ -33,6 +37,9 @@ class TestUi(HttpCase):
         cls.env['res.config.settings'] \
             .create({'group_project_milestone': True}) \
             .execute()
+
+        admin = cls.env.ref('base.user_admin')
+        admin.employee_id.hourly_cost = 75
 
     def test_ui(self):
         self.start_tour('/web', 'sale_timesheet_tour', login='admin', timeout=100)

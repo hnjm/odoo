@@ -4,16 +4,15 @@
 # 
 # Translators:
 # Miku Laitinen <miku.laitinen@gmail.com>, 2022
-# Joakim Weckman, 2022
 # Mikko Salmela <salmemik@gmail.com>, 2022
 # Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2022
 # Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.4\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-12 07:50+0000\n"
+"POT-Creation-Date: 2025-02-10 08:26+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
 "Last-Translator: Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023\n"
 "Language-Team: Finnish (https://app.transifex.com/odoo/teams/41243/fi/)\n"
@@ -45,7 +44,7 @@ msgstr ""
 "        esim. 110 / (1 + 10%) = 100 (sisältää hinnan)\n"
 "    - Prosenttiosuus hinnasta vero huomioiden: veron määrä on jako-osuus hinnasta:\n"
 "        esim. 180 / (1 - 10%) = 200 (ei sisällä hintaa)\n"
-"        esim. 200 * (1 - 10%) = 180 (sisältää hinnan)"
+"        esim. 200 * (1 - 10%) = 180 (sisältää hinnan) "
 
 #. module: account_tax_python
 #: model:ir.model.fields,field_description:account_tax_python.field_account_tax__python_applicable
@@ -152,3 +151,17 @@ msgstr "Verojen laskenta"
 #: model:ir.model,name:account_tax_python.model_account_tax_template
 msgid "Templates for Taxes"
 msgstr "Verojen mallipohjat"
+
+#. module: account_tax_python
+#. odoo-python
+#: code:addons/account_tax_python/models/account_tax.py:0
+#: code:addons/account_tax_python/models/account_tax.py:0
+#, python-format
+msgid ""
+"You entered invalid code %r in %r taxes\n"
+"\n"
+"Error : %s"
+msgstr ""
+"Syötit virheellisen koodin %r käsiteltäessä %r veroja\n"
+"\n"
+"Virhe : %s"

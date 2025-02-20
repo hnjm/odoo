@@ -4,8 +4,7 @@
 # 
 # Translators:
 # nurbakhit nurka <nurbakhit@bumanit.mn>, 2022
-# Батмөнх Ганбат <batmunkh2522@gmail.com>, 2022
-# Bayarkhuu Bataa, 2022
+# Batmunkh Ganbat <batmunkh2522@gmail.com>, 2022
 # Munkhbaatar g <muuguu17@gmail.com>, 2022
 # Ganbaatar Buriad <Ganbaatar@asterisk-tech.mn>, 2022
 # hish, 2022
@@ -13,14 +12,15 @@
 # Насан-Очир <nasaaskii@gmail.com>, 2022
 # Martin Trigaux, 2022
 # Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2023
+# Bayarkhuu Bataa, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 12:49+0000\n"
+"POT-Creation-Date: 2024-02-06 13:31+0000\n"
 "PO-Revision-Date: 2022-09-22 05:55+0000\n"
-"Last-Translator: Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2023\n"
+"Last-Translator: Bayarkhuu Bataa, 2023\n"
 "Language-Team: Mongolian (https://app.transifex.com/odoo/teams/41243/mn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -388,7 +388,6 @@ msgstr "Нөөцийн байрлалууд"
 #. module: stock_account
 #. odoo-python
 #: code:addons/stock_account/__init__.py:0
-#: code:addons/stock_account/__init__.py:0
 #: code:addons/stock_account/models/account_chart_template.py:0
 #: model:ir.model.fields,field_description:stock_account.field_product_category__property_valuation
 #: model:ir.model.fields,field_description:stock_account.field_product_product__valuation
@@ -398,7 +397,7 @@ msgstr "Нөөцийн байрлалууд"
 #: model_terms:ir.ui.view,arch_db:stock_account.view_inventory_valuation_search
 #, python-format
 msgid "Inventory Valuation"
-msgstr "Өртөгийн бичилт"
+msgstr "Өртгийн бичилт"
 
 #. module: stock_account
 #: model:ir.model.fields,field_description:stock_account.field_stock_valuation_layer__account_move_line_id
@@ -509,7 +508,7 @@ msgstr ""
 #. module: stock_account
 #: model_terms:ir.ui.view,arch_db:stock_account.stock_valuation_layer_tree
 msgid "Open Valuation Layer"
-msgstr ""
+msgstr "Өртгийн бүртгэлийг нээх"
 
 #. module: stock_account
 #: model_terms:ir.ui.view,arch_db:stock_account.stock_valuation_layer_form
@@ -654,7 +653,7 @@ msgstr ""
 #. module: stock_account
 #: model:ir.model.fields,field_description:stock_account.field_product_category__property_stock_account_input_categ_id
 msgid "Stock Input Account"
-msgstr "Ирж буй барааны өртөгийн данс"
+msgstr "Ирж буй барааны өртгийн данс"
 
 #. module: stock_account
 #: model:ir.model.fields,field_description:stock_account.field_product_category__property_stock_journal
@@ -673,7 +672,7 @@ msgstr "Барааны хөдөлгөөн"
 #. module: stock_account
 #: model:ir.model.fields,field_description:stock_account.field_product_category__property_stock_account_output_categ_id
 msgid "Stock Output Account"
-msgstr "Гарч буй барааны өртөгийн данс"
+msgstr "Гарч буй барааны өртгийн данс"
 
 #. module: stock_account
 #: model:ir.model,name:stock_account.model_stock_quantity_history
@@ -725,7 +724,7 @@ msgstr "Бараа материалын данс (Зарлага)"
 #: model:ir.model.fields,field_description:stock_account.field_stock_move__stock_valuation_layer_ids
 #: model:ir.model.fields,field_description:stock_account.field_stock_valuation_layer__stock_valuation_layer_ids
 msgid "Stock Valuation Layer"
-msgstr ""
+msgstr "Өртгийн бүртгэл"
 
 #. module: stock_account
 #: model:ir.model.fields,help:stock_account.field_product_product__company_currency_id
@@ -803,6 +802,15 @@ msgid ""
 msgstr ""
 "Барааны хөдөлгөөнүүд тохиромжгүй нөхцөл байдалтай байна: эдгээр хөдөлгөөн нь"
 " ижил эх баримттай эсвэл ижил хүргэх компанитай байх ёсгүй."
+
+#. module: stock_account
+#. odoo-python
+#: code:addons/stock_account/wizard/stock_valuation_layer_revaluation.py:0
+#, python-format
+msgid ""
+"The value of a stock valuation layer cannot be negative. Landed cost could "
+"be use to correct a specific transfer."
+msgstr ""
 
 #. module: stock_account
 #: model_terms:ir.actions.act_window,help:stock_account.stock_valuation_layer_action
@@ -905,7 +913,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:stock_account.stock_valuation_layer_picking
 #: model_terms:ir.ui.view,arch_db:stock_account.view_stock_quant_tree_editable_inherit
 msgid "Valuation"
-msgstr "Өртөгийн дүн"
+msgstr "Өртгийн дүн"
 
 #. module: stock_account
 #: model:ir.model.fields,field_description:stock_account.field_product_product__company_currency_id
@@ -1023,6 +1031,15 @@ msgstr ""
 msgid ""
 "You don't have any stock input account defined on your product category. You"
 " must define one before processing this operation."
+msgstr ""
+
+#. module: stock_account
+#. odoo-python
+#: code:addons/stock_account/models/product.py:0
+#, python-format
+msgid ""
+"You don't have any output valuation account defined on your product "
+"category. You must define one before processing this operation."
 msgstr ""
 
 #. module: stock_account

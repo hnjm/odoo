@@ -67,6 +67,12 @@ function parseActiveIds(ids) {
     return activeIds;
 }
 
+const parser = new DOMParser();
+function isHelpEmpty(help) {
+    const doc = parser.parseFromString(help, "text/html");
+    return doc.body.innerText.trim() === "";
+}
+
 // -----------------------------------------------------------------------------
 // Errors
 // -----------------------------------------------------------------------------
@@ -92,6 +98,7 @@ function makeActionManager(env) {
     let dialogCloseProm;
     let actionCache = {};
     let dialog = null;
+    let nextDialog = null;
 
     // The state action (or default user action if none) is loaded as soon as possible
     // so that the next "doAction" will have its action ready when needed.
@@ -201,20 +208,13 @@ function makeActionManager(env) {
             // do nothing, the action might simply not be serializable
         }
         action.context = makeContext([context, action.context], env.services.user.context);
-        if (action.domain) {
-            const domain = action.domain || [];
-            action.domain =
-                typeof domain === "string"
-                    ? evaluateExpr(
-                          domain,
-                          Object.assign({}, env.services.user.context, action.context)
-                      )
-                    : domain;
-        }
+        const domain = action.domain || [];
+        action.domain =
+            typeof domain === "string"
+                ? evaluateExpr(domain, Object.assign({}, env.services.user.context, action.context))
+                : domain;
         if (action.help) {
-            const htmlHelp = document.createElement("div");
-            htmlHelp.innerHTML = action.help;
-            if (!htmlHelp.innerText.trim()) {
+            if (isHelpEmpty(action.help)) {
                 delete action.help;
             }
         }
@@ -426,6 +426,7 @@ function makeActionManager(env) {
                     name: v.display_name.toString(),
                     type: v.type,
                     multiRecord: v.multiRecord,
+                    accessKey: v.accessKey,
                 };
                 if (view.type === v.type) {
                     viewSwitcherEntry.active = true;
@@ -745,7 +746,6 @@ function makeActionManager(env) {
         ControllerComponent.template = ControllerComponentTemplate;
         ControllerComponent.Component = controller.Component;
 
-        let nextDialog = null;
         if (action.target === "new") {
             cleanDomFromBootstrap();
             const actionDialogProps = {
@@ -768,6 +768,9 @@ function makeActionManager(env) {
                     cleanDomFromBootstrap();
                 },
             });
+            if (nextDialog) {
+                nextDialog.remove();
+            }
             nextDialog = {
                 remove: removeDialog,
                 onClose: onClose || options.onClose,
@@ -807,6 +810,7 @@ function makeActionManager(env) {
             Component: ControllerComponent,
             componentProps: controller.props,
         };
+        env.services.dialog.closeAll();
         env.bus.trigger("ACTION_MANAGER:UPDATE", controller.__info__);
         return Promise.all([currentActionProm, closingProm]).then((r) => r[0]);
     }
@@ -1526,6 +1530,7 @@ export const actionService = {
         "view", // for legacy view compatibility #action-serv-leg-compat-js-class
         "ui",
         "user",
+        "dialog",
     ],
     start(env) {
         return makeActionManager(env);

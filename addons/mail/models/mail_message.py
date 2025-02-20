@@ -110,6 +110,7 @@ class Message(models.Model):
         ('email', 'Email'),
         ('comment', 'Comment'),
         ('notification', 'System notification'),
+        ('auto_comment', 'Automated Targeted Notification'),
         ('user_notification', 'User Specific Notification')],
         'Type', required=True, default='email',
         help="Message type: email for email message, notification for system "
@@ -195,10 +196,11 @@ class Message(models.Model):
     @api.depends_context('guest', 'uid')
     def _compute_is_current_user_or_guest_author(self):
         user = self.env.user
+        guest = self.env['mail.guest']._get_guest_from_context()
         for message in self:
             if not user._is_public() and (message.author_id and message.author_id == user.partner_id):
                 message.is_current_user_or_guest_author = True
-            elif user._is_public() and (message.author_guest_id and message.author_guest_id == self.env.context.get('guest')):
+            elif message.author_guest_id and message.author_guest_id == guest:
                 message.is_current_user_or_guest_author = True
             else:
                 message.is_current_user_or_guest_author = False
@@ -801,8 +803,8 @@ class Message(models.Model):
         self.ensure_one()
         self.check_access_rule('write')
         self.check_access_rights('write')
-        if self.env.user._is_public() and 'guest' in self.env.context:
-            guest = self.env.context.get('guest')
+        guest = self.env['mail.guest']._get_guest_from_context()
+        if self.env.user._is_public() and guest:
             partner = self.env['res.partner']
         else:
             guest = self.env['mail.guest']
@@ -821,8 +823,8 @@ class Message(models.Model):
         self.ensure_one()
         self.check_access_rule('write')
         self.check_access_rights('write')
-        if self.env.user._is_public() and 'guest' in self.env.context:
-            guest = self.env.context.get('guest')
+        guest = self.env['mail.guest']._get_guest_from_context()
+        if self.env.user._is_public() and guest:
             partner = self.env['res.partner']
         else:
             guest = self.env['mail.guest']
@@ -856,11 +858,7 @@ class Message(models.Model):
                 'name': message_sudo.author_guest_id.name,
             } if message_sudo.author_guest_id else [('clear',)]
             if message_sudo.model and message_sudo.res_id:
-                record_name = self.env[message_sudo.model] \
-                    .browse(message_sudo.res_id) \
-                    .sudo() \
-                    .with_prefetch(thread_ids_by_model_name[message_sudo.model]) \
-                    .display_name
+                record_name = self.env[message_sudo.model].browse(message_sudo.res_id).sudo().with_prefetch(thread_ids_by_model_name[message_sudo.model]).display_name
             else:
                 record_name = False
             reactions_per_content = defaultdict(self.env['mail.message.reaction'].sudo().browse)
@@ -1082,7 +1080,7 @@ class Message(models.Model):
             records = self.env[model].browse([res_id])
         else:
             records = self.env[model] if model else self.env['mail.thread']
-        return records._notify_get_reply_to(default=email_from)[res_id]
+        return records.sudo()._notify_get_reply_to(default=email_from)[res_id]
 
     @api.model
     def _get_message_id(self, values):

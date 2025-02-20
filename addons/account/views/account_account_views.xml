@@ -42,12 +42,13 @@
                                             <field name="code" placeholder="e.g. 101000" class="oe_inline"/>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row">
                                     <div class="col col-md-8">
                                         <label for="name" string="Account Name"/>
                                         <div>
                                             <field name="name"
                                                    placeholder="e.g. Current Assets"
-                                                   class="oe_inline"
                                                    style="width:80% !important;"/>
                                         </div>
                                     </div>
@@ -98,7 +99,7 @@
                     <field name="reconcile" widget="boolean_toggle" attrs="{'invisible': ['|', ('account_type', 'in', ('asset_cash', 'liability_credit_card')), ('internal_group', '=', 'off_balance')]}"/>
                     <field name="non_trade" widget="boolean_toggle" attrs="{'invisible': [('account_type', 'not in', ('liability_payable', 'asset_receivable'))]}" optional="hide"/>
                     <field name="tax_ids" optional="hide" widget="many2many_tags"/>
-                    <field name="tag_ids" optional="hide" widget="many2many_tags"/>
+                    <field name="tag_ids" domain="[('applicability', '=', 'accounts')]" optional="hide" widget="many2many_tags"/>
                     <field name="allowed_journal_ids" optional="hide" widget="many2many_tags"/>
                     <field name="currency_id" options="{'no_create': True}" groups="base.group_multi_currency"/>
                     <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>

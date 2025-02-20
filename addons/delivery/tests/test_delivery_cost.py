@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from freezegun import freeze_time
 from odoo.tests import common, Form
 from odoo.tools import float_compare
 
@@ -8,7 +9,10 @@ from odoo.tools import float_compare
 class TestDeliveryCost(common.TransactionCase):
 
     def setUp(self):
-        super(TestDeliveryCost, self).setUp()
+        super().setUp()
+        self.env.company.write({
+            'country_id': self.env.ref('base.us').id,
+        })
         self.SaleOrder = self.env['sale.order']
         self.SaleOrderLine = self.env['sale.order.line']
         self.AccountAccount = self.env['account.account']
@@ -169,6 +173,7 @@ class TestDeliveryCost(common.TransactionCase):
                 'applied_on': '0_product_variant',
                 'product_id': self.normal_delivery.product_id.id,
             })],
+            'discount_policy': 'without_discount',
         })
 
         # Create sales order with Normal Delivery Charges
@@ -240,8 +245,9 @@ class TestDeliveryCost(common.TransactionCase):
         self.assertEqual(line.price_subtotal, 5.0, "Delivery cost does not correspond to 5.0")
 
     def test_01_taxes_on_delivery_cost(self):
-
         # Creating taxes and fiscal position
+
+        self.env.ref('base.group_user').write({'implied_ids': [(4, self.env.ref('product.group_product_pricelist').id)]})
 
         tax_price_include = self.env['account.tax'].create({
             'name': '10% inc',
@@ -300,6 +306,74 @@ class TestDeliveryCost(common.TransactionCase):
 
         self.assertRecordValues(line, [{'price_subtotal': 9.09, 'price_total': 10.45}])
 
+    def test_delivery_real_cost(self):
+        """
+            ensure that the price is correctly set on the delivery line
+            in the case of a BackOrder
+        """
+        # Set up the carrier
+        product_delivery = self.env['product.product'].create({
+            'name': 'Delivery Charges',
+            'type': 'service',
+            'list_price': 40.0,
+            'categ_id': self.env.ref('delivery.product_category_deliveries').id,
+        })
+        delivery_carrier = self.env['delivery.carrier'].create({
+            'name': 'Delivery Now Free Over 100',
+            'fixed_price': 40,
+            'delivery_type': 'fixed',
+            'invoice_policy': 'real',
+            'product_id': product_delivery.id,
+            'free_over': False,
+        })
+
+        so = self.SaleOrder.create({
+            'partner_id': self.partner_18.id,
+            'partner_invoice_id': self.partner_18.id,
+            'partner_shipping_id': self.partner_18.id,
+            'pricelist_id': self.pricelist.id,
+            'order_line': [(0, 0, {
+                'name': 'PC Assamble + 2GB RAM',
+                'product_id': self.product_4.id,
+                'product_uom_qty': 2,
+                'product_uom': self.product_uom_unit.id,
+                'price_unit': 120.00,
+            })],
+        })
+
+        delivery_wizard = Form(self.env['choose.delivery.carrier'].with_context({
+            'default_order_id': so.id,
+            'default_carrier_id': delivery_carrier.id
+        }))
+        delivery_wizard.save().button_confirm()
+
+        delivery_line = so.order_line.filtered(lambda line: line.is_delivery)
+        self.assertEqual(len(delivery_line), 1)
+        self.assertEqual(delivery_line.price_unit, 0, "The invoicing policy of the carrier is set to 'real cost' and that cost is not yet known, hence the 0 value")
+        so.action_confirm()
+
+        picking = so.picking_ids[0]
+        self.assertEqual(picking.carrier_id.id, so.carrier_id.id)
+        picking.move_ids[0].quantity_done = 1.0
+        self.assertGreater(picking.shipping_weight, 0.0)
+
+        # Confirm picking for one quantiy and create a back order for the second
+        picking._action_done()
+        self.assertEqual(picking.carrier_price, 40.0)
+        # Check that the delivery cost (previously set to 0) has been correctly updated
+        self.assertEqual(delivery_line.price_unit, picking.carrier_price)
+
+        # confirm the back order
+        bo = picking.backorder_ids
+        bo.move_ids[0].quantity_done = 1.0
+        self.assertGreater(bo.shipping_weight, 0.0)
+        bo._action_done()
+        self.assertEqual(bo.carrier_price, 40.0)
+
+        new_delivery_line = so.order_line.filtered(lambda line: line.is_delivery) - delivery_line
+        self.assertEqual(len(new_delivery_line), 1)
+        self.assertEqual(new_delivery_line.price_unit, bo.carrier_price)
+
     def test_estimated_weight(self):
         """
         Test that negative qty SO lines are not included in the estimated weight calculation
@@ -322,3 +396,112 @@ class TestDeliveryCost(common.TransactionCase):
         })
         shipping_weight = sale_order._get_estimated_weight()
         self.assertEqual(shipping_weight, self.product_4.weight, "Only positive quantity products' weights should be included in estimated weight")
+
+    def test_price_with_weight_volume_variable(self):
+        """ Test that the price is correctly computed when the variable is weight*volume. """
+        qty = 3
+        list_price = 2
+        volume = 2.5
+        weight = 1.5
+        sale_order = self.env['sale.order'].create({
+            'partner_id': self.partner_18.id,
+            'order_line': [
+                (0, 0, {
+                    'product_id': self.env['product.product'].create({
+                        'name': 'wv',
+                        'weight': weight,
+                        'volume': volume,
+                    }).id,
+                    'product_uom_qty': qty,
+                    'product_uom': self.product_uom_unit.id,
+                }),
+            ],
+        })
+        delivery = self.env['delivery.carrier'].create({
+            'name': 'Delivery Charges',
+            'delivery_type': 'base_on_rule',
+            'product_id': self.product_delivery_normal.id,
+            'price_rule_ids': [(0, 0, {
+                'variable': 'price',
+                'operator': '>=',
+                'max_value': 0,
+                'list_price': list_price,
+                'variable_factor': 'wv',
+            })]
+        })
+        self.assertEqual(
+            delivery._get_price_available(sale_order),
+            qty * list_price * weight * volume,
+            "The shipping price is not correctly computed with variable weight*volume.",
+        )
+
+    def test_base_on_rule_currency_is_converted(self):
+        """
+        For based on rules delivery method without a company, check that the price
+        is converted from the main's company's currency to the current company's on SOs
+        """
+
+        # Create a company that uses a different currency
+        currency_bells = self.env['res.currency'].create({
+            'name': 'Bell',
+            'symbol': 'C',
+        })
+
+        nook_inc = self.env['res.company'].create({
+            'name': 'Nook inc.',
+            'currency_id': currency_bells.id,
+        })
+
+        with freeze_time('2000-01-01'):  # Make sure the rate is in the past
+            self.env['res.currency.rate'].with_company(nook_inc).create({
+                'currency_id': currency_bells.id,
+                'company_rate': 0.5,
+                'inverse_company_rate': 2,
+            })
+
+        # Company less shipping method
+        product_delivery_rule = self.env['product.product'].with_company(nook_inc).create({
+            'name': 'rule delivery charges',
+            'type': 'service',
+            'list_price': 10.0,
+            'categ_id': self.env.ref('delivery.product_category_deliveries').id,
+        })
+
+        delivery = self.env['delivery.carrier'].with_company(nook_inc).create({
+            'name': 'Rule Delivery',
+            'delivery_type': 'base_on_rule',
+            'product_id': product_delivery_rule.id,
+            'price_rule_ids': [(0, 0, {
+                'variable': 'price',
+                'operator': '>=',
+                'max_value': 0,
+                'variable_factor': 'weight',
+                'list_base_price': 15,
+            })]
+        })
+
+        # Create sale using the shipping method
+        so = self.SaleOrder.with_company(nook_inc).create({
+            'partner_id': self.partner_18.id,
+            'partner_invoice_id': self.partner_18.id,
+            'partner_shipping_id': self.partner_18.id,
+            'order_line': [(0, 0, {
+                'name': 'PC Assamble + 2GB RAM',
+                'product_id': self.product_4.id,
+                'product_uom_qty': 1,
+                'product_uom': self.product_uom_unit.id,
+                'price_unit': 750.00,
+            })],
+        })
+
+        delivery_wizard = Form(self.env['choose.delivery.carrier'].with_company(nook_inc).with_context({
+            'default_order_id': so.id,
+            'default_carrier_id': delivery.id,
+        }))
+        choose_delivery_carrier = delivery_wizard.save()
+        choose_delivery_carrier.button_confirm()
+
+        # check delivery price was properly converted
+        delivery_sol = so.order_line[-1]
+        self.assertEqual(delivery_sol.product_id, delivery.product_id)
+        self.assertEqual(delivery_sol.price_subtotal, 7.5)

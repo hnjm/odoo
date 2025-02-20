@@ -7,7 +7,7 @@ from unittest.mock import patch
 from odoo import http
 from odoo.tests import common, tagged
 from odoo.tools.misc import get_lang
-from odoo.addons.web.controllers.export import ExportXlsxWriter
+from odoo.addons.web.controllers.export import ExportXlsxWriter, Export
 from odoo.addons.mail.tests.common import mail_new_test_user
 
 
@@ -78,6 +78,21 @@ class XlsxCreatorCase(common.HttpCase):
 class TestGroupedExport(XlsxCreatorCase):
     model_name = 'export.group_operator'
     # pylint: disable=bad-whitespace
+
+    def test_archived_groupped(self):
+        """ The decimal separator of the language used shouldn't impact the float representation in the exported xlsx """
+        get_lang(self.env).decimal_point = ','
+        get_lang(self.env).thousands_sep = '.'
+
+        values = [
+                {'int_sum': 1, 'active': False},
+        ]
+        export = self.export(values, fields=['int_sum', 'active'], params={'groupby': ['int_sum']})
+
+        self.assertExportEqual(export, [
+            ['Int Sum', 'Active'],
+            ['1 (1)', ''],
+        ])
 
     def test_int_sum_max(self):
         values = [
@@ -391,3 +406,18 @@ class TestGroupedExport(XlsxCreatorCase):
             ['    86420.864 (1)','86420.86'],
             ['1'                ,'86420.86'],
         ])
+
+@tagged('-at_install', 'post_install')
+class TestExport(common.HttpCase):
+
+    def test_properties_type_fields_not_selectable_with_import_compat(self):
+        with patch.object(Export, 'fields_get', return_value={
+            'id': {'string': 'ID', 'type': 'integer'},
+            'name': {'string': 'Name', 'type': 'char'},
+            'properties': {'string': 'Properties', 'type': 'properties'},
+            'properties_definition': {'string': 'Properties Definition', 'type': 'properties_definition'}
+        }):
+            fields = Export().get_fields("mock_model", import_compat=True)
+            field_names = [field['id'] for field in fields]
+            self.assertNotIn('properties', field_names)
+            self.assertNotIn('properties_definition', field_names)

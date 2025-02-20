@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from psycopg2 import IntegrityError
+from psycopg2 import IntegrityError, Error as Psycopg2Error
 
 from odoo.exceptions import ValidationError
-from odoo.tests.common import TransactionCase, HttpCase, tagged
+from odoo.tests.common import Form, TransactionCase, HttpCase, tagged
 from odoo.tools import mute_logger
 from odoo import Command
 
@@ -276,6 +276,10 @@ class TestIrModel(TransactionCase):
                 'field_id': fields_value,
             })
 
+        # ensure we can order by a stored field via inherits
+        user_model = self.env['ir.model'].search([('model', '=', 'res.users')])
+        user_model._check_order()  # must not raise
+
     def test_model_order_search(self):
         """Check that custom orders are applied when querying a model."""
         ORDERS = {
@@ -326,6 +330,72 @@ class TestIrModel(TransactionCase):
         self.assertEqual(self.registry.field_depends[type(record).display_name], ())
         self.assertEqual(record.display_name, f"x_bananas,{record.id}")
 
+    def test_new_ir_model_fields_related(self):
+        """Check that related field are handled correctly on new field"""
+        with self.debug_mode():
+            form = Form(
+                self.env['ir.model.fields'].with_context(
+                    default_model_id=self.bananas_model.id
+                )
+            )
+            form.related = 'id'
+            self.assertEqual(form.ttype, 'integer')
+
+    def test_delete_manual_models_with_base_fields(self):
+        model = self.env["ir.model"].create({
+            "model": "x_test_base_delete",
+            "name": "test base delete",
+            "field_id": [
+                Command.create({
+                    "name": "x_my_field",
+                    "ttype": "char",
+                }),
+                Command.create({
+                  "name": "active",
+                  "ttype": "boolean",
+                  "state": "base",
+                })
+            ]
+        })
+        model2 = self.env["ir.model"].create({
+            "model": "x_test_base_delete2",
+            "name": "test base delete2",
+            "field_id": [
+                Command.create({
+                    "name": "x_my_field2",
+                    "ttype": "char",
+                }),
+                Command.create({
+                  "name": "active",
+                  "ttype": "boolean",
+                  "state": "base",
+                })
+            ]
+        })
+        self.assertTrue(model.exists())
+        self.assertTrue(model2.exists())
+
+        self.env["ir.model"].browse(model.ids + model2.ids).unlink()
+        self.assertFalse(model.exists())
+        self.assertFalse(model2.exists())
+
+    @mute_logger('odoo.sql_db')
+    def test_ir_model_fields_name_create(self):
+        NotNullViolationPgCode = '23502'
+        # Quick create an ir_model_field should not be possible
+        # It should be raise a ValidationError
+        with self.assertRaises(Psycopg2Error) as error:
+            self.env['ir.model.fields'].name_create("field_name")
+
+        self.assertEqual(error.exception.pgcode, NotNullViolationPgCode)
+
+        # But with default_ we should be able to name_create
+        self.env['ir.model.fields'].with_context(
+            default_model_id=self.bananas_model.id,
+            default_model=self.bananas_model.name,
+            default_ttype="char"
+        ).name_create("field_name")
+
 
 @tagged('test_eval_context')
 class TestEvalContext(TransactionCase):
@@ -346,6 +416,22 @@ class TestEvalContext(TransactionCase):
 @tagged('-at_install', 'post_install')
 class TestIrModelFieldsTranslation(HttpCase):
     def test_ir_model_fields_translation(self):
+        # If not enabled (like in demo data), landing on res.config will try
+        # to disable module_sale_quotation_builder and raise an warning
+        group_order_template = self.env.ref('sale_management.group_sale_order_template', raise_if_not_found=False)
+        if group_order_template:
+            self.env.ref('base.group_user').write({"implied_ids": [(4, group_order_template.id)]})
+
+        # modify en_US translation
+        field = self.env['ir.model.fields'].search([('model_id.model', '=', 'res.users'), ('name', '=', 'login')])
+        self.assertEqual(field.with_context(lang='en_US').field_description, 'Login')
+        # check the name column of res.users is displayed as 'Login'
+        self.start_tour("/web", 'ir_model_fields_translation_en_tour', login="admin")
+        field.update_field_translations('field_description', {'en_US': 'Login2'})
+        # check the name column of res.users is displayed as 'Login2'
+        self.start_tour("/web", 'ir_model_fields_translation_en_tour2', login="admin")
+
+        # modify fr_FR translation
         self.env['res.lang']._activate_lang('fr_FR')
         field = self.env['ir.model.fields'].search([('model_id.model', '=', 'res.users'), ('name', '=', 'login')])
         field.update_field_translations('field_description', {'fr_FR': 'Identifiant'})
@@ -353,7 +439,7 @@ class TestIrModelFieldsTranslation(HttpCase):
         admin = self.env['res.users'].search([('login', '=', 'admin')], limit=1)
         admin.lang = 'fr_FR'
         # check the name column of res.users is displayed as 'Identifiant'
-        self.start_tour("/web", 'ir_model_fields_translation_tour', login="admin")
+        self.start_tour("/web", 'ir_model_fields_translation_fr_tour', login="admin")
         field.update_field_translations('field_description', {'fr_FR': 'Identifiant2'})
         # check the name column of res.users is displayed as 'Identifiant2'
-        self.start_tour("/web", 'ir_model_fields_translation_tour2', login="admin")
+        self.start_tour("/web", 'ir_model_fields_translation_fr_tour2', login="admin")
