@@ -1728,6 +1728,7 @@ class AccountTax(models.Model):
             'account_id': tax_rep_data['account'].id or base_line_grouping_key['account_id'],
             'tax_ids': [Command.set(tax_rep_data['taxes'].ids)],
             'tax_tag_ids': [Command.set(tax_rep_data['tax_tags'].ids)],
+            '__keep_zero_line': False,
         }
 
     @api.model
@@ -2235,9 +2236,9 @@ class AccountTax(models.Model):
                 rounding_method=cash_rounding_method,
             )
             cash_rounding_base_amount_currency = expected_total_amount_currency - total_amount_currency
+            rate = abs(total_amount_currency / total_amount) if total_amount else 0.0
+            cash_rounding_base_amount = company.currency_id.round(cash_rounding_base_amount_currency / rate) if rate else 0.0
             if not currency.is_zero(cash_rounding_base_amount_currency):
-                rate = abs(total_amount_currency / total_amount) if total_amount else 0.0
-                cash_rounding_base_amount = company.currency_id.round(cash_rounding_base_amount_currency / rate) if rate else 0.0
                 if strategy == 'add_invoice_line':
                     tax_totals_summary['cash_rounding_base_amount_currency'] = cash_rounding_base_amount_currency
                     tax_totals_summary['cash_rounding_base_amount'] = cash_rounding_base_amount
@@ -2246,20 +2247,27 @@ class AccountTax(models.Model):
                     subtotals[untaxed_amount_subtotal_label]['base_amount_currency'] += cash_rounding_base_amount_currency
                     subtotals[untaxed_amount_subtotal_label]['base_amount'] += cash_rounding_base_amount
                 elif strategy == 'biggest_tax':
-                    max_subtotal, max_tax_group = max(
-                        [
-                            (subtotal, tax_group)
-                            for subtotal in tax_totals_summary['subtotals']
-                            for tax_group in subtotal['tax_groups']
-                        ],
-                        key=lambda item: item[1]['tax_amount_currency'],
-                    )
-                    max_tax_group['tax_amount_currency'] += cash_rounding_base_amount_currency
-                    max_tax_group['tax_amount'] += cash_rounding_base_amount
-                    max_subtotal['tax_amount_currency'] += cash_rounding_base_amount_currency
-                    max_subtotal['tax_amount'] += cash_rounding_base_amount
-                    tax_totals_summary['tax_amount_currency'] += cash_rounding_base_amount_currency
-                    tax_totals_summary['tax_amount'] += cash_rounding_base_amount
+                    all_subtotal_tax_group = [
+                        (subtotal, tax_group)
+                        for subtotal in tax_totals_summary['subtotals']
+                        for tax_group in subtotal['tax_groups']
+                    ]
+
+                    if all_subtotal_tax_group:
+                        max_subtotal, max_tax_group = max(
+                            all_subtotal_tax_group,
+                            key=lambda item: item[1]['tax_amount_currency'],
+                        )
+                        max_tax_group['tax_amount_currency'] += cash_rounding_base_amount_currency
+                        max_tax_group['tax_amount'] += cash_rounding_base_amount
+                        max_subtotal['tax_amount_currency'] += cash_rounding_base_amount_currency
+                        max_subtotal['tax_amount'] += cash_rounding_base_amount 
+                        tax_totals_summary['tax_amount_currency'] += cash_rounding_base_amount_currency
+                        tax_totals_summary['tax_amount'] += cash_rounding_base_amount
+                    else:
+                        # Failed to apply the cash rounding since there is no tax.
+                        cash_rounding_base_amount_currency = 0.0
+                        cash_rounding_base_amount = 0.0
 
         # Subtract the cash rounding from the untaxed amounts.
         cash_rounding_base_amount_currency = tax_totals_summary.get('cash_rounding_base_amount_currency', 0.0)
@@ -2385,11 +2393,13 @@ class AccountTax(models.Model):
 
         # Remove tax lines having a zero amount.
         tax_lines_mapping = {
-            k: v
+            frozendict({grouping_k: k[grouping_k] for grouping_k in k if not grouping_k.startswith('__')}): v
             for k, v in tax_lines_mapping.items()
             if (
-                not self.env['res.currency'].browse(k['currency_id']).is_zero(v['amount_currency'])
-                or not company.currency_id.is_zero(v['balance'])
+                k['__keep_zero_line'] or (
+                    not self.env['res.currency'].browse(k['currency_id']).is_zero(v['amount_currency'])
+                    or not company.currency_id.is_zero(v['balance'])
+                )
             )
         }
 

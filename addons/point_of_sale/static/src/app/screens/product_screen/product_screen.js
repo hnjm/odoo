@@ -124,9 +124,12 @@ export class ProductScreen extends Component {
     }
 
     getCategoriesAndSub() {
-        const rootCategories = this.pos.models["pos.category"].filter(
-            (category) => !category.parent_id
-        );
+        const { limit_categories, iface_available_categ_ids } = this.pos.config;
+        let rootCategories = this.pos.models["pos.category"].getAll();
+        if (limit_categories) {
+            rootCategories = iface_available_categ_ids;
+        }
+        rootCategories = rootCategories.filter((category) => !category.parent_id);
         const selected = this.pos.selectedCategory ? [this.pos.selectedCategory] : [];
         const allParents = selected.concat(this.pos.selectedCategory?.allParents || []).reverse();
         return this.getCategoriesList(rootCategories, allParents, 0)
@@ -338,6 +341,18 @@ export class ProductScreen extends Component {
     }
 
     get products() {
+        const { limit_categories, iface_available_categ_ids } = this.pos.config;
+        if (limit_categories) {
+            const productIds = new Set([]);
+            for (const categ of iface_available_categ_ids) {
+                const categoryProducts =
+                    this.pos.models["product.product"].getBy("pos_categ_ids", categ.id) || [];
+                for (const p of categoryProducts) {
+                    productIds.add(p.id);
+                }
+            }
+            return this.pos.models["product.product"].filter((p) => productIds.has(p.id));
+        }
         return this.pos.models["product.product"].getAll();
     }
 
@@ -379,7 +394,7 @@ export class ProductScreen extends Component {
             }
         }
 
-        return this.searchWord !== ""
+        return this.searchWord === ""
             ? filteredList
             : filteredList.sort((a, b) => a.display_name.localeCompare(b.display_name));
     }
@@ -437,14 +452,8 @@ export class ProductScreen extends Component {
         }
     }
 
-    async loadProductFromDB() {
-        const { searchProductWord } = this.pos;
-        if (!searchProductWord) {
-            return;
-        }
-
-        this.pos.setSelectedCategory(0);
-        const domain = [
+    loadProductFromDBDomain(searchProductWord) {
+        return [
             "|",
             "|",
             ["name", "ilike", searchProductWord],
@@ -453,6 +462,16 @@ export class ProductScreen extends Component {
             ["available_in_pos", "=", true],
             ["sale_ok", "=", true],
         ];
+    }
+
+    async loadProductFromDB() {
+        const { searchProductWord } = this.pos;
+        if (!searchProductWord) {
+            return;
+        }
+
+        this.pos.setSelectedCategory(0);
+        const domain = this.loadProductFromDBDomain(searchProductWord);
 
         const { limit_categories, iface_available_categ_ids } = this.pos.config;
         if (limit_categories && iface_available_categ_ids.length > 0) {
