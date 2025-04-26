@@ -16,6 +16,7 @@ import { inLeftSide, negateStep } from "@point_of_sale/../tests/tours/utils/comm
 import { registry } from "@web/core/registry";
 import * as Numpad from "@point_of_sale/../tests/tours/utils/numpad_util";
 import * as combo from "@point_of_sale/../tests/tours/utils/combo_popup_util";
+import { delay } from "@odoo/hoot-dom";
 
 const ProductScreen = { ...ProductScreenPos, ...ProductScreenResto };
 
@@ -185,7 +186,14 @@ registry.category("web_tour.tours").add("pos_restaurant_sync_second_login", {
 
             // Test transfering an order
             ProductScreen.clickControlButton("Transfer"),
-            FloorScreen.clickTable("4"),
+            {
+                trigger: ".table:contains(4)",
+                async run(helpers) {
+                    await delay(500);
+                    await helpers.click();
+                },
+            },
+            Chrome.activeTableOrOrderIs("4"),
 
             // Test if products still get merged after transfering the order
             ProductScreen.totalAmountIs("4.40"),
@@ -199,11 +207,25 @@ registry.category("web_tour.tours").add("pos_restaurant_sync_second_login", {
             ReceiptScreen.clickNextOrder(),
             // At this point, there are no draft orders.
 
-            FloorScreen.clickTable("2"),
+            {
+                trigger: ".table:contains(2)",
+                async run(helpers) {
+                    await delay(500);
+                    await helpers.click();
+                },
+            },
+            Chrome.activeTableOrOrderIs("2"),
             ProductScreen.isShown(),
             ProductScreen.orderIsEmpty(),
             ProductScreen.clickControlButton("Transfer"),
-            FloorScreen.clickTable("4"),
+            {
+                trigger: ".table:contains(4)",
+                async run(helpers) {
+                    await delay(500);
+                    await helpers.click();
+                },
+            },
+            Chrome.activeTableOrOrderIs("4"),
             ProductScreen.clickDisplayedProduct("Coca-Cola"),
             ProductScreen.totalAmountIs("2.20"),
             Chrome.clickPlanButton(),
@@ -218,9 +240,19 @@ registry.category("web_tour.tours").add("SaveLastPreparationChangesTour", {
             Dialog.confirm("Open Register"),
             FloorScreen.clickTable("5"),
             ProductScreen.clickDisplayedProduct("Coca-Cola", true, "1.0"),
+            ProductScreen.orderlineIsToOrder("Coca-Cola"),
             ProductScreen.clickOrderButton(),
+            Chrome.waitRequest(),
             ProductScreen.orderlinesHaveNoChange(),
+            Order.hasLine({
+                productName: "Coca-Cola",
+                quantity: 1,
+                withClass: ":eq(0)",
+            }),
             Chrome.clickPlanButton(),
+            FloorScreen.hasTable("2"),
+            FloorScreen.hasTable("4"),
+            FloorScreen.hasTable("5"),
         ].flat(),
 });
 
@@ -417,7 +449,6 @@ registry.category("web_tour.tours").add("PreparationPrinterContent", {
 });
 
 registry.category("web_tour.tours").add("ComboSortedPreparationReceiptTour", {
-    checkDelay: 50,
     steps: () =>
         [
             Chrome.startPoS(),
@@ -466,7 +497,6 @@ registry.category("web_tour.tours").add("ComboSortedPreparationReceiptTour", {
 });
 
 registry.category("web_tour.tours").add("TableTransferPreparationChange1", {
-    checkDelay: 50,
     steps: () =>
         [
             Chrome.startPoS(),
@@ -495,7 +525,6 @@ registry.category("web_tour.tours").add("TableTransferPreparationChange1", {
 });
 
 registry.category("web_tour.tours").add("TableTransferPreparationChange2", {
-    checkDelay: 50,
     steps: () =>
         [
             Chrome.startPoS(),
@@ -521,7 +550,6 @@ registry.category("web_tour.tours").add("TableTransferPreparationChange2", {
 });
 
 registry.category("web_tour.tours").add("TableTransferPreparationChange3", {
-    checkDelay: 50,
     steps: () =>
         [
             Chrome.startPoS(),
@@ -542,7 +570,6 @@ registry.category("web_tour.tours").add("TableTransferPreparationChange3", {
 });
 
 registry.category("web_tour.tours").add("TableTransferPreparationChange4", {
-    checkDelay: 50,
     steps: () =>
         [
             Chrome.startPoS(),
@@ -569,7 +596,6 @@ registry.category("web_tour.tours").add("TableTransferPreparationChange4", {
 });
 
 registry.category("web_tour.tours").add("TableTransferPreparationChange5", {
-    checkDelay: 50,
     steps: () =>
         [
             Chrome.startPoS(),
@@ -598,7 +624,6 @@ registry.category("web_tour.tours").add("TableTransferPreparationChange5", {
 });
 
 registry.category("web_tour.tours").add("TableTransferPreparationChange6", {
-    checkDelay: 50,
     steps: () =>
         [
             Chrome.startPoS(),
@@ -613,7 +638,6 @@ registry.category("web_tour.tours").add("TableTransferPreparationChange6", {
 });
 
 registry.category("web_tour.tours").add("MultiPreparationPrinter", {
-    checkDelay: 50,
     steps: () =>
         [
             Chrome.startPoS(),
@@ -627,7 +651,6 @@ registry.category("web_tour.tours").add("MultiPreparationPrinter", {
 });
 
 registry.category("web_tour.tours").add("LeaveResidualOrder", {
-    checkDelay: 50,
     steps: () =>
         [
             Chrome.startPoS(),
@@ -642,15 +665,23 @@ registry.category("web_tour.tours").add("LeaveResidualOrder", {
             FloorScreen.clickTable("5"),
             ProductScreen.clickDisplayedProduct("Coca-Cola"),
             Chrome.clickPlanButton(),
+            FloorScreen.hasTable("2"),
+            FloorScreen.hasTable("4"),
+            FloorScreen.hasTable("5"),
         ].flat(),
 });
 
 registry.category("web_tour.tours").add("FinishResidualOrder", {
-    checkDelay: 50,
     steps: () =>
         [
             Chrome.startPoS(),
+            FloorScreen.orderCountSyncedInTableIs("5", "1"),
             FloorScreen.clickTable("5"),
+            Order.hasLine({
+                productName: "Coca-Cola",
+                quantity: 1,
+                withClass: ":eq(0)",
+            }),
             ProductScreen.totalAmountIs("2.20"),
             ProductScreen.clickPayButton(),
             PaymentScreen.clickPaymentMethod("Bank"),

@@ -12,12 +12,12 @@
 # Kostas Goutoudis <goutoudis@gmail.com>, 2024
 # Gerasimos Kanelatos, 2025
 # Georgios Geitonas <g.geitonas@dileanity.com>, 2025
-# Agapi Psyllou, 2025
 # Maria Chalepiadou, 2025
-# Anastasia Mimou, 2025
 # Iasonas Polydoros <j.polydoros@dileanity.com>, 2025
 # Christos Paraschos, 2025
 # Larissa Manderfeld, 2025
+# Agapi Psyllou, 2025
+# Anastasia Mimou, 2025
 # Charalampos Loukas, 2025
 # 
 msgid ""
@@ -373,7 +373,7 @@ msgstr ""
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.report_generic_barcode
 msgid "1234567890"
-msgstr ""
+msgstr "1234567890"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.report_lot_label
@@ -1473,6 +1473,8 @@ msgid ""
 "Below text serves as a suggestion and doesn’t engage Odoo S.A. "
 "responsibility."
 msgstr ""
+"Το παρακάτω κείμενο χρησιμεύει ως πρόταση και δεν εμπλέκει την ευθύνη της "
+"Odoo S.A."
 
 #. module: stock
 #: model:ir.model.fields.selection,name:stock.selection__res_partner__picking_warn__block
@@ -5446,7 +5448,7 @@ msgstr ""
 #. module: stock
 #: model_terms:ir.actions.act_window,help:stock.action_lot_report
 msgid "No data yet!"
-msgstr ""
+msgstr "Δεν υπάρχουν δεδομένα ακόμη!"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.help_message_template
@@ -8143,7 +8145,7 @@ msgstr "Πολιτική Μεταφορών"
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_quant_package__shipping_weight
 msgid "Shipping Weight"
-msgstr ""
+msgstr "Βάρος Αποστολής"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.res_config_settings_view_form

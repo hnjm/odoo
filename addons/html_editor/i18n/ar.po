@@ -115,7 +115,7 @@ msgstr "يقبل"
 #. odoo-python
 #: code:addons/html_editor/controllers/main.py:0
 msgid "Action %s is not a window action, link preview is not available"
-msgstr ""
+msgstr "الإجراء %s ليس إجراء نافذة. لا تتوفر معاينة للرابط "
 
 #. module: html_editor
 #. odoo-python
@@ -124,6 +124,8 @@ msgid ""
 "Action %s not found, link preview is not available, please check your url is"
 " correct"
 msgstr ""
+"لم يتم العثور على الإجراء، لا تتوفر معاينة للرابط، يرجى التحقق من صحة عنوان "
+"url الخاص بك "
 
 #. module: html_editor
 #. odoo-javascript
@@ -160,7 +162,7 @@ msgstr "إضافة قسم للكود "
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/media/file_plugin.js:0
 msgid "Add a download box"
-msgstr ""
+msgstr "إضافة صندوق للتنزيل "
 
 #. module: html_editor
 #. odoo-javascript
@@ -279,24 +281,28 @@ msgstr "العارضة "
 
 #. module: html_editor
 #. odoo-javascript
+#: code:addons/html_editor/static/src/html_migrations/migration-1.2.js:0
 #: code:addons/html_editor/static/src/main/banner_plugin.js:0
 msgid "Banner Danger"
 msgstr "عارضة الخطر "
 
 #. module: html_editor
 #. odoo-javascript
+#: code:addons/html_editor/static/src/html_migrations/migration-1.2.js:0
 #: code:addons/html_editor/static/src/main/banner_plugin.js:0
 msgid "Banner Info"
 msgstr "معلومات العارضة "
 
 #. module: html_editor
 #. odoo-javascript
+#: code:addons/html_editor/static/src/html_migrations/migration-1.2.js:0
 #: code:addons/html_editor/static/src/main/banner_plugin.js:0
 msgid "Banner Success"
 msgstr "عارضة النجاح "
 
 #. module: html_editor
 #. odoo-javascript
+#: code:addons/html_editor/static/src/html_migrations/migration-1.2.js:0
 #: code:addons/html_editor/static/src/main/banner_plugin.js:0
 msgid "Banner Warning"
 msgstr "تحذير العارضة "
@@ -305,7 +311,7 @@ msgstr "تحذير العارضة "
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/signature_plugin.js:0
 msgid "Basic Bloc"
-msgstr ""
+msgstr "الكتلة البرمجية الأساسية "
 
 #. module: html_editor
 #. odoo-javascript
@@ -1119,6 +1125,7 @@ msgid ""
 "Link preview is not available because %s, please check if your url is "
 "correct"
 msgstr ""
+"معاينة الرابط غير متوفرة بسبب %s، يرجى التحقق من صحة عنوان url الخاص بك "
 
 #. module: html_editor
 #. odoo-javascript
@@ -2013,7 +2020,7 @@ msgstr "قاعدة البيانات "
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/font/gradient_picker.xml:0
 msgid "deg"
-msgstr ""
+msgstr "deg"
 
 #. module: html_editor
 #. odoo-javascript

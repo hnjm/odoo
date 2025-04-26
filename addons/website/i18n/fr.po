@@ -8,6 +8,7 @@
 # ShevAbam, 2024
 # Fabien Pinckaers <fp@openerp.com>, 2025
 # Wil Odoo, 2025
+# Larissa Manderfeld, 2025
 # Manon Rondou, 2025
 # 
 msgid ""
@@ -3999,7 +4000,7 @@ msgstr "Card Offset"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_card_options
 msgid "Card Width"
-msgstr "Card Largeur"
+msgstr "Largeur card"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
@@ -12115,7 +12116,7 @@ msgstr "Évaluation"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_card_options
 msgid "Ratio"
-msgstr "Facteur"
+msgstr "Ratio"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
@@ -12464,7 +12465,7 @@ msgstr "Inversé"
 #. module: website
 #: model:ir.actions.act_window,name:website.action_website_rewrite_list
 msgid "Rewrite"
-msgstr "Réécrire"
+msgstr "Réécriture d'URL"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view

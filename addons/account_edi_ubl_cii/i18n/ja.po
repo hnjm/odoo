@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-10 13:23+0000\n"
+"POT-Creation-Date: 2025-04-07 20:36+0000\n"
 "PO-Revision-Date: 2024-09-25 09:41+0000\n"
 "Last-Translator: Junko Augias, 2025\n"
 "Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
@@ -128,8 +128,8 @@ msgstr "ベルギー会社登記"
 
 #. module: account_edi_ubl_cii
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__9925
-msgid "Belgian VAT number"
-msgstr "ベルギー VAT番号"
+msgid "Belgian VAT"
+msgstr "ベルギー VAT"
 
 #. module: account_edi_ubl_cii
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__9924
@@ -295,13 +295,13 @@ msgstr "各請求書の明細の税金は1つのみである必要がありま�
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_xml_ubl_bis3.py:0
 msgid "Each invoice line should have a product or a label."
-msgstr "各請求書行には、プロダクトまたはラベルが必要です。"
+msgstr "各請求書明細には、プロダクトまたはラベルが必要です。"
 
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
 msgid "Each invoice line should have at least one tax."
-msgstr "各請求書の明細に少なくとも１つの税金がある必要があります。"
+msgstr "各請求明細に少なくとも１つの税金がある必要があります。"
 
 #. module: account_edi_ubl_cii
 #. odoo-python

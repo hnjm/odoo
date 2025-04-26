@@ -4,16 +4,16 @@
 # 
 # Translators:
 # Martin Trigaux, 2024
-# Abe Manyo, 2025
 # Wil Odoo, 2025
+# Abe Manyo, 2025
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-19 20:36+0000\n"
+"POT-Creation-Date: 2025-04-07 20:36+0000\n"
 "PO-Revision-Date: 2024-09-25 09:41+0000\n"
-"Last-Translator: Wil Odoo, 2025\n"
+"Last-Translator: Abe Manyo, 2025\n"
 "Language-Team: Indonesian (https://app.transifex.com/odoo/teams/41243/id/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -4682,7 +4682,7 @@ msgid ""
 "ID of the parent record holding the alias (example: project holding the task"
 " creation alias)"
 msgstr ""
-"ID dari catatan induk alias (contoh: proyek yang menahan pembuatan alias "
+"ID dari catatan induk alias (contoh: project yang menahan pembuatan alias "
 "tugas)"
 
 #. module: mail
@@ -7492,7 +7492,7 @@ msgid ""
 "(parent_model) and task (model))"
 msgstr ""
 "Model induk dengan alias. Model yang memiliki referensi alias ini tidak "
-"selalu berarti model yang diberikan oleh alias_model_id (contoh: proyek "
+"selalu berarti model yang diberikan oleh alias_model_id (contoh: project "
 "(parent_model) dan tugas (model))"
 
 #. module: mail
@@ -7503,7 +7503,7 @@ msgid ""
 "to task-related subtypes."
 msgstr ""
 "Subtipe induk, digunakan untuk subskripsi otomatis. Kolom ini tidak "
-"dinamakan dengan benar. Contoh pada proyek, parent_id dari subtipe proyek "
+"dinamakan dengan benar. Contoh pada project, parent_id dari subtipe project "
 "mengacu pada subtipe yang terkait dengan tugas."
 
 #. module: mail
@@ -8875,12 +8875,6 @@ msgid "Select a user..."
 msgstr "Pilih user..."
 
 #. module: mail
-#. odoo-javascript
-#: code:addons/mail/static/src/discuss/core/common/discuss_notification_settings.xml:0
-msgid "Select duration"
-msgstr "Pilih durasi"
-
-#. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
 msgid "Select the content filter used for filtering GIFs"
 msgstr "Pilih filter konten yang digunakan untuk memfilter GIF"
@@ -9847,7 +9841,7 @@ msgid ""
 msgstr ""
 "Model (Jenis Dokumen Odoo) di mana alias ini dikaitkan. Email masuk yang "
 "tidak menjawab catatan yang sudah ada akan menyebabkan pembuatan rekor baru "
-"model ini (misalnya tugas proyek)"
+"model ini (misalnya tugas project)"
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_alias__alias_name
@@ -11656,12 +11650,6 @@ msgstr "hari:"
 #: code:addons/mail/static/src/discuss/call/common/call_participant_card.xml:0
 msgid "deaf"
 msgstr "deaf"
-
-#. module: mail
-#. odoo-javascript
-#: code:addons/mail/static/src/discuss/core/common/discuss_notification_settings.xml:0
-msgid "default"
-msgstr "default"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_push__mail_push_device_id

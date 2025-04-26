@@ -6,8 +6,8 @@
 # Jolien De Paepe, 2024
 # Jordy Blankestijn <jblankestijn@erpopen.nl>, 2024
 # Dylan Kiss, 2025
-# Wil Odoo, 2025
 # Tiffany Chang, 2025
+# Wil Odoo, 2025
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2025
 # Manon Rondou, 2025
 # 
@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-19 20:36+0000\n"
+"POT-Creation-Date: 2025-04-07 20:36+0000\n"
 "PO-Revision-Date: 2024-09-25 09:41+0000\n"
 "Last-Translator: Manon Rondou, 2025\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
@@ -1078,7 +1078,7 @@ msgid ""
 "                            </span>"
 msgstr ""
 "<span class=\"text-muted ms-2\">\n"
-"                                <i>inclusief, om ze onveranderlijk te maken</i>\n"
+"                                <i>om ze onveranderlijk te maken</i>\n"
 "                            </span>"
 
 #. module: account
@@ -2183,7 +2183,7 @@ msgstr "Boekhouding"
 #: model_terms:ir.ui.view,arch_db:account.view_invoice_tree
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 msgid "Accounting Date"
-msgstr "Boekhouddatum"
+msgstr "Boekingsdatum"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_partner_property_form
@@ -4618,6 +4618,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.account_move_view_activity
 msgid "Commercial Entity"
 msgstr "Commerciële entiteit"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_move_line__commercial_partner_country
+msgid "Commercial Partner Country"
+msgstr "Land van commercieel partner"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_journal__invoice_reference_model
@@ -8374,7 +8379,8 @@ msgid ""
 msgstr ""
 "Als dit selectievakje niet is aangevinkt, betekent dit dat de gebruiker niet"
 " zeker was van alle gerelateerde informatie op het moment dat hij de "
-"verhuizing aanmaakte en dat de verhuizing opnieuw moet worden gecontroleerd."
+"verplaatsing aanmaakte en dat de verplaatsing opnieuw moet worden "
+"gecontroleerd."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_bank_statement_line__restrict_mode_hash_table
@@ -9450,6 +9456,12 @@ msgstr ""
 #: code:addons/account/models/account_move.py:0
 msgid "It was previously '%(previous)s' and it is now '%(current)s'."
 msgstr "Het was voorheen ‘%(previous)s’ en het is nu ‘%(current)s’."
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move_line.py:0
+msgid "Items With Missing Analytic Distribution"
+msgstr "Boekingen zonder analytische verdeling"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__res_company__fiscalyear_last_month__1
@@ -11326,6 +11338,12 @@ msgstr ""
 #: code:addons/account/models/account_move.py:0
 msgid "One or more invoices couldn't be processed."
 msgstr "Een of meerdere facturen konden niet worden verwerkt."
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move_line.py:0
+msgid "One or more lines require a 100% analytic distribution."
+msgstr "Een of meerdere regels vereisen een 100% analytisch verdeelmodel."
 
 #. module: account
 #: model:ir.ui.menu,name:account.root_payment_menu
@@ -13778,6 +13796,12 @@ msgid "See all activities"
 msgstr "Bekijk alle activiteiten"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move_line.py:0
+msgid "See items"
+msgstr "Bekijk boekingen"
+
+#. module: account
 #: model:ir.model.fields,help:account.field_account_analytic_distribution_model__product_categ_id
 msgid ""
 "Select a product category which will use analytic account specified in "
@@ -14083,7 +14107,8 @@ msgstr "Periodes instellen"
 #: code:addons/account/wizard/account_secure_entries_wizard.py:0
 msgid "Set a date. The moves will be secured up to including this date."
 msgstr ""
-"Stel een datum vast. De verhuizingen worden beveiligd tot en met deze datum."
+"Stel een datum vast. De verplaatsingen worden beveiligd tot en met deze "
+"datum."
 
 #. module: account
 #. odoo-javascript
@@ -16727,7 +16752,7 @@ msgstr "Deze herhalende boeking is afkomstig van %s"
 #: model:ir.model.fields,help:account.field_account_bank_statement_line__auto_post_until
 #: model:ir.model.fields,help:account.field_account_move__auto_post_until
 msgid "This recurring move will be posted up to and including this date."
-msgstr "Deze terugkerende verhuizing wordt tot en met deze datum geboekt."
+msgstr "Deze terugkerende verplaatsing wordt tot en met deze datum geboekt."
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
@@ -18679,11 +18704,8 @@ msgstr "Je kunt geen betalingen registreren voor diverse vermeldingen."
 #. module: account
 #. odoo-python
 #: code:addons/account/models/mail_message.py:0
-msgid ""
-"You cannot remove parts of the audit trail. Archive the record instead."
-msgstr ""
-"Je kunt delen van de audit trail niet verwijderen. Archiveer het record in "
-"plaats daarvan."
+msgid "You cannot remove parts of the audit trail."
+msgstr "Je kunt geen onderdelen van het auditspoor verwijderen."
 
 #. module: account
 #. odoo-python

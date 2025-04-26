@@ -2607,10 +2607,7 @@ class BaseModel(metaclass=MetaModel):
                     value = value.id
 
                 if not value and field.type == 'many2many':
-                    other_values = [other_row[group][0] if isinstance(other_row[group], tuple)
-                                    else other_row[group].id if isinstance(other_row[group], BaseModel)
-                                    else other_row[group] for other_row in rows_dict if other_row[group]]
-                    additional_domain = [(field_name, 'not in', other_values)]
+                    additional_domain = [(field_name, 'not any', [])]
                 else:
                     additional_domain = [(field_name, '=', value)]
 
@@ -4370,7 +4367,7 @@ class BaseModel(metaclass=MetaModel):
                 for name in regular_fields:
                     corecords = record.sudo()[name]
                     if corecords:
-                        domain = corecords._check_company_domain(companies) # pylint: disable=0601
+                        domain = corecords._check_company_domain(companies)
                         if domain and corecords != corecords.with_context(active_test=False).filtered_domain(domain):
                             inconsistencies.append((record, name, corecords))
             # The second part of the check (for property / company-dependent fields) verifies that the records
@@ -7037,6 +7034,9 @@ class BaseModel(metaclass=MetaModel):
 
     def __hash__(self):
         return hash((self._name, frozenset(self._ids)))
+
+    def __deepcopy__(self, memo):
+        return self
 
     @typing.overload
     def __getitem__(self, key: int | slice) -> Self: ...

@@ -89,6 +89,10 @@ async function fetchInternalMetaData(url) {
     // Get the internal metadata
     const keepLastPromise = new KeepLast();
     const urlParsed = new URL(url);
+    // Enforce the current page's protocol to prevent mixed content issues.
+    if (urlParsed.protocol !== window.location.protocol) {
+        urlParsed.protocol = window.location.protocol;
+    }
 
     const result = await keepLastPromise
         .add(fetch(urlParsed))
@@ -149,6 +153,7 @@ export class LinkPlugin extends Plugin {
         "lineBreak",
         "overlay",
         "color",
+        "feff",
     ];
     // @phoenix @todo: do we want to have createLink and insertLink methods in link plugin?
     static shared = ["createLink", "insertLink", "getPathAsUrlCommand"];
@@ -365,7 +370,7 @@ export class LinkPlugin extends Plugin {
             if (color && childNodes.every((n) => !isBlock(n))) {
                 anchorEl.style.removeProperty("color");
                 const font = selectElements(anchorEl, "font").next().value;
-                if (font && anchorEl.textContent === font.textContent) {
+                if (font && cleanZWChars(anchorEl.textContent) === font.textContent) {
                     continue;
                 }
                 const newFont = this.document.createElement("font");
@@ -427,12 +432,14 @@ export class LinkPlugin extends Plugin {
 
                 // Handle selection movement.
                 if (isCursorAtStartOfLink || isCursorAtEndOfLink) {
-                    const block = closestBlock(linkElement);
-                    const linkIndex = [...block.childNodes].indexOf(linkElement);
+                    const [targetNode, targetOffset] = isCursorAtStartOfLink
+                        ? leftPos(linkElement)
+                        : rightPos(linkElement);
                     this.dependencies.selection.setSelection({
-                        anchorNode: block,
-                        anchorOffset: isCursorAtStartOfLink ? linkIndex - 1 : linkIndex + 2,
+                        anchorNode: targetNode,
+                        anchorOffset: isCursorAtStartOfLink ? targetOffset - 1 : targetOffset + 1,
                     });
+                    return;
                 }
             }
         }
@@ -625,7 +632,6 @@ export class LinkPlugin extends Plugin {
 
     removeLinkFromSelection() {
         const selection = this.dependencies.split.splitSelection();
-        const cursors = this.dependencies.selection.preserveSelection();
 
         // If not, unlink only the part(s) of the link(s) that are selected:
         // `<a>a[b</a>c<a>d</a>e<a>f]g</a>` => `<a>a</a>[bcdef]<a>g</a>`.
@@ -636,10 +642,27 @@ export class LinkPlugin extends Plugin {
             closestElement(anchorNode, "a"),
             closestElement(focusNode, "a"),
         ];
+        let cursors;
+        if (startLink) {
+            // If a FEFF character is present as anchorNode or focusNode,
+            // restoring the selection later may throw an error. Therefore,
+            // FEFF characters should be cleaned before splitting the link.
+            cursors = this.dependencies.selection.preserveSelection();
+            this.dependencies.feff.removeFeffs(startLink, cursors);
+            cursors.restore();
+        }
+        if (endLink && startLink !== endLink) {
+            cursors = this.dependencies.selection.preserveSelection();
+            this.dependencies.feff.removeFeffs(endLink, cursors);
+            cursors.restore();
+        }
+        ({ anchorNode, focusNode, anchorOffset, focusOffset } =
+            this.dependencies.selection.getEditableSelection());
+        cursors = this.dependencies.selection.preserveSelection();
         // to remove link from selected images
         const selectedNodes = this.dependencies.selection.getSelectedNodes();
         const selectedImageNodes = selectedNodes.filter((node) => node.tagName === "IMG");
-        if (selectedImageNodes && startLink && endLink && startLink === endLink) {
+        if (selectedImageNodes.length && startLink && endLink && startLink === endLink) {
             for (const imageNode of selectedImageNodes) {
                 let imageLink;
                 if (direction === DIRECTIONS.RIGHT) {
@@ -665,6 +688,8 @@ export class LinkPlugin extends Plugin {
                 return;
             }
         }
+        const startBlock = closestBlock(startLink);
+        const endBlock = closestBlock(endLink);
         if (startLink && startLink.isConnected) {
             anchorNode = this.dependencies.split.splitAroundUntil(anchorNode, startLink);
             anchorOffset = direction === DIRECTIONS.RIGHT ? 0 : nodeSize(anchorNode);
@@ -695,17 +720,29 @@ export class LinkPlugin extends Plugin {
             }
             cursors.restore();
         }
+        if (startBlock) {
+            // Remove empty links splitted by `splitAroundUntil` due to
+            // adjacent invisible text nodes.
+            this.removeEmptyLinks(startBlock);
+        }
+        if (endBlock && endBlock !== startBlock) {
+            this.removeEmptyLinks(endBlock);
+        }
         this.dependencies.history.addStep();
     }
 
     removeEmptyLinks(root) {
         // @todo: check for unremovables
         // @todo: preserve spaces
+        const buttonClassRegex =
+            /^(btn|btn-(sm|lg|(?:[a-z0-9_]+-)?(?:primary|secondary))|rounded-circle)$/;
         for (const link of root.querySelectorAll("a")) {
             if ([...link.childNodes].some(isVisible)) {
                 continue;
             }
-            const classes = [...link.classList].filter((c) => !this.ignoredClasses.has(c));
+            const classes = [...link.classList].filter(
+                (c) => !this.ignoredClasses.has(c) && !buttonClassRegex.test(c)
+            );
             const attributes = [...link.attributes].filter(
                 (a) => !["style", "href", "class"].includes(a.name)
             );

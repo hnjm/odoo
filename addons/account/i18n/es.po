@@ -9,15 +9,15 @@
 # Pilar Vargas, 2024
 # Suresh, 2024
 # jabiri7, 2025
-# Pedro M. Baeza <pedro.baeza@tecnativa.com>, 2025
 # Wil Odoo, 2025
+# Pedro M. Baeza <pedro.baeza@tecnativa.com>, 2025
 # Larissa Manderfeld, 2025
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-19 20:36+0000\n"
+"POT-Creation-Date: 2025-04-07 20:36+0000\n"
 "PO-Revision-Date: 2024-09-25 09:41+0000\n"
 "Last-Translator: Larissa Manderfeld, 2025\n"
 "Language-Team: Spanish (https://app.transifex.com/odoo/teams/41243/es/)\n"
@@ -4632,6 +4632,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.account_move_view_activity
 msgid "Commercial Entity"
 msgstr "Entidad comercial"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_move_line__commercial_partner_country
+msgid "Commercial Partner Country"
+msgstr "País del socio comercial"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_journal__invoice_reference_model
@@ -9472,6 +9477,12 @@ msgid "It was previously '%(previous)s' and it is now '%(current)s'."
 msgstr "Anteriormente era \"%(previous)s\" y ahora es \"%(current)s\"."
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move_line.py:0
+msgid "Items With Missing Analytic Distribution"
+msgstr "Apuntes sin distribución analítica"
+
+#. module: account
 #: model:ir.model.fields.selection,name:account.selection__res_company__fiscalyear_last_month__1
 msgid "January"
 msgstr "Enero"
@@ -11347,6 +11358,12 @@ msgid "One or more invoices couldn't be processed."
 msgstr "No se han podido procesar una o varias facturas."
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move_line.py:0
+msgid "One or more lines require a 100% analytic distribution."
+msgstr "Una o más líneas requieren una distribución analítica del 100 %."
+
+#. module: account
 #: model:ir.ui.menu,name:account.root_payment_menu
 msgid "Online Payments"
 msgstr "Pagos en línea"
@@ -11397,7 +11414,7 @@ msgstr ""
 #: code:addons/account/models/account_move.py:0
 msgid "Only posted/cancelled journal entries can be reset to draft."
 msgstr ""
-"Solo se pueden reestablecer a borrador los asientos publicados o cancelados."
+"Solo se pueden restablecer a borrador los asientos publicados o cancelados."
 
 #. module: account
 #. odoo-python
@@ -13791,6 +13808,12 @@ msgstr "Token de seguridad"
 #: code:addons/account/static/src/components/journal_dashboard_activity/journal_dashboard_activity.xml:0
 msgid "See all activities"
 msgstr "Ver todas las actividades"
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move_line.py:0
+msgid "See items"
+msgstr "Ver apuntes"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_analytic_distribution_model__product_categ_id
@@ -17003,7 +17026,7 @@ msgstr "Total residual en moneda"
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__amount_total_signed
 #: model:ir.model.fields,field_description:account.field_account_move__amount_total_signed
 msgid "Total Signed"
-msgstr "Total firmado"
+msgstr "Total con signo"
 
 #. module: account
 #. odoo-python
@@ -17077,7 +17100,7 @@ msgstr "Total en moneda"
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__amount_total_in_currency_signed
 #: model:ir.model.fields,field_description:account.field_account_move__amount_total_in_currency_signed
 msgid "Total in Currency Signed"
-msgstr "Total firmado en moneda"
+msgstr "Total con signo en moneda"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
@@ -18700,10 +18723,8 @@ msgstr "No puede registrar pagos para asientos varios."
 #. module: account
 #. odoo-python
 #: code:addons/account/models/mail_message.py:0
-msgid ""
-"You cannot remove parts of the audit trail. Archive the record instead."
-msgstr ""
-"No puede eliminar partes de la pista de auditoría. Archive el registro."
+msgid "You cannot remove parts of the audit trail."
+msgstr "No puede eliminar partes de la pista de auditoría."
 
 #. module: account
 #. odoo-python

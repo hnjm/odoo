@@ -1056,7 +1056,7 @@ Please change the quantity done or the rounding precision of your unit of measur
             warehouse_id = move.warehouse_id or move.picking_id.picking_type_id.warehouse_id
 
             ProcurementGroup = self.env['procurement.group']
-            if move.location_dest_id.company_id != self.env.company:
+            if move.location_dest_id.company_id not in self.env.companies:
                 ProcurementGroup = self.env['procurement.group'].sudo()
                 move = move.with_context(allowed_companies=self.env.user.company_ids.ids)
                 warehouse_id = False
@@ -1982,8 +1982,9 @@ Please change the quantity done or the rounding precision of your unit of measur
         return True
 
     def _skip_push(self):
-        return self.is_inventory or self.move_dest_ids and any(m.location_id._child_of(self.location_dest_id) for m in self.move_dest_ids) or\
-            self.location_final_id and self.location_final_id._child_of(self.location_dest_id)
+        return self.is_inventory or (
+            self.move_dest_ids and any(m.location_id._child_of(self.location_dest_id) for m in self.move_dest_ids)
+        )
 
     def _check_quantity(self):
         return self.env['stock.quant'].search([
@@ -2142,6 +2143,12 @@ Please change the quantity done or the rounding precision of your unit of measur
         new_product_qty = float_round(new_product_qty, precision_digits=self.env['decimal.precision'].precision_get('Product Unit of Measure'))
         self.with_context(do_not_unreserve=True).write({'product_uom_qty': new_product_qty})
         return new_move_vals
+
+    def _post_process_created_moves(self):
+        # This method is meant to be overriden in order to execute post 
+        # creation actions that would be bypassed since the move was 
+        # and will probably never be confirmed
+        pass
 
     def _recompute_state(self):
         if self._context.get('preserve_state'):
@@ -2322,6 +2329,7 @@ Please change the quantity done or the rounding precision of your unit of measur
                         ]
         moves_to_reserve = self.env['stock.move'].search(expression.AND([static_domain, expression.OR(domains)]),
                                                          order='priority desc, date asc, id asc')
+        moves_to_reserve = moves_to_reserve.sorted(key=lambda m: m.group_id.id in self.group_id.ids, reverse=True)
         moves_to_reserve._action_assign()
 
     def _rollup_move_dests_fetch(self):
@@ -2476,3 +2484,15 @@ Please change the quantity done or the rounding precision of your unit of measur
             ),
             'readOnly': False,
         }
+
+    def _is_incoming(self):
+        self.ensure_one()
+        return self.location_id.usage in ('customer', 'supplier') or (
+            self.location_id.usage == 'transit' and not self.location_id.company_id
+        )
+
+    def _is_outgoing(self):
+        self.ensure_one()
+        return self.location_dest_id.usage in ('customer', 'supplier') or (
+            self.location_dest_id.usage == 'transit' and not self.location_dest_id.company_id
+        )

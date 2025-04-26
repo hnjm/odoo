@@ -567,7 +567,7 @@ class AccountTestInvoicingCommon(ProductCommon):
                     continue
                 expected_value = expected_values[key]
                 currency = monetary_fields.get(key)
-                if currency.is_zero(current_value - expected_value):
+                if current_value is not None and currency.is_zero(current_value - expected_value):
                     current_values[key] = expected_value
 
         currency = self.env['res.currency'].browse(tax_totals['currency_id'])
@@ -856,6 +856,12 @@ class TestTaxCommon(AccountTestInvoicingHttpCommon):
             return {}
         return taxes._eval_taxes_computation_turn_to_product_values(product=product)
 
+    def _jsonify_product_uom(self, uom):
+        return {
+            'id': uom.id,
+            'name': uom.name,
+        }
+
     def _jsonify_tax_group(self, tax_group):
         return {
             'id': tax_group.id,
@@ -877,6 +883,12 @@ class TestTaxCommon(AccountTestInvoicingHttpCommon):
             'has_negative_factor': tax.has_negative_factor,
             'children_tax_ids': [self._jsonify_tax(child) for child in tax.children_tax_ids],
             'tax_group_id': self._jsonify_tax_group(tax.tax_group_id),
+        }
+
+    def _jsonify_country(self, country):
+        return {
+            'id': country.id,
+            'code': country.code,
         }
 
     def _jsonify_currency(self, currency):
@@ -903,6 +915,7 @@ class TestTaxCommon(AccountTestInvoicingHttpCommon):
             'currency_id': self._jsonify_currency(line.get('currency_id') or document['currency']),
             'rate': line['rate'] if 'rate' in line else document['rate'],
             'product_id': self._jsonify_product(line['product_id'], line['tax_ids']),
+            'product_uom_id': self._jsonify_product_uom(line['product_uom_id']),
             'tax_ids': [self._jsonify_tax(tax) for tax in line['tax_ids']],
             'price_unit': line['price_unit'],
             'quantity': line['quantity'],
@@ -928,8 +941,23 @@ class TestTaxCommon(AccountTestInvoicingHttpCommon):
         return {
             'id': company.id,
             'tax_calculation_rounding_method': company.tax_calculation_rounding_method,
+            'account_fiscal_country_id': self._jsonify_country(company.account_fiscal_country_id),
             'currency_id': self._jsonify_currency(company.currency_id),
         }
+
+    def convert_base_line_to_invoice_line(self, document, base_line):
+        values = {
+            'price_unit': base_line['price_unit'],
+            'discount': base_line['discount'],
+            'quantity': base_line['quantity'],
+        }
+        if base_line['product_id']:
+            values['product_id'] = base_line['product_id'].id
+        if base_line['product_uom_id']:
+            values['product_uom_id'] = base_line['product_uom_id'].id
+        if base_line['tax_ids']:
+            values['tax_ids'] = [Command.set(base_line['tax_ids'].ids)]
+        return values
 
     def convert_document_to_invoice(self, document):
         invoice_date = '2020-01-01'
@@ -940,13 +968,7 @@ class TestTaxCommon(AccountTestInvoicingHttpCommon):
             'currency_id': currency.id,
             'invoice_cash_rounding_id': document['cash_rounding'] and document['cash_rounding'].id,
             'invoice_line_ids': [
-                Command.create({
-                    'product_id': base_line['product_id'].id,
-                    'price_unit': base_line['price_unit'],
-                    'discount': base_line['discount'],
-                    'quantity': base_line['quantity'],
-                    'tax_ids': [Command.set(base_line['tax_ids'].ids)],
-                })
+                Command.create(self.convert_base_line_to_invoice_line(document, base_line))
                 for base_line in document['lines']
             ],
         })

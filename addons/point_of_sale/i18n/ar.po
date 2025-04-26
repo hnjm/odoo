@@ -5,16 +5,16 @@
 # Translators:
 # Farid Fox, 2024
 # Tiffany Chang, 2024
-# Malaz Abuidris <msea@odoo.com>, 2025
 # Wil Odoo, 2025
+# Malaz Abuidris <msea@odoo.com>, 2025
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-19 20:36+0000\n"
+"POT-Creation-Date: 2025-04-07 20:36+0000\n"
 "PO-Revision-Date: 2024-09-25 09:41+0000\n"
-"Last-Translator: Wil Odoo, 2025\n"
+"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2025\n"
 "Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -85,7 +85,7 @@ msgstr "%(payment_method)s مدفوعات نقطة البيع %(partner)s في %
 #. odoo-python
 #: code:addons/point_of_sale/models/pos_order.py:0
 msgid "%(product_name)s: Deleted line (quantity: %(qty)s)"
-msgstr ""
+msgstr "%(product_name)s: بند محذوف (الكمية: %(qty)s) "
 
 #. module: point_of_sale
 #. odoo-python
@@ -98,6 +98,12 @@ msgstr "%(product_name)s: الكمية التي تم طلبها: %(old_qty)s "
 #: code:addons/point_of_sale/models/pos_order.py:0
 msgid "%(refunded_order)s REFUND"
 msgstr "%(refunded_order)s استرداد الأموال "
+
+#. module: point_of_sale
+#. odoo-python
+#: code:addons/point_of_sale/models/pos_session.py:0
+msgid "%(title)s %(product_name)s with %(taxes)s"
+msgstr "%(title)s %(product_name)s مع %(taxes)s "
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -125,6 +131,12 @@ msgstr ""
 #: code:addons/point_of_sale/static/src/app/debug/debug_widget.js:0
 msgid "%s orders imported"
 msgstr "تم استيراد %s طلبات "
+
+#. module: point_of_sale
+#. odoo-python
+#: code:addons/point_of_sale/models/pos_session.py:0
+msgid "%s untaxed"
+msgstr ""
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -1409,13 +1421,13 @@ msgstr "لا يمكن رد الباقي دون طريقة دفع نقدية "
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/scale_screen/scale_service.js:0
 msgid "Cannot weigh product - IoT Box is disconnected"
-msgstr ""
+msgstr "تعذّر وزن المنتج - جهاز IoT غير متصل بصندوق إنترنت الأشياء "
 
 #. module: point_of_sale
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/scale_screen/scale_service.js:0
 msgid "Cannot weigh product - Scale is not connected to IoT Box"
-msgstr ""
+msgstr "تعذّر وزن المنتج - الميزان غير متصل بجهاز IoT "
 
 #. module: point_of_sale
 #. odoo-python
@@ -1770,7 +1782,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/generic_components/list_container/list_container.js:0
 msgid "Choose an order"
-msgstr ""
+msgstr "يُرجى اختيار الطلب "
 
 #. module: point_of_sale
 #: model:ir.model.fields,help:point_of_sale.field_res_company__point_of_sale_ticket_portal_url_display_mode
@@ -2104,7 +2116,7 @@ msgstr "الاتصال بالوكيل "
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/customer_display/utils.js:0
 msgid "Connecting to the IoT Box"
-msgstr ""
+msgstr "الاتصال بجهاز IoT "
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -2128,7 +2140,7 @@ msgstr "فشل الاتصال "
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/customer_display/utils.js:0
 msgid "Connection successful"
-msgstr ""
+msgstr "تم الاتصال بنجاح "
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -4224,7 +4236,7 @@ msgstr "الاسم"
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/navbar/navbar.js:0
 msgid "Navigate to your PoS Customer Display on the other computer"
-msgstr ""
+msgstr "انتقل إلى شاشة عرض عملاء نقطة البيع الخاصة بك على جهاز الحاسوب الآخر "
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -4420,7 +4432,7 @@ msgstr "لم يتم العثور على أي طلبات "
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/product_screen/product_screen.js:0
 msgid "No other products found for \"%s\"."
-msgstr ""
+msgstr "لم يتم العثور على منتجات أخرى لـ \"%s\". "
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -4836,6 +4848,12 @@ msgstr "بنود الطلب "
 #: code:addons/point_of_sale/static/src/app/screens/ticket_screen/ticket_screen.xml:0
 msgid "Order number"
 msgstr "رقم الطلب "
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/store/pos_store.js:0
+msgid "Order saved for later"
+msgstr "طلب محفوظ لوقت لاحق "
 
 #. module: point_of_sale
 #: model:ir.model.fields,help:point_of_sale.field_pos_order_line__refund_orderline_ids
@@ -5366,7 +5384,7 @@ msgstr "يرجى اختيار العميل "
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/navbar/navbar.js:0
 msgid "PoS Customer Display opened in a new window"
-msgstr ""
+msgstr "تم فتح شاشة عرض عملاء نقطة البيع في نافذة جديدة "
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
@@ -6301,6 +6319,8 @@ msgstr "تحديث شاشة العرض"
 
 #. module: point_of_sale
 #. odoo-javascript
+#. odoo-python
+#: code:addons/point_of_sale/models/pos_session.py:0
 #: code:addons/point_of_sale/static/src/app/screens/product_screen/control_buttons/control_buttons.xml:0
 #: code:addons/point_of_sale/static/src/app/screens/ticket_screen/ticket_screen.xml:0
 msgid "Refund"
@@ -6595,6 +6615,8 @@ msgid "Sale line"
 msgstr "بند البيع"
 
 #. module: point_of_sale
+#. odoo-python
+#: code:addons/point_of_sale/models/pos_session.py:0
 #: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
 msgid "Sales"
 msgstr "المبيعات"
@@ -6650,7 +6672,7 @@ msgstr "الميزان"
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/scale_screen/scale_screen.js:0
 msgid "Scale error"
-msgstr ""
+msgstr "خطأ في الميزان "
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -7555,6 +7577,13 @@ msgstr "العلامة التجارية للبطاقة المستخدمة للد
 #. module: point_of_sale
 #. odoo-python
 #: code:addons/point_of_sale/models/pos_config.py:0
+msgid ""
+"The cash rounding strategy of the point of sale %(pos)s must be: '%(value)s'"
+msgstr "يجب أن تكون استراتيجية تقريب المال لنقطة البيع %(pos)s : '%(value)s' "
+
+#. module: point_of_sale
+#. odoo-python
+#: code:addons/point_of_sale/models/pos_config.py:0
 msgid "The default pricelist must be included in the available pricelists."
 msgstr "يجب أن تتضمن قوائم الأسعار المتاحة قائمة الأسعار الافتراضية."
 
@@ -8055,6 +8084,8 @@ msgid ""
 "This journal is associated with payment method %(payment_method)s that is "
 "being used by order %(pos_order)s in the active pos session %(pos_session)s"
 msgstr ""
+"يرتبط دفتر اليومية هذا بطريقة الدفع %(payment_method)s المستخدمة من قِبَل "
+"الطلب %(pos_order)s في جلسة نقاط البيع النشطة %(pos_session)s "
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -8495,7 +8526,7 @@ msgstr "خطأ غير معروف"
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/scale_screen/scale_service.js:0
 msgid "Unnamed Product"
-msgstr ""
+msgstr "منتج غير مسمى "
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.product_product_view_form_normalized_pos
@@ -8710,7 +8741,7 @@ msgstr "سجل تواصل الموقع الإلكتروني "
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/customer_display/customer_display.xml:0
 msgid "Weighing Product:"
-msgstr ""
+msgstr "وزن المنتج: "
 
 #. module: point_of_sale
 #: model:ir.model.fields.selection,name:point_of_sale.selection__barcode_rule__type__weight
@@ -8928,6 +8959,15 @@ msgstr "لا يمكنك فوترة الطلبات التي تنتمي لشركا
 
 #. module: point_of_sale
 #. odoo-python
+#: code:addons/point_of_sale/models/account_cash_rounding.py:0
+#, python-format
+msgid ""
+"You cannot delete a rounding method that is used in a Point of Sale "
+"configuration."
+msgstr "لا يمكنك حذف طريقة تقريب مستخدمة في تهيئة نقطة البيع. "
+
+#. module: point_of_sale
+#. odoo-python
 #: code:addons/point_of_sale/models/pos_config.py:0
 msgid ""
 "You cannot share open orders with configuration that does not use the same "
@@ -8983,6 +9023,19 @@ msgstr ""
 #: code:addons/point_of_sale/models/product.py:0
 msgid "You must first remove this product from the %s combo"
 msgstr "عليك إزالة هذا المنتج من %s الكومبو "
+
+#. module: point_of_sale
+#. odoo-python
+#: code:addons/point_of_sale/models/pos_config.py:0
+msgid "You must have 'Administration Settings' access to load clothes data."
+msgstr ""
+"يجب أن تكون لديك صلاحية وصول 'إعدادات الإدارة' لتحميل بيانات الملابس. "
+
+#. module: point_of_sale
+#. odoo-python
+#: code:addons/point_of_sale/models/pos_config.py:0
+msgid "You must have 'Administration Settings' access to load furniture data."
+msgstr "يجب أن تكون لديك صلاحية وصول 'إعدادات الإدارة' لتحميل بيانات الأثاث. "
 
 #. module: point_of_sale
 #. odoo-python

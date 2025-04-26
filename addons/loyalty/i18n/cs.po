@@ -6,14 +6,15 @@
 # Tereza Mokrá, 2024
 # Wil Odoo, 2024
 # Aleš Fiala <f.ales1@seznam.cz>, 2024
+# Marta Wacławek, 2025
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-27 13:03+0000\n"
+"POT-Creation-Date: 2025-03-19 20:37+0000\n"
 "PO-Revision-Date: 2024-09-25 09:41+0000\n"
-"Last-Translator: Aleš Fiala <f.ales1@seznam.cz>, 2024\n"
+"Last-Translator: Marta Wacławek, 2025\n"
 "Language-Team: Czech (https://app.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1074,7 +1075,7 @@ msgstr "Generovat digitální peněženku"
 #. odoo-javascript
 #: code:addons/loyalty/static/src/xml/loyalty_templates.xml:0
 msgid "Generate {{props.context.program_item_name}}"
-msgstr ""
+msgstr "Generujte {{props.context.program_item_name}}"
 
 #. module: loyalty
 #. odoo-python
@@ -1276,7 +1277,7 @@ msgstr "Položky"
 #. module: loyalty
 #: model_terms:ir.ui.view,arch_db:loyalty.loyalty_report
 msgid "John Doe"
-msgstr ""
+msgstr "Jan Testovací"
 
 #. module: loyalty
 #. odoo-javascript
@@ -1923,11 +1924,6 @@ msgid "Trigger"
 msgstr "Spouštěč"
 
 #. module: loyalty
-#: model_terms:ir.ui.view,arch_db:loyalty.loyalty_reward_view_form
-msgid "Untaxed discount"
-msgstr ""
-
-#. module: loyalty
 #. odoo-python
 #: code:addons/loyalty/models/loyalty_card.py:0
 #: model_terms:ir.ui.view,arch_db:loyalty.loyalty_card_update_balance_form
@@ -2233,4 +2229,4 @@ msgstr "Vaše objednávka"
 #. odoo-javascript
 #: code:addons/loyalty/static/src/xml/loyalty_templates.xml:0
 msgid "{{loyalty_el_title}}"
-msgstr ""
+msgstr "{{loyalty_el_title}}"

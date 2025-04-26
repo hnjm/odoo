@@ -5404,7 +5404,7 @@ msgstr "عدد بنود الحركة "
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_return_picking_line__move_quantity
 msgid "Move Quantity"
-msgstr ""
+msgstr "كمية حركة المخزون "
 
 #. module: stock
 #: model:ir.model.fields,help:stock.field_stock_move__origin_returned_move_id
@@ -5544,7 +5544,7 @@ msgstr "مطلقًا"
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_move__never_product_template_attribute_value_ids
 msgid "Never attribute Values"
-msgstr ""
+msgstr "قيم الخصائص التي لا يجب استخدامها "
 
 #. module: stock
 #. odoo-python
@@ -9055,6 +9055,8 @@ msgid ""
 "The Picking Operations report has been deleted so you cannot print at this "
 "time unless the report is restored."
 msgstr ""
+"تم حذف تقرير عمليات الانتقاء لذا لا يمكنك الطباعة في الوقت الحالي ما لم تتم "
+"استعادة التقرير. "
 
 #. module: stock
 #. odoo-python

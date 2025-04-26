@@ -1152,3 +1152,74 @@ class TestPoSSale(TestPointOfSaleHttpCommon):
         self.assertFalse(invoice.invoice_payment_term_id)
 
         self.assertAlmostEqual(order.amount_total, invoice.amount_total, places=2, msg="Order and Invoice amounts do not match.")
+
+    def test_settle_order_with_lot(self):
+        warehouse = self.env['stock.warehouse'].search([('company_id', '=', self.env.company.id)], limit=1)
+        stock_location = warehouse.lot_stock_id
+        product = self.env['product.product'].create({
+            'name': 'Product A',
+            'tracking': 'serial',
+            'is_storable': True,
+            'lst_price': 10,
+            'categ_id': self.env.ref('product.product_category_all').id,
+        })
+
+        lot1 = self.env['stock.lot'].create({
+            'name': '1001',
+            'product_id': product.id,
+            'company_id': self.env.company.id,
+        })
+        lot2 = self.env['stock.lot'].create({
+            'name': '1002',
+            'product_id': product.id,
+            'company_id': self.env.company.id,
+        })
+
+        self.env['stock.quant'].with_context(inventory_mode=True).create({
+            'product_id': product.id,
+            'inventory_quantity': 1,
+            'location_id': stock_location.id,
+            'lot_id': lot1.id
+        }).action_apply_inventory()
+        self.env['stock.quant'].with_context(inventory_mode=True).create({
+            'product_id': product.id,
+            'inventory_quantity': 1,
+            'location_id': stock_location.id,
+            'lot_id': lot2.id
+        }).action_apply_inventory()
+
+        partner_test = self.env['res.partner'].create({'name': 'Test Partner'})
+
+        sale_order = self.env['sale.order'].create({
+            'partner_id': partner_test.id,
+            'order_line': [(0, 0, {
+                'product_id': product.id,
+                'name': product.name,
+                'product_uom_qty': 2,
+                'product_uom': product.uom_id.id,
+                'price_unit': product.lst_price,
+            })],
+        })
+        sale_order.action_confirm()
+        self.main_pos_config.open_ui()
+        self.start_tour("/pos/ui?config_id=%d" % self.main_pos_config.id, 'test_settle_order_with_lot', login="accountman")
+
+    def test_down_payment_displayed(self):
+        """
+        Tests that a down payment for a Sale Order will be displayed and applied when settling the order
+        """
+        product_a = self.env['product.product'].create({
+            'name': 'Product A',
+            'lst_price': 10.0,
+        })
+        self.env['sale.order'].create({
+            'partner_id': self.env['res.partner'].create({'name': 'Test Partner'}).id,
+            'order_line': [(0, 0, {
+                'product_id': product_a.id,
+                'product_uom_qty': 1,
+                'price_unit': product_a.lst_price,
+            })]
+        })
+        self.main_pos_config.down_payment_product_id = self.env.ref("pos_sale.default_downpayment_product")
+        self.main_pos_config.open_ui()
+        self.start_tour("/pos/ui?config_id=%d" % self.main_pos_config.id, 'test_down_payment_displayed', login="accountman")
