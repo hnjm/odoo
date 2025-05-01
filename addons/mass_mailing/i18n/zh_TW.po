@@ -1572,7 +1572,7 @@ msgstr "聯絡人列表"
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.mailing_contact_view_form
 msgid "Contact Name"
-msgstr "聯繫人姓名"
+msgstr "聯絡人姓名"
 
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.res_config_settings_view_form
@@ -1724,7 +1724,7 @@ msgstr "自訂"
 #. odoo-javascript
 #: code:addons/mass_mailing/static/src/js/mass_mailing_html_field.js:0
 msgid "DRAG BUILDING BLOCKS HERE"
-msgstr "拖曳區塊到這裡"
+msgstr "拖曳區塊至此處"
 
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options

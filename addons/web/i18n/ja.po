@@ -10711,7 +10711,7 @@ msgstr "建設作業員"
 #. odoo-javascript
 #: code:addons/web/static/src/core/tree_editor/tree_editor_operator_editor.js:0
 msgid "contains"
-msgstr "が次を含む"
+msgstr "次を含む"
 
 #. module: web
 #. odoo-javascript
@@ -15504,7 +15504,7 @@ msgstr "が次の間である"
 #. odoo-javascript
 #: code:addons/web/static/src/core/tree_editor/tree_editor_operator_editor.js:0
 msgid "is in"
-msgstr "は以下内:"
+msgstr "次のいずれかに一致:"
 
 #. module: web
 #. odoo-javascript

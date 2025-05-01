@@ -23402,7 +23402,7 @@ msgstr "企業版ウェブサイトビルダー"
 #. module: base
 #: model:res.partner.industry,name:base.res_partner_industry_R
 msgid "Entertainment"
-msgstr "娯楽"
+msgstr "エンターテイメント"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_profile__entry_count
@@ -24527,7 +24527,7 @@ msgstr "請求書スキャンからデータを抽出して、自動的に入力
 #. module: base
 #: model:res.partner.industry,name:base.res_partner_industry_U
 msgid "Extraterritorial"
-msgstr "治外法権"
+msgstr "国際機関"
 
 #. module: base
 #: model:res.partner.industry,full_name:base.res_partner_industry_F
@@ -27616,7 +27616,7 @@ msgstr " %s 用のカレンダービュー生成に不適切なフィールド�
 msgid ""
 "Integrate Odoo with your mailbox, get information about contacts directly "
 "inside your mailbox, log content of emails as internal notes"
-msgstr "Odooとメールボックスを統合し、メールボックス内の連絡先情報を直接取得、メールの内容を社内メモとして記録します。"
+msgstr "Odooとメールボックスを統合し、メールボックス内の連絡先情報を直接取得、メールの内容を内部メモとして記録します。"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_marketing_automation_sms
@@ -27652,7 +27652,7 @@ msgid ""
 "                   Turn emails received in your mailbox into Tickets and log their content as internal notes."
 msgstr ""
 "ヘルプデスクをメールボックスと統合します。\n"
-"                   メールボックスで受信したメールをチケットに変換し、その内容を社内メモとして記録します。"
+"                   メールボックスで受信したメールをチケットに変換し、その内容を内部メモとして記録します。"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_pos_paytm
@@ -28979,13 +28979,13 @@ msgstr "ラトビア - 会計レポート"
 #: model_terms:ir.ui.view,arch_db:base.config_wizard_step_view_form
 #: model_terms:ir.ui.view,arch_db:base.ir_actions_todo_tree
 msgid "Launch"
-msgstr "起動"
+msgstr "開始"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.config_wizard_step_view_form
 #: model_terms:ir.ui.view,arch_db:base.ir_actions_todo_tree
 msgid "Launch Configuration Wizard"
-msgstr "起動設定ウィザード"
+msgstr "設定ウィザードを開始"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_company__layout_background
@@ -34998,7 +34998,7 @@ msgstr "取引先"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_partner_autocomplete
 msgid "Partner Autocomplete"
-msgstr "連絡先情報自動提案"
+msgstr "取引先自動入力"
 
 #. module: base
 #: model:ir.module.category,name:base.module_category_sales_commissions
@@ -42504,7 +42504,7 @@ msgstr "輸送管理: フリート、または運送会社で荷物を整理し�
 #. module: base
 #: model:res.partner.industry,name:base.res_partner_industry_H
 msgid "Transportation/Logistics"
-msgstr "運輸/物流"
+msgstr "交通/物流"
 
 #. module: base
 #: model:ir.model,name:base.model_ir_cron_trigger
@@ -42562,14 +42562,14 @@ msgstr "タークス・カイコス諸島"
 msgid ""
 "Turn emails received in your mailbox into leads and log their content as "
 "internal notes."
-msgstr "メールボックスに届いたメールをリードに変換し、その内容を社内メモとして記録します。"
+msgstr "メールボックスに届いたメールをリードに変換し、その内容を内部メモとして記録します。"
 
 #. module: base
 #: model:ir.module.module,description:base.module_project_mail_plugin
 msgid ""
 "Turn emails received in your mailbox into tasks and log their content as "
 "internal notes."
-msgstr "メールボックスに届いたメールをタスクに変換し、その内容を社内メモとして記録します。"
+msgstr "メールボックスに届いたメールをタスクに変換し、その内容を内部メモとして記録します。"
 
 #. module: base
 #: model:res.country,name:base.tv

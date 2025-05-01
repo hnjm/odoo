@@ -37,6 +37,7 @@
 # ZVI BLONDER <ZVIBLONDER@gmail.com>, 2025
 # yael terner, 2025
 # or balmas, 2025
+# Thomas Becquevort, 2025
 # 
 msgid ""
 msgstr ""
@@ -44,7 +45,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-07 20:36+0000\n"
 "PO-Revision-Date: 2024-09-25 09:41+0000\n"
-"Last-Translator: or balmas, 2025\n"
+"Last-Translator: Thomas Becquevort, 2025\n"
 "Language-Team: Hebrew (https://app.transifex.com/odoo/teams/41243/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2211,7 +2212,7 @@ msgstr "נדרשת פעולה"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment_register__actionable_errors
 msgid "Actionable Errors"
-msgstr ""
+msgstr "שגיאות שניתן לטפל בהן"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
@@ -2404,7 +2405,7 @@ msgstr "סכום להתאמה"
 #. odoo-python
 #: code:addons/account/wizard/account_automatic_entry_wizard.py:0
 msgid "Adjusting Entries have been created for this invoice:"
-msgstr ""
+msgstr "הוזנו פקודות התאמה עבור חשבונית זו:"
 
 #. module: account
 #. odoo-python
@@ -3225,7 +3226,7 @@ msgstr "רצף אוטומטי"
 #: model:ir.model.fields,help:account.field_res_partner__autopost_bills
 #: model:ir.model.fields,help:account.field_res_users__autopost_bills
 msgid "Automatically post bills for this trusted partner"
-msgstr ""
+msgstr "פרסם אוטומטית חשבוניות עבור שותף מהימן זה"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_partner_property_form
@@ -4442,7 +4443,7 @@ msgstr "יישות מסחרית"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_line__commercial_partner_country
 msgid "Commercial Partner Country"
-msgstr ""
+msgstr "המדינה של שותף מסחרי"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_journal__invoice_reference_model
@@ -4585,7 +4586,7 @@ msgstr "חברה מקושרת ליומן זה"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_report__use_sections
 msgid "Composite Report"
-msgstr ""
+msgstr "דו\"ח כולל"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_report_expression__engine
@@ -5232,7 +5233,7 @@ msgstr "חשבונית זיכוי"
 #. module: account
 #: model:ir.actions.act_window,name:account.action_credit_statement_tree
 msgid "Credit Statements"
-msgstr ""
+msgstr "דו\"חות יתרות"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_partner__credit_to_invoice
@@ -14296,7 +14297,7 @@ msgstr "מס"
 #: model_terms:ir.ui.view,arch_db:account.document_tax_totals_template
 #: model_terms:ir.ui.view,arch_db:account.report_invoice_document
 msgid "Tax 15%"
-msgstr ""
+msgstr "מע\"מ 15%"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_tax_group__advance_tax_payment_account_id
