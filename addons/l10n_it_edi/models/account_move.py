@@ -328,7 +328,7 @@ class AccountMove(models.Model):
             else:
                 it_values['prezzo_unitario'] = 0.0
             if base_line['currency_id'] != self.company_currency_id:
-                it_values['prezzo_unitario'] = base_line['currency_id']._convert(it_values['prezzo_unitario'], self.company_currency_id, date=self.date)
+                it_values['prezzo_unitario'] = it_values['prezzo_unitario'] / base_line['rate']
 
             # Discount.
             it_values['sconto_maggiorazione_list'] = []
@@ -538,7 +538,7 @@ class AccountMove(models.Model):
             importo_totale_documento += values['base_amount_currency']
             importo_totale_documento += values['tax_amount_currency']
 
-        company = self.company_id
+        company = self.company_id.root_id
         partner = self.commercial_partner_id
         sender = company
         buyer = partner if not is_self_invoice else company

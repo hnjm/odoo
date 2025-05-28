@@ -1205,7 +1205,7 @@ msgstr "Odgovor"
 #: model_terms:ir.ui.view,arch_db:event.event_registration_answer_view_tree
 #: model_terms:ir.ui.view,arch_db:event.view_event_form
 msgid "Answer Breakdown"
-msgstr ""
+msgstr "Razčlenitev odgovorov"
 
 #. module: event
 #. odoo-javascript
@@ -1533,7 +1533,7 @@ msgstr ""
 #: model_terms:res.partner,website_description:event.res_partner_event_3
 #: model_terms:res.partner,website_description:event.res_partner_event_4
 msgid "Come see us live, we hope to meet you!"
-msgstr ""
+msgstr "Pridite nas videti v živo, upamo, da se srečamo!"
 
 #. module: event
 #: model_terms:ir.ui.view,arch_db:event.view_event_form
@@ -2363,7 +2363,7 @@ msgstr ""
 #: model_terms:res.partner,website_description:event.res_partner_event_3
 #: model_terms:res.partner,website_description:event.res_partner_event_4
 msgid "Happy to be Sponsor"
-msgstr ""
+msgstr "Vesel sem, da sem sponzor"
 
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_event__has_message
@@ -2795,7 +2795,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:event.view_event_form
 #: model_terms:ir.ui.view,arch_db:event.view_event_type_form
 msgid "Mandatory"
-msgstr ""
+msgstr "Obvezno"
 
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_question__is_mandatory_answer
@@ -2923,7 +2923,7 @@ msgstr "Tip naslednje aktivnosti"
 #. module: event
 #: model_terms:ir.actions.act_window,help:event.action_event_registration_report
 msgid "No Answers yet!"
-msgstr ""
+msgstr "Še ni odgovorov!"
 
 #. module: event
 #: model_terms:ir.actions.act_window,help:event.event_registration_action
@@ -3162,7 +3162,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/event/static/src/client_action/event_barcode.js:0
 msgid "Please, Scan again!"
-msgstr ""
+msgstr "Prosim, skenirajte še enkrat!"
 
 #. module: event
 #: model_terms:event.event,description:event.event_2
@@ -3474,7 +3474,7 @@ msgstr ""
 #. module: event
 #: model_terms:ir.ui.view,arch_db:event.res_config_settings_view_form
 msgid "Secret"
-msgstr ""
+msgstr "Skrivnost"
 
 #. module: event
 #. odoo-javascript

@@ -40,7 +40,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-07 20:36+0000\n"
+"POT-Creation-Date: 2025-05-14 20:46+0000\n"
 "PO-Revision-Date: 2024-09-25 09:41+0000\n"
 "Last-Translator: or balmas, 2025\n"
 "Language-Team: Hebrew (https://app.transifex.com/odoo/teams/41243/he/)\n"
@@ -420,6 +420,8 @@ msgid ""
 "<strong> &gt; Payment Terminals</strong>\n"
 "                                    in order to install a Payment Terminal and make a fully integrated payment method."
 msgstr ""
+"<strong>&gt; מסופי תשלום</strong>\n"
+"                               כדי להתקין מסוף תשלום וליצור שיטת תשלום משולבת באופן מלא."
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
@@ -909,7 +911,7 @@ msgstr "כמות של %(old_pm)s השתנתה מ- %(old_amount)s ל- %(new_amoun
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_close_session_wizard__amount_to_balance
 msgid "Amount to balance"
-msgstr ""
+msgstr "סכום לאיזון היתרה"
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_order_tree
@@ -919,6 +921,7 @@ msgstr "סה\"כ"
 #. module: point_of_sale
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/utils/qr_code_popup/qr_code_popup.xml:0
+#: code:addons/point_of_sale/static/src/customer_display/customer_facing_qr.xml:0
 msgid "Amount:"
 msgstr "סכום כולל:"
 
@@ -929,6 +932,8 @@ msgid ""
 "An error has occurred when trying to close the session.\n"
 "You will be redirected to the back-end to manually close the session."
 msgstr ""
+"אירעה שגיאה בעת ניסיון לסגור את המשמרת. תועבר למערכת הניהול לצורך סגירה "
+"ידנית של המשמרת."
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -1113,7 +1118,7 @@ msgstr "זמין"
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_order__available_payment_method_ids
 msgid "Available Payment Methods"
-msgstr ""
+msgstr "שיטות תשלום זמינות"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_config__iface_available_categ_ids
@@ -1295,7 +1300,7 @@ msgstr ""
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_payment__card_brand
 msgid "Brand of card"
-msgstr ""
+msgstr "חברת כרטיס אשראי"
 
 #. module: point_of_sale
 #: model:pos.category,name:point_of_sale.pos_category_breads
@@ -1498,7 +1503,7 @@ msgstr "הפקדת מזומן"
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/navbar/closing_popup/closing_popup.xml:0
 msgid "Cash In / Out"
-msgstr ""
+msgstr "מזומן נכנס\\ יוצא"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -1520,13 +1525,13 @@ msgstr "שורות מזומן"
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
 msgid "Cash Move 1"
-msgstr ""
+msgstr "העברת מזומן 1"
 
 #. module: point_of_sale
 #. odoo-python
 #: code:addons/point_of_sale/models/report_sale_details.py:0
 msgid "Cash Opening"
-msgstr ""
+msgstr "יתרת מזומן לפתיחת קופה"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -1543,7 +1548,7 @@ msgstr "עיגול מזומן"
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_res_config_settings__pos_cash_rounding
 msgid "Cash Rounding (PoS)"
-msgstr ""
+msgstr "עיגול מזומן (קופה)"
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
@@ -1578,7 +1583,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/store/pos_store.js:0
 msgid "Cash in / out"
-msgstr ""
+msgstr "מזומן נכנס \\ יוצא"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -1841,7 +1846,7 @@ msgstr "סגור משמרת ורשום תנועות"
 #. module: point_of_sale
 #: model:ir.model,name:point_of_sale.model_pos_close_session_wizard
 msgid "Close Session Wizard"
-msgstr ""
+msgstr "סגור אשף משמרת"
 
 #. module: point_of_sale
 #: model:ir.model.fields.selection,name:point_of_sale.selection__pos_session__state__closed
@@ -2033,7 +2038,7 @@ msgstr "תצורה"
 #: model_terms:ir.ui.view,arch_db:point_of_sale.pos_config_view_form
 #: model_terms:ir.ui.view,arch_db:point_of_sale.pos_payment_method_view_form
 msgid "Configurations &gt; Settings"
-msgstr ""
+msgstr "תצורה &gt; הגדרות"
 
 #. module: point_of_sale
 #: model_terms:ir.actions.act_window,help:point_of_sale.action_pos_config_kanban
@@ -2849,7 +2854,7 @@ msgstr "ערוך פרטים"
 #. module: point_of_sale
 #: model:ir.actions.act_window,name:point_of_sale.res_partner_action_edit_pos
 msgid "Edit Partner"
-msgstr ""
+msgstr "ערוך לקוח\\ספק"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -2896,7 +2901,7 @@ msgstr "אשף יצירת דוא\"ל"
 #. odoo-python
 #: code:addons/point_of_sale/models/mail_compose_message.py:0
 msgid "Email triggered successfully!"
-msgstr ""
+msgstr "האימייל הופעל בהצלחה! "
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_order__user_id
@@ -3147,7 +3152,7 @@ msgstr "אלץ בוצע"
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_account_payment__force_outstanding_account_id
 msgid "Forced Outstanding Account"
-msgstr ""
+msgstr "סגירת חשבון עם יתרה פתוחה (בכפייה)"
 
 #. module: point_of_sale
 #: model:ir.model.fields,help:point_of_sale.field_pos_payment_method__split_transactions
@@ -3155,6 +3160,8 @@ msgid ""
 "Forces to set a customer when using this payment method and splits the "
 "journal entries for each customer. It could slow down the closing process."
 msgstr ""
+"כופה הגדרת לקוח בעת שימוש בשיטת תשלום זו ומפצל את פקודות היומן עבור כל לקוח."
+" פעולה זו עלולה להאט את תהליך הסגירה"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -3356,7 +3363,7 @@ msgstr ""
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_payment_method__hide_qr_code_method
 msgid "Hide Qr Code Method"
-msgstr ""
+msgstr "הסתר שיטת קוד QR"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_payment_method__hide_use_payment_terminal
@@ -3542,7 +3549,7 @@ msgstr "חשבון ארעי"
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
 msgid "Intermediary account used for unidentified customers."
-msgstr ""
+msgstr "חשבון מתווך המשמש ללקוחות לא מזוהים"
 
 #. module: point_of_sale
 #: model:ir.actions.act_window,name:point_of_sale.product_category_action
@@ -3712,7 +3719,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/store/pos_store.js:0
 msgid "It is not allowed to mix refunds and sales"
-msgstr ""
+msgstr "אסור לשלב החזרים ומכירות באותה פעולה"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -3874,12 +3881,12 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/navbar/cash_move_popup/cash_move_popup.xml:0
 msgid "Leave a reason here"
-msgstr ""
+msgstr "כתוב סיבה כאן"
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.pos_payment_method_view_form
 msgid "Leave empty to use the default account from the company setting"
-msgstr ""
+msgstr "השאר ריק כדי להשתמש בחשבון ברירת המחדל מהגדרות החברה"
 
 #. module: point_of_sale
 #: model:ir.model.fields,help:point_of_sale.field_pos_payment_method__receivable_account_id
@@ -3887,11 +3894,13 @@ msgid ""
 "Leave empty to use the default account from the company setting.\n"
 "Overrides the company's receivable account (for Point of Sale) used in the journal entries."
 msgstr ""
+"השאר ריק כדי להשתמש בחשבון ברירת המחדל מהגדרות החברה.\n"
+"פעולה זו תעקוף את חשבון הלקוחות של החברה (לצורך הקופה) המשמש ברישומים חשבונאיים."
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.pos_payment_method_view_form
 msgid "Leave empty to use the receivable account of customer"
-msgstr ""
+msgstr "השאר ריק כדי להשתמש בחשבון תקבולים של הלקוח"
 
 #. module: point_of_sale
 #: model:ir.model.fields,help:point_of_sale.field_pos_payment_method__journal_id
@@ -3940,7 +3949,7 @@ msgstr "טען הזמנה"
 #. module: point_of_sale
 #: model:ir.actions.client,name:point_of_sale.action_client_product_menu
 msgid "Load Product Menu"
-msgstr ""
+msgstr "טען תפריט מוצרים"
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.pos_config_view_form
@@ -4068,13 +4077,13 @@ msgstr "רווח & עלות"
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/ticket_screen/ticket_screen.js:0
 msgid "Maximum Exceeded"
-msgstr ""
+msgstr "חריגה מהערך המרבי"
 
 #. module: point_of_sale
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/payment_screen/payment_screen.js:0
 msgid "Maximum value reached"
-msgstr ""
+msgstr "הגעת לערך המרבי"
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
@@ -4106,7 +4115,7 @@ msgstr "אמצעי תשלום"
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.pos_payment_method_view_search
 msgid "Method Name"
-msgstr ""
+msgstr "שם שיטה"
 
 #. module: point_of_sale
 #: model:pos.category,name:point_of_sale.pos_category_miscellaneous
@@ -4143,7 +4152,7 @@ msgstr ""
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.pos_config_view_form
 msgid "More settings:"
-msgstr ""
+msgstr "הגדרות נוספות:"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -4192,7 +4201,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/receipt_screen/receipt/order_receipt.xml:0
 msgid "Need an invoice for your purchase ?"
-msgstr ""
+msgstr "צריך חשבונית לרכישה שלך?"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -4293,7 +4302,7 @@ msgstr "לא"
 #. odoo-python
 #: code:addons/point_of_sale/models/pos_order.py:0
 msgid "No PoS configuration found"
-msgstr ""
+msgstr "לא נמצאו הגדרות קופה"
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
@@ -4328,6 +4337,8 @@ msgid ""
 "No chart of account configured, go to the \"configuration / settings\" menu,"
 " and install one from the Invoicing tab."
 msgstr ""
+"אין לוח חשבונות מוגדר. עבור לתפריט \"הגדרות / קונפיגורציה\" והתקן אחד "
+"מכרטיסיית החשבוניות."
 
 #. module: point_of_sale
 #: model_terms:ir.actions.act_window,help:point_of_sale.action_pos_sale_graph
@@ -4340,13 +4351,13 @@ msgstr "אין מידע עדיין"
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/store/pos_store.js:0
 msgid "No existing serial/lot number"
-msgstr ""
+msgstr "לא נמצא מספר סידורי\\אצווה"
 
 #. module: point_of_sale
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/store/select_lot_popup/edit_list_input/edit_list_input.xml:0
 msgid "No existing serial/lot number matching..."
-msgstr ""
+msgstr "לא נמצא מספר סידורי/אצווה תואם..."
 
 #. module: point_of_sale
 #. odoo-python
@@ -4365,7 +4376,7 @@ msgstr "לא נמצא לקוח עבור \"%s\"."
 #: code:addons/point_of_sale/models/pos_order.py:0
 msgid ""
 "No open session available. Please open a new session to capture the order."
-msgstr ""
+msgstr "אין משמרת פעילה. אנא פתח משמרת חדשה כדי להמשיך עם ההזמנה."
 
 #. module: point_of_sale
 #: model_terms:ir.actions.act_window,help:point_of_sale.action_pos_payment_form
@@ -4377,7 +4388,7 @@ msgstr "לא נמצאו הזמנות"
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/product_screen/product_screen.js:0
 msgid "No other products found for \"%s\"."
-msgstr ""
+msgstr "לא נמצאו מוצרים עבור  \"%s\"."
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -4491,7 +4502,7 @@ msgstr "מספר עסקאות:"
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/errors/error_handlers.js:0
 msgid "Odoo Server Error"
-msgstr ""
+msgstr "שגיאת שרת של Odoo"
 
 #. module: point_of_sale
 #: model:product.template,name:point_of_sale.product_odoo_sneakers_product_template
@@ -4548,7 +4559,7 @@ msgstr "החל עיגול על מזומן בלבד"
 #: code:addons/point_of_sale/models/pos_payment_method.py:0
 msgid ""
 "Only journals of type 'Cash' or 'Bank' could be used with payment methods."
-msgstr ""
+msgstr "ניתן להשתמש רק ביומנים מסוג 'מזומן' או 'בנק' עם שיטות תשלום."
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
@@ -4772,7 +4783,7 @@ msgstr "מספר רצף הזמנה"
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_config__orderlines_sequence_in_cart_by_category
 #: model:ir.model.fields,field_description:point_of_sale.field_res_config_settings__pos_orderlines_sequence_in_cart_by_category
 msgid "Order cart by category's sequence"
-msgstr ""
+msgstr "סדר את העגלת קניות לפי רצף הקטגוריות"
 
 #. module: point_of_sale
 #: model:ir.model.fields,help:point_of_sale.field_pos_order__refunded_order_id
@@ -4794,7 +4805,7 @@ msgstr "מספר הזמנה"
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/store/pos_store.js:0
 msgid "Order saved for later"
-msgstr ""
+msgstr "הזמנה נשמרה להשלמה בהמשך"
 
 #. module: point_of_sale
 #: model:ir.model.fields,help:point_of_sale.field_pos_order_line__refund_orderline_ids
@@ -5032,7 +5043,7 @@ msgstr "אמצעי תשלום"
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_payment__payment_method_payment_mode
 msgid "Payment Mode"
-msgstr ""
+msgstr "מצב תשלום"
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
@@ -5075,7 +5086,7 @@ msgstr "מזהה עסקת תשלום"
 #. odoo-python
 #: code:addons/point_of_sale/models/pos_order.py:0
 msgid "Payment changes:"
-msgstr ""
+msgstr "שינויים בתשלומים:"
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
@@ -5146,12 +5157,12 @@ msgstr "תשלומים"
 #. module: point_of_sale
 #: model:product.template,name:point_of_sale.product_pecan_pie_product_template
 msgid "Pecan Pie"
-msgstr ""
+msgstr "פאי פקאן"
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
 msgid "Pick which product PoS categories are available"
-msgstr ""
+msgstr "בחירת קטגוריות קופה יהיו זמינות"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_order__picking_ids
@@ -5241,7 +5252,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:point_of_sale.ticket_validation_screen
 msgid ""
 "Please enter your billing information <small class=\"text-muted\">or</small>"
-msgstr ""
+msgstr "אנא הזן את פרטי התשלום שלך<small class=\"text-muted\">או</small>"
 
 #. module: point_of_sale
 #. odoo-python
@@ -5291,11 +5302,12 @@ msgstr "אנא הגדר לקוח עבור המכירה."
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/product_screen/control_buttons/control_buttons.js:0
 msgid "Please register the voucher number"
-msgstr ""
+msgstr "אנא רשום את מספר השובר"
 
 #. module: point_of_sale
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/utils/qr_code_popup/qr_code_popup.js:0
+#: code:addons/point_of_sale/static/src/customer_display/customer_facing_qr.js:0
 msgid "Please scan the QR code with %s"
 msgstr ""
 
@@ -5330,7 +5342,7 @@ msgstr ""
 #. module: point_of_sale
 #: model:ir.model,name:point_of_sale.model_pos_note
 msgid "PoS Note"
-msgstr ""
+msgstr "הערת קופה"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_product_attribute_custom_value__pos_order_line_id
@@ -5447,7 +5459,7 @@ msgstr "יומן נקודת מכירה"
 #. module: point_of_sale
 #: model:ir.actions.act_window,name:point_of_sale.action_pos_config_tree
 msgid "Point of Sale List"
-msgstr ""
+msgstr "רשימת קופה"
 
 #. module: point_of_sale
 #: model:ir.model,name:point_of_sale.model_pos_make_payment
@@ -5537,7 +5549,7 @@ msgstr "כתובת גישה לפורטל"
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/receipt_screen/receipt/order_receipt.xml:0
 msgid "Portal URL:"
-msgstr ""
+msgstr "URL של פורטל:"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_res_config_settings__pos_allowed_pricelist_ids
@@ -5632,7 +5644,7 @@ msgstr "PosBox"
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/models/pos_order_line.js:0
 msgid "Positive quantity not allowed"
-msgstr ""
+msgstr "כמות חיובית אינה מותרת."
 
 #. module: point_of_sale
 #: model:ir.model.fields.selection,name:point_of_sale.selection__pos_order__state__done
@@ -5651,12 +5663,12 @@ msgstr "מופעל ע\"י"
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/receipt_screen/receipt/order_receipt.xml:0
 msgid "Powered by Odoo"
-msgstr ""
+msgstr "מופעל ע\"י Odoo"
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
 msgid "Preparation"
-msgstr ""
+msgstr "הכנה"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_res_config_settings__module_pos_preparation_display
@@ -5676,7 +5688,7 @@ msgstr "הכנת הדפסות"
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/ticket_screen/ticket_screen.xml:0
 msgid "Previous Order List"
-msgstr ""
+msgstr "רשימת הזמנות קודמת"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -5699,7 +5711,7 @@ msgstr "סוג מחיר"
 #. odoo-python
 #: code:addons/point_of_sale/models/pos_order.py:0
 msgid "Price discount from %(original_price)s to %(discounted_price)s"
-msgstr ""
+msgstr "הנחה על מחיר מ־ %(original_price)s ל-%(discounted_price)s"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -5928,7 +5940,7 @@ msgstr "קטגורית מוצר"
 #. module: point_of_sale
 #: model:ir.model,name:point_of_sale.model_product_combo
 msgid "Product Combo"
-msgstr ""
+msgstr "שילוב מוצרים"
 
 #. module: point_of_sale
 #: model:ir.model,name:point_of_sale.model_product_combo_item
@@ -6092,6 +6104,7 @@ msgstr "סגול"
 #. module: point_of_sale
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/utils/qr_code_popup/qr_code_popup.xml:0
+#: code:addons/point_of_sale/static/src/customer_display/customer_facing_qr.xml:0
 msgid "QR Code"
 msgstr "קוד QR"
 
@@ -6109,7 +6122,7 @@ msgstr ""
 #. module: point_of_sale
 #: model:ir.model.fields.selection,name:point_of_sale.selection__res_company__point_of_sale_ticket_portal_url_display_mode__qr_code
 msgid "QR code"
-msgstr ""
+msgstr "קוד QR"
 
 #. module: point_of_sale
 #: model:ir.model.fields.selection,name:point_of_sale.selection__res_company__point_of_sale_ticket_portal_url_display_mode__qr_code_and_url
@@ -6304,7 +6317,7 @@ msgstr "כמות שהוחזרה"
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/ticket_screen/ticket_screen.xml:0
 msgid "Refunding"
-msgstr ""
+msgstr "מזכה"
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
@@ -6339,7 +6352,7 @@ msgstr "הסר"
 #. odoo-python
 #: code:addons/point_of_sale/models/pos_order.py:0
 msgid "Removed %(payment_method)s with %(amount)s"
-msgstr ""
+msgstr "הוסר %(payment_method)s עם%(amount)s"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -6356,7 +6369,7 @@ msgstr "דו\"חות"
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/ticket_screen/invoice_button/invoice_button.js:0
 msgid "Reprint Invoice"
-msgstr ""
+msgstr "הדפס חשבונית בשנית"
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.ticket_request_with_code
@@ -6520,13 +6533,13 @@ msgstr "שגיאה בשליחת SMS"
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_config__module_pos_sms
 #: model:ir.model.fields,field_description:point_of_sale.field_res_config_settings__pos_module_pos_sms
 msgid "SMS Enabled"
-msgstr ""
+msgstr "‏SMS מופעל"
 
 #. module: point_of_sale
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/navbar/sale_details_button/sales_detail_report.xml:0
 msgid "SOLD:"
-msgstr ""
+msgstr "נמכר:"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_report_pos_order__nbr_lines
@@ -6598,7 +6611,7 @@ msgstr "קנה מידה"
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/scale_screen/scale_screen.js:0
 msgid "Scale error"
-msgstr ""
+msgstr "שגיאת משקל"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -6647,13 +6660,13 @@ msgstr "חפש הזמנת לקוח"
 #: code:addons/point_of_sale/static/src/app/screens/partner_list/partner_list.xml:0
 #: code:addons/point_of_sale/static/src/app/screens/product_screen/product_screen.xml:0
 msgid "Search more"
-msgstr ""
+msgstr "חפש עוד"
 
 #. module: point_of_sale
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/navbar/navbar.xml:0
 msgid "Search products..."
-msgstr ""
+msgstr "חפש מוצרים..."
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_bus_mixin__access_token
@@ -6677,7 +6690,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/payment_screen/payment_screen.js:0
 msgid "Select a payment method to validate the order."
-msgstr ""
+msgstr "בחר אמצעי תשלום על מנת לאשר את ההזמנה."
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -6695,7 +6708,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/payment_screen/payment_screen.js:0
 msgid "Select the shipping date"
-msgstr ""
+msgstr "בחירת תאריך משלוח"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_order_line__attribute_value_ids
@@ -6781,7 +6794,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/store/pos_store.js:0
 msgid "Server communication problem"
-msgstr ""
+msgstr "בעיית תקשורת בשרת"
 
 #. module: point_of_sale
 #. odoo-python
@@ -6798,7 +6811,7 @@ msgstr "משמרת"
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
 msgid "Session Control"
-msgstr ""
+msgstr "בקרת משמרת"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_session__name
@@ -6808,7 +6821,7 @@ msgstr "מזהה משמרת"
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
 msgid "Session ID:"
-msgstr ""
+msgstr "מזהה משמרת:"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_order__session_move_id
@@ -6875,19 +6888,19 @@ msgstr "קבע מחירים מרובים למוצר, הנחות אוטומטיו
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/product_screen/order_summary/order_summary.js:0
 msgid "Set the new discount"
-msgstr ""
+msgstr "הגדר את ההנחה החדשה"
 
 #. module: point_of_sale
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/product_screen/order_summary/order_summary.js:0
 msgid "Set the new price"
-msgstr ""
+msgstr "הגדר מחיר חדש"
 
 #. module: point_of_sale
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/product_screen/order_summary/order_summary.js:0
 msgid "Set the new quantity"
-msgstr ""
+msgstr "הגדר כמות חדשה"
 
 #. module: point_of_sale
 #: model:ir.actions.act_window,name:point_of_sale.action_pos_configuration
@@ -6903,7 +6916,7 @@ msgstr ""
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
 msgid "Share Open Orders"
-msgstr ""
+msgstr "שתף הזמנות פתוחות"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -6943,13 +6956,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_config__show_category_images
 #: model:ir.model.fields,field_description:point_of_sale.field_res_config_settings__pos_show_category_images
 msgid "Show Category Images"
-msgstr ""
+msgstr "הצג תמונות קטגוריה"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_config__show_product_images
 #: model:ir.model.fields,field_description:point_of_sale.field_res_config_settings__pos_show_product_images
 msgid "Show Product Images"
-msgstr ""
+msgstr "הצגת תמונות מוצר"
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
@@ -6971,7 +6984,7 @@ msgstr ""
 #: model:ir.model.fields,help:point_of_sale.field_pos_config__customer_display_type
 #: model:ir.model.fields,help:point_of_sale.field_res_config_settings__pos_customer_display_type
 msgid "Show checkout to customers."
-msgstr ""
+msgstr "הראה הצג את תהליך התשלום ללקוחות."
 
 #. module: point_of_sale
 #: model:ir.model.fields,help:point_of_sale.field_pos_config__module_pos_hr
@@ -6982,12 +6995,12 @@ msgstr "הצג את מסך הכניסה לעובדים"
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
 msgid "Show margins & costs"
-msgstr ""
+msgstr "הצג רווח שולי ועלויות"
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
 msgid "Show margins & costs on product information"
-msgstr ""
+msgstr "הצג את הרווח שולי והעלויות במידע על המוצר."
 
 #. module: point_of_sale
 #: model:ir.model.fields,help:point_of_sale.field_res_config_settings__module_pos_preparation_display
@@ -6997,13 +7010,13 @@ msgstr ""
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
 msgid "Show product images"
-msgstr ""
+msgstr "הצגת תמונות מוצר"
 
 #. module: point_of_sale
 #: model:ir.model.fields,help:point_of_sale.field_pos_config__show_product_images
 #: model:ir.model.fields,help:point_of_sale.field_res_config_settings__pos_show_product_images
 msgid "Show product images in the Point of Sale interface."
-msgstr ""
+msgstr "הצג תמונות מוצר בממשק הקופה."
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.ticket_validation_screen
@@ -7051,7 +7064,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/store/pos_store.js:0
 msgid "Some Serial/Lot Numbers are missing"
-msgstr ""
+msgstr "כמה מספרים סידורים\\מספרי אצווה חסרים"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -7079,12 +7092,12 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/payment_screen/payment_screen.js:0
 msgid "Some, if not all, post-processing after syncing order failed."
-msgstr ""
+msgstr "חלק (אם לא כל) מהעיבוד לאחר הסנכרון נכשל לאחר סנכרון ההזמנה."
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
 msgid "Sort cart by category"
-msgstr ""
+msgstr "מיין עגלה לפי קטגוריה"
 
 #. module: point_of_sale
 #: model:product.template,name:point_of_sale.product_sourdough_loaf_product_template
@@ -7094,7 +7107,7 @@ msgstr ""
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
 msgid "Specific route"
-msgstr ""
+msgstr "מסלול מסויים"
 
 #. module: point_of_sale
 #: model:ir.model,name:point_of_sale.model_pos_pack_operation_lot
@@ -7105,7 +7118,7 @@ msgstr "ציין את המספר הסידורי או מספר האצווה של 
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_config__route_id
 #: model:ir.model.fields,field_description:point_of_sale.field_res_config_settings__pos_route_id
 msgid "Spefic route for products delivered later."
-msgstr ""
+msgstr "מסלולי ספציפי למוצרים שיסופקו במועד מאוחר יותר."
 
 #. module: point_of_sale
 #: model:product.template,name:point_of_sale.sport_shoes_product_template
@@ -7166,7 +7179,7 @@ msgstr "כלל מלאי "
 #. odoo-python
 #: code:addons/point_of_sale/models/pos_order.py:0
 msgid "Stock input for %s"
-msgstr ""
+msgstr "קלט מלאי ל %s"
 
 #. module: point_of_sale
 #. odoo-python
@@ -7183,7 +7196,7 @@ msgstr "יש לעדכן מלאי בסגירה"
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/backend/pos_kanban_view/pos_kanban_view.js:0
 msgid "Stock, product configurator, replenishment, discounts"
-msgstr ""
+msgstr "מלאי, תצורת מוצר, חידוש מלאי, הנחות"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -7255,7 +7268,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/navbar/navbar.xml:0
 msgid "Switch Product View"
-msgstr ""
+msgstr "החלף תצוגת מוצר"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -7313,7 +7326,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/customer_display/customer_display.xml:0
 msgid "Tare Weight:"
-msgstr ""
+msgstr "משקל נטו:"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -7389,7 +7402,7 @@ msgstr "מיסים"
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
 msgid "Taxes on refunds"
-msgstr ""
+msgstr "מיסים על זיכויים"
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
@@ -7433,7 +7446,7 @@ msgstr "תודה לך"
 #. odoo-python
 #: code:addons/point_of_sale/controllers/main.py:0
 msgid "The %s must be filled in your details."
-msgstr ""
+msgstr "יש למלא את %s בפרטים שלך"
 
 #. module: point_of_sale
 #: model:ir.model.fields,help:point_of_sale.field_pos_printer__proxy_ip
@@ -7462,7 +7475,7 @@ msgstr ""
 msgid ""
 "The Point of Sale only supports the \"add a rounding line\" rounding "
 "strategy."
-msgstr ""
+msgstr "הקופה תומכת רק בשיטה \" הוספת שורת עיגול\"."
 
 #. module: point_of_sale
 #. odoo-python
@@ -7511,6 +7524,7 @@ msgid ""
 "The default pricelist must belong to no company or the company of the point "
 "of sale."
 msgstr ""
+"רשימת המחירים ברירת המחדל חייבת להשתייך או לאף חברה, או לחברה של הקופה."
 
 #. module: point_of_sale
 #. odoo-python
@@ -7527,6 +7541,8 @@ msgid ""
 "The existing serial/lot numbers could not be retrieved. \n"
 "Continue without checking the validity of serial/lot numbers ?"
 msgstr ""
+"לא ניתן לשלוף את מספרים סידורים/אצוות הקיימים.\n"
+"האם להמשיך ללא בדיקת תוקף של מספרי הסידורים/אצוות?"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -7570,13 +7586,13 @@ msgstr ""
 msgid ""
 "The money counted doesn't match what we expected. Want to log the difference"
 " for the books?"
-msgstr ""
+msgstr "הסכום שנספר לא תואם את מה שציפינו לו. רוצה לרשום את ההפרש בספרים?"
 
 #. module: point_of_sale
 #. odoo-python
 #: code:addons/point_of_sale/models/pos_bill.py:0
 msgid "The name of the Coins/Bills must be a number."
-msgstr ""
+msgstr "השם על המטבעות\\שטרות צריך להיות מספר."
 
 #. module: point_of_sale
 #: model:ir.model.constraint,message:point_of_sale.constraint_pos_session_uniq_name
@@ -7976,6 +7992,14 @@ msgid ""
 msgstr ""
 
 #. module: point_of_sale
+#. odoo-python
+#: code:addons/point_of_sale/models/pos_order.py:0
+msgid ""
+"This order has already been paid. You cannot set it back to draft or edit "
+"it."
+msgstr ""
+
+#. module: point_of_sale
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/receipt_screen/receipt_screen.js:0
 msgid ""
@@ -7987,7 +8011,7 @@ msgstr "ההזמנה הזו לא מסונכרנת עם השרת. וודאו סנ
 #. odoo-python
 #: code:addons/point_of_sale/models/pos_payment_method.py:0
 msgid "This payment method is not configured to generate QR codes."
-msgstr ""
+msgstr "שיטת תשלום זו לא מוגדרת ליצירת קודי QR."
 
 #. module: point_of_sale
 #: model:ir.model.fields,help:point_of_sale.field_pos_config__tip_product_id
@@ -8220,7 +8244,7 @@ msgstr "סה\"כ: %s"
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_order__order_edit_tracking
 #: model:ir.model.fields,field_description:point_of_sale.field_res_config_settings__pos_order_edit_tracking
 msgid "Track orders edits"
-msgstr ""
+msgstr "עקוב אחרי עריכות הזמנות"
 
 #. module: point_of_sale
 #: model:product.template,description_sale:point_of_sale.product_odoo_sneakers_product_template
@@ -8304,7 +8328,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/ticket_screen/invoice_button/invoice_button.js:0
 msgid "Unable to download invoice."
-msgstr ""
+msgstr "לא ניתן להוריד את החשבונית."
 
 #. module: point_of_sale
 #. odoo-python
@@ -8381,18 +8405,18 @@ msgstr "שגיאה לא ידועה"
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/scale_screen/scale_service.js:0
 msgid "Unnamed Product"
-msgstr ""
+msgstr "מוצר ללא שם"
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.product_product_view_form_normalized_pos
 msgid "Unsaleable"
-msgstr ""
+msgstr "לא ניתן למכירה"
 
 #. module: point_of_sale
 #. odoo-python
 #: code:addons/point_of_sale/models/pos_order.py:0
 msgid "Unsupported search operation"
-msgstr ""
+msgstr "פעולת חיפוש לא נתמכת"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -8553,7 +8577,7 @@ msgstr "מחסן"
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_res_config_settings__pos_warehouse_id
 msgid "Warehouse (PoS)"
-msgstr ""
+msgstr "מחסן (קופה)"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -8592,7 +8616,7 @@ msgstr "היסטורית התקשרויות מאתר האינטרנט"
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/customer_display/customer_display.xml:0
 msgid "Weighing Product:"
-msgstr ""
+msgstr "שקילת מוצר:"
 
 #. module: point_of_sale
 #: model:ir.model.fields.selection,name:point_of_sale.selection__barcode_rule__type__weight
@@ -8748,7 +8772,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/point_of_sale/models/pos_order.py:0
 msgid "You cannot change the payment of a printed order."
-msgstr ""
+msgstr "אין אפשרות לשנות את התשלום של הזמנה מודפסת."
 
 #. module: point_of_sale
 #. odoo-python
@@ -8757,6 +8781,8 @@ msgid ""
 "You cannot close the POS when invoices are not posted.\n"
 "Invoices: %s"
 msgstr ""
+"אין אפשרות לסגור את הקופה כאשר החשבוניות לא נרשמו.\n"
+"חשבוניות:%s"
 
 #. module: point_of_sale
 #. odoo-python
@@ -8768,7 +8794,7 @@ msgstr "אתה לא יכול לסגור את המשמרת כאשר יש הזמנ
 #. odoo-python
 #: code:addons/point_of_sale/models/pos_session.py:0
 msgid "You cannot create a session starting before: %(lock_date_info)s"
-msgstr ""
+msgstr "אין אפשרות ליצור משמרת שמתחיל לפני :%(lock_date_info)s"
 
 #. module: point_of_sale
 #. odoo-python
@@ -8779,20 +8805,7 @@ msgstr ""
 
 #. module: point_of_sale
 #. odoo-python
-#: code:addons/point_of_sale/models/pos_payment.py:0
-msgid "You cannot edit a payment for a posted order."
-msgstr ""
-
-#. module: point_of_sale
-#. odoo-python
-#: code:addons/point_of_sale/models/pos_order.py:0
-msgid "You cannot invoice orders belonging to different companies."
-msgstr ""
-
-#. module: point_of_sale
-#. odoo-python
 #: code:addons/point_of_sale/models/account_cash_rounding.py:0
-#, python-format
 msgid ""
 "You cannot delete a rounding method that is used in a Point of Sale "
 "configuration."
@@ -8800,17 +8813,29 @@ msgstr ""
 
 #. module: point_of_sale
 #. odoo-python
+#: code:addons/point_of_sale/models/pos_payment.py:0
+msgid "You cannot edit a payment for a posted order."
+msgstr "אי אפשר לערוך תשלום עבור הזמנה שכבר פורסמה."
+
+#. module: point_of_sale
+#. odoo-python
+#: code:addons/point_of_sale/models/pos_order.py:0
+msgid "You cannot invoice orders belonging to different companies."
+msgstr "אין אפשרות להנפיק חשבוניות עבור הזמנות השייכות לחברות שונות."
+
+#. module: point_of_sale
+#. odoo-python
 #: code:addons/point_of_sale/models/pos_config.py:0
 msgid ""
 "You cannot share open orders with configuration that does not use the same "
 "currency."
-msgstr ""
+msgstr "אין אפשרות לשתף הזמנות פתוחות עם קונפיגורציה שאינה משתמשת באותה מטבע."
 
 #. module: point_of_sale
 #. odoo-python
 #: code:addons/point_of_sale/models/pos_config.py:0
 msgid "You cannot use the same journal on multiples cash payment methods."
-msgstr ""
+msgstr "אין אפשרות להשתמש באותו יומן עבור מספר שיטות תשלום במזומן."
 
 #. module: point_of_sale
 #. odoo-python
@@ -8818,7 +8843,7 @@ msgstr ""
 msgid ""
 "You do not have permission to open a POS session. Please try opening a "
 "session with a different user"
-msgstr ""
+msgstr "אין לך הרשאה לפתוח משמרת בקופה . אנא נסה לפתוח משמרת עם משתמש אחר."
 
 #. module: point_of_sale
 #. odoo-python
@@ -8945,12 +8970,6 @@ msgid "discount"
 msgstr "הנחה"
 
 #. module: point_of_sale
-#. odoo-javascript
-#: code:addons/point_of_sale/static/src/app/screens/receipt_screen/receipt_screen.xml:0
-msgid "e.g. 0123456789"
-msgstr ""
-
-#. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.pos_payment_method_view_form
 msgid "e.g. Cash"
 msgstr "לדוג' מזומן"
@@ -8974,12 +8993,6 @@ msgstr "למשל מדיניות החזרת מוצרים, תודה  שקניתם 
 #: model_terms:ir.ui.view,arch_db:point_of_sale.product_pos_category_form_view
 msgid "e.g. Soft Drinks"
 msgstr "למשל משקאות קלים"
-
-#. module: point_of_sale
-#. odoo-javascript
-#: code:addons/point_of_sale/static/src/app/screens/receipt_screen/receipt_screen.xml:0
-msgid "e.g. john.doe@mail.com"
-msgstr ""
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.pos_config_view_form
@@ -9118,17 +9131,3 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:point_of_sale.report_invoice_document
 msgid "using"
 msgstr "באמצעות"
-
-#. module: point_of_sale
-#. odoo-javascript
-#: code:addons/point_of_sale/static/src/app/debug/debug_widget.xml:0
-msgid "{{ !barcodeReader ? 'No nomenclature' : '' }}"
-msgstr ""
-
-#. module: point_of_sale
-#. odoo-javascript
-#: code:addons/point_of_sale/static/src/app/screens/product_screen/order_summary/order_summary.xml:0
-msgid ""
-"{{ line.has_valid_product_lot() ? 'Valid product lot' : 'Invalid product "
-"lot'}}"
-msgstr ""

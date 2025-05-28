@@ -139,8 +139,8 @@ class SaleOrder(models.Model):
             if not order.user_id:
                 order.user_id = (
                     order.website_id.salesperson_id
-                    or order.partner_id.parent_id.user_id.id
                     or order.partner_id.user_id.id
+                    or order.partner_id.parent_id.user_id.id
                 )
 
     #=== CRUD METHODS ===#
@@ -215,6 +215,13 @@ class SaleOrder(models.Model):
         if website_id:
             return self.env['website'].browse(website_id).get_base_url()
         return super()._get_note_url()
+
+    def _get_non_delivery_lines(self):
+        """Exclude delivery-related lines."""
+        return self.order_line.filtered(lambda line: not line.is_delivery)
+
+    def _get_amount_total_excluding_delivery(self):
+        return sum(self._get_non_delivery_lines().mapped('price_total'))
 
     def _cart_update_order_line(self, product_id, quantity, order_line, **kwargs):
         self.ensure_one()

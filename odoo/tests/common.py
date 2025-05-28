@@ -1400,6 +1400,8 @@ class ChromeBrowser:
             except websocket.WebSocketTimeoutException:
                 continue
             except Exception as e:
+                if isinstance(e, ConnectionResetError) and self._result.done():
+                    return
                 # if the socket is still connected something bad happened,
                 # otherwise the client was just shut down
                 if self.ws.connected:
@@ -1493,6 +1495,8 @@ class ChromeBrowser:
 
         log_type = type
         _logger = self._logger.getChild('browser')
+        if self._result.done() and 'failed to fetch' in message.casefold():
+            log_type = 'dir'
         _logger.log(
             self._TO_LEVEL.get(log_type, logging.INFO),
             "%s%s",
@@ -1571,8 +1575,9 @@ which leads to stray network requests and inconsistencies."""
             message += '\n' + stack
 
         if self._result.done():
-            self._logger.getChild('browser').error(
-                "Exception received after termination: %s", message)
+            if 'failed to fetch' not in message.casefold():
+                self._logger.getChild('browser').error(
+                    "Exception received after termination: %s", message)
             return
 
         self.take_screenshot()
@@ -1675,7 +1680,7 @@ which leads to stray network requests and inconsistencies."""
                     concat_file.write("file '%s'\nduration %s\n" % (frame_file_path, duration))
                 concat_file.write("file '%s'" % frame_file_path)  # needed by the concat plugin
             try:
-                subprocess.run([ffmpeg_path, '-f', 'concat', '-safe', '0', '-i', concat_script_path, '-pix_fmt', 'yuv420p', '-g', '0', outfile], check=True)
+                subprocess.run([ffmpeg_path, '-f', 'concat', '-safe', '0', '-i', concat_script_path, '-vf', 'pad=ceil(iw/2)*2:ceil(ih/2)*2', '-pix_fmt', 'yuv420p', '-g', '0', outfile], check=True)
             except subprocess.CalledProcessError:
                 self._logger.error('Failed to encode screencast.')
                 return

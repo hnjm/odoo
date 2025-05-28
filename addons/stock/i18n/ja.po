@@ -951,7 +951,7 @@ msgstr "この関数を有効にすると、この特定のロケーションで
 #: model:ir.model.fields,field_description:stock.field_stock_warehouse__active
 #: model:ir.model.fields,field_description:stock.field_stock_warehouse_orderpoint__active
 msgid "Active"
-msgstr "有効化"
+msgstr "アクティブ"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_lot__activity_ids
@@ -6345,7 +6345,7 @@ msgstr "実地棚卸"
 #: code:addons/stock/models/stock_warehouse.py:0
 #: model:ir.model.fields,field_description:stock.field_stock_backorder_confirmation__pick_ids
 msgid "Pick"
-msgstr "集荷"
+msgstr "ピッキング"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_move_line__quant_id

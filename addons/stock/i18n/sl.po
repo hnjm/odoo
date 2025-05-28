@@ -345,7 +345,7 @@ msgstr ""
 #. module: stock
 #: model:ir.model.fields.selection,name:stock.selection__stock_orderpoint_snooze__predefined_date__day
 msgid "1 Day"
-msgstr ""
+msgstr "1 Dan"
 
 #. module: stock
 #: model:ir.model.fields.selection,name:stock.selection__stock_orderpoint_snooze__predefined_date__month
@@ -385,7 +385,7 @@ msgstr ""
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.report_package_barcode_small
 msgid "2023-01-01"
-msgstr ""
+msgstr "2023-01-01"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.report_picking
@@ -397,7 +397,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:stock.report_package_barcode
 #: model_terms:ir.ui.view,arch_db:stock.report_picking
 msgid "3.00"
-msgstr ""
+msgstr "3.00"
 
 #. module: stock
 #: model:ir.model.fields.selection,name:stock.selection__lot_label_layout__print_format__4x12
@@ -2853,7 +2853,7 @@ msgstr ""
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_package_destination__location_dest_id
 msgid "Destination location"
-msgstr ""
+msgstr "Ciljna lokacija"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_rule__location_dest_from_rule
@@ -5460,7 +5460,7 @@ msgstr ""
 #. module: stock
 #: model_terms:ir.actions.act_window,help:stock.product_template_action_product
 msgid "No product found. Let's create one!"
-msgstr ""
+msgstr "Ni najdenega izdelka. Ustvarimo enega!"
 
 #. module: stock
 #. odoo-python
@@ -7972,7 +7972,7 @@ msgstr "Zaporedje"
 #. odoo-python
 #: code:addons/stock/models/stock_picking.py:0
 msgid "Sequence %(code)s"
-msgstr ""
+msgstr "Zaporedje %(code)s"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_picking_type__sequence_code
@@ -8797,6 +8797,9 @@ msgid ""
 "order to be valid, any derogation must be expressly agreed to in advance in "
 "writing."
 msgstr ""
+"Stranka se izrecno odpoveduje svojim splošnim pogojem poslovanja, tudi če so"
+" bili ti sestavljeni po teh splošnih prodajnih pogojih. Da bi bilo vsako "
+"odstopanje veljavno, mora biti izrecno vnaprej dogovorjeno v pisni obliki."
 
 #. module: stock
 #. odoo-python
@@ -9465,7 +9468,7 @@ msgstr "Skupna količina"
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.view_stock_quant_tree_editable
 msgid "Total Reserved"
-msgstr ""
+msgstr "Skupaj rezervirano"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_product_category__total_route_ids
@@ -9668,7 +9671,7 @@ msgstr "Tip"
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.view_partner_stock_warnings_form
 msgid "Type a message..."
-msgstr ""
+msgstr "Vnesite sporočilo ..."
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_move__picking_code
@@ -10855,7 +10858,7 @@ msgstr ""
 #. module: stock
 #: model_terms:res.company,invoice_terms_html:stock.res_company_1
 msgid "You should update this document to reflect your T&amp;C."
-msgstr ""
+msgstr "Ta dokument morate posodobiti, da bo odražal vaše T&amp;C."
 
 #. module: stock
 #. odoo-python
@@ -11056,7 +11059,7 @@ msgstr ""
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.stock_warn_insufficient_qty_form_view
 msgid "in"
-msgstr ""
+msgstr "v"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.res_config_settings_view_form

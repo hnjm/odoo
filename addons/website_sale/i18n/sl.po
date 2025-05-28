@@ -7,6 +7,7 @@
 # Tomaž Jug <tomaz@editor.si>, 2024
 # Gregor Flajs, 2025
 # Wil Odoo, 2025
+# Jan Zorko, 2025
 # Aleš Pipan, 2025
 # 
 msgid ""
@@ -262,7 +263,7 @@ msgstr ""
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.address
 msgid "<option value=\"\">Country...</option>"
-msgstr ""
+msgstr "<option value=\"\">Država...</option>"
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.address
@@ -368,7 +369,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_sale.extra_info
 #: model_terms:ir.ui.view,arch_db:website_sale.navigation_buttons
 msgid "<span class=\"px-3\">or</span>"
-msgstr ""
+msgstr "<span class=\"px-3\">ali</span>"
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.extra_info
@@ -1265,7 +1266,7 @@ msgstr "Počisti filtre"
 #. module: website_sale
 #: model:ir.model.fields,field_description:website_sale.field_res_config_settings__module_website_sale_collect
 msgid "Click & Collect"
-msgstr ""
+msgstr "Klikni in prevzemi"
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.products
