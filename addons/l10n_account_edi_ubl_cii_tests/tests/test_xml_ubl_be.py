@@ -14,6 +14,7 @@ class TestUBLBE(TestUBLCommon, TestAccountMoveSendCommon):
     @TestUBLCommon.setup_country("be")
     def setUpClass(cls):
         super().setUpClass()
+        cls.env['ir.config_parameter'].sudo().set_param('account_edi_ubl_cii.use_new_dict_to_xml_helpers', 'False')
 
         cls.company.vat = "BE0246697724"
 
@@ -141,19 +142,19 @@ class TestUBLBE(TestUBLCommon, TestAccountMoveSendCommon):
             invoice.ubl_cii_xml_id,
             xpaths=f'''
                 <xpath expr="./*[local-name()='ID']" position="replace">
-                    <ID>___ignore___</ID>
+                    <cbc:ID xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">___ignore___</cbc:ID>
                 </xpath>
                 <xpath expr=".//*[local-name()='InvoiceLine'][1]/*[local-name()='ID']" position="replace">
-                    <ID>___ignore___</ID>
+                    <cbc:ID xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">___ignore___</cbc:ID>
                 </xpath>
                 <xpath expr=".//*[local-name()='InvoiceLine'][2]/*[local-name()='ID']" position="replace">
-                    <ID>___ignore___</ID>
+                    <cbc:ID xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">___ignore___</cbc:ID>
                 </xpath>
                 <xpath expr=".//*[local-name()='InvoiceLine'][3]/*[local-name()='ID']" position="replace">
-                    <ID>___ignore___</ID>
+                    <cbc:ID xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">___ignore___</cbc:ID>
                 </xpath>
                 <xpath expr=".//*[local-name()='PaymentMeans']/*[local-name()='PaymentID']" position="replace">
-                    <PaymentID>___ignore___</PaymentID>
+                    <cbc:PaymentID xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">___ignore___</cbc:PaymentID>
                 </xpath>
                 <xpath expr=".//*[local-name()='AdditionalDocumentReference']/*[local-name()='Attachment']/*[local-name()='EmbeddedDocumentBinaryObject']" position="attributes">
                     <attribute name="mimeCode">application/pdf</attribute>
@@ -164,6 +165,10 @@ class TestUBLBE(TestUBLCommon, TestAccountMoveSendCommon):
         )
         self.assertEqual(attachment.name[-12:], "ubl_bis3.xml")
         self._assert_imported_invoice_from_etree(invoice, attachment)
+
+    def test_export_import_invoice_new(self):
+        self.env['ir.config_parameter'].sudo().set_param('account_edi_ubl_cii.use_new_dict_to_xml_helpers', True)
+        self.test_export_import_invoice()
 
     def test_export_import_refund(self):
         refund = self._generate_move(
@@ -199,19 +204,19 @@ class TestUBLBE(TestUBLCommon, TestAccountMoveSendCommon):
             refund.ubl_cii_xml_id,
             xpaths=f'''
                 <xpath expr="./*[local-name()='ID']" position="replace">
-                    <ID>___ignore___</ID>
+                    <cbc:ID xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">___ignore___</cbc:ID>
                 </xpath>
                 <xpath expr="./*[local-name()='PaymentMeans']/*[local-name()='PaymentID']" position="replace">
-                    <PaymentID>___ignore___</PaymentID>
+                    <cbc:PaymentID xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">___ignore___</cbc:PaymentID>
                 </xpath>
                 <xpath expr=".//*[local-name()='CreditNoteLine'][1]/*[local-name()='ID']" position="replace">
-                    <ID>___ignore___</ID>
+                    <cbc:ID xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">___ignore___</cbc:ID>
                 </xpath>
                 <xpath expr=".//*[local-name()='CreditNoteLine'][2]/*[local-name()='ID']" position="replace">
-                    <ID>___ignore___</ID>
+                    <cbc:ID xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">___ignore___</cbc:ID>
                 </xpath>
                 <xpath expr=".//*[local-name()='CreditNoteLine'][3]/*[local-name()='ID']" position="replace">
-                    <ID>___ignore___</ID>
+                    <cbc:ID xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">___ignore___</cbc:ID>
                 </xpath>
                 <xpath expr=".//*[local-name()='AdditionalDocumentReference']/*[local-name()='Attachment']/*[local-name()='EmbeddedDocumentBinaryObject']" position="attributes">
                     <attribute name="mimeCode">application/pdf</attribute>
@@ -222,6 +227,120 @@ class TestUBLBE(TestUBLCommon, TestAccountMoveSendCommon):
         )
         self.assertEqual(attachment.name[-12:], "ubl_bis3.xml")
         self._assert_imported_invoice_from_etree(refund, attachment)
+
+    def test_export_import_refund_new(self):
+        self.env['ir.config_parameter'].sudo().set_param('account_edi_ubl_cii.use_new_dict_to_xml_helpers', True)
+        self.test_export_import_refund()
+
+    def test_export_import_cash_rounding(self):
+        cash_rounding_line = self.env['account.cash.rounding'].create({
+            'name': '1.0 Line',
+            'rounding': 1.00,
+            'strategy': 'add_invoice_line',
+            'profit_account_id': self.company_data['default_account_revenue'].copy().id,
+            'loss_account_id': self.company_data['default_account_expense'].copy().id,
+            'rounding_method': 'HALF-UP',
+        })
+
+        cash_rounding_tax = self.env['account.cash.rounding'].create({
+            'name': '1.0 Tax',
+            'rounding': 1.00,
+            'strategy': 'biggest_tax',
+            'rounding_method': 'HALF-UP',
+        })
+
+        test_data = [
+            {
+                'invoice_cash_rounding_id': False,
+                'expected': {
+                    'xml_file': 'from_odoo/bis3_out_invoice_cash_rounding_line.xml',
+                    # There is no rounding amount
+                    'xpaths': '''
+                        <xpath expr="./*[local-name()='LegalMonetaryTotal']/*[local-name()='PayableRoundingAmount']" position="replace"/>
+                        <xpath expr="./*[local-name()='LegalMonetaryTotal']/*[local-name()='PayableAmount']" position="replace">
+                            <cbc:PayableAmount currencyID="USD" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">84.70</cbc:PayableAmount>
+                        </xpath>
+                    ''',
+                },
+                'expected_rounding_invoice_line_values': None,
+            },
+            {
+                'invoice_cash_rounding_id': cash_rounding_tax,
+                'expected': {
+                    'xml_file': 'from_odoo/bis3_out_invoice_cash_rounding_tax.xml',
+                    'xpaths': None,
+                },
+                'expected_rounding_invoice_line_values': None,
+            },
+            {
+                'invoice_cash_rounding_id': cash_rounding_line,
+                'expected': {
+                    'xml_file': 'from_odoo/bis3_out_invoice_cash_rounding_line.xml',
+                    'xpaths': None,
+                },
+                # We create an invoice line for the rounding amount.
+                # (This adjusts the base amount of the invoice.)
+                'expected_rounding_invoice_line_values': {
+                    'display_type': 'product',
+                    'name': 'Rounding',
+                    'quantity': 1,
+                    'product_id': False,
+                    'price_unit': 0.30,
+                    'amount_currency': -0.30,
+                    'balance': -0.15,
+                    'currency_id': self.other_currency.id,
+                }
+            },
+        ]
+        for test in test_data:
+            cash_rounding_method = test['invoice_cash_rounding_id']
+            with self.subTest(sub_test_name=f"cash rounding method: {cash_rounding_method.name if cash_rounding_method else 'None'}"):
+                invoice = self._generate_move(
+                    seller=self.partner_1,
+                    buyer=self.partner_2,
+                    move_type='out_invoice',
+                    currency_id=self.other_currency.id,
+                    invoice_cash_rounding_id=cash_rounding_method.id if cash_rounding_method else False,
+                    invoice_line_ids=[
+                        {
+                            'product_id': self.product_a.id,
+                            'quantity': 1,
+                            'price_unit': 70.00,
+                            'tax_ids': [Command.set([self.tax_21.id])],
+                        },
+                    ],
+                )
+
+                attachment = invoice.ubl_cii_xml_id
+                self.assertTrue(attachment)
+                self._assert_invoice_attachment(invoice.ubl_cii_xml_id, test['expected']['xpaths'], test['expected']['xml_file'])
+
+                # Check that importing yields the expected results.
+
+                # For the 'add_invoice_line' strategy we create a dedicated invoice line for the cash rounding.
+                rounding_invoice_line_values = test['expected_rounding_invoice_line_values']
+                if rounding_invoice_line_values:
+                    invoice.button_draft()
+                    invoice.invoice_cash_rounding_id = False  # Do not round twice
+                    invoice.invoice_line_ids.create([{
+                        'company_id': invoice.company_id.id,
+                        'move_id': invoice.id,
+                        'partner_id': invoice.partner_id.id,
+                        **rounding_invoice_line_values,
+                    }])
+                    invoice.action_post()
+
+                self._assert_imported_invoice_from_etree(invoice, attachment)
+
+                # Check that importing a bill yields the expected results.
+
+                bill = self.company_data['default_journal_purchase']._create_document_from_attachment(attachment.ids)
+                self.assertTrue(bill)
+                self.assert_same_invoice(invoice, bill, partner_id=self.partner_1.id)
+
+    def test_export_import_cash_rounding_new(self):
+        self.env['ir.config_parameter'].sudo().set_param('account_edi_ubl_cii.use_new_dict_to_xml_helpers', True)
+        self.test_export_import_cash_rounding()
 
     def test_encoding_in_attachment_ubl(self):
         invoice = self._generate_move(
@@ -244,10 +363,10 @@ class TestUBLBE(TestUBLCommon, TestAccountMoveSendCommon):
                 invoice.ubl_cii_xml_id,
                 xpaths=f'''
                     <xpath expr="./*[local-name()='PaymentMeans']/*[local-name()='PaymentID']" position="replace">
-                        <PaymentID>___ignore___</PaymentID>
+                        <cbc:PaymentID xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">___ignore___</cbc:PaymentID>
                     </xpath>
                     <xpath expr=".//*[local-name()='InvoiceLine'][1]/*[local-name()='ID']" position="replace">
-                        <ID>___ignore___</ID>
+                        <cbc:ID xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">___ignore___</cbc:ID>
                     </xpath>
                     <xpath expr=".//*[local-name()='AdditionalDocumentReference']/*[local-name()='Attachment']/*[local-name()='EmbeddedDocumentBinaryObject']" position="attributes">
                         <attribute name="mimeCode">application/pdf</attribute>
@@ -278,6 +397,10 @@ class TestUBLBE(TestUBLCommon, TestAccountMoveSendCommon):
         invoice2 = self._generate_move(self.partner_2, self.partner_1, **invoice_vals)
         check_attachment(invoice2, "from_odoo/bis3_out_invoice_public_admin_2.xml")
 
+    def test_sending_to_public_admin_new(self):
+        self.env['ir.config_parameter'].sudo().set_param('account_edi_ubl_cii.use_new_dict_to_xml_helpers', True)
+        self.test_sending_to_public_admin()
+
     def test_rounding_price_unit(self):
         """ OpenPeppol states that:
         * All document level amounts shall be rounded to two decimals for accounting
@@ -306,6 +429,10 @@ class TestUBLBE(TestUBLCommon, TestAccountMoveSendCommon):
         )
         self._assert_invoice_attachment(invoice.ubl_cii_xml_id, None, 'from_odoo/bis3_out_invoice_rounding.xml')
 
+    def test_rounding_price_unit_new(self):
+        self.env['ir.config_parameter'].sudo().set_param('account_edi_ubl_cii.use_new_dict_to_xml_helpers', True)
+        self.test_rounding_price_unit()
+
     def test_inverting_negative_price_unit(self):
         """ We can not have negative unit prices, so we try to invert the unit price and quantity.
         """
@@ -330,6 +457,10 @@ class TestUBLBE(TestUBLCommon, TestAccountMoveSendCommon):
         )
         self._assert_invoice_attachment(invoice.ubl_cii_xml_id, None, 'from_odoo/bis3_out_invoice_negative_unit_price.xml')
 
+    def test_inverting_negative_price_unit_new(self):
+        self.env['ir.config_parameter'].sudo().set_param('account_edi_ubl_cii.use_new_dict_to_xml_helpers', True)
+        self.test_inverting_negative_price_unit()
+
     def test_export_with_fixed_taxes_case1(self):
         # CASE 1: simple invoice with a recupel tax
         invoice = self._generate_move(
@@ -348,6 +479,10 @@ class TestUBLBE(TestUBLCommon, TestAccountMoveSendCommon):
         self.assertEqual(invoice.amount_total, 121)
         self._assert_invoice_attachment(invoice.ubl_cii_xml_id, None, 'from_odoo/bis3_ecotaxes_case1.xml')
 
+    def test_export_with_fixed_taxes_case1_new(self):
+        self.env['ir.config_parameter'].sudo().set_param('account_edi_ubl_cii.use_new_dict_to_xml_helpers', True)
+        self.test_export_with_fixed_taxes_case1()
+
     def test_export_with_fixed_taxes_case2(self):
         # CASE 2: Same but with several ecotaxes
         invoice = self._generate_move(
@@ -365,6 +500,10 @@ class TestUBLBE(TestUBLCommon, TestAccountMoveSendCommon):
         )
         self.assertEqual(invoice.amount_total, 121)
         self._assert_invoice_attachment(invoice.ubl_cii_xml_id, None, 'from_odoo/bis3_ecotaxes_case2.xml')
+
+    def test_export_with_fixed_taxes_case2_new(self):
+        self.env['ir.config_parameter'].sudo().set_param('account_edi_ubl_cii.use_new_dict_to_xml_helpers', True)
+        self.test_export_with_fixed_taxes_case2()
 
     def test_export_with_fixed_taxes_case3(self):
         # CASE 3: same as Case 1 but taxes are Price Included
@@ -387,6 +526,10 @@ class TestUBLBE(TestUBLCommon, TestAccountMoveSendCommon):
         )
         self.assertEqual(invoice.amount_total, 121)
         self._assert_invoice_attachment(invoice.ubl_cii_xml_id, None, 'from_odoo/bis3_ecotaxes_case3.xml')
+
+    def test_export_with_fixed_taxes_case3_new(self):
+        self.env['ir.config_parameter'].sudo().set_param('account_edi_ubl_cii.use_new_dict_to_xml_helpers', True)
+        self.test_export_with_fixed_taxes_case3()
 
     def test_export_with_fixed_taxes_case4(self):
         """ CASE 4: simple invoice with a recupel tax + discount
@@ -412,6 +555,10 @@ class TestUBLBE(TestUBLCommon, TestAccountMoveSendCommon):
         )
         self.assertEqual(invoice.amount_total, 218.042)
         self._assert_invoice_attachment(invoice.ubl_cii_xml_id, None, 'from_odoo/bis3_ecotaxes_case4.xml')
+
+    def test_export_with_fixed_taxes_case4_new(self):
+        self.env['ir.config_parameter'].sudo().set_param('account_edi_ubl_cii.use_new_dict_to_xml_helpers', True)
+        self.test_export_with_fixed_taxes_case4()
 
     def test_export_payment_terms(self):
         """
@@ -746,6 +893,10 @@ class TestUBLBE(TestUBLCommon, TestAccountMoveSendCommon):
 
         self._assert_invoice_attachment(invoice.ubl_cii_xml_id, None, 'from_odoo/bis3_export_with_changed_taxes.xml')
 
+    def test_export_with_changed_taxes_new(self):
+        self.env['ir.config_parameter'].sudo().set_param('account_edi_ubl_cii.use_new_dict_to_xml_helpers', True)
+        self.test_export_with_changed_taxes()
+
     def test_export_rounding_price_amount(self):
         invoice = self._generate_move(
             self.partner_1,
@@ -770,6 +921,10 @@ class TestUBLBE(TestUBLCommon, TestAccountMoveSendCommon):
         self.assertEqual(price_amounts[0].text, '102.15')
         self.assertEqual(price_amounts[1].text, '83.6')
 
+    def test_export_rounding_price_amount_new(self):
+        self.env['ir.config_parameter'].sudo().set_param('account_edi_ubl_cii.use_new_dict_to_xml_helpers', True)
+        self.test_export_rounding_price_amount()
+
     def test_export_tax_exempt(self):
         invoice = self._generate_move(
             self.partner_1,
@@ -784,6 +939,10 @@ class TestUBLBE(TestUBLCommon, TestAccountMoveSendCommon):
             ],
         )
         self._assert_invoice_attachment(invoice.ubl_cii_xml_id, None, 'from_odoo/bis3_out_invoice_tax_exempt.xml')
+
+    def test_export_tax_exempt_new(self):
+        self.env['ir.config_parameter'].sudo().set_param('account_edi_ubl_cii.use_new_dict_to_xml_helpers', True)
+        self.test_export_tax_exempt()
 
     ####################################################
     # Test import

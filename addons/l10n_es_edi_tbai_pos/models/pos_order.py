@@ -107,6 +107,7 @@ class PosOrder(models.Model):
         edi_document = self.account_move.l10n_es_tbai_post_document_id or self.l10n_es_tbai_post_document_id
         if edi_document and edi_document.state == 'accepted':
             return edi_document._get_tbai_qr()
+        return ''
 
     # -------------------------------------------------------------------------
     # WEB SERVICE CALL
@@ -158,6 +159,12 @@ class PosOrder(models.Model):
             base_line['name'] = base_line['record'].name
         self.env['l10n_es_edi_tbai.document']._add_base_lines_tax_amounts(base_lines, self.company_id)
 
+        for base_line in base_lines:
+            sign = base_line['is_refund'] and -1 or 1
+            base_line['gross_price_unit'] = sign * base_line['gross_price_unit']
+            base_line['discount_amount'] = sign * base_line['discount_amount']
+            base_line['price_total'] = sign * base_line['price_total']
+
         return {
             'is_sale': True,
             'partner': self.partner_id,
@@ -165,7 +172,7 @@ class PosOrder(models.Model):
             'delivery_date': None,
             **self._l10n_es_tbai_get_attachment_values(),
             **self._l10n_es_tbai_get_credit_note_values(),
-            'invoice_origin': False,
+            'origin': 'manual',
             'taxes': self.lines.tax_ids,
             'rate': self.currency_rate,
             'base_lines': base_lines,

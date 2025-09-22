@@ -130,12 +130,12 @@ msgstr ""
 #. module: pos_pine_labs
 #: model:ir.model,name:pos_pine_labs.model_pos_payment_method
 msgid "Point of Sale Payment Methods"
-msgstr "Phương thức thanh toán điểm bán hàng"
+msgstr "Phương thức thanh toán POS"
 
 #. module: pos_pine_labs
 #: model:ir.model,name:pos_pine_labs.model_pos_payment
 msgid "Point of Sale Payments"
-msgstr "Thanh toán điểm bán hàng"
+msgstr "Thanh toán POS"
 
 #. module: pos_pine_labs
 #. odoo-javascript
@@ -163,12 +163,14 @@ msgid ""
 "The expected error code for the Pine Labs POS status request was not "
 "included in the response."
 msgstr ""
+"Mã lỗi dự kiến cho yêu cầu kiểm tra trạng thái máy POS Pine Labs không được "
+"bao gồm trong phản hồi."
 
 #. module: pos_pine_labs
 #. odoo-python
 #: code:addons/pos_pine_labs/models/pos_payment_method.py:0
 msgid "This Payment Terminal is only valid for INR Currency"
-msgstr "Thiết bị đầu cuối thanh toán này chỉ có hiệu lực với đồng INR"
+msgstr "Thiết bị thanh toán này chỉ có hiệu lực với đồng INR"
 
 #. module: pos_pine_labs
 #. odoo-javascript

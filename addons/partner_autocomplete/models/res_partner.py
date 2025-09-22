@@ -44,6 +44,13 @@ class ResPartner(models.Model):
         return iap_data
 
     @api.model
+    def _iap_replace_industry_code(self, iap_data):
+        if industry_code := iap_data.pop('industry_code', False):
+            if industry := self.env.ref(f'base.res_partner_industry_{industry_code}', raise_if_not_found=False):
+                iap_data['industry_id'] = {'id': industry.id, 'display_name': industry.display_name}
+        return iap_data
+
+    @api.model
     def _iap_replace_language_codes(self, iap_data):
         if lang := iap_data.pop('preferred_language', False):
             if installed_lang := (
@@ -57,6 +64,7 @@ class ResPartner(models.Model):
     @api.model
     def _format_data_company(self, iap_data):
         self._iap_replace_location_codes(iap_data)
+        self._iap_replace_industry_code(iap_data)
         self._iap_replace_language_codes(iap_data)
         return iap_data
 
@@ -182,8 +190,6 @@ class ResPartner(models.Model):
 
     def iap_partner_autocomplete_add_tags(self, unspsc_codes):
         """Called by JS to create the activity tags from the UNSPSC codes"""
-        self.ensure_one()
-
         # If the UNSPSC module is installed, we might have a translation, so let's use it
         if self.env['ir.module.module']._get('product_unspsc').state == 'installed':
             tag_names = self.env['product.unspsc.code']\
@@ -200,7 +206,7 @@ class ResPartner(models.Model):
                 tag_ids |= existing_tag
             else:
                 tag_ids |= self.env['res.partner.category'].create({'name': tag_name})
-        self.category_id = tag_ids
+        return tag_ids.ids
 
     @api.model
     def _get_view(self, view_id=None, view_type='form', **options):

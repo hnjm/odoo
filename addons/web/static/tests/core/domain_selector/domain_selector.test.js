@@ -39,6 +39,7 @@ import {
     defineModels,
     defineParams,
     fields,
+    MockServer,
     models,
     mountWithCleanup,
     onRpc,
@@ -145,6 +146,28 @@ test("creating a domain from scratch", async () => {
     await clickOnButtonDeleteNode(-1);
     await clickOnButtonDeleteNode(-1);
     expect(SELECTORS.debugArea).toHaveValue(`["&", ("bar", "=", True), ("id", "=", 1)]`);
+});
+
+test("creating domain for binary field", async () => {
+    // Add a binary field to the Partner model
+    Partner._fields.image = fields.Binary({
+        string: "Image",
+        searchable: true,
+    });
+
+    await makeDomainSelector({
+        isDebugMode: true,
+    });
+
+    // Add new rule to select field
+    await addNewRule();
+    await openModelFieldSelectorPopover();
+
+    // Find and select the binary field
+    await contains(".o_model_field_selector_popover_item_name:contains('Image')").click();
+
+    // Check that the operator options are limited to 'set' and 'not_set'
+    expect(getOperatorOptions()).toEqual(["is set", "is not set"]);
 });
 
 test("building a domain with a datetime", async () => {
@@ -1077,7 +1100,9 @@ test("support properties", async () => {
         await openModelFieldSelectorPopover();
         expectedDomain = domain;
         await contains(`.o_model_field_selector_popover_item[data-name='${name}'] button`).click();
-        const { string } = Product._records[0].definitions.find((def) => def.name === name);
+        const { string } = MockServer.env["product"][0].definitions.find(
+            (def) => def.name === name
+        );
         expect(getCurrentPath()).toBe(`Properties > ${string}`);
         expect(getOperatorOptions()).toEqual(options);
     }

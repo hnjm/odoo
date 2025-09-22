@@ -2,6 +2,7 @@ import * as ProductScreen from "@point_of_sale/../tests/tours/utils/product_scre
 import * as ReceiptScreen from "@point_of_sale/../tests/tours/utils/receipt_screen_util";
 import * as Dialog from "@point_of_sale/../tests/tours/utils/dialog_util";
 import * as PaymentScreen from "@point_of_sale/../tests/tours/utils/payment_screen_util";
+import * as PartnerList from "@point_of_sale/../tests/tours/utils/partner_list_util";
 import * as TicketScreen from "@point_of_sale/../tests/tours/utils/ticket_screen_util";
 import * as Chrome from "@point_of_sale/../tests/tours/utils/chrome_util";
 import * as Utils from "@point_of_sale/../tests/tours/utils/common";
@@ -161,7 +162,12 @@ registry.category("web_tour.tours").add("test_tracking_number_closing_session", 
             ReceiptScreen.clickNextOrder(),
             ProductScreen.isShown(),
             Chrome.clickMenuOption("Close Register"),
-            Utils.selectButton("Close Register"),
+            {
+                content: `Select button close register`,
+                trigger: `button:contains(close register)`,
+                run: "click",
+                expectUnloadPage: true,
+            },
             Chrome.startPoS(),
             Dialog.confirm("Open Register"),
             ProductScreen.clickDisplayedProduct("Desk Pad", true, "1.0"),
@@ -222,5 +228,38 @@ registry.category("web_tour.tours").add("CustomerNoteIsPresentAfterRefresh", {
                     customerNote: "Test customer note",
                 }),
             ]),
+        ].flat(),
+});
+
+registry.category("web_tour.tours").add("test_chrome_without_cash_move_permission", {
+    steps: () =>
+        [
+            Chrome.startPoS(),
+            Dialog.confirm("Open Register"),
+            Chrome.isCashMoveButtonHidden(),
+        ].flat(),
+});
+
+registry.category("web_tour.tours").add("test_click_all_orders_keep_customer", {
+    steps: () =>
+        [
+            Chrome.startPoS(),
+            Dialog.confirm("Open Register"),
+            ProductScreen.clickPartnerButton(),
+            ProductScreen.clickCustomer("Partner Test 1"),
+            ProductScreen.clickPartnerButton(),
+            PartnerList.clickPartnerOptions("Partner Test 1"),
+            {
+                isActive: ["auto"],
+                trigger: "div.o_popover :contains('All Orders')",
+                content: "Check the popover opened",
+                run: "click",
+            },
+            TicketScreen.clickDiscard(),
+            ProductScreen.isShown(),
+            {
+                content: "customer is selected",
+                trigger: ".product-screen .set-partner:contains('Partner Test 1')",
+            },
         ].flat(),
 });

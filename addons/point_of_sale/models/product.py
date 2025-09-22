@@ -9,7 +9,8 @@ from odoo.osv.expression import AND
 
 
 class ProductTemplate(models.Model):
-    _inherit = 'product.template'
+    _name = 'product.template'
+    _inherit = ['product.template', 'pos.load.mixin']
 
     available_in_pos = fields.Boolean(string='Available in POS', help='Check if you want this product to appear in the Point of Sale.', default=False)
     to_weight = fields.Boolean(string='To Weigh With Scale', help="Check if the product should be weighted using the hardware scale integration.")
@@ -56,6 +57,14 @@ class ProductTemplate(models.Model):
                 combo_name = self.env['product.combo.item'].sudo().search([('product_id', 'in', product.product_variant_ids.ids)], limit=1).combo_id.name
                 if combo_name:
                     raise UserError(_('You must first remove this product from the %s combo', combo_name))
+
+    @api.model
+    def _load_pos_data_fields(self, config_id):
+        return ['id']
+
+    @api.model
+    def _load_pos_data_domain(self, data):
+        return [('id', 'in', list({p['product_tmpl_id'] for p in data['product.product']['data']}))]
 
 
 class ProductProduct(models.Model):
@@ -179,7 +188,13 @@ class ProductProduct(models.Model):
         config = self.env['pos.config'].browse(pos_config_id)
 
         # Tax related
-        taxes = self.taxes_id.compute_all(price, config.currency_id, quantity, self)
+        tax_to_use = None
+        company = config.company_id
+        while not tax_to_use and company:
+            tax_to_use = self.taxes_id.filtered(lambda tax: tax.company_id.id == company.id)
+            if not tax_to_use:
+                company = company.parent_id
+        taxes = tax_to_use.compute_all(price, config.currency_id, quantity, self)
         grouped_taxes = {}
         for tax in taxes['taxes']:
             if tax['id'] in grouped_taxes:
@@ -202,7 +217,7 @@ class ProductProduct(models.Model):
         else:
             pricelists = config.pricelist_id
         price_per_pricelist_id = pricelists._price_get(self, quantity) if pricelists else False
-        pricelist_list = [{'name': pl.name, 'price': price_per_pricelist_id[pl.id]} for pl in pricelists]
+        pricelist_list = [{'id': pl.id, 'name': pl.name, 'price': price_per_pricelist_id[pl.id]} for pl in pricelists]
 
         # Warehouses
         warehouse_list = [
@@ -254,7 +269,12 @@ class ProductAttribute(models.Model):
 
     @api.model
     def _load_pos_data_fields(self, config_id):
-        return ['name', 'display_type', 'template_value_ids', 'attribute_line_ids', 'create_variant']
+        return ['name', 'display_type', 'create_variant']
+
+    @api.model
+    def _load_pos_data_domain(self, data):
+        loaded_attribute_ids = {ptal['attribute_id'] for ptal in data['product.template.attribute.line']['data']}
+        return [('id', 'in', list(loaded_attribute_ids))]
 
 
 class ProductAttributeCustomValue(models.Model):

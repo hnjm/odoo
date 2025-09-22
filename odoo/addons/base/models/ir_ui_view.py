@@ -476,13 +476,23 @@ actual arch.
             except (etree.ParseError, ValueError) as e:
                 view.warning_info = str(e)
 
+    def _validate_xml_encoding(self, text):
+        if isinstance(text, str) and re.search(r'<\?xml[^>]*encoding=.*?\?>', text, re.IGNORECASE):
+            raise UserError(_(
+                "Unicode strings with encoding declaration are not supported in XML.\n"
+                "Remove the encoding declaration."
+            ))
+
     @api.model_create_multi
     def create(self, vals_list):
+        valid_types = self._fields['type']._selection
         for values in vals_list:
             if 'arch_db' in values and not values['arch_db']:
                 # delete empty arch_db to avoid triggering _check_xml before _inverse_arch_base is called
                 del values['arch_db']
 
+            if values.get('arch_base'):
+                self._validate_xml_encoding(values['arch_base'])
             if not values.get('type'):
                 if values.get('inherit_id'):
                     values['type'] = self.browse(values['inherit_id']).type
@@ -492,6 +502,13 @@ actual arch.
                         if not values.get('arch') and not values.get('arch_base'):
                             raise ValidationError(_('Missing view architecture.'))
                         values['type'] = etree.fromstring(values.get('arch') or values.get('arch_base')).tag
+                        if values['type'] not in valid_types:
+                            raise ValidationError(_(
+                                "Invalid view type: '%(view_type)s'.\n"
+                                "You might have used an invalid starting tag in the architecture.\n"
+                                "Allowed types are: %(valid_types)s",
+                                view_type=values['type'], valid_types=', '.join(valid_types)
+                            ))
                     except LxmlError:
                         # don't raise here, the constraint that runs `self._check_xml` will
                         # do the job properly.
@@ -534,6 +551,8 @@ actual arch.
         if 'arch_db' in vals and not self.env.context.get('no_save_prev'):
             vals['arch_prev'] = self.arch_db
 
+        if vals.get('arch_base'):
+            self._validate_xml_encoding(vals['arch_base'])
         res = super(View, self).write(self._compute_defaults(vals))
 
         # Check the xml of the view if it gets re-activated.
@@ -2433,6 +2452,8 @@ class Model(models.AbstractModel):
         for fname, field in self._fields.items():
             if field.automatic:
                 continue
+            elif field.type == "binary" and not isinstance(field, fields.Image) and not field.store:
+                continue
             elif field.type in ('one2many', 'many2many', 'text', 'html'):
                 # append to sheet left and right group if needed
                 if len(left_group) > 0:
@@ -2683,6 +2704,29 @@ class Model(models.AbstractModel):
                 raise UserError(_("No default view of type '%s' could be found!", view_type))
         return arch, view
 
+    def _get_view_postprocessed(self, view, arch, **options):
+        """
+        Get the post-processed view architecture and the corresponding fields.
+
+        This method uses the view's ``postprocess_and_fields`` function to process
+        the view architecture. It applies access control rules, field modifiers,
+        and tag-specific logic. It also automatically embeds subviews for
+        ``one2many`` and ``many2many`` fields when required, and collects all
+        fields used across the view and its subviews.
+
+        :param view: an ``ir.ui.view`` record
+        :param arch: the view architecture as a string
+        :param options: bool options to return additional features:
+                        ``mobile`` (bool): true if the web client is currently using
+                        the responsive mobile view (to use kanban views instead of
+                        list views for x2many fields)
+        :return: a tuple containing:
+                - the post-processed view architecture as a string
+                - a dictionary of models and the fields used in the view
+        :rtype: tuple(str, dict)
+        """
+        return view.postprocess_and_fields(arch, model=self._name, **options)
+
     @api.model
     def _get_view_cache_key(self, view_id=None, view_type='form', **options):
         """ Get the key to use for caching `_get_view_cache`.
@@ -2729,7 +2773,7 @@ class Model(models.AbstractModel):
         arch, view = self._get_view(view_id, view_type, **options)
 
         # Apply post processing, groups and modifiers etc...
-        arch, models = view.postprocess_and_fields(arch, model=self._name, **options)
+        arch, models = self._get_view_postprocessed(view, arch, **options)
         models = self._get_view_fields(view_type or view.type, models)
         result = {
             'arch': arch,

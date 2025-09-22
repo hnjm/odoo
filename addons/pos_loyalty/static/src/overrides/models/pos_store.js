@@ -43,6 +43,13 @@ patch(PosStore.prototype, {
             [this.data.records["pos.order"]]
         );
     },
+    async afterProcessServerData() {
+        // Remove reward lines that have no reward anymore (could happen if the program got archived)
+        this.models["pos.order.line"]
+            .filter((order) => order.is_reward_line && !order.reward_id)
+            .map((line) => line.delete());
+        await super.afterProcessServerData(...arguments);
+    },
     async updateOrder(order) {
         // Read value to trigger effect
         order?.lines?.length;
@@ -179,7 +186,7 @@ patch(PosStore.prototype, {
             ) {
                 Object.assign(oldChanges[idx], pointsAdded[idx]);
             }
-            if (pointsAdded.length < oldChanges.length) {
+            if (pointsAdded.length < oldChanges.length || !order._programIsApplicable(program)) {
                 const removedIds = oldChanges.map((pe) => pe.coupon_id);
                 order.uiState.couponPointChanges = Object.fromEntries(
                     Object.entries(order.uiState.couponPointChanges).filter(([k, pe]) => {
@@ -256,9 +263,15 @@ patch(PosStore.prototype, {
         const rule = this.models["loyalty.rule"].find((rule) => {
             return rule.mode === "with_code" && (rule.promo_barcode === code || rule.code === code);
         });
+        const loyaltyCard = this.models["loyalty.card"].find(
+            (card) => card.code === code && card.program_id?.program_type === "loyalty"
+        );
         let claimableRewards = null;
         let coupon = null;
-        if (rule) {
+        // If the code belongs to a loyalty card we just set the partner
+        if (loyaltyCard && loyaltyCard.partner_id) {
+            order.set_partner(loyaltyCard.partner_id);
+        } else if (rule) {
             const date_order = DateTime.fromSQL(order.date_order);
             if (
                 rule.program_id.date_from &&
@@ -423,7 +436,9 @@ patch(PosStore.prototype, {
         await this.updatePrograms();
         if (rewardsToApply.length == 1) {
             const reward = rewardsToApply[0];
-            order._applyReward(reward.reward, reward.coupon_id, { product });
+            order._applyReward(reward.reward, reward.coupon_id, {
+                product: result.product_id,
+            });
         }
         this.updateRewards();
 
@@ -575,8 +590,15 @@ patch(PosStore.prototype, {
 
     computeDiscountProductIdsForAllRewards(data) {
         const products = this.models[data.model].readMany(data.ids);
+        const productsSerialized = products.map((p) => {
+            return {
+                product: p,
+                serialized: p.serialize(),
+            };
+        });
+
         for (const reward of this.models["loyalty.reward"].getAll()) {
-            this.compute_discount_product_ids(reward, products);
+            this.compute_discount_product_ids(reward, products, productsSerialized);
         }
     },
 
@@ -595,7 +617,8 @@ patch(PosStore.prototype, {
         }
     },
 
-    compute_discount_product_ids(reward, products) {
+    compute_discount_product_ids(reward, products, productsSerialized = []) {
+        // TODO: remove products parameter in master
         const reward_product_domain = JSON.parse(reward.reward_product_domain);
         if (!reward_product_domain) {
             return;
@@ -606,7 +629,12 @@ patch(PosStore.prototype, {
         try {
             reward.update({
                 all_discount_product_ids: [
-                    ["link", ...products.filter((p) => domain.contains(p.serialize()))],
+                    [
+                        "link",
+                        ...productsSerialized
+                            .filter((p) => domain.contains(p.serialized))
+                            .map((p) => p.product),
+                    ],
                 ],
             });
         } catch (error) {
@@ -623,7 +651,7 @@ patch(PosStore.prototype, {
                     ),
                 });
 
-                this.models["loyalty.reward"].delete(reward.id);
+                reward.delete();
             }
         }
     },

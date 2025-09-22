@@ -1,5 +1,7 @@
 /** @odoo-module */
 
+import { isInstanceOf } from "../hoot_dom_utils";
+
 /**
  * @typedef {{
  *  animationFrame?: boolean;
@@ -39,9 +41,11 @@ const $performanceNow = performance.now.bind(performance);
 /**
  * @param {number} id
  */
-const animationToId = (id) => ID_PREFIX.animation + String(id);
+function animationToId(id) {
+    return ID_PREFIX.animation + String(id);
+}
 
-const getNextTimerValues = () => {
+function getNextTimerValues() {
     /** @type {[number, () => any, string] | null} */
     let timerValues = null;
     for (const [internalId, [callback, init, delay]] of timers.entries()) {
@@ -51,41 +55,55 @@ const getNextTimerValues = () => {
         }
     }
     return timerValues;
-};
+}
 
 /**
  * @param {string} id
  */
-const idToAnimation = (id) => Number(id.slice(ID_PREFIX.animation.length));
+function idToAnimation(id) {
+    return Number(id.slice(ID_PREFIX.animation.length));
+}
 
 /**
  * @param {string} id
  */
-const idToInterval = (id) => Number(id.slice(ID_PREFIX.interval.length));
+function idToInterval(id) {
+    return Number(id.slice(ID_PREFIX.interval.length));
+}
 
 /**
  * @param {string} id
  */
-const idToTimeout = (id) => Number(id.slice(ID_PREFIX.timeout.length));
+function idToTimeout(id) {
+    return Number(id.slice(ID_PREFIX.timeout.length));
+}
 
 /**
  * @param {number} id
  */
-const intervalToId = (id) => ID_PREFIX.interval + String(id);
+function intervalToId(id) {
+    return ID_PREFIX.interval + String(id);
+}
 
 /**
  * Converts a given value to a **natural number** (or 0 if failing to do so).
  *
  * @param {unknown} value
  */
-const parseNat = (value) => $max($floor(Number(value)), 0) || 0;
+function parseNat(value) {
+    return $max($floor(Number(value)), 0) || 0;
+}
 
-const now = () => (frozen ? 0 : $performanceNow()) + timeOffset;
+function now() {
+    return (frozen ? 0 : $performanceNow()) + timeOffset;
+}
 
 /**
  * @param {number} id
  */
-const timeoutToId = (id) => ID_PREFIX.timeout + String(id);
+function timeoutToId(id) {
+    return ID_PREFIX.timeout + String(id);
+}
 
 class HootTimingError extends Error {
     name = "HootTimingError";
@@ -211,11 +229,12 @@ export function delay(duration) {
     return new Promise((resolve) => setTimeout(resolve, duration));
 }
 
-/**
- * @param {boolean} setFreeze
- */
-export function freezeTime(setFreeze) {
-    frozen = setFreeze ?? !frozen;
+export function freezeTime() {
+    frozen = true;
+}
+
+export function unfreezeTime() {
+    frozen = false;
 }
 
 export function getTimeOffset() {
@@ -265,10 +284,10 @@ export function mockedRequestAnimationFrame(callback) {
         return 0;
     }
 
-    const handler = () => {
+    function handler() {
         mockedCancelAnimationFrame(handle);
         return callback(now());
-    };
+    }
 
     const animationValues = [handler, now(), frameDelay];
     const handle = frozen ? nextDummyId++ : requestAnimationFrame(handler);
@@ -286,14 +305,14 @@ export function mockedSetInterval(callback, ms, ...args) {
 
     ms = parseNat(ms);
 
-    const handler = () => {
+    function handler() {
         if (allowTimers) {
             intervalValues[1] = $max(now(), intervalValues[1] + ms);
         } else {
             mockedClearInterval(intervalId);
         }
         return callback(...args);
-    };
+    }
 
     const intervalValues = [handler, now(), ms];
     const intervalId = frozen ? nextDummyId++ : setInterval(handler, ms);
@@ -311,10 +330,10 @@ export function mockedSetTimeout(callback, ms, ...args) {
 
     ms = parseNat(ms);
 
-    const handler = () => {
+    function handler() {
         mockedClearTimeout(timeoutId);
         return callback(...args);
-    };
+    }
 
     const timeoutValues = [handler, now(), ms];
     const timeoutId = frozen ? nextDummyId++ : setTimeout(handler, ms);
@@ -404,7 +423,7 @@ export async function waitUntil(predicate, options) {
     let frameCount = 0;
     let handle;
     return new Promise((resolve, reject) => {
-        const runCheck = () => {
+        function runCheck() {
             const isLast = ++frameCount >= maxFrameCount;
             const result = predicate(isLast);
             if (result) {
@@ -417,13 +436,13 @@ export async function waitUntil(predicate, options) {
                 if (typeof message === "function") {
                     message = message();
                 }
-                if (message instanceof Error) {
+                if (isInstanceOf(message, Error)) {
                     reject(message);
                 } else {
                     reject(new HootTimingError(message.replace("%timeout%", String(timeout))));
                 }
             }
-        };
+        }
 
         handle = requestAnimationFrame(runCheck);
     }).finally(() => {

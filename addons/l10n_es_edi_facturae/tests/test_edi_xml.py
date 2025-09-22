@@ -201,8 +201,9 @@ class TestEdiFacturaeXmls(AccountTestInvoicingCommon):
         invoice = self.create_invoice(partner_id=self.partner_a.id, move_type='out_invoice', invoice_line_ids=[{'price_unit': 100.0, 'tax_ids': [self.tax.id]}])
         invoice.action_post()
         wizard = self.create_send_and_print(invoice)
-        wizard.action_send_and_print()
-        self.assertFalse(invoice.l10n_es_edi_facturae_xml_id)
+        # Expect a UserError if no certificate is configured
+        with self.assertRaises(UserError):
+            wizard.action_send_and_print()
 
     def test_tax_withheld(self):
         with freeze_time(self.frozen_today), \
@@ -452,3 +453,30 @@ class TestEdiFacturaeXmls(AccountTestInvoicingCommon):
         with file_open('l10n_es_edi_facturae/tests/data/expected_invoice_payment_means.xml', 'rt') as f:
             expected_xml = lxml.etree.fromstring(f.read().encode())
         self.assertXmlTreeEqual(lxml.etree.fromstring(generated_file), expected_xml)
+
+    def test_simplified_invoice(self):
+        """
+        Test that in the facturae xml uses the correct InvoiceDocumentType for simplified invoices
+        """
+
+        partner = self.env.ref('l10n_es.partner_simplified')
+        partner.vat = 'ESA12345674'
+        partner.country_id = self.env['res.country'].search([('code', '=', 'ES')])
+
+        # We need to patch dates and uuid to ensure the signature's consistency
+        with freeze_time(datetime(2023, 1, 1)):
+            invoice = self.create_invoice(
+                partner_id=partner.id,
+                move_type='out_invoice',
+                invoice_line_ids=[
+                    {'price_unit': 100.0, 'tax_ids': [self.tax.id]},
+                ],
+            )
+            invoice.action_post()
+            generated_file, errors = invoice._l10n_es_edi_facturae_render_facturae()
+            self.assertFalse(errors)
+            self.assertTrue(generated_file)
+
+            with file_open("l10n_es_edi_facturae/tests/data/expected_simplified_document.xml", "rt") as f:
+                expected_xml = lxml.etree.fromstring(f.read().encode())
+            self.assertXmlTreeEqual(lxml.etree.fromstring(generated_file), expected_xml)

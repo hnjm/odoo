@@ -430,12 +430,12 @@ msgstr "<strong class=\"d-block mb-1\">Hoá đơn</strong>"
 #. module: purchase
 #: model_terms:ir.ui.view,arch_db:purchase.report_purchasequotation_document
 msgid "<strong class=\"d-block mt-3\">Shipping address:</strong>"
-msgstr ""
+msgstr "<strong class=\"d-block mt-3\">Địa chỉ giao hàng:</strong>"
 
 #. module: purchase
 #: model_terms:ir.ui.view,arch_db:purchase.report_purchaseorder_document
 msgid "<strong class=\"d-block mt-3\">Shipping address</strong>"
-msgstr ""
+msgstr "<strong class=\"d-block mt-3\">Địa chỉ giao hàng</strong>"
 
 #. module: purchase
 #: model_terms:ir.ui.view,arch_db:purchase.purchase_order_portal_content
@@ -488,7 +488,7 @@ msgstr "<strong>Ngày đặt hàng:</strong>"
 #. module: purchase
 #: model_terms:ir.ui.view,arch_db:purchase.report_purchaseorder_document
 msgid "<strong>Order Deadline:</strong>"
-msgstr "<strong>Hạn chót đơn hàng:</strong>"
+msgstr "<strong>Thời hạn đơn hàng:</strong>"
 
 #. module: purchase
 #: model_terms:ir.ui.view,arch_db:purchase.report_purchaseorder_document
@@ -579,8 +579,6 @@ msgid ""
 "Ability to select a package type in purchase orders and to force a quantity "
 "that is a multiple of the number of units per package."
 msgstr ""
-"Khả năng chọn kiểu đóng gói trong đơn mua hàng và buộc số lượng là bội số "
-"của số lượng hàng trên mỗi kiện."
 
 #. module: purchase
 #. odoo-python
@@ -1834,7 +1832,7 @@ msgstr "Thiếu các trường bắt buộc trên dòng đơn mua hàng có th�
 #. module: purchase
 #: model:ir.model.fields,field_description:purchase.field_purchase_order__my_activity_date_deadline
 msgid "My Activity Deadline"
-msgstr "Hạn chót hoạt động của tôi"
+msgstr "Thời hạn hoạt động của tôi"
 
 #. module: purchase
 #. odoo-javascript
@@ -1895,7 +1893,7 @@ msgstr "Sự kiện trên lịch cho hoạt động tiếp theo"
 #. module: purchase
 #: model:ir.model.fields,field_description:purchase.field_purchase_order__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr "Hạn chót cho hoạt động tiếp theo"
+msgstr "Thời hạn cho hoạt động tiếp theo"
 
 #. module: purchase
 #: model:ir.model.fields,field_description:purchase.field_purchase_order__activity_summary

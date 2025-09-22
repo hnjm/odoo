@@ -554,6 +554,8 @@ class HrExpense(models.Model):
 
     def attach_document(self, **kwargs):
         """When an attachment is uploaded as a receipt, set it as the main attachment."""
+        if not self.has_access('write') or (self.sheet_id and not self.sheet_id.has_access('write')):
+            raise UserError(_("You don't have the rights to attach a document to a submitted expense. Please reset the expense report to draft first."))
         self._message_set_main_attachment_id(self.env["ir.attachment"].browse(kwargs['attachment_ids'][-1:]), force=True)
 
     @api.model
@@ -611,6 +613,13 @@ class HrExpense(models.Model):
                 raise UserError(_('You cannot delete a posted or approved expense.'))
 
     def write(self, vals):
+        if (
+                'state' in vals
+                and vals['state'] != 'submitted'
+                and not (self.env.user.has_group('hr_expense.group_hr_expense_manager') or self.env.su)
+                and any(state == 'draft' for state in self.mapped('state'))
+        ):
+            raise UserError(_("You don't have the rights to bypass the validation process of this expense."))
         expense_to_previous_sheet = {}
         if 'sheet_id' in vals:
             # Check access rights on the sheet

@@ -38,7 +38,9 @@
             <field name="arch" type="xml">
                 <list editable="bottom" create="1" delete="1">
                     <field name="sequence" widget="handle"/>
-                    <field name="factor_percent" invisible="repartition_type == 'base'"/>
+                    <field name="factor_percent"
+                           invisible="repartition_type == 'base'"
+                           widget="account_tax_repartition_line_factor_percent"/>
                     <field name="repartition_type"/>
                     <field name="account_id" invisible="repartition_type == 'base'" options="{'no_create': True}"/>
                     <field name="tag_ids"
@@ -172,7 +174,7 @@
                         <page string="Advanced Options" name="advanced_options">
                             <group>
                                 <group>
-                                    <field name="invoice_label" invisible="amount_type == 'group'"/>
+                                    <field name="invoice_label"/>
                                     <field name="description"/>
                                     <field name="tax_group_id" invisible="amount_type == 'group'" required="amount_type != 'group'"/>
                                     <field name="analytic" invisible="amount_type == 'group'" groups="analytic.group_analytic_accounting" />

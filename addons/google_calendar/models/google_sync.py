@@ -280,6 +280,8 @@ class GoogleSync(models.AbstractModel):
         with google_calendar_token(self.env.user.sudo()) as token:
             if token:
                 try:
+                    send_updates = not self._is_event_over()
+                    google_service.google_service = google_service.google_service.with_context(send_updates=send_updates)
                     google_service.patch(google_id, values, token=token, timeout=timeout)
                 except HTTPError as e:
                     if e.response.status_code in (400, 403):
@@ -309,7 +311,7 @@ class GoogleSync(models.AbstractModel):
         with google_calendar_token(self.env.user.sudo()) as token:
             if token:
                 try:
-                    send_updates = self._context.get('send_updates', True)
+                    send_updates = self._context.get('send_updates', True) and not self._is_event_over()
                     google_service.google_service = google_service.google_service.with_context(send_updates=send_updates)
                     google_values = google_service.insert(values, token=token, timeout=timeout, need_video_call=self._need_video_call())
                     self.with_context(dont_notify=True).write(self._get_post_sync_values(values, google_values))
@@ -417,6 +419,6 @@ class GoogleSync(models.AbstractModel):
         Returns True if the record insertion to Google should be blocked.
         This is a necessary step for ensuring data match between Odoo and Google,
         as it avoids that events have permanently the wrong organizer in Google
-        by not synchronizing records through owner and not  through the attendees.
+        by not synchronizing records through owner and not through the attendees.
         """
         raise NotImplementedError()

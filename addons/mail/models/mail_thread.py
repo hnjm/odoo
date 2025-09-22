@@ -1887,9 +1887,22 @@ class MailThread(models.AbstractModel):
             return result
         if partner and partner.email:  # complete profile: id, name <email>
             email_normalized = ','.join(email_normalize_all(partner.email))
-            recipient_data.update({'partner_id': partner.id, 'name': partner.name or '', 'email': email_normalized})
+            recipient_data.update(
+                {
+                    "partner_id": partner.id,
+                    "name": partner.name or "",
+                    "email": email_normalized,
+                    "display_name": partner.display_name,
+                }
+            )
         elif partner:  # incomplete profile: id, name
-            recipient_data.update({'partner_id': partner.id, 'name': partner.name})
+            recipient_data.update(
+                {
+                    "partner_id": partner.id,
+                    "name": partner.name,
+                    "display_name": partner.display_name,
+                }
+            )
         else:  # unknown partner, we are probably managing an email address
             _, parsed_email_normalized = parse_contact_from_email(email)
             partner_create_values = self._get_customer_information().get(parsed_email_normalized, {})
@@ -4102,31 +4115,17 @@ class MailThread(models.AbstractModel):
 
     def _notify_get_action_link(self, link_type, **kwargs):
         """ Prepare link to an action: view document, follow document, ... """
-        params = {
-            'model': kwargs.get('model', self._name),
-            'res_id': kwargs.get('res_id', self.ids and self.ids[0] or False),
-        }
-        # keep only accepted parameters:
-        # - action (deprecated), token (assign), access_token (view)
-        # - auth_signup: auth_signup_token and auth_login
-        # - portal: pid, hash
-        params.update(dict(
-            (key, value)
-            for key, value in kwargs.items()
-            if key in ('action', 'token', 'access_token', 'auth_signup_token',
-                       'auth_login', 'pid', 'hash')
-        ))
+        params = self._get_action_link_params(link_type, **kwargs)
 
         if link_type in ['view', 'assign', 'follow', 'unfollow']:
             base_link = '/mail/%s' % link_type
         elif link_type == 'controller':
             controller = kwargs.get('controller')
-            params.pop('model')
             base_link = '%s' % controller
         else:
             return ''
 
-        if link_type not in ['view']:
+        if link_type != 'view':
             token = self._encode_link(base_link, params)
             params['token'] = token
 
@@ -4145,6 +4144,28 @@ class MailThread(models.AbstractModel):
         token = '%s?%s' % (base_link, ' '.join('%s=%s' % (key, params[key]) for key in sorted(params)))
         hm = hmac.new(secret.encode('utf-8'), token.encode('utf-8'), hashlib.sha1).hexdigest()
         return hm
+
+    def _get_action_link_params(self, link_type, **kwargs):
+        """ Parameters management for '_notify_get_action_link' """
+        params = {
+            'model': kwargs.get('model', self._name),
+            'res_id': kwargs.get('res_id', self.ids[0] if self else False),
+        }
+        # keep only accepted parameters:
+        # - action (deprecated), token (assign), access_token (view)
+        # - auth_signup: auth_signup_token and auth_login
+        # - portal: pid, hash
+        params.update({
+            key: value
+            for key, value in kwargs.items()
+            if key in ('action', 'token', 'access_token', 'auth_signup_token',
+                       'auth_login', 'pid', 'hash')
+        })
+        if link_type == 'controller':
+            params.pop('model')
+        elif link_type not in ['view', 'assign', 'follow', 'unfollow']:
+            return {}
+        return params
 
     @api.model
     def _extract_model_and_id(self, msg_vals):
@@ -4692,6 +4713,7 @@ class MailThread(models.AbstractModel):
         return res
 
     def _thread_to_store(self, store: Store, /, *, fields=None, request_list=None):
+        is_request = request_list is not None
         if fields is None:
             fields = []
         for thread in self:
@@ -4699,16 +4721,10 @@ class MailThread(models.AbstractModel):
                 [field for field in fields if field not in ["display_name", "modelName"]],
                 load=False,
             )[0]
-            if request_list:
-                res["hasReadAccess"] = True
-                res["hasWriteAccess"] = False
+            if is_request:
+                res["hasReadAccess"] = thread.sudo(False).has_access("read")
+                res["hasWriteAccess"] = thread.sudo(False).has_access("write")
                 res["canPostOnReadonly"] = self._mail_post_access == "read"
-            try:
-                thread.check_access("write")
-                if request_list:
-                    res["hasWriteAccess"] = True
-            except AccessError:
-                pass
             if (
                 request_list
                 and "activities" in request_list
@@ -4761,6 +4777,10 @@ class MailThread(models.AbstractModel):
         if "form" in res["views"] and isinstance(self.env[self._name], self.env.registry['mail.activity.mixin']):
             res["models"][self._name]["has_activities"] = True
         return res
+
+    @api.model
+    def _get_allowed_message_update_params(self):
+        return {"attachment_ids", "body", "partner_ids"}
 
     @api.model
     def _get_thread_with_access(self, thread_id, mode="read", **kwargs):

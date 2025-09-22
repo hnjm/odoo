@@ -3,7 +3,7 @@
 # 	* crm_iap_mine
 # 
 # Translators:
-# Wil Odoo, 2024
+# Wil Odoo, 2025
 # Tony Ng, 2025
 # 
 msgid ""
@@ -481,7 +481,7 @@ msgstr "想尋求更多銷售機會？<br>試試「<b>潛在客戶生成</b>」�
 #. module: crm_iap_mine
 #: model:crm.iap.lead.role,name:crm_iap_mine.crm_iap_mine_role_13
 msgid "Marketing"
-msgstr "市場行銷"
+msgstr "市場推廣"
 
 #. module: crm_iap_mine
 #: model:crm.iap.lead.industry,name:crm_iap_mine.crm_iap_mine_industry_148
@@ -552,7 +552,7 @@ msgstr "製程"
 #: model:ir.model.fields.selection,name:crm_iap_mine.selection__crm_iap_lead_mining_request__lead_type__opportunity
 #: model_terms:ir.ui.view,arch_db:crm_iap_mine.crm_iap_lead_mining_request_view_search
 msgid "Opportunities"
-msgstr "商機/線索"
+msgstr "商機"
 
 #. module: crm_iap_mine
 #. odoo-python

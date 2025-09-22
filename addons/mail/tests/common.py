@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
+import contextlib
 import email
 import email.policy
 import json
@@ -17,6 +18,7 @@ from random import randint
 from unittest.mock import patch
 
 from odoo.addons.base.models.ir_mail_server import IrMailServer
+from odoo import fields
 from odoo.addons.base.tests.common import MockSmtplibCase
 from odoo.addons.bus.models.bus import ImBus, json_dump
 from odoo.addons.mail.models.mail_mail import MailMail
@@ -1020,7 +1022,6 @@ class MailCase(MockEmail):
         cls.email_template = cls.env['mail.template'].create(create_values)
         return cls.email_template
 
-
     def _generate_notify_recipients(self, partners, record=None):
         """ Tool method to generate recipients data according to structure used
         in notification methods. Purpose is to allow testing of internals of
@@ -1040,6 +1041,29 @@ class MailCase(MockEmail):
              'ushare': all(user.share for user in partner.user_ids) if partner.user_ids else False,
             } for partner in partners
         ]
+
+    def _get_mail_composer_web_context(self, records, add_web=True, **values):
+        """ Helper to generate composer context. Will make tests a bit less
+        verbose.
+
+        :param bool add_web: add web context, generally making noise especially in
+          mass mail mode (active_id/ids both present in context)
+        """
+        base_context = {
+            'default_model': records._name,
+            'default_res_ids': records.ids,
+        }
+        if len(records) == 1:
+            base_context['default_composition_mode'] = 'comment'
+        else:
+            base_context['default_composition_mode'] = 'mass_mail'
+        if add_web:
+            base_context['active_model'] = records._name
+            base_context['active_id'] = records[0].id
+            base_context['active_ids'] = records.ids
+        if values:
+            base_context.update(**values)
+        return base_context
 
     # ------------------------------------------------------------
     # MAIL ASSERTS WRAPPERS
@@ -1393,7 +1417,7 @@ class MailCase(MockEmail):
         notif_messages = [n.message for n in bus_notifs]
         for expected in message_items or []:
             for notification in notif_messages:
-                if json_dump(expected) == notification:
+                if json.loads(json_dump(expected)) == json.loads(notification):
                     break
             else:
                 matching_notifs = [m for m in notif_messages if json.loads(m).get("type") == expected.get("type")]
@@ -1779,3 +1803,18 @@ class MailCommon(common.TransactionCase, MailCase):
                 data.pop("rating_avg", None)
                 data.pop("rating_count", None)
         return list(threads_data)
+
+
+@contextlib.contextmanager
+def freeze_all_time(dt=None):
+    """Freeze both `cr.now` and `Datetime.now`. ORM `create_date` and `write_date`
+    are based on `cursor.now()`. Domains often use `Datetime.now()` which can
+    lead to inconsistencies when using `freeze_time`.
+
+    :param dt: Datetime to freeze the time to. Defaults to `Datetime.now()`.
+    :type dt: datetime.datetime
+    """
+    if not dt:
+        dt = fields.Datetime.now()
+    with patch('odoo.sql_db.Cursor.now', return_value=dt), freeze_time(dt):
+        yield

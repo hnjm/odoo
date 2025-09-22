@@ -50,11 +50,15 @@ class TestChorusProXml(AccountTestInvoicingCommon):
 
         supplier_identification_node = xml_etree.find("{*}AccountingSupplierParty/{*}Party/{*}PartyIdentification/{*}ID")
         self.assertEqual(supplier_identification_node.text, "02546465000024")
-        self.assertEqual(supplier_identification_node.attrib, {'schemeName': '1'})
+        self.assertEqual(supplier_identification_node.attrib, {'schemeID': '0009'})
 
         customer_identification_node = xml_etree.find("{*}AccountingCustomerParty/{*}Party/{*}PartyIdentification/{*}ID")
         self.assertEqual(customer_identification_node.text, "21440109300015")
-        self.assertEqual(customer_identification_node.attrib, {'schemeName': '1'})
+        self.assertEqual(customer_identification_node.attrib, {'schemeID': '0009'})
 
         self.assertEqual(xml_etree.findtext("{*}BuyerReference"), "buyer_ref_123")
         self.assertEqual(xml_etree.findtext("{*}OrderReference/{*}ID"), "order_ref_123")
+
+    def test_export_invoice_chorus_pro_new(self):
+        self.env['ir.config_parameter'].sudo().set_param('account_edi_ubl_cii.use_new_dict_to_xml_helpers', True)
+        self.test_export_invoice_chorus_pro()

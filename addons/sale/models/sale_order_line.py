@@ -121,6 +121,7 @@ class SaleOrderLine(models.Model):
         string="Description",
         compute='_compute_name',
         store=True, readonly=False, required=True, precompute=True)
+    translated_product_name = fields.Text(compute='_compute_translated_product_name')
 
     product_uom_qty = fields.Float(
         string="Quantity",
@@ -315,10 +316,17 @@ class SaleOrderLine(models.Model):
     def _compute_display_name(self):
         name_per_id = self._additional_name_per_id()
         for so_line in self.sudo():
-            product = so_line.product_id
-            parts = (so_line.name or "").split('\n', 2)
-            # if there's a description, use the first line (skipping the product name)
-            description = (parts[1:2] and parts[1]) or product.name if product else parts[0]
+            if so_line.order_partner_id.lang:
+                so_line = so_line.with_context(lang=so_line.order_id._get_lang())
+            if (product := so_line.product_id).display_name:
+                default_name = so_line._get_sale_order_line_multiline_description_sale()
+                if so_line.name == default_name:
+                    description = product.display_name
+                else:
+                    parts = (so_line.name or "").split('\n', 2)
+                    description = parts[1] if len(parts) > 1 and parts[1] else product.display_name
+            else:
+                description = (so_line.name or "").split('\n', 1)[0]
             name = f"{so_line.order_id.name} - {description}"
             additional_name = name_per_id.get(so_line.id)
             if additional_name:
@@ -475,6 +483,13 @@ class SaleOrderLine(models.Model):
 
         return name
 
+    @api.depends('product_id')
+    def _compute_translated_product_name(self):
+        for line in self:
+            line.translated_product_name = line.product_id.with_context(
+                lang=line.order_id._get_lang(),
+            ).display_name
+
     @api.depends('display_type', 'product_id', 'product_packaging_qty')
     def _compute_product_uom_qty(self):
         for line in self:
@@ -545,6 +560,16 @@ class SaleOrderLine(models.Model):
 
     @api.depends('product_id', 'product_uom', 'product_uom_qty')
     def _compute_price_unit(self):
+        def has_manual_price(line):
+            # `line.currency_id` can be False for NewId records
+            currency = (
+                line.currency_id
+                or line.company_id.currency_id
+                or line.env.company.currency_id
+            )
+            return currency.compare_amounts(line.technical_price_unit, line.price_unit)
+
+        force_recompute = self.env.context.get('force_price_recomputation')
         for line in self:
             # Don't compute the price for deleted lines.
             if not line.order_id:
@@ -552,7 +577,7 @@ class SaleOrderLine(models.Model):
             # check if the price has been manually set or there is already invoiced amount.
             # if so, the price shouldn't change as it might have been manually edited.
             if (
-                (line.technical_price_unit != line.price_unit and not line.env.context.get('force_price_recomputation'))
+                (not force_recompute and has_manual_price(line))
                 or line.qty_invoiced > 0
                 or (line.product_id.expense_policy == 'cost' and line.is_expense)
             ):
@@ -562,16 +587,23 @@ class SaleOrderLine(models.Model):
                 line.price_unit = 0.0
                 line.technical_price_unit = 0.0
             else:
-                line = line.with_company(line.company_id)
-                price = line._get_display_price()
-                line.price_unit = line.product_id._get_tax_included_unit_price_from_price(
-                    price,
-                    product_taxes=line.product_id.taxes_id.filtered(
-                        lambda tax: tax.company_id == line.env.company
-                    ),
-                    fiscal_position=line.order_id.fiscal_position_id,
-                )
-                line.technical_price_unit = line.price_unit
+                line._reset_price_unit()
+
+    def _reset_price_unit(self):
+        self.ensure_one()
+
+        line = self.with_company(self.company_id)
+        price = line._get_display_price()
+        product_taxes = line.product_id.taxes_id._filter_taxes_by_company(line.company_id)
+        price_unit = line.product_id._get_tax_included_unit_price_from_price(
+            price,
+            product_taxes=product_taxes,
+            fiscal_position=line.order_id.fiscal_position_id,
+        )
+        line.update({
+            'price_unit': price_unit,
+            'technical_price_unit': price_unit,
+        })
 
     def _get_order_date(self):
         self.ensure_one()
@@ -730,6 +762,10 @@ class SaleOrderLine(models.Model):
                 line.discount = 0.0
 
             if not (line.order_id.pricelist_id and discount_enabled):
+                continue
+
+            if line.combo_item_id:
+                line.discount = line._get_linked_line().discount
                 continue
 
             line.discount = 0.0
@@ -1178,6 +1214,12 @@ class SaleOrderLine(models.Model):
                 }
             }
 
+    @api.onchange('product_id')
+    def _onchange_product_id(self):
+        if not self.product_id:
+            return
+        self._reset_price_unit()
+
     @api.onchange('product_packaging_id')
     def _onchange_product_packaging_id(self):
         if self.product_packaging_id and self.product_uom_qty:
@@ -1401,7 +1443,6 @@ class SaleOrderLine(models.Model):
             'sale_line_ids': [Command.link(self.id)],
             'is_downpayment': self.is_downpayment,
         }
-        self._set_analytic_distribution(res, **optional_values)
         downpayment_lines = self.invoice_lines.filtered('is_downpayment')
         if self.is_downpayment and downpayment_lines:
             res['account_id'] = downpayment_lines.account_id[:1].id

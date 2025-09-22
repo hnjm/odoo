@@ -9,15 +9,7 @@ import { READONLY_MAIN_EMBEDDINGS } from "@html_editor/others/embedded_component
 import { normalizeHTML, parseHTML } from "@html_editor/utils/html";
 import { Wysiwyg } from "@html_editor/wysiwyg";
 import { beforeEach, describe, expect, test } from "@odoo/hoot";
-import {
-    click,
-    press,
-    queryAll,
-    queryAllTexts,
-    queryOne,
-    waitFor,
-    waitForNone,
-} from "@odoo/hoot-dom";
+import { click, press, queryAll, queryAllTexts, queryOne, waitFor } from "@odoo/hoot-dom";
 import { Deferred, animationFrame, mockSendBeacon, tick } from "@odoo/hoot-mock";
 import { onWillDestroy, xml } from "@odoo/owl";
 import {
@@ -41,6 +33,7 @@ import { Counter, EmbeddedWrapperMixin } from "./_helpers/embedded_component";
 import { moveSelectionOutsideEditor, setSelection } from "./_helpers/selection";
 import { insertText, pasteOdooEditorHtml, pasteText, undo } from "./_helpers/user_actions";
 import { unformat } from "./_helpers/format";
+import { expectElementCount } from "./_helpers/ui_expectations";
 
 class Partner extends models.Model {
     txt = fields.Html({ trim: true });
@@ -522,7 +515,7 @@ test("create new record and load it correctly", async () => {
 
         // Necessary for mobile
         _views = {
-            "kanban,false": `
+            kanban: `
                 <kanban>
                     <templates>
                         <t t-name="card">
@@ -846,7 +839,7 @@ test("A new MediaDialog after switching record in a Form view should have the co
     setSelectionInHtmlField();
     await insertText(htmlEditor, "/Media");
     await animationFrame();
-    expect(".o-we-powerbox").toHaveCount(1);
+    await expectElementCount(".o-we-powerbox", 1);
     expect(".active .o-we-command-name").toHaveText("Media");
 
     await press("Enter");
@@ -862,12 +855,10 @@ test("Embed video by pasting video URL", async () => {
         },
     ];
 
-    onRpc("/html_editor/video_url/data", async () => {
-        return {
-            platform: "youtube",
-            embed_url: "//www.youtube.com/embed/qxb74CMR748?rel=0&autoplay=0",
-        };
-    });
+    onRpc("/html_editor/video_url/data", async () => ({
+        platform: "youtube",
+        embed_url: "//www.youtube.com/embed/qxb74CMR748?rel=0&autoplay=0",
+    }));
 
     await mountView({
         type: "form",
@@ -885,7 +876,7 @@ test("Embed video by pasting video URL", async () => {
     pasteText(htmlEditor, "https://www.youtube.com/watch?v=qxb74CMR748");
     await animationFrame();
     expect(anchorNode.outerHTML).toBe("<p>https://www.youtube.com/watch?v=qxb74CMR748</p>");
-    expect(".o-we-powerbox").toHaveCount(1);
+    await expectElementCount(".o-we-powerbox", 1);
     expect(queryAllTexts(".o-we-command-name")).toEqual(["Embed Youtube Video", "Paste as URL"]);
 
     // Press Enter to select first option in the powerbox ("Embed Youtube Video").
@@ -961,8 +952,7 @@ test("link preview in Link Popover", async () => {
     });
     // Move selection outside to discard
     setSelectionInHtmlField(".test_target");
-    await waitForNone(".o-we-linkpopover", { root: document, timeout: 500 });
-    expect(".o-we-linkpopover").toHaveCount(0);
+    await expectElementCount(".o-we-linkpopover", 0);
     expect(".test_target a").toHaveText("This website");
 
     // Select link label to open the floating toolbar.
@@ -1327,12 +1317,8 @@ test("edit and save a html field in collaborative should keep the same wysiwyg",
             ' data-last-history-steps="12345"'
         );
     });
-    onRpc("/html_editor/get_ice_servers", () => {
-        return [];
-    });
-    onRpc("/html_editor/bus_broadcast", (params) => {
-        return { id: 10 };
-    });
+    onRpc("/html_editor/get_ice_servers", () => []);
+    onRpc("/html_editor/bus_broadcast", (params) => ({ id: 10 }));
 
     await mountView({
         type: "form",
@@ -1883,8 +1869,8 @@ describe("save image", () => {
 
         const imageRecord = IrAttachment._records[0];
         // Method to get the html of a cropped image.
-        const getImageContainerHTML = (src, isModified) => {
-            return `
+        const getImageContainerHTML = (src, isModified) =>
+            `
             <p>
                 <img
                     class="img img-fluid o_we_custom_image o_we_image_cropped${
@@ -1905,7 +1891,6 @@ describe("save image", () => {
         `
                 .replace(/(?:\s|(?:\r\n))+/g, " ")
                 .replace(/\s?(<|>)\s?/g, "$1");
-        };
         // Promise to resolve when we want the response of the modify_image RPC.
         const modifyImagePromise = new Deferred();
         let writeCount = 0;
@@ -1919,7 +1904,6 @@ describe("save image", () => {
         // "registered".
         const newImageSrc = "/web/image/1234/cropped_transparent.png";
         onRpc("web_save", () => {
-            expect(true).toBe(false);
             throw new Error("web_save should only be called through sendBeacon");
         });
         onRpc(`/html_editor/modify_image/${imageRecord.id}`, async (request) => {
@@ -1932,7 +1916,6 @@ describe("save image", () => {
                 return newImageSrc;
             } else {
                 // Fail the test if too many modify_image are called.
-                expect(true).toBe(false);
                 throw new Error("The image should only have been modified once during this test");
             }
         });
@@ -2244,5 +2227,41 @@ describe("translatable", () => {
         // Click away to remove focus
         await contains(".o_form_label").click();
         expect(".o_field_html .btn.o_field_translate").not.toBeVisible();
+    });
+});
+
+describe("codeview enabled", () => {
+    test("Code view command should be available", async () => {
+        await mountView({
+            type: "form",
+            resId: 1,
+            resModel: "partner",
+            arch: `
+                <form>
+                    <field name="txt" widget="html" options="{'codeview': True}"/>
+                </form>`,
+        });
+        const anchorNode = queryOne(`[name='txt'] .odoo-editor-editable p`);
+        setSelection({ anchorNode, anchorOffset: 0 });
+        await insertText(htmlEditor, "/code");
+        await waitFor(".o-we-powerbox");
+        expect(queryAllTexts(".o-we-command-name")).toEqual(["Code"]);
+    });
+
+    test("Video command should be available when codeview enabled", async () => {
+        await mountView({
+            type: "form",
+            resId: 1,
+            resModel: "partner",
+            arch: `
+                <form>
+                    <field name="txt" widget="html" options="{'codeview': True}"/>
+                </form>`,
+        });
+        const anchorNode = queryOne(`[name='txt'] .odoo-editor-editable p`);
+        setSelection({ anchorNode, anchorOffset: 0 });
+        await insertText(htmlEditor, "/video");
+        await waitFor(".o-we-powerbox");
+        expect(queryAllTexts(".o-we-command-name")).toEqual(["Video Link"]);
     });
 });

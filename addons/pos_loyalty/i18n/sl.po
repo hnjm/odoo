@@ -5,6 +5,7 @@
 # Translators:
 # Wil Odoo, 2024
 # Gregor Flajs, 2024
+# Jan Zorko, 2025
 # Aleš Pipan, 2025
 # 
 msgid ""
@@ -43,7 +44,7 @@ msgstr ""
 #. module: pos_loyalty
 #: model:loyalty.reward,description:pos_loyalty.15_pc_on_next_order_reward
 msgid "15% on your order"
-msgstr ""
+msgstr "15% na vaše naročilo"
 
 #. module: pos_loyalty
 #. odoo-javascript
@@ -55,7 +56,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/pos_loyalty/static/src/overrides/components/product_screen/order_summary/order_summary.js:0
 msgid "A coupon/loyalty card must have a unique code."
-msgstr ""
+msgstr "Kupon/kartica zvestobe mora imeti edinstveno kodo."
 
 #. module: pos_loyalty
 #. odoo-javascript
@@ -74,7 +75,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:pos_loyalty.field_res_partner__loyalty_card_count
 #: model:ir.model.fields,field_description:pos_loyalty.field_res_users__loyalty_card_count
 msgid "Active loyalty cards"
-msgstr ""
+msgstr "Aktivne kartice zvestobe"
 
 #. module: pos_loyalty
 #. odoo-javascript
@@ -180,7 +181,7 @@ msgstr ""
 #: model:ir.ui.menu,name:pos_loyalty.menu_discount_loyalty_type_config
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.res_config_view_form_inherit_pos_loyalty
 msgid "Discount & Loyalty"
-msgstr ""
+msgstr "Popust in zvestoba"
 
 #. module: pos_loyalty
 #. odoo-javascript
@@ -242,7 +243,7 @@ msgstr "Darilna kartica ali koda za popust"
 #: model:ir.ui.menu,name:pos_loyalty.menu_gift_ewallet_type_config
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.res_config_view_form_inherit_pos_loyalty
 msgid "Gift cards & eWallet"
-msgstr ""
+msgstr "Darilne kartice in eDenarnica"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_pos_order_line__points_cost
@@ -281,7 +282,7 @@ msgstr ""
 #. module: pos_loyalty
 #: model:ir.model,name:pos_loyalty.model_loyalty_mail
 msgid "Loyalty Communication"
-msgstr ""
+msgstr "Komunikacija zvestobe"
 
 #. module: pos_loyalty
 #: model:ir.model,name:pos_loyalty.model_loyalty_card
@@ -302,12 +303,12 @@ msgstr "Program zvestobe"
 #. module: pos_loyalty
 #: model:ir.model,name:pos_loyalty.model_loyalty_reward
 msgid "Loyalty Reward"
-msgstr ""
+msgstr "Nagrada za zvestobo"
 
 #. module: pos_loyalty
 #: model:ir.model,name:pos_loyalty.model_loyalty_rule
 msgid "Loyalty Rule"
-msgstr ""
+msgstr "Pravilo zvestobe"
 
 #. module: pos_loyalty
 #. odoo-javascript
@@ -748,7 +749,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/pos_loyalty/static/src/overrides/components/control_buttons/control_buttons.xml:0
 msgid "eWallet"
-msgstr ""
+msgstr "e-denarnica"
 
 #. module: pos_loyalty
 #. odoo-javascript

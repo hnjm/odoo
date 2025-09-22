@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-23 18:39+0000\n"
+"POT-Creation-Date: 2025-07-18 18:39+0000\n"
 "PO-Revision-Date: 2024-09-25 09:41+0000\n"
 "Last-Translator: Sarah Park, 2025\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
@@ -1619,6 +1619,7 @@ msgid "Portal Visible"
 msgstr "포털 표시"
 
 #. module: loyalty
+#: model:ir.model,name:loyalty.model_product_pricelist
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_program__pricelist_ids
 msgid "Pricelist"
 msgstr "가격표"
@@ -1958,6 +1959,14 @@ msgstr "이 리워드 항목에서 할인받을 수 있는 최대 금액이며 �
 
 #. module: loyalty
 #. odoo-python
+#: code:addons/loyalty/models/product_pricelist.py:0
+msgid ""
+"This pricelist may not be archived. It is being used for active promotion "
+"programs: %s"
+msgstr "이 가격표는 보관함으로 이동할 수 없습니다. 현재 진행 중인 프로모션 프로그램에서 사용 중입니다: %s"
+
+#. module: loyalty
+#. odoo-python
 #: code:addons/loyalty/models/product_product.py:0
 msgid ""
 "This product may not be archived. It is being used for an active promotion "
@@ -1988,7 +1997,7 @@ msgstr "자동 실행"
 #. odoo-python
 #: code:addons/loyalty/models/loyalty_reward.py:0
 msgid "Unsupported search operator"
-msgstr ""
+msgstr "지원되지 않는 검색 작업"
 
 #. module: loyalty
 #. odoo-python
@@ -2279,6 +2288,11 @@ msgstr "종료"
 #: model_terms:ir.ui.view,arch_db:loyalty.loyalty_program_view_form
 msgid "usages"
 msgstr "사용"
+
+#. module: loyalty
+#: model_terms:ir.ui.view,arch_db:loyalty.loyalty_program_view_form
+msgid "used)"
+msgstr "사용)"
 
 #. module: loyalty
 #. odoo-python

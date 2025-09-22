@@ -183,7 +183,7 @@ function bootstrapToTable(editable) {
         masonryRow.parentElement.style.setProperty('height', '100%');
     }
 
-    const containers = editable.querySelectorAll('.container, .container-fluid, .o_fake_table');
+    const containers = editable.querySelectorAll('.container, .container-fluid, .o_fake_table, .o_text_columns');
     // Capture the widths of the containers before manipulating it.
     for (const container of containers) {
         container.setAttribute('o-temp-width', _getWidth(container));
@@ -237,7 +237,7 @@ function bootstrapToTable(editable) {
             //    by sharing the available space between them.
             const flexColumns = bootstrapColumns.filter(column => !/\d/.test(column.className.match(RE_COL_MATCH)[0] || '0'));
             const colTotalSize = bootstrapColumns.map(child => _getColumnSize(child) + _getColumnOffsetSize(child)).reduce((a, b) => a + b, 0);
-            const colSize = Math.max(1, Math.round((12 - colTotalSize) / flexColumns.length));
+            const colSize = Math.max(1, Math.floor((12 - (colTotalSize)) / flexColumns.length));
             for (const flexColumn of flexColumns) {
                 flexColumn.classList.remove(flexColumn.className.match(RE_COL_MATCH)[0].trim());
                 flexColumn.classList.add(`col-${colSize}`);

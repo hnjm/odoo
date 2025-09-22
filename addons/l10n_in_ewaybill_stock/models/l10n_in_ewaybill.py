@@ -292,6 +292,15 @@ class Ewaybill(models.Model):
         self.ensure_one()
         return self._get_gst_treatment()[1] in ('overseas', 'special_economic_zone')
 
+    @api.model
+    def _get_default_help_message(self, status):
+        return self.env._(
+            "Somehow this E-waybill has been %s in the government portal before. "
+            "You can verify by checking the details into the government "
+            "(https://ewaybillgst.gov.in/Others/EBPrintnew.aspx)",
+            status
+        )
+
     def _check_configuration(self):
         error_message = []
         methods_to_check = [
@@ -307,7 +316,7 @@ class Ewaybill(models.Model):
 
     def _check_transporter(self):
         error_message = []
-        if self.transporter_id and not self.transporter_id.vat:
+        if self.transporter_id and not self.transporter_id.vat and (self.mode != "1" or not self.vehicle_no):
             error_message.append(_("- Transporter %s does not have a GST Number", self.transporter_id.name))
         if self.mode == "4" and self.vehicle_no and self.vehicle_type == "R":
             error_message.append(_("- Vehicle type can not be regular when the transportation mode is ship"))
@@ -410,7 +419,7 @@ class Ewaybill(models.Model):
         self._handle_internal_warning_if_present(ewaybill_error.error_json)
         error_message = ewaybill_error.get_all_error_message()
         blocking_level = "error"
-        if "404" in ewaybill_error.error_codes:
+        if "access_error" in ewaybill_error.error_codes:
             blocking_level = "warning"
         self._write_error(error_message, blocking_level)
 
@@ -418,15 +427,16 @@ class Ewaybill(models.Model):
         cancel_json = {
             "ewbNo": int(self.name),
             "cancelRsnCode": int(self.cancel_reason),
-            "CnlRem": self.cancel_remarks,
+            "cancelRmrk": self.cancel_remarks,
         }
         ewb_api = EWayBillApi(self.company_id)
         self._lock_ewaybill()
         try:
-            ewb_api._ewaybill_cancel(cancel_json)
+            response = ewb_api._ewaybill_cancel(cancel_json)
         except EWayBillError as error:
             self._handle_error(error)
             return False
+        self._handle_internal_warning_if_present(response)  # In case of error 312
         self._write_successfully_response({'state': 'cancel'})
         self._cr.commit()
 

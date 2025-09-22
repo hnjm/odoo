@@ -1,12 +1,13 @@
 import { Plugin } from "@html_editor/plugin";
 import { isBlock, closestBlock } from "@html_editor/utils/blocks";
-import { fillEmpty } from "@html_editor/utils/dom";
+import { fillEmpty, unwrapContents } from "@html_editor/utils/dom";
 import { leftLeafOnlyNotBlockPath } from "@html_editor/utils/dom_state";
-import { isVisibleTextNode } from "@html_editor/utils/dom_info";
+import { isRedundantElement, isVisibleTextNode } from "@html_editor/utils/dom_info";
 import {
     closestElement,
     createDOMPathGenerator,
     descendants,
+    selectElements,
 } from "@html_editor/utils/dom_traversal";
 import {
     convertNumericToUnit,
@@ -21,6 +22,7 @@ import { getBaseContainerSelector } from "@html_editor/utils/base_container";
 import { withSequence } from "@html_editor/utils/resource";
 import { reactive } from "@odoo/owl";
 import { FontSizeSelector } from "./font_size_selector";
+import { childNodes } from "../../utils/dom_traversal";
 
 export const fontItems = [
     {
@@ -206,6 +208,8 @@ export class FontPlugin extends Plugin {
                         });
                         this.updateFontSizeSelectorParams();
                     },
+                    onBlur: () => this.dependencies.selection.focusEditable(),
+                    document: this.document,
                 },
             },
         ],
@@ -261,6 +265,7 @@ export class FontPlugin extends Plugin {
             this.updateFontSelectorParams.bind(this),
             this.updateFontSizeSelectorParams.bind(this),
         ],
+        normalize_handlers: this.normalize.bind(this),
 
         /** Overrides */
         split_element_block_overrides: [
@@ -270,11 +275,21 @@ export class FontPlugin extends Plugin {
         ],
         delete_backward_overrides: withSequence(20, this.handleDeleteBackward.bind(this)),
         delete_backward_word_overrides: this.handleDeleteBackward.bind(this),
+
+        before_insert_processors: this.handleInsertWithinPre.bind(this),
     };
 
     setup() {
         this.fontSize = reactive({ displayName: "" });
         this.font = reactive({ displayName: "" });
+    }
+
+    normalize(root) {
+        for (const el of selectElements(root, "strong, b, span[style*='font-weight: bolder']")) {
+            if (isRedundantElement(el)) {
+                unwrapContents(el);
+            }
+        }
     }
 
     get fontName() {
@@ -509,5 +524,34 @@ export class FontPlugin extends Plugin {
 
     updateFontSizeSelectorParams() {
         this.fontSize.displayName = this.fontSizeName;
+    }
+
+    handleInsertWithinPre(insertContainer, block) {
+        if (block.nodeName !== "PRE") {
+            return insertContainer;
+        }
+        for (const cb of this.getResource("before_insert_within_pre_processors")) {
+            insertContainer = cb(insertContainer);
+        }
+        const isDeepestBlock = (node) =>
+            isBlock(node) && ![...node.querySelectorAll("*")].some(isBlock);
+        let linebreak;
+        const processNode = (node) => {
+            const children = childNodes(node);
+            if (isDeepestBlock(node) && node.nextSibling) {
+                linebreak = this.document.createTextNode("\n");
+                node.append(linebreak);
+            }
+            if (node.nodeType === Node.ELEMENT_NODE) {
+                unwrapContents(node);
+            }
+            for (const child of children) {
+                processNode(child);
+            }
+        };
+        for (const node of childNodes(insertContainer)) {
+            processNode(node);
+        }
+        return insertContainer;
     }
 }

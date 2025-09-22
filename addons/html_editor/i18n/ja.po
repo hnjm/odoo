@@ -1,27 +1,30 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* html_editor
-# 
+# * html_editor
+#
 # Translators:
 # Andy Yiu, 2024
 # Tiffany Chang, 2024
 # Martin Trigaux, 2024
-# Junko Augias, 2025
 # Wil Odoo, 2025
-# 
+# Junko Augias, 2025
+#
+# "Junko Augias (juau)" <juau@odoo.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-14 20:47+0000\n"
-"PO-Revision-Date: 2024-09-29 00:00+0000\n"
-"Last-Translator: Wil Odoo, 2025\n"
-"Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
+"PO-Revision-Date: 2025-08-26 14:54+0000\n"
+"Last-Translator: \"Junko Augias (juau)\" <juau@odoo.com>\n"
+"Language-Team: Japanese <https://translate.odoo.com/projects/odoo-18/"
+"html_editor/ja/>\n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #. module: html_editor
 #. odoo-javascript
@@ -35,7 +38,7 @@ msgstr "画像が表示できない場合 (遅い接続、見つからない画�
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/media/image_description.xml:0
 msgid "'Title tag' is shown as a tooltip when you hover the picture."
-msgstr "画像の上にマウスを置くと「タイトルタグ」はツールチップとして表示されます。"
+msgstr "画像の上にマウスを置くと「件名タグ」はツールチップとして表示されます。"
 
 #. module: html_editor
 #. odoo-javascript
@@ -47,7 +50,7 @@ msgstr "(代替タグ)"
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/media/image_description.xml:0
 msgid "(TITLE Tag)"
-msgstr "(タイトルタグ)"
+msgstr "(件名タグ)"
 
 #. module: html_editor
 #. odoo-javascript
@@ -280,28 +283,28 @@ msgstr "バナー"
 #: code:addons/html_editor/static/src/html_migrations/migration-1.2.js:0
 #: code:addons/html_editor/static/src/main/banner_plugin.js:0
 msgid "Banner Danger"
-msgstr "バナーの危険性"
+msgstr "危険バナー"
 
 #. module: html_editor
 #. odoo-javascript
 #: code:addons/html_editor/static/src/html_migrations/migration-1.2.js:0
 #: code:addons/html_editor/static/src/main/banner_plugin.js:0
 msgid "Banner Info"
-msgstr "バナー情報"
+msgstr "情報バナー"
 
 #. module: html_editor
 #. odoo-javascript
 #: code:addons/html_editor/static/src/html_migrations/migration-1.2.js:0
 #: code:addons/html_editor/static/src/main/banner_plugin.js:0
 msgid "Banner Success"
-msgstr "バナー成功"
+msgstr "成功バナー"
 
 #. module: html_editor
 #. odoo-javascript
 #: code:addons/html_editor/static/src/html_migrations/migration-1.2.js:0
 #: code:addons/html_editor/static/src/main/banner_plugin.js:0
 msgid "Banner Warning"
-msgstr "バナー警告"
+msgstr "警告バナー"
 
 #. module: html_editor
 #. odoo-javascript
@@ -683,7 +686,7 @@ msgstr "第1の色 %"
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/media/image_crop.js:0
 msgid "Flexible"
-msgstr "柔軟"
+msgstr "フレキシブル"
 
 #. module: html_editor
 #. odoo-javascript
@@ -1406,7 +1409,7 @@ msgstr "カラムを削除"
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/link/link_popover.xml:0
 msgid "Replace URL with its title?"
-msgstr "URLをそのタイトルと入替ますか？"
+msgstr "URLをその件名と入替ますか？"
 
 #. module: html_editor
 #. odoo-javascript

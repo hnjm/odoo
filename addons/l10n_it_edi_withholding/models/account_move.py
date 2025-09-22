@@ -7,7 +7,7 @@ from markupsafe import Markup
 
 from odoo import _, api, fields, models
 from odoo.addons.l10n_it_edi.models.account_move import get_float
-from odoo.tools import float_compare
+from odoo.tools import float_compare, html2plaintext
 
 _logger = logging.getLogger(__name__)
 
@@ -70,6 +70,8 @@ class AccountMove(models.Model):
         # Withholding tax amounts.
 
         def grouping_function_withholding(base_line, tax_data):
+            if not tax_data:
+                return None
             tax = tax_data['tax']
             return {
                 'tax_amount_field': -23.0 if tax.amount == -11.5 else tax.amount,
@@ -97,6 +99,8 @@ class AccountMove(models.Model):
         # Pension fund.
 
         def grouping_function_pension_funds(base_line, tax_data):
+            if not tax_data:
+                return None
             tax = tax_data['tax']
             flatten_taxes = base_line['tax_ids'].flatten_taxes_hierarchy()
             vat_tax = flatten_taxes.filtered(lambda t: t._l10n_it_filter_kind('vat') and t.amount >= 0)[:1]
@@ -127,7 +131,7 @@ class AccountMove(models.Model):
                 'aliquota_iva': grouping_key['vat_tax_amount_field'],
                 'ritenuta': 'SI' if grouping_key['has_withholding'] else None,
                 'natura': grouping_key['l10n_it_exempt_reason'],
-                'riferimento_amministrazione': grouping_key['description'],
+                'riferimento_amministrazione': html2plaintext(grouping_key['description']),
             })
 
         # Enasarco values.

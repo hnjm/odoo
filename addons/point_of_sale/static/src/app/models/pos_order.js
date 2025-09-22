@@ -37,6 +37,7 @@ export class PosOrder extends Base {
         this.last_order_preparation_change = vals.last_order_preparation_change
             ? JSON.parse(vals.last_order_preparation_change)
             : {
+                  metadata: {},
                   lines: {},
                   generalNote: "",
                   sittingMode: "dine in",
@@ -64,7 +65,6 @@ export class PosOrder extends Base {
                 screen_data: {},
                 selected_orderline_uuid: undefined,
                 selected_paymentline_uuid: undefined,
-                locked: this.state !== "draft",
                 // Pos restaurant specific to most proper way is to override this
                 TipScreen: {
                     inputTipAmount: "",
@@ -365,6 +365,9 @@ export class PosOrder extends Base {
         }
         this.last_order_preparation_change.sittingMode = this.takeaway ? "takeaway" : "dine in";
         this.last_order_preparation_change.generalNote = this.general_note;
+        this.last_order_preparation_change.metadata = {
+            serverDate: serializeDateTime(DateTime.now()),
+        };
     }
 
     hasSkippedChanges() {
@@ -373,27 +376,6 @@ export class PosOrder extends Base {
 
     is_empty() {
         return this.lines.length === 0;
-    }
-
-    generate_unique_id() {
-        // Generates a public identification number for the order.
-        // The generated number must be unique and sequential. They are made 12 digit long
-        // to fit into EAN-13 barcodes, should it be needed
-
-        function zero_pad(num, size) {
-            var s = "" + num;
-            while (s.length < size) {
-                s = "0" + s;
-            }
-            return s;
-        }
-        return (
-            zero_pad(this.session.id, 5) +
-            "-" +
-            zero_pad(this.session.login_number, 3) +
-            "-" +
-            zero_pad(this.sequence_number, 4)
-        );
     }
 
     updateSavedQuantity() {
@@ -523,7 +505,8 @@ export class PosOrder extends Base {
                 }),
                 pricelist,
                 this.models["decimal.precision"].getAll(),
-                this.models["product.template.attribute.value"].getAllBy("id")
+                this.models["product.template.attribute.value"].getAllBy("id"),
+                this.config_id.currency_id
             );
         }
         const combo_children_lines = this.lines.filter(
@@ -753,7 +736,8 @@ export class PosOrder extends Base {
                         orderLine.get_all_prices().priceWithTax;
                     if (
                         orderLine.display_discount_policy() === "without_discount" &&
-                        !(orderLine.price_type === "manual")
+                        !(orderLine.price_type === "manual") &&
+                        orderLine.discount == 0
                     ) {
                         sum +=
                             (orderLine.get_taxed_lst_unit_price() -
@@ -1050,6 +1034,10 @@ export class PosOrder extends Base {
         } else {
             return true;
         }
+    }
+
+    canBeValidated() {
+        return this.is_paid() && this._isValidEmptyOrder();
     }
 
     _generateTicketCode() {

@@ -27,6 +27,10 @@ async function twoDeleteForward(editor) {
     await deleteForward(editor);
 }
 
+const pressEnter = editor => {
+    editor.document.execCommand('insertParagraph');
+};
+
 describe('Editor', () => {
     describe('init', () => {
         describe('No orphan inline elements compatibility mode', () => {
@@ -1236,6 +1240,13 @@ X[]
                     contentAfter: '<p>a<span class="style-class">[]\u200B</span>f</p>',
                 });
             });
+            it('should not add a BR', async () => {
+                await testEditor(BasicEditor, {
+                    contentBefore: '<p><span class="h4-fs">[a]</span></p>',
+                    stepFunction: deleteBackward,
+                    contentAfter: '<p><span class="h4-fs">[]\u200b</span></p>',
+                });
+            });
             it('should delete styling nodes when delete if empty', async () => {
                 // deleteBackward selection
                 await testEditor(BasicEditor, {
@@ -1712,6 +1723,17 @@ X[]
                     contentAfter: '<p>ab</p><p>[]<br></p><p>ef</p>',
                 });
             });
+            it('should not delete text on the next container', async () => {
+                await testEditor(BasicEditor, {
+                    contentBefore: unformat(`
+                        <p>keep<br>[delete</p>
+                        <p>delete<br>delete<br>]</p>
+                        <p>keep</p>
+                    `),
+                    stepFunction: deleteBackward,
+                    contentAfter: '<p>keep<br>[]keep</p>',
+                });
+            });
         });
     });
 
@@ -1899,7 +1921,7 @@ X[]
                         contentAfter: '<div><p>cd</p>x[]</div>',
                     });
                 });
-                it('should not break unbreakables', async () => {
+                it('should not break unbreakables (1)', async () => {
                     await testEditor(BasicEditor, {
                         contentBefore: `<div class="oe_unbreakable">` +
                             `<div class="oe_unbreakable">[]<br></div>` +
@@ -1911,6 +1933,8 @@ X[]
                             `<div class="oe_unbreakable">abc</div>` +
                             `</div>`,
                     });
+                });
+                it("should not break unbreakables (2)", async () => {
                     await testEditor(BasicEditor, {
                         contentBefore: `<div class="oe_unbreakable">` +
                             `<div class="oe_unbreakable">[ab</div>` +
@@ -1923,6 +1947,8 @@ X[]
                             `<div class="oe_unbreakable">f1</div>` +
                             `</div>`,
                     });
+                });
+                it("should not break unbreakables (3)", async () => {
                     await testEditor(BasicEditor, {
                         contentBefore: `<div class="oe_unbreakable">` +
                             `<div class="oe_unbreakable">a[b</div>` +
@@ -1935,6 +1961,8 @@ X[]
                             `<div class="oe_unbreakable">f2</div>` +
                             `</div>`,
                     });
+                });
+                it("should not break unbreakables (4)", async () => {
                     await testEditor(BasicEditor, {
                         contentBefore: `<div class="oe_unbreakable">` +
                             `<div class="oe_unbreakable">3a[b</div>` +
@@ -1946,6 +1974,8 @@ X[]
                             `<div class="oe_unbreakable">3a[]</div>` +
                             `</div>`,
                     });
+                });
+                it("should not break unbreakables (5)", async () => {
                     await testEditor(BasicEditor, {
                         contentBefore: `<div class="oe_unbreakable">` +
                             `<div class="oe_unbreakable">[ab</div>` +
@@ -1957,6 +1987,8 @@ X[]
                             `<div class="oe_unbreakable">[]<br></div>` +
                             `</div>`,
                     });
+                });
+                it("should not break unbreakables (6)", async () => {
                     await testEditor(BasicEditor, {
                         contentBefore: `<div class="oe_unbreakable">` +
                             `<div class="oe_unbreakable">[ab</div>` +
@@ -1976,6 +2008,8 @@ X[]
                             `<div class="oe_unbreakable">l5</div>` +
                             `</div>`,
                     });
+                });
+                it("should not break unbreakables (7)", async () => {
                     await testEditor(BasicEditor, {
                         contentBefore: `<div class="oe_unbreakable">` +
                             `<div class="oe_unbreakable">a[b</div>` +
@@ -1995,6 +2029,8 @@ X[]
                             `<div class="oe_unbreakable">l6</div>` +
                             `</div>`,
                     });
+                });
+                it("should not break unbreakables (8)", async () => {
                     await testEditor(BasicEditor, {
                         contentBefore: `<div class="oe_unbreakable">` +
                             `<div class="oe_unbreakable">7a[b</div>` +
@@ -4001,6 +4037,41 @@ X[]
                         contentBefore: '<div><a>ab[]</a>cd</div>',
                         stepFunction: pressEnter,
                         contentAfter: '<div><a>ab</a><br>[]cd</div>',
+                    });
+                });
+                it('should keep the last line break in the old paragraph (1)', async () => {
+                    await testEditor(BasicEditor, {
+                        contentBefore: '<div><p>abc<br>[]<br></p></div>',
+                        stepFunction: pressEnter,
+                        contentAfter: '<div><p>abc<br><br></p><p>[]<br></p></div>',
+                    });
+                });
+                it('should keep the last line break in the old paragraph (2)', async () => {
+                    await testEditor(BasicEditor, {
+                        contentBefore: "<div><p>abc<br>[]<br></p></div>",
+                        stepFunction: pressEnter,
+                        contentAfter: "<div><p>abc<br><br></p><p>[]<br></p></div>",
+                    });
+                });
+                it('should keep the last line break in the old paragraph (3)', async () => {
+                    await testEditor(BasicEditor, {
+                        contentBefore: "<div><p>abc<br>[]<br>def</p></div>",
+                        stepFunction: pressEnter,
+                        contentAfter: "<div><p>abc<br><br></p><p>[]<br>def</p></div>",
+                    });
+                });
+                it('should keep the last line break in the old paragraph (4)', async () => {
+                    await testEditor(BasicEditor, {
+                        contentBefore: "<div><p>abc<br>[]<br><br></p></div>",
+                        stepFunction: pressEnter,
+                        contentAfter: "<div><p>abc<br><br></p><p>[]<br><br></p></div>",
+                    });
+                });
+                it('should keep the last line break in the old paragraph (5)', async () => {
+                    await testEditor(BasicEditor, {
+                        contentBefore: "<div><p><br>[]<br></p></div>",
+                        stepFunction: pressEnter,
+                        contentAfter: "<div><p><br><br></p><p>[]<br></p></div>",
                     });
                 });
                 it('should insert a paragraph break outside the starting edge of an anchor', async () => {

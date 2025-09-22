@@ -178,6 +178,8 @@ class AccountMoveLine(models.Model):
             if layer:
                 total_layer_qty_to_invoice = abs(layer.quantity)
                 initial_layer = layer.stock_move_id.origin_returned_move_id.stock_valuation_layer_ids
+                # Filter out revaluation layers (Landed Cost)
+                initial_layer = initial_layer.filtered(lambda svl: not svl.stock_valuation_layer_id)
                 if initial_layer:
                     # `layer` is a return. We will cancel the qty to invoice of the returned layer
                     # /!\ we will cancel the qty not yet invoiced only
@@ -240,6 +242,13 @@ class AccountMoveLine(models.Model):
         aml_price_unit = aml.product_uom_id._compute_price(aml_price_unit, self.product_id.uom_id)
 
         unit_valuation_difference = aml_price_unit - layer_price_unit
+        precision_digits = max(
+            aml.currency_id.decimal_places,
+            layer.currency_id.decimal_places,
+            self.env['decimal.precision'].precision_get('Product Price'),
+        )
+        if float_is_zero(unit_valuation_difference, precision_digits=precision_digits):
+            unit_valuation_difference = 0
 
         # Generate the AML values for the already out quantities
         # convert from company currency to aml currency

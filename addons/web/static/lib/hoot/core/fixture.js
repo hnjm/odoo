@@ -1,12 +1,9 @@
 /** @odoo-module */
 
 import { App } from "@odoo/owl";
-import {
-    defineRootNode,
-    getActiveElement,
-    getCurrentDimensions,
-} from "@web/../lib/hoot-dom/helpers/dom";
+import { getActiveElement, getCurrentDimensions } from "@web/../lib/hoot-dom/helpers/dom";
 import { setupEventActions } from "@web/../lib/hoot-dom/helpers/events";
+import { isInstanceOf } from "@web/../lib/hoot-dom/hoot_dom_utils";
 import { HootError } from "../hoot_utils";
 import { subscribeToTransitionChange } from "../mock/animation";
 import { getViewPortHeight, getViewPortWidth } from "../mock/window";
@@ -27,11 +24,18 @@ import { getViewPortHeight, getViewPortWidth } from "../mock/window";
 // Global
 //-----------------------------------------------------------------------------
 
-const { customElements, document, getSelection, HTMLElement, WeakSet } = globalThis;
+const { customElements, document, getSelection, HTMLElement, Promise, WeakSet } = globalThis;
 
 //-----------------------------------------------------------------------------
 // Internal
 //-----------------------------------------------------------------------------
+
+/**
+ * @param {HTMLIFrameElement} iframe
+ */
+function waitForIframe(iframe) {
+    return new Promise((resolve) => iframe.addEventListener("load", resolve));
+}
 
 const destroyed = new WeakSet();
 let allowFixture = false;
@@ -47,7 +51,7 @@ let shouldPrepareNextFixture = true; // Prepare setup for first test
  * @param {App | import("@odoo/owl").Component} target
  */
 export function destroy(target) {
-    const app = target instanceof App ? target : target.__owl__.app;
+    const app = isInstanceOf(target, App) ? target : target.__owl__.app;
     if (destroyed.has(app)) {
         return;
     }
@@ -59,41 +63,41 @@ export function destroy(target) {
  * @param {import("./runner").Runner} runner
  */
 export function makeFixtureManager(runner) {
-    const cleanupFixture = () => {
+    function cleanup() {
         allowFixture = false;
 
         if (currentFixture) {
             shouldPrepareNextFixture = true;
             currentFixture.remove();
+            currentFixture = null;
         }
-    };
+    }
 
-    const getFixture = () => {
+    function getFixture() {
         if (!allowFixture) {
             throw new HootError(`Cannot access fixture outside of a test.`);
         }
         if (!currentFixture) {
             // Prepare fixture once to not force layouts/reflows
-            /** @type {HootFixtureElement} */
-            const fixture = document.createElement(HootFixtureElement.TAG_NAME);
-            if (runner.debug || runner.config.headless) {
-                fixture.show();
+            currentFixture = document.createElement(HootFixtureElement.TAG_NAME);
+            if (runner.debug || runner.headless) {
+                currentFixture.show();
             }
 
             const { width, height } = getCurrentDimensions();
             if (width !== getViewPortWidth()) {
-                fixture.style.width = `${width}px`;
+                currentFixture.style.width = `${width}px`;
             }
             if (height !== getViewPortHeight()) {
-                fixture.style.height = `${height}px`;
+                currentFixture.style.height = `${height}px`;
             }
 
-            document.body.appendChild(fixture);
+            document.body.appendChild(currentFixture);
         }
         return currentFixture;
-    };
+    }
 
-    const setupFixture = () => {
+    function setup() {
         allowFixture = true;
 
         if (shouldPrepareNextFixture) {
@@ -103,18 +107,11 @@ export function makeFixtureManager(runner) {
             getActiveElement().blur();
             getSelection().removeAllRanges();
         }
-    };
-
-    runner.beforeAll(() => {
-        defineRootNode(getFixture);
-    });
-    runner.afterAll(() => {
-        defineRootNode(null);
-    });
+    }
 
     return {
-        cleanup: cleanupFixture,
-        setup: setupFixture,
+        cleanup,
+        setup,
         get: getFixture,
     };
 }
@@ -130,6 +127,8 @@ export class HootFixtureElement extends HTMLElement {
 
     static {
         customElements.define(this.TAG_NAME, this);
+
+        this.styleElement.id = "hoot-fixture-style";
         this.styleElement.textContent = /* css */ `
             ${this.TAG_NAME} {
                 position: fixed !important;
@@ -169,8 +168,6 @@ export class HootFixtureElement extends HTMLElement {
     _iframes = new Map();
 
     connectedCallback() {
-        currentFixture = this;
-
         setupEventActions(this);
         subscribeToTransitionChange((allowTransitions) =>
             this.classList.toggle(this.constructor.CLASSES.transitions, allowTransitions)
@@ -181,8 +178,6 @@ export class HootFixtureElement extends HTMLElement {
     }
 
     disconnectedCallback() {
-        currentFixture = null;
-
         this._iframes.clear();
         this._observer.disconnect();
     }
@@ -208,10 +203,7 @@ export class HootFixtureElement extends HTMLElement {
             if (toRemove.delete(iframe)) {
                 continue;
             }
-            this._iframes.set(
-                iframe,
-                new Promise((resolve) => iframe.addEventListener("load", resolve))
-            );
+            this._iframes.set(iframe, waitForIframe(iframe));
             setupEventActions(iframe.contentWindow);
         }
         for (const iframe of toRemove) {

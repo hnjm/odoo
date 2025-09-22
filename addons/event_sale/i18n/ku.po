@@ -136,7 +136,7 @@ msgstr "کۆمپانیا"
 #. module: event_sale
 #: model:ir.model.fields.selection,name:event_sale.selection__event_sale_report__event_registration_state__open
 msgid "Confirmed"
-msgstr ""
+msgstr "پشتڕاستکراوەتەوە"
 
 #. module: event_sale
 #. odoo-python
@@ -200,7 +200,7 @@ msgstr ""
 #. module: event_sale
 #: model:ir.model.fields,field_description:event_sale.field_registration_editor_line__email
 msgid "Email"
-msgstr ""
+msgstr "ئیمەیڵ"
 
 #. module: event_sale
 #: model:ir.model,name:event_sale.model_event_event
@@ -290,7 +290,7 @@ msgstr ""
 #. module: event_sale
 #: model_terms:ir.ui.view,arch_db:event_sale.event_sale_report_view_search
 msgid "Group By"
-msgstr ""
+msgstr "گروپ لەلایەن..."
 
 #. module: event_sale
 #: model:ir.model.fields,field_description:event_sale.field_event_event_configurator__has_available_tickets
@@ -365,7 +365,7 @@ msgstr ""
 #. module: event_sale
 #: model:ir.model.fields,field_description:event_sale.field_event_sale_report__sale_order_date
 msgid "Order Date"
-msgstr ""
+msgstr "بەرواری داواکردن"
 
 #. module: event_sale
 #: model:ir.model.fields,field_description:event_sale.field_registration_editor_line__registration_id
@@ -395,7 +395,7 @@ msgstr ""
 #. module: event_sale
 #: model:ir.model.fields,field_description:event_sale.field_registration_editor_line__phone
 msgid "Phone"
-msgstr ""
+msgstr "تەلەفۆن"
 
 #. module: event_sale
 #. odoo-python
@@ -535,7 +535,7 @@ msgstr ""
 #. module: event_sale
 #: model:ir.model.fields,field_description:event_sale.field_event_registration__utm_source_id
 msgid "Source"
-msgstr ""
+msgstr "سەرچاوە"
 
 #. module: event_sale
 #: model:ir.model.fields,field_description:event_sale.field_event_registration__state
@@ -623,4 +623,4 @@ msgstr ""
 #. module: event_sale
 #: model_terms:ir.ui.view,arch_db:event_sale.event_ticket_id_change_exception
 msgid "to"
-msgstr ""
+msgstr "بۆ"

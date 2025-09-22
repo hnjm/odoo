@@ -181,12 +181,32 @@ $-seen-urls: ();
     }
 };
 
+@mixin force-opaque-bg-color($color, $if-necessary, $background: white) {
+    $alpha: alpha($color);
+    @if not $if-necessary or $alpha < 0.999 {
+        background-color: mix(change-color($color, $alpha: 1), $background, percentage($alpha));
+    }
+}
+
 body {
     // The color behind the boxed layout is forced by Odoo. The box background
     // color uses the `$body-bg` variable.
     // grep: BOXED_BODY_BG_ODOO
+    //
+    // In any case, remove the transparency of the background color to apply as
+    // body background color to prevent the fallback iframe used for navigation
+    // in the backend to be visible once the top iframe is loaded (see the
+    // /website/iframefallback route). Indeed, if the website <body> uses a
+    // transparent background color, the fallback iframe would be visible on
+    // some // browsers (e.g. Chrome).
     @if o-website-value('layout') != 'full' {
-        background-color: o-color('body');
+        @include force-opaque-bg-color(o-color('body'), $if-necessary: false);
+    } @else {
+        // Only if necessary as, if already opaque, the background color of the
+        // body is already set by Bootstrap. We don't change $body-bg directly
+        // as it would impact other Bootstrap components that could take profit
+        // of the transparency.
+        @include force-opaque-bg-color($body-bg, $if-necessary: true);
     }
 }
 
@@ -1658,6 +1678,17 @@ header {
     }
 }
 
+// For the "hamburger" and "sidebar" header, we set the mega menu columns to
+// 100% width when the breakpoint is above lg, because the menu keeps its mobile
+// width when displayed on desktop.
+@if index(("sidebar", "hamburger"), o-website-value("header-template")) {
+    @include media-breakpoint-up(lg) {
+        .o_mega_menu [class*="col-"] {
+            width: 100%;
+        }
+    }
+}
+
 #wrapwrap.o_header_overlay {
     > header:not(.o_header_affixed):not(.o_header_sidebar) {
         @include o-position-absolute(0, 0, auto, 0);
@@ -1709,7 +1740,7 @@ header {
         }
     }
 }
-.navbar-nav {
+:where(header#top) .navbar-nav:where([role="menu"]) {
     .nav-link:not(.o_nav-link_secondary) {
         @if o-website-value('header-links-style') == 'outline' {
             // Need to force the padding in this case so that it stays in mobile
@@ -2104,9 +2135,10 @@ input[value*="data-oe-translation-source-sha"] {
     visibility: visible;
 }
 .o_wanim_overflow_xy_hidden {
-    // "overflow-x: clip" is added to the "body" and not to "html" because if
-    // it's added to "html", when a popup opens, the page scrolls to the top.
-    > body {
+    // "overflow-x: clip" is added to the "#wrapwrap" and not to "html" because
+    // if it's added to "html", when a popup opens, the page scrolls to the top.
+    // It's not added on body because mobile browser ignore overflow-x on it.
+    #wrapwrap {
         // We use clip instead of hidden to prevent scroll animations to an
         // anchor from stopping working.
         overflow-x: clip !important;
@@ -2114,9 +2146,6 @@ input[value*="data-oe-translation-source-sha"] {
         @supports not (overflow-x: clip) {
             overflow-x: hidden !important;
         }
-        // Create a new formatting context. Without this, elements inside <body>
-        // may still overflow (e.g. animated elements in Firefox).
-        display: flow-root;
     }
     &.o_rtl, .o_rtl {
         // Fix for Chrome and Edge bug: resolves slow/stuck scrolling during
@@ -2909,7 +2938,14 @@ input[value*="data-oe-translation-source-sha"] {
     &:has(~ .form-control), &:has(~ .form-select) {
         padding-right: $input-group-addon-padding-x * .5;
     }
-    .form-control:disabled ~ &, .form-control[readonly] ~ &, &:has(~ .form-select:disabled), &:has(~ .form-select[readonly]) {
+    .form-control:disabled ~ &,
+    .form-control[readonly] ~ &,
+    &:has(~ .form-control:disabled),
+    &:has(~ .form-control[readonly]),
+    .form-select:disabled ~ &,
+    .form-select[readonly] ~ &,
+    &:has(~ .form-select:disabled),
+    &:has(~ .form-select[readonly]) {
         background-color: $input-disabled-bg;
         border-color: $input-disabled-border-color;
     }

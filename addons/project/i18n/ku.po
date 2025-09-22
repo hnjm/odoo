@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-14 20:46+0000\n"
+"POT-Creation-Date: 2025-06-27 18:38+0000\n"
 "PO-Revision-Date: 2024-09-25 09:41+0000\n"
 "Last-Translator: Raz Omer Hussein, 2025\n"
 "Language-Team: Kurdish (https://app.transifex.com/odoo/teams/41243/ku/)\n"
@@ -100,7 +100,6 @@ msgstr ""
 #. module: project
 #. odoo-javascript
 #: code:addons/project/static/src/views/burndown_chart/burndown_chart_model.js:0
-#: model:ir.model.fields,field_description:project.field_project_milestone__task_count
 #: model:ir.model.fields,field_description:project.field_report_project_task_user__nbr
 msgid "# of Tasks"
 msgstr ""
@@ -184,7 +183,7 @@ msgstr ""
 #: code:addons/project/models/project_task.py:0
 #: code:addons/project/models/project_task_type.py:0
 msgid "%s (copy)"
-msgstr ""
+msgstr "%s (لەبەرگرتنەوە)"
 
 #. module: project
 #. odoo-javascript
@@ -577,7 +576,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:project.field_project_share_wizard__access_warning
 #: model:ir.model.fields,field_description:project.field_project_task__access_warning
 msgid "Access warning"
-msgstr ""
+msgstr "ئاگادارکردنەوەی دەستڕاگەیشتن"
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_milestone__message_needaction
@@ -820,7 +819,7 @@ msgstr ""
 #. module: project
 #: model:project.tags,name:project.project_tags_07
 msgid "Architecture"
-msgstr ""
+msgstr "تەلارسازی"
 
 #. module: project
 #. odoo-javascript
@@ -1060,7 +1059,7 @@ msgstr "هاوسەنگی"
 #. odoo-javascript
 #: code:addons/project/static/src/components/project_right_side_panel/components/project_profitability.xml:0
 msgid "Billed"
-msgstr ""
+msgstr "پسووڵە کراوە"
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_report_project_task_user__dependent_ids
@@ -1227,7 +1226,7 @@ msgstr ""
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_tags__color
 msgid "Color"
-msgstr ""
+msgstr "ڕەنگ"
 
 #. module: project
 #. odoo-javascript
@@ -1291,7 +1290,7 @@ msgstr ""
 #. module: project
 #: model:project.tags,name:project.project_tags_06
 msgid "Construction"
-msgstr ""
+msgstr "بنیاتنان"
 
 #. module: project
 #. odoo-javascript
@@ -1344,7 +1343,7 @@ msgstr ""
 #. module: project
 #: model:ir.model.fields,field_description:project.field_report_project_task_user__create_date
 msgid "Create Date"
-msgstr ""
+msgstr " بەرواری دروستکردن"
 
 #. module: project
 #: model:ir.actions.act_window,name:project.open_create_project
@@ -1440,7 +1439,7 @@ msgstr "دروستکراوە لە"
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.view_task_search_form_base
 msgid "Creation Date"
-msgstr ""
+msgstr "بەرواری دروستکردن"
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.portal_tasks_list
@@ -1602,7 +1601,7 @@ msgstr ""
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.project_message_user_assigned
 msgid "Dear"
-msgstr ""
+msgstr "بەڕێز"
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_project__alias_defaults
@@ -1637,7 +1636,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:project.view_project_project_stage_delete_wizard
 #: model_terms:ir.ui.view,arch_db:project.view_project_task_type_delete_wizard
 msgid "Delete"
-msgstr ""
+msgstr "سڕینەوە"
 
 #. module: project
 #. odoo-javascript
@@ -1796,7 +1795,7 @@ msgstr ""
 #: model:project.task.type,name:project.project_personal_stage_demo_5
 #: model:project.task.type,name:project.project_stage_2
 msgid "Done"
-msgstr ""
+msgstr "تەواو"
 
 #. module: project
 #. odoo-javascript
@@ -1927,7 +1926,7 @@ msgstr ""
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_project__date
 msgid "Expiration Date"
-msgstr ""
+msgstr "بەرواری بەسەرچوون"
 
 #. module: project
 #: model:project.tags,name:project.project_tags_05
@@ -1959,7 +1958,7 @@ msgstr ""
 #. module: project
 #: model:project.tags,name:project.project_tags_11
 msgid "Finance"
-msgstr ""
+msgstr "دارایی"
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_project_stage__fold
@@ -2085,7 +2084,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:project.view_project_project_filter
 #: model_terms:ir.ui.view,arch_db:project.view_task_search_form_base
 msgid "Group By"
-msgstr ""
+msgstr "گروپ لەلایەن..."
 
 #. module: project
 #. odoo-javascript
@@ -2113,7 +2112,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:project.field_project_task__has_message
 #: model:ir.model.fields,field_description:project.field_project_update__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "نامە هەیە"
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.task_invitation_follower
@@ -2314,7 +2313,7 @@ msgstr ""
 #. module: project
 #: model:project.tags,name:project.project_tags_04
 msgid "Internal"
-msgstr ""
+msgstr "ناوخۆیی"
 
 #. module: project
 #. odoo-javascript
@@ -2376,7 +2375,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:project.field_project_update__message_is_follower
 #: model:ir.model.fields,field_description:project.field_report_project_task_user__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "فۆڵۆوەرە"
 
 #. module: project
 #. odoo-javascript
@@ -2562,7 +2561,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/project/static/src/views/project_task_kanban/project_task_kanban_examples.js:0
 msgid "Live"
-msgstr ""
+msgstr "ڕاستەوخۆ"
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_project__alias_incoming_local
@@ -2828,7 +2827,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/project/controllers/portal.py:0
 msgid "Newest"
-msgstr ""
+msgstr "نوێترین"
 
 #. module: project
 #. odoo-javascript
@@ -2847,14 +2846,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:project.field_project_task__activity_calendar_event_id
 #: model:ir.model.fields,field_description:project.field_project_update__activity_calendar_event_id
 msgid "Next Activity Calendar Event"
-msgstr ""
+msgstr "چالاکییەکانی داهاتووی ڕووداوی ساڵنامە"
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_project__activity_date_deadline
 #: model:ir.model.fields,field_description:project.field_project_task__activity_date_deadline
 #: model:ir.model.fields,field_description:project.field_project_update__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr ""
+msgstr "دوا وادەی چالاکییەکانی داهاتوو"
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_project__activity_summary
@@ -3277,7 +3276,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:project.field_report_project_task_user__priority
 #: model:project.tags,name:project.project_tags_16
 msgid "Priority"
-msgstr ""
+msgstr "ئەولەویەت"
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.portal_my_tasks_priority_widget_template
@@ -3344,7 +3343,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:project.view_task_form2
 #: model_terms:ir.ui.view,arch_db:project.view_task_search_form_project_fsm_base
 msgid "Project"
-msgstr ""
+msgstr "پرۆژە"
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_project__account_id
@@ -3739,7 +3738,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/project/static/src/components/subtask_kanban_list/subtask_kanban_create/subtask_kanban_create.xml:0
 msgid "Rename"
-msgstr ""
+msgstr "ناوی بگۆڕە"
 
 #. module: project
 #: model:account.analytic.account,name:project.analytic_renovations
@@ -3773,7 +3772,7 @@ msgstr ""
 #: model:account.analytic.account,name:project.analytic_research_development
 #: model:project.project,name:project.project_project_2
 msgid "Research & Development"
-msgstr ""
+msgstr "توێژینەوە و پەرەپێدان"
 
 #. module: project
 #. odoo-javascript
@@ -3832,7 +3831,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:project.field_project_task__message_has_sms_error
 #: model:ir.model.fields,field_description:project.field_project_update__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr ""
+msgstr "هەڵەی گەیاندنی کورتەنامە"
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.view_project_kanban
@@ -3944,7 +3943,7 @@ msgstr "ناردن"
 #: model:ir.actions.act_window,name:project.action_send_mail_project_project
 #: model:ir.actions.act_window,name:project.action_send_mail_project_task
 msgid "Send Email"
-msgstr ""
+msgstr "ئیمەیڵ بنێرە"
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_share_collaborator_wizard__send_invitation
@@ -4646,7 +4645,7 @@ msgstr ""
 #: model:project.task.type,name:project.project_personal_stage_admin_3
 #: model:project.task.type,name:project.project_personal_stage_demo_3
 msgid "This Month"
-msgstr ""
+msgstr "ئەم مانگە"
 
 #. module: project
 #. odoo-python
@@ -4656,7 +4655,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:project.project_sharing_project_task_view_search
 #: model_terms:ir.ui.view,arch_db:project.view_task_search_form_project_base
 msgid "This Week"
-msgstr ""
+msgstr "ئەم هەفتەیە"
 
 #. module: project
 #. odoo-javascript
@@ -4801,7 +4800,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/project/static/src/components/project_right_side_panel/components/project_profitability.xml:0
 msgid "To Invoice"
-msgstr ""
+msgstr "بۆ فاکتورەکردن"
 
 #. module: project
 #. odoo-javascript
@@ -4833,19 +4832,19 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:project.project_sharing_project_task_view_search
 #: model_terms:ir.ui.view,arch_db:project.view_task_search_form_project_base
 msgid "Today"
-msgstr ""
+msgstr "ئەمڕۆ"
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.view_project_project_filter
 #: model_terms:ir.ui.view,arch_db:project.view_task_search_form
 msgid "Today Activities"
-msgstr ""
+msgstr "چالاکییەکانی ئەمڕۆ"
 
 #. module: project
 #. odoo-javascript
 #: code:addons/project/static/src/components/project_right_side_panel/components/project_profitability.xml:0
 msgid "Total"
-msgstr ""
+msgstr "کۆ"
 
 #. module: project
 #. odoo-javascript
@@ -4917,7 +4916,7 @@ msgstr ""
 #: model:ir.model.fields,help:project.field_project_task__activity_exception_decoration
 #: model:ir.model.fields,help:project.field_project_update__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr ""
+msgstr "جۆری چالاکیی ئیستسنای تۆمارکراو."
 
 #. module: project
 #. odoo-python
@@ -5062,7 +5061,7 @@ msgstr "بەکارهێنەر"
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.view_project_kanban
 msgid "View"
-msgstr ""
+msgstr "بینین"
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.project_sharing_project_task_view_form
@@ -5093,7 +5092,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:project.selection__project_task_burndown_chart_report__state__04_waiting_normal
 #: model:ir.model.fields.selection,name:project.selection__report_project_task_user__state__04_waiting_normal
 msgid "Waiting"
-msgstr ""
+msgstr "چاوەڕوان کردن"
 
 #. module: project
 #. odoo-javascript
@@ -5107,7 +5106,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:project.field_project_project__website_message_ids
 #: model:ir.model.fields,field_description:project.field_project_update__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "پەیامەکانی ماڵپەڕ"
 
 #. module: project
 #. odoo-javascript
@@ -5121,7 +5120,7 @@ msgstr ""
 #: model:ir.model.fields,help:project.field_project_task__website_message_ids
 #: model:ir.model.fields,help:project.field_project_update__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "مێژووی پەیوەندی ماڵپەڕ"
 
 #. module: project
 #: model:ir.model.fields.selection,name:project.selection__project_project__rating_status_period__weekly
@@ -5202,7 +5201,7 @@ msgstr ""
 #. module: project
 #: model:ir.model.fields.selection,name:project.selection__project_project__rating_status_period__yearly
 msgid "Yearly"
-msgstr ""
+msgstr "ساڵانە"
 
 #. module: project
 #: model:ir.model.fields.selection,name:project.selection__project_task__repeat_unit__year
@@ -5412,7 +5411,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:project.edit_project
 #: model_terms:ir.ui.view,arch_db:project.project_project_view_form_simplified
 msgid "e.g. mycompany.com"
-msgstr ""
+msgstr "بۆ نموونە. mycompany.com"
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.project_project_view_form_simplified

@@ -28,7 +28,6 @@ class Partner extends models.Model {
     m2o = fields.Many2one({ relation: "product" });
 
     _views = {
-        search: `<search/>`,
         form: `<form>
             <field name="m2o"/>
         </form>`,
@@ -76,17 +75,16 @@ beforeEach(() => {
         log: () => {},
         dir: () => {},
     });
-    onRpc("/web/dataset/call_kw/web_tour.tour/consume", async (request) => {
-        const { params } = await request.json();
-        tourConsumed.push(params.args[0]);
+    onRpc("web_tour.tour", "consume", ({ args }) => {
+        tourConsumed.push(args[0]);
         const nextTour = tourRegistry
             .getEntries()
             .filter(([tourName]) => !tourConsumed.includes(tourName))
             .at(0);
         return (nextTour && { name: nextTour.at(0) }) || false;
     });
-    onRpc("/web/dataset/call_kw/res.users/switch_tour_enabled", async () => true);
-    onRpc("/web/dataset/call_kw/web_tour.tour/get_tour_json_by_name", async () => ({
+    onRpc("res.users", "switch_tour_enabled", () => true);
+    onRpc("web_tour.tour", "get_tour_json_by_name", () => ({
         name: "tour1",
         steps: [
             { trigger: "button.foo", run: "click" },
@@ -1137,5 +1135,60 @@ test("Tour don't backward when dropdown loading", async () => {
     await contains(".o-autocomplete--dropdown-item:eq(1)").click();
     expect(".o_tour_pointer").toHaveCount(1);
     await contains(".o_form_button_save").click();
+    expect(".o_tour_pointer").toHaveCount(0);
+});
+
+test("Don't backward when action manager is busy", async () => {
+    registry.category("web_tour.tours").add("tour1", {
+        steps: () => [
+            { trigger: "button.foo", run: "click" },
+            { trigger: "button.bar", run: "click" },
+        ],
+    });
+
+    class Dummy extends Component {
+        static props = ["*"];
+        state = useState({ bool: true });
+        static components = {};
+        static template = xml`
+            <button class="fool w-100" t-on-click="() => { state.bool = true; }">You fool</button>
+            <button class="foo w-100" t-if="state.bool" t-on-click="() => { state.bool = false; }">Foo</button>
+            <button class="bar w-100" t-if="!state.bool">Bar</button>
+        `;
+    }
+
+    const comp = await mountWithCleanup(Dummy);
+
+    await getService("tour_service").startTour("tour1", { mode: "manual" });
+    await animationFrame();
+    expect(".o_tour_pointer").toHaveCount(1);
+
+    await contains("button.foo").click();
+    await animationFrame();
+    expect(".o_tour_pointer").toHaveCount(1);
+
+    comp.env.bus.trigger("ACTION_MANAGER:UPDATE");
+    await animationFrame();
+
+    await contains("button.fool").click();
+    await animationFrame();
+    expect(".o_tour_pointer").toHaveCount(0);
+
+    await contains("button.foo").click();
+    await animationFrame();
+    expect(".o_tour_pointer").toHaveCount(1);
+
+    comp.env.bus.trigger("ACTION_MANAGER:UI-UPDATED");
+
+    await contains("button.fool").click();
+    await animationFrame();
+    expect(".o_tour_pointer").toHaveCount(1);
+
+    await contains("button.foo").click();
+    await animationFrame();
+    expect(".o_tour_pointer").toHaveCount(1);
+
+    await contains("button.bar").click();
+    await animationFrame();
     expect(".o_tour_pointer").toHaveCount(0);
 });

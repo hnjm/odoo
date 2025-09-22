@@ -34,6 +34,8 @@ export class FilePlugin extends Plugin {
             },
         }),
         selectors_for_feff_providers: () => ".o_file_box",
+        functional_empty_node_predicates: (node) =>
+            node?.nodeName === "SPAN" && node.classList.contains("o_file_box"),
     };
 
     get recordInfo() {
@@ -75,7 +77,7 @@ export class FilePlugin extends Plugin {
             unique: true,
             accessToken: true,
         });
-        const { name: filename, mimetype } = attachment;
-        return renderStaticFileBox(filename, mimetype, url);
+        const { name: filename, mimetype, id } = attachment;
+        return renderStaticFileBox(filename, mimetype, url, id);
     }
 }

@@ -90,6 +90,9 @@ class FormatAddressMixin(models.AbstractModel):
                         self.env['ir.ui.view'].postprocess_and_fields(sub_arch, model=self._name)
                     except ValueError:
                         return arch
+                new_address_node = sub_arch.find('.//div[@class="o_address_format"]')
+                if new_address_node is not None:
+                    sub_arch = new_address_node
                 address_node.getparent().replace(address_node, sub_arch)
         elif address_format and not self._context.get('no_address_format'):
             # For the zip, city and state fields we need to move them around in order to follow the country address format.
@@ -175,7 +178,7 @@ class PartnerCategory(models.Model):
     def _search_display_name(self, operator, value):
         domain = super()._search_display_name(operator, value)
         if operator.endswith('like'):
-            return [('id', 'child_of', self._search(domain))]
+            return [('id', 'child_of', self._search(list(domain)))]
         return domain
 
 class PartnerTitle(models.Model):
@@ -245,7 +248,7 @@ class Partner(models.Model):
     vat_label = fields.Char(string='Tax ID Label', compute='_compute_vat_label')
     same_vat_partner_id: Partner = fields.Many2one('res.partner', string='Partner with same Tax ID', compute='_compute_same_vat_partner_id', store=False)
     same_company_registry_partner_id: Partner = fields.Many2one('res.partner', string='Partner with same Company Registry', compute='_compute_same_vat_partner_id', store=False)
-    company_registry = fields.Char(string="Company ID", compute='_compute_company_registry', store=True, readonly=False,
+    company_registry = fields.Char(string="Company ID", compute='_compute_company_registry', store=True, readonly=False, index='btree_not_null',
        help="The registry number of the company. Use it if it is different from the Tax ID. It must be unique across all partners of a same country")
     company_registry_label = fields.Char(string='Company ID Label', compute='_compute_company_registry_label')
     bank_ids: ResPartnerBank = fields.One2many('res.partner.bank', 'partner_id', string='Banks')

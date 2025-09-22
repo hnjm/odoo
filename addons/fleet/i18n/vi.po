@@ -3,14 +3,14 @@
 # 	* fleet
 # 
 # Translators:
-# Wil Odoo, 2024
+# Wil Odoo, 2025
 # Thi Huong Nguyen, 2025
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-25 08:39+0000\n"
+"POT-Creation-Date: 2025-07-11 18:38+0000\n"
 "PO-Revision-Date: 2024-09-25 09:41+0000\n"
 "Last-Translator: Thi Huong Nguyen, 2025\n"
 "Language-Team: Vietnamese (https://app.transifex.com/odoo/teams/41243/vi/)\n"
@@ -137,6 +137,11 @@ msgstr "Hoạt động ngoại lệ"
 #: model:ir.model.fields,field_description:fleet.field_fleet_vehicle_model__activity_state
 msgid "Activity State"
 msgstr "Trạng thái hoạt động"
+
+#. module: fleet
+#: model:ir.model,name:fleet.model_mail_activity_type
+msgid "Activity Type"
+msgstr "Loại hoạt động"
 
 #. module: fleet
 #: model:ir.model.fields,field_description:fleet.field_fleet_vehicle__activity_type_icon
@@ -876,7 +881,7 @@ msgid ""
 "            (reparation, insurances, periodic maintenance)."
 msgstr ""
 "Mỗi hợp đồng (ví dụ: cho thuê) có thể bao gồm một số dịch vụ \n"
-"               (sửa chữa, bảo hiểm, bảo trì định kỳ)."
+"               (sửa chữa, bảo hiểm, bảo dưỡng định kỳ)."
 
 #. module: fleet
 #: model_terms:ir.actions.act_window,help:fleet.fleet_vehicle_service_types_action
@@ -1557,7 +1562,7 @@ msgstr "Hàng tháng"
 #: model:ir.model.fields,field_description:fleet.field_fleet_vehicle_log_services__my_activity_date_deadline
 #: model:ir.model.fields,field_description:fleet.field_fleet_vehicle_model__my_activity_date_deadline
 msgid "My Activity Deadline"
-msgstr "Hạn chót hoạt động của tôi"
+msgstr "Thời hạn hoạt động của tôi"
 
 #. module: fleet
 #: model:ir.model.fields,field_description:fleet.field_fleet_service_type__name
@@ -1600,7 +1605,7 @@ msgstr "Sự kiện trên lịch cho hoạt động tiếp theo"
 #: model:ir.model.fields,field_description:fleet.field_fleet_vehicle_log_services__activity_date_deadline
 #: model:ir.model.fields,field_description:fleet.field_fleet_vehicle_model__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr "Hạn chót cho hoạt động tiếp theo"
+msgstr "Thời hạn cho hoạt động tiếp theo"
 
 #. module: fleet
 #: model:ir.model.fields,field_description:fleet.field_fleet_vehicle__activity_summary
@@ -1806,7 +1811,7 @@ msgstr "Đã đặt"
 #. module: fleet
 #: model:fleet.service.type,name:fleet.type_service_33
 msgid "Other Maintenance"
-msgstr "Bảo trì khác"
+msgstr "Bảo dưỡng khác"
 
 #. module: fleet
 #: model:ir.model.fields.selection,name:fleet.selection__fleet_vehicle__service_activity__overdue
@@ -1951,7 +1956,7 @@ msgstr "Thuê (Không gồm VAT)"
 #. module: fleet
 #: model:fleet.service.type,name:fleet.type_service_service_7
 msgid "Repair and maintenance"
-msgstr "Sửa chữa hoặc bảo trì"
+msgstr "Sửa chữa hoặc bảo dưỡng"
 
 #. module: fleet
 #: model:fleet.service.type,name:fleet.type_contract_repairing
@@ -2329,7 +2334,7 @@ msgid ""
 "            Services can be of many types: occasional repair, fixed maintenance, etc."
 msgstr ""
 "Theo dõi tất cả các dịch vụ được thực hiện trên xe của bạn. \n"
-"Dịch vụ có thể có nhiều loại: sửa chữa thường xuyên, bảo trì cố định, v.v."
+"Dịch vụ có thể có nhiều loại: sửa chữa thường xuyên, bảo dưỡng cố định, v.v."
 
 #. module: fleet
 #: model:ir.model.fields,field_description:fleet.field_fleet_vehicle__trailer_hook

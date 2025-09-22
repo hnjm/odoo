@@ -3,7 +3,7 @@
 # 	* pos_sale
 # 
 # Translators:
-# Wil Odoo, 2024
+# Wil Odoo, 2025
 # Tony Ng, 2025
 # 
 msgid ""
@@ -224,7 +224,7 @@ msgstr "POS訂單"
 #. module: pos_sale
 #: model:ir.model,name:pos_sale.model_pos_session
 msgid "Point of Sale Session"
-msgstr "POS營業點"
+msgstr "POS 操作時段"
 
 #. module: pos_sale
 #: model:ir.model.fields,field_description:pos_sale.field_crm_team__pos_config_ids
@@ -267,7 +267,7 @@ msgstr "SO"
 #. module: pos_sale
 #: model:ir.model.fields,field_description:pos_sale.field_pos_order__sale_order_count
 msgid "Sale Order Count"
-msgstr "銷售訂單個數"
+msgstr "銷售訂單數目"
 
 #. module: pos_sale
 #: model_terms:ir.ui.view,arch_db:pos_sale.res_config_settings_view_form

@@ -230,7 +230,7 @@ class Groups(models.Model):
         where_domains = []
         for group in operand:
             values = [v for v in group.split('/') if v]
-            group_name = values.pop().strip()
+            group_name = values.pop().strip() if values else ''
             category_name = values and '/'.join(values).strip() or group_name
             group_domain = [('name', operator, lst and [group_name] or group_name)]
             category_ids = self.env['ir.module.category'].sudo()._search(
@@ -345,7 +345,7 @@ class Users(models.Model):
             'image_1024', 'image_512', 'image_256', 'image_128', 'lang', 'tz',
             'tz_offset', 'groups_id', 'partner_id', 'write_date', 'action_id',
             'avatar_1920', 'avatar_1024', 'avatar_512', 'avatar_256', 'avatar_128',
-            'share', 'device_ids',
+            'share', 'device_ids', 'display_name',
         ]
 
     @property
@@ -2149,6 +2149,17 @@ class UsersView(models.Model):
             })
         return res
 
+    def _get_view_postprocessed(self, view, arch, **options):
+        arch, models = super()._get_view_postprocessed(view, arch, **options)
+        if view == self.env.ref('base.view_users_form_simple_modif'):
+            tree = etree.fromstring(arch)
+            for node_field in tree.xpath('//field[@__groups_key__]'):
+                if node_field.get('name') in self.SELF_READABLE_FIELDS:
+                    node_field.attrib.pop('__groups_key__')
+            arch = etree.tostring(tree)
+        return arch, models
+
+
 class CheckIdentity(models.TransientModel):
     """ Wizard used to re-check the user's credentials (password) and eventually
     revoke access to his account to every device he has an active session on.
@@ -2305,6 +2316,12 @@ class APIKeysUser(models.Model):
                 'auth_method': 'apikey',
                 'mfa': 'default',
             }
+
+        if not user_agent_env.get('interactive', True) and self.env.user._rpc_api_keys_only():
+            _logger.info(
+                "Invalid API key or password-based authentication attempted for a non-interactive (API) "
+                "context that requires API key authentication only."
+            )
 
         raise AccessDenied()
 

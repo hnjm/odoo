@@ -12,7 +12,7 @@ from odoo.addons.base.models.ir_model import MODULE_UNINSTALL_FLAG
 
 from odoo import api, Command, fields, models, tools
 from odoo.addons.base.models.res_partner import _tz_get
-from odoo.addons.resource.models.utils import float_to_time, HOURS_PER_DAY
+from odoo.addons.resource.models.utils import float_to_time, HOURS_PER_DAY, Intervals
 from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.tools.float_utils import float_round, float_compare
 from odoo.tools.misc import format_date
@@ -367,6 +367,7 @@ class HolidaysRequest(models.Model):
                 date_to.date())
 
             for leave in self:
+                department_ids = leave.employee_id.department_id.ids
                 domain = [
                     ('start_date', '<=', leave.date_to.date()),
                     ('end_date', '>=', leave.date_from.date()),
@@ -374,6 +375,14 @@ class HolidaysRequest(models.Model):
                         ('resource_calendar_id', '=', False),
                         ('resource_calendar_id', '=', leave.resource_calendar_id.id),
                 ]
+                if department_ids:
+                    domain += [
+                        '|',
+                        ('department_ids', '=', False),
+                        ('department_ids', 'parent_of', department_ids),
+                    ]
+                else:
+                    domain += [('department_ids', '=', False)]
 
                 if leave.holiday_status_id.company_id:
                     domain += [('company_id', '=', leave.holiday_status_id.company_id.id)]
@@ -410,48 +419,49 @@ class HolidaysRequest(models.Model):
                   '|', ('holiday_id', '=', False), ('holiday_id', 'not in', employee_leaves.ids)]
         # Precompute values in batch for performance purposes
         work_time_per_day_mapped = {
-            (date_from, date_to, calendar): employees.with_context(
+            (date_from, date_to, include_public_holidays_in_duration, calendar): employees.with_context(
                     compute_leaves=not include_public_holidays_in_duration)._list_work_time_per_day(date_from, date_to, domain=domain, calendar=calendar)
             for (date_from, date_to, include_public_holidays_in_duration, calendar), employees in employees_by_dates_calendar.items()
         }
         work_days_data_mapped = {
-            (date_from, date_to, calendar): employees._get_work_days_data_batch(date_from, date_to, compute_leaves=not include_public_holidays_in_duration, domain=domain, calendar=calendar)
+            (date_from, date_to, include_public_holidays_in_duration, calendar): employees._get_work_days_data_batch(date_from, date_to, compute_leaves=not include_public_holidays_in_duration, domain=domain, calendar=calendar)
             for (date_from, date_to, include_public_holidays_in_duration, calendar), employees in employees_by_dates_calendar.items()
         }
         for leave in self:
             calendar = resource_calendar or leave.resource_calendar_id
-            if not leave.date_from or not leave.date_to or not calendar:
+            if not leave.date_from or not leave.date_to or (not calendar and not leave.employee_id):
                 result[leave.id] = (0, 0)
                 continue
-            if calendar.flexible_hours:
-                days = (leave.date_to - leave.date_from).days + (1 if not leave.request_unit_half else 0.5)
-                public_holidays = self.env['resource.calendar.leaves'].search([
-                    ('resource_id', '=', False),
-                    ('calendar_id', '=', calendar.id),
-                    ('date_from', '<=', leave.date_to),
-                    ('date_to', '>=', leave.date_from)
-                ])
-                excluded_days = sum(
-                    (min(holiday.date_to, leave.date_to) - max(holiday.date_from, leave.date_from)).days + 1
-                    for holiday in public_holidays
-                )
-                days = days - excluded_days
-                hours = leave.request_hour_to - leave.request_hour_from if leave.request_unit_hours \
-                    else (days * calendar.hours_per_day)
-                result[leave.id] = (days, hours)
-                continue
-            hours, days = (0, 0)
             if leave.employee_id:
-                if leave.employee_id.is_flexible and leave.leave_type_request_unit in ['day','half_day']:
-                    duration = leave.date_to - leave.date_from
-                    days = ceil(duration.total_seconds() / (24 * 3600))
+                # For flexible employees, if it's a single day leave, we force it to the real duration since the virtual intervals might not match reality on that day, especially for custom hours
+                if leave.employee_id.is_flexible and leave.date_to.date() == leave.date_from.date():
+                    public_holidays = self.env['resource.calendar.leaves'].search([
+                        ('resource_id', '=', False),
+                        ('date_from', '<', leave.date_to),
+                        ('date_to', '>', leave.date_from),
+                        ('calendar_id', 'in', [False, calendar.id]),
+                        ('company_id', '=', leave.company_id.id)
+                    ])
+                    if public_holidays:
+                        public_holidays_intervals = Intervals([(ph.date_from, ph.date_to, ph) for ph in public_holidays])
+                        leave_intervals = Intervals([(leave.date_from, leave.date_to, leave)])
+                        real_leave_intervals = leave_intervals - public_holidays_intervals
+                        hours = 0
+                        for start, stop, meta in real_leave_intervals:
+                            hours += (stop - start).total_seconds() / 3600
+                    else:
+                        hours = (leave.date_to - leave.date_from).total_seconds() / 3600
+                    if not leave.request_unit_hours and not public_holidays:
+                        days = 1 if not leave.request_unit_half else 0.5
+                    else:
+                        days = hours / 24
                 elif leave.leave_type_request_unit == 'day' and check_leave_type:
                     # list of tuples (day, hours)
-                    work_time_per_day_list = work_time_per_day_mapped[(leave.date_from, leave.date_to, calendar)][leave.employee_id.id]
+                    work_time_per_day_list = work_time_per_day_mapped[leave.date_from, leave.date_to, leave.holiday_status_id.include_public_holidays_in_duration, calendar][leave.employee_id.id]
                     days = len(work_time_per_day_list)
                     hours = sum(map(lambda t: t[1], work_time_per_day_list))
                 else:
-                    work_days_data = work_days_data_mapped[(leave.date_from, leave.date_to, calendar)][leave.employee_id.id]
+                    work_days_data = work_days_data_mapped[leave.date_from, leave.date_to, leave.holiday_status_id.include_public_holidays_in_duration, calendar][leave.employee_id.id]
                     hours, days = work_days_data['hours'], work_days_data['days']
             else:
                 today_hours = calendar.get_work_hours_count(
@@ -641,6 +651,9 @@ Attempting to double-book your time off won't magically make your vacation 2x be
             if leave_type.allows_negative:
                 max_excess = leave_type.max_allowed_negative
                 for employee in employees:
+                    if not leave_data[employee]:
+                        raise ValidationError(_("You do not have any allocation for this time off type.\n"
+                                                "Please request an allocation before submitting your time off request."))
                     if leave_data[employee] and leave_data[employee][0][1]['virtual_remaining_leaves'] < -max_excess:
                         raise ValidationError(_("There is no valid allocation to cover that request."))
                 continue
@@ -651,6 +664,9 @@ Attempting to double-book your time off won't magically make your vacation 2x be
             for employee in employees:
                 previous_emp_data = previous_leave_data[employee] and previous_leave_data[employee][0][1]['virtual_excess_data']
                 emp_data = leave_data[employee] and leave_data[employee][0][1]['virtual_excess_data']
+                if not leave_data[employee]:
+                    raise ValidationError(_("You do not have any allocation for this time off type.\n"
+                                            "Please request an allocation before submitting your time off request."))
                 if not previous_emp_data and not emp_data:
                     continue
                 if previous_emp_data != emp_data and len(emp_data) >= len(previous_emp_data):
@@ -1299,7 +1315,7 @@ Attempting to double-book your time off won't magically make your vacation 2x be
         to_clean, to_do, to_do_confirm_activity = self.env['hr.leave'], self.env['hr.leave'], self.env['hr.leave']
         activity_vals = []
         today = fields.Date.today()
-        model_id = self.env.ref('hr_holidays.model_hr_leave').id
+        model_id = self.env['ir.model']._get_id('hr.leave')
         confirm_activity = self.env.ref('hr_holidays.mail_act_leave_approval')
         approval_activity = self.env.ref('hr_holidays.mail_act_leave_second_approval')
         for holiday in self:
@@ -1318,12 +1334,12 @@ Attempting to double-book your time off won't magically make your vacation 2x be
                             'Second approval request for %(leave_type)s',
                             leave_type=holiday.holiday_status_id.name,
                         )
-                        to_do_confirm_activity |= holiday
+                        to_do_confirm_activity += holiday
                     user_ids = holiday.sudo()._get_responsible_for_approval().ids
                     for user_id in user_ids:
                         date_deadline = (
                             (holiday.date_from -
-                             relativedelta(**{activity_type.delay_unit: activity_type.delay_count or 0})).date()
+                             relativedelta(**{activity_type.delay_unit or 'days': activity_type.delay_count or 0})).date()
                             if holiday.date_from else today)
                         if date_deadline < today:
                             date_deadline = today
@@ -1438,24 +1454,39 @@ Attempting to double-book your time off won't magically make your vacation 2x be
         the earliest hour_from and latest hour_to that exist in the schedule.
         """
         self.ensure_one()
+
         domain = [
             ('calendar_id', '=', self.resource_calendar_id.id),
             ('display_type', '=', False),
             ('day_period', '!=', 'lunch'),
         ]
-        if day_period:
-            domain.append(('day_period', '=', day_period))
-        attendances = self.env['resource.calendar.attendance']._read_group(domain,
-            ['week_type', 'dayofweek'],
-            ['hour_from:min', 'hour_to:max'])
+        # In the case of flexible hours, we resort to centering the holiday hours around 12pm
+        if self.resource_calendar_id.flexible_hours:
+            hours_per_day = self.resource_calendar_id.hours_per_day
+            attendances = []
+            default_start = 12.0 - (hours_per_day / 2)
+            default_end = 12.0 + (hours_per_day / 2)
+            for week_type in [0, 1]:
+                for day in range(7):
+                    if day_period:
+                        attendances.append(DummyAttendance(default_start if day_period == 'morning' else 12, 12 if day_period == 'morning' else default_end, day, day_period, week_type))
+                    else:
+                        attendances.append(DummyAttendance(default_start, default_end, day, None, week_type))
+            attendances = sorted(attendances, key=lambda att: att.dayofweek)
+        else:
+            if day_period:
+                domain.append(('day_period', '=', day_period))
+            # Must be sorted by dayofweek ASC and day_period DESC
+            attendances = self.env['resource.calendar.attendance']._read_group(domain,
+                ['week_type', 'dayofweek'],
+                ['hour_from:min', 'hour_to:max'], order="dayofweek ASC")
 
-        # Must be sorted by dayofweek ASC and day_period DESC
-        attendances = sorted([DummyAttendance(hour_from, hour_to, dayofweek, None, week_type) for week_type, dayofweek, hour_from, hour_to in attendances], key=lambda att: att.dayofweek)
+            attendances = [DummyAttendance(hour_from, hour_to, dayofweek, None, week_type) for week_type, dayofweek, hour_from, hour_to in attendances]
 
-        # If we can't find any attendances on the exact days of the request,
-        # we default to the widest possible range that exists in the schedule.
-        default_start = min((attendance.hour_from for attendance in attendances), default=0)
-        default_end = max((attendance.hour_to for attendance in attendances), default=0)
+            # If we can't find any attendances on the exact days of the request,
+            # we default to the widest possible range that exists in the schedule.
+            default_start = min((attendance.hour_from for attendance in attendances), default=0)
+            default_end = max((attendance.hour_to for attendance in attendances), default=0)
 
         start_week_type = 0
         end_week_type = 0

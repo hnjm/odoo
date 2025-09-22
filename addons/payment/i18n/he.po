@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* payment
-# 
+# * payment
+#
 # Translators:
 # Roy Sayag, 2024
 # Netta Waizer, 2024
@@ -23,30 +23,32 @@
 # ZVI BLONDER <ZVIBLONDER@gmail.com>, 2025
 # MichaelHadar, 2025
 # or balmas, 2025
-# 
+# or balmas <or@laylinetech.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-07 20:37+0000\n"
-"PO-Revision-Date: 2024-09-25 09:41+0000\n"
-"Last-Translator: or balmas, 2025\n"
-"Language-Team: Hebrew (https://app.transifex.com/odoo/teams/41243/he/)\n"
+"PO-Revision-Date: 2025-09-16 22:20+0000\n"
+"Last-Translator: or balmas <or@laylinetech.com>\n"
+"Language-Team: Hebrew <https://translate.odoo.com/projects/odoo-18/payment/"
+"he/>\n"
+"Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: he\n"
-"Plural-Forms: nplurals=3; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: 2;\n"
+"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 2) ? 1 : 2);\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_provider_onboarding_wizard___data_fetched
 msgid " Data Fetched"
-msgstr "הנתונים נאספו"
+msgstr " הנתונים נאספו"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.availability_report_records
 msgid "(ID:"
-msgstr ""
+msgstr "(מזהה:"
 
 #. module: payment
 #: model:payment.method,name:payment.payment_method_7eleven
@@ -109,7 +111,7 @@ msgstr ""
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.method_form
 msgid "<small class=\"text-600\">Save my payment details</small>"
-msgstr ""
+msgstr "<small class=\"text-600\">שמור את פרטי התשלום שלי</small>"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.payment_provider_form
@@ -151,7 +153,7 @@ msgstr "<span><i class=\"fa fa-lock\"/> מאובטח ע\"י</span>"
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.no_pms_available_warning
 msgid "<strong><i class=\"fa fa-file-text\"/> Show availability report</strong>"
-msgstr ""
+msgstr "<strong><i class=\"fa fa-file-text\"/> הצגת דוח זמינות</strong>"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.no_pms_available_warning
@@ -229,6 +231,7 @@ msgid ""
 "A transaction with reference %(ref)s has been initiated to save a new "
 "payment method (%(provider_name)s)"
 msgstr ""
+"עסקה עם מזהה%(ref)s בוצעה כדי לשמור אמצעי תשלום חדש(%(provider_name)s)"
 
 #. module: payment
 #. odoo-python
@@ -477,7 +480,7 @@ msgstr "אמצעים זמינים"
 #. module: payment
 #: model:payment.method,name:payment.payment_method_axis
 msgid "Axis"
-msgstr ""
+msgstr "ציר"
 
 #. module: payment
 #: model:payment.method,name:payment.payment_method_bacs_direct_debit
@@ -684,7 +687,7 @@ msgstr "בוטל"
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_provider__cancel_msg
 msgid "Cancelled Message"
-msgstr ""
+msgstr "הודעה מבוטלת"
 
 #. module: payment
 #. odoo-javascript
@@ -1786,7 +1789,7 @@ msgstr "פעולה"
 #. odoo-python
 #: code:addons/payment/models/payment_method.py:0
 msgid "Operation not supported."
-msgstr ""
+msgstr "הפעולה אינה נתמכת."
 
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__res_company__payment_onboarding_payment_method__other
@@ -2593,6 +2596,8 @@ msgid ""
 "The maximum payment amount that this payment provider is available for. "
 "Leave blank to make it available for any payment amount."
 msgstr ""
+"סכום התשלום המקסימלי שבו ספק התשלום הזה זמין. השאר ריק כדי לאפשר תשלום בכל "
+"סכום."
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_provider__auth_msg
@@ -2639,12 +2644,12 @@ msgstr ""
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_token__provider_ref
 msgid "The provider reference of the token of the transaction."
-msgstr ""
+msgstr "הפנייה של הספק לאסימון של העסקה."
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_transaction__provider_reference
 msgid "The provider reference of the transaction"
-msgstr ""
+msgstr " ההתייחסות של הספק לעסקה"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_method__image_payment_form
@@ -2659,7 +2664,7 @@ msgstr ""
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.state_header
 msgid "The saving of your payment method has been canceled."
-msgstr ""
+msgstr "שמירת שיטת התשלום שלך בוטלה."
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_transaction__source_transaction_id
@@ -2671,7 +2676,7 @@ msgstr ""
 #: model:ir.model.fields,help:payment.field_payment_token__payment_method_code
 #: model:ir.model.fields,help:payment.field_payment_transaction__payment_method_code
 msgid "The technical code of this payment method."
-msgstr ""
+msgstr "הקוד הטכני של שיטת התשלום הזו."
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_provider__code
@@ -2743,7 +2748,7 @@ msgstr "לא נוצרו אסימונים עדיין"
 #. odoo-python
 #: code:addons/payment/wizards/payment_link_wizard.py:0
 msgid "There is nothing to be paid."
-msgstr ""
+msgstr "אין דבר לתשלום."
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.pay
@@ -2804,6 +2809,8 @@ msgid ""
 "This transaction has been confirmed following the processing of its partial "
 "capture and partial void transactions (%(provider)s)."
 msgstr ""
+"עסקה זו אושרה לאחר עיבוד פעולות הקיזוז החלקי והביטול החלקי שלה "
+"(%(provider)s)."
 
 #. module: payment
 #: model:payment.method,name:payment.payment_method_tienphong
@@ -2824,7 +2831,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:payment.field_payment_method__support_tokenization
 #: model:ir.model.fields,field_description:payment.field_payment_provider__support_tokenization
 msgid "Tokenization"
-msgstr ""
+msgstr "טוקניזציה"
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_method__support_tokenization
@@ -3001,13 +3008,13 @@ msgstr ""
 msgid ""
 "Whether a payment token should be created when post-processing the "
 "transaction"
-msgstr ""
+msgstr "האם יש ליצור טוקן תשלום בעת עיבוד העסקה לאחר ביצועה."
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_capture_wizard__support_partial_capture
 msgid ""
 "Whether each of the transactions' provider supports the partial capture."
-msgstr ""
+msgstr "האם כל אחד מהספקים של העסקאות תומך בקיזוז חלקי."
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_provider__is_published
@@ -3015,6 +3022,8 @@ msgid ""
 "Whether the provider is visible on the website or not. Tokens remain "
 "functional but are only visible on manage forms."
 msgstr ""
+"בין אם הספק מופיע באתר ובין אם לא . הטוקנים נשארים פעילים, אך נראים רק בטפסי"
+" הניהול."
 
 #. module: payment
 #: model:payment.provider,name:payment.payment_provider_transfer
@@ -3051,7 +3060,7 @@ msgstr "לא ניתן לשנות את החברה של ספק תשלומים עם
 #. odoo-python
 #: code:addons/payment/models/payment_method.py:0
 msgid "You cannot delete the default payment method."
-msgstr ""
+msgstr "אי אפשר למחוק את אמצעי התשלום כברירת מחדל."
 
 #. module: payment
 #. odoo-python
@@ -3065,13 +3074,13 @@ msgstr "לא ניתן לבטל ספק תשלום %s;השבת אותו או הס�
 #. odoo-python
 #: code:addons/payment/models/payment_provider.py:0
 msgid "You cannot publish a disabled provider."
-msgstr ""
+msgstr "לא ניתן לפרסם ספק שמושבת."
 
 #. module: payment
 #. odoo-python
 #: code:addons/payment/controllers/portal.py:0
 msgid "You do not have access to this payment token."
-msgstr ""
+msgstr "אין לך גישה לאסימון תשלום זה."
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.payment_status
@@ -3175,7 +3184,7 @@ msgstr "התשלום שלך עובד בהצלחה."
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.state_header
 msgid "Your payment has not been processed yet."
-msgstr ""
+msgstr "התשלום שלך טרם עובד."
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.payment_status
@@ -3185,7 +3194,7 @@ msgstr "התשלום בדרך אלייך!"
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.state_header
 msgid "Your payment method has been saved."
-msgstr ""
+msgstr "אמצעי התשלום שלך נשמר. "
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.form
@@ -3222,7 +3231,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/payment/const.py:0
 msgid "express checkout not supported"
-msgstr ""
+msgstr "תשלום מהיר לא נתמך"
 
 #. module: payment
 #: model:payment.method,name:payment.payment_method_ideal

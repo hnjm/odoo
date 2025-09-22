@@ -661,7 +661,7 @@ class AccountMoveLine(models.Model):
     def _compute_currency_rate(self):
         for line in self:
             if line.move_id.is_invoice(include_receipts=True):
-                line.currency_rate = line.move_id.invoice_currency_rate
+                line.currency_rate = line.move_id.invoice_currency_rate or 1.0
             elif line.currency_id:
                 line.currency_rate = self.env['res.currency']._get_conversion_rate(
                     from_currency=line.company_currency_id,
@@ -687,7 +687,7 @@ class AccountMoveLine(models.Model):
         for line in self:
             if line.amount_currency is False:
                 line.amount_currency = line.currency_id.round(line.balance * line.currency_rate)
-            if line.currency_id == line.company_id.currency_id:
+            if line.currency_id == line.company_id.currency_id and not line.move_id.is_invoice(True):
                 line.amount_currency = line.balance
 
     @api.depends_context('order_cumulated_balance', 'domain_cumulated_balance')
@@ -804,7 +804,7 @@ class AccountMoveLine(models.Model):
 
     @api.depends('product_id')
     def _compute_product_uom_id(self):
-        for line in self:
+        for line in self.filtered(lambda l: l.parent_state == 'draft'):
             # vendor bills should have the product purchase UOM
             if line.move_id.is_purchase_document():
                 line.product_uom_id = line.product_id.uom_po_id
@@ -912,45 +912,57 @@ class AccountMoveLine(models.Model):
             else:
                 line.discount_allocation_key = False
 
-    @api.depends('account_id', 'company_id', 'discount', 'price_unit', 'quantity', 'currency_rate')
+    @api.depends('account_id', 'company_id', 'discount', 'price_unit', 'quantity', 'currency_rate', 'analytic_distribution')
     def _compute_discount_allocation_needed(self):
+        line2discounted_amount = {
+            line: [
+                (line.account_id, amount),
+                (discount_allocation_account, -amount),
+            ]
+            for line in self.move_id.line_ids
+            if line.display_type == 'product'
+            and (discount_allocation_account := line.move_id._get_discount_allocation_account())
+            and line.account_id != discount_allocation_account
+            and (amount := line.currency_id.round(
+                line.move_id.direction_sign * line.quantity * line.price_unit * line.discount / 100
+            ))
+        }
+
+        distribution_totals = defaultdict(lambda: defaultdict(float))
+        for line, discounted_amounts in line2discounted_amount.items():
+            for account, amount in discounted_amounts:
+                for analytic_account_id in line.analytic_distribution or {}:
+                    distribution_totals[frozendict({
+                        'move_id': line.move_id.id,
+                        'account_id': account.id,
+                        'currency_rate': line.currency_rate,
+                    })][analytic_account_id] += amount
+
         for line in self:
             line.discount_allocation_dirty = True
-            discount_allocation_account = line.move_id._get_discount_allocation_account()
-
-            if not discount_allocation_account or line.display_type != 'product' or line.currency_id.is_zero(line.discount):
+            if line not in line2discounted_amount:
                 line.discount_allocation_needed = False
                 continue
 
-            discounted_amount_currency = line.currency_id.round(line.move_id.direction_sign * line.quantity * line.price_unit * line.discount/100)
             discount_allocation_needed = {}
-            discount_allocation_needed_vals = discount_allocation_needed.setdefault(
-                frozendict({
-                    'account_id': line.account_id.id,
+            for account, amount in line2discounted_amount[line]:
+                key = frozendict({
                     'move_id': line.move_id.id,
+                    'account_id': account.id,
                     'currency_rate': line.currency_rate,
-                }),
-                {
+                })
+                dist = distribution_totals[key]
+                total = sum(dist.values()) or 1  # avoid division by zero
+                discount_allocation_needed[key] = frozendict({
                     'display_type': 'discount',
                     'name': _("Discount"),
-                    'amount_currency': 0.0,
-                },
-            )
-            discount_allocation_needed_vals['amount_currency'] += discounted_amount_currency
-            discount_allocation_needed_vals = discount_allocation_needed.setdefault(
-                frozendict({
-                    'move_id': line.move_id.id,
-                    'account_id': discount_allocation_account.id,
-                    'currency_rate': line.currency_rate,
-                }),
-                {
-                    'display_type': 'discount',
-                    'name': _("Discount"),
-                    'amount_currency': 0.0,
-                },
-            )
-            discount_allocation_needed_vals['amount_currency'] -= discounted_amount_currency
-            line.discount_allocation_needed = {k: frozendict(v) for k, v in discount_allocation_needed.items()}
+                    'amount_currency': amount,
+                    'analytic_distribution': {
+                        account_id: 100 * value / total
+                        for account_id, value in dist.items()
+                    }
+                })
+            line.discount_allocation_needed = discount_allocation_needed
 
     @api.depends('tax_ids', 'account_id', 'company_id')
     def _compute_epd_key(self):
@@ -1060,6 +1072,11 @@ class AccountMoveLine(models.Model):
         cache = {}
         for line in self:
             if line.display_type == 'product' or not line.move_id.is_invoice(include_receipts=True):
+                related_distribution = line._related_analytic_distribution()
+                root_plans = self.env['account.analytic.account'].browse(
+                    list({int(account_id) for ids in related_distribution for account_id in ids.split(',')})
+                ).exists().root_plan_id
+
                 arguments = frozendict({
                     "product_id": line.product_id.id,
                     "product_categ_id": line.product_id.categ_id.id,
@@ -1067,10 +1084,11 @@ class AccountMoveLine(models.Model):
                     "partner_category_id": line.partner_id.category_id.ids,
                     "account_prefix": line.account_id.code,
                     "company_id": line.company_id.id,
+                    "related_root_plan_ids": root_plans,
                 })
                 if arguments not in cache:
                     cache[arguments] = self.env['account.analytic.distribution.model']._get_distribution(arguments)
-                line.analytic_distribution = cache[arguments] or line.analytic_distribution
+                line.analytic_distribution = related_distribution | cache[arguments] or line.analytic_distribution
 
     @api.depends('discount_date', 'date_maturity')
     def _compute_payment_date(self):
@@ -1165,9 +1183,20 @@ class AccountMoveLine(models.Model):
 
     def _inverse_analytic_distribution(self):
         """ Unlink and recreate analytic_lines when modifying the distribution."""
+        if self.env.context.get('skip_analytic_sync'):
+            return
         lines_to_modify = self.env['account.move.line'].browse([
             line.id for line in self if line.parent_state == "posted"
-        ])
+        ]).with_context(skip_analytic_sync=True)
+        old_distributions = dict(self.env.execute_query(SQL(
+            "SELECT id, analytic_distribution FROM account_move_line WHERE id = ANY(%s)",
+            self.ids,
+        )))
+        for line in self:
+            line.analytic_distribution = self._merge_distribution(
+                old_distribution=old_distributions.get(line._origin.id) or {},
+                new_distribution=line.analytic_distribution or {},
+            )
         lines_to_modify.analytic_line_ids.unlink()
         lines_to_modify._create_analytic_lines()
 
@@ -1212,9 +1241,9 @@ class AccountMoveLine(models.Model):
 
     @api.constrains('account_id', 'tax_ids', 'tax_line_id', 'reconciled')
     def _check_off_balance(self):
-        for line in self:
+        for line in self.move_id.line_ids:
             if line.account_id.account_type == 'off_balance':
-                if any(a.internal_group != line.account_id.internal_group for a in line.move_id.line_ids.account_id):
+                if any(a.account_type != line.account_id.account_type for a in line.move_id.line_ids.account_id):
                     raise UserError(_('If you want to use "Off-Balance Sheet" accounts, all the accounts of the journal entry must be of this type'))
                 if line.tax_ids or line.tax_line_id:
                     raise UserError(_('You cannot use taxes on lines with an Off-Balance account'))
@@ -1411,6 +1440,8 @@ class AccountMoveLine(models.Model):
             defaults['account_id'] = quick_encode_suggestion['account_id']
             defaults['price_unit'] = quick_encode_suggestion['price_unit']
             defaults['tax_ids'] = [Command.set(quick_encode_suggestion['tax_ids'])]
+        elif (journal := self.env['account.journal'].browse(self.env.context.get('journal_id'))) and journal.default_account_id:
+            defaults['account_id'] = journal.default_account_id
         return defaults
 
     def _sanitize_vals(self, vals):
@@ -1476,6 +1507,13 @@ class AccountMoveLine(models.Model):
         after = existing()
         for line in after:
             if (
+                (changed('balance') or changed('move_type'))
+                 and not self.env.is_protected(self._fields['amount_currency'], line)
+                 and (not changed('amount_currency') or (line not in before and not line.amount_currency))
+                 and line.currency_id == line.company_id.currency_id
+            ):
+                line.amount_currency = line.balance
+            if (
                 (changed('amount_currency') or changed('currency_rate') or changed('move_type'))
                 and not self.env.is_protected(self._fields['balance'], line)
                 and (not changed('balance') or (line not in before and not line.balance))
@@ -1521,6 +1559,8 @@ class AccountMoveLine(models.Model):
 
         lines.move_id._synchronize_business_models(['line_ids'])
         lines._check_constrains_account_id_journal_id()
+        # Remove analytic lines created for draft AMLs, after analytic_distribution has been updated
+        lines.filtered(lambda l: l.parent_state == 'draft').analytic_line_ids.with_context(skip_analytic_sync=True).unlink()
         return lines
 
     def write(self, vals):
@@ -1546,6 +1586,7 @@ class AccountMoveLine(models.Model):
 
         line_to_write = self
         vals = self._sanitize_vals(vals)
+        matching2lines = None
         for line in self:
             if not any(self.env['account.move']._field_will_change(line, vals, field_name) for field_name in vals):
                 line_to_write -= line
@@ -1563,8 +1604,22 @@ class AccountMoveLine(models.Model):
                 line._check_tax_lock_date()
 
             # Check the reconciliation.
-            if any(self.env['account.move']._field_will_change(line, vals, field_name) for field_name in protected_fields['reconciliation']):
-                line._check_reconciliation()
+            if changing_fields := {
+                field_name
+                for field_name in protected_fields['reconciliation']
+                if self.env['account.move']._field_will_change(line, vals, field_name)
+            }:
+                matching2lines = dict(self.env['account.move.line'].sudo()._read_group(
+                    domain=[('matching_number', 'in', [n for n in self.mapped('matching_number') if n])],
+                    groupby=['matching_number'],
+                    aggregates=['id:recordset']
+                )) if matching2lines is None and line.matching_number else matching2lines
+                if (
+                    # allow changing the account on all the lines of a reconciliation together
+                    changing_fields - {'account_id'}
+                    or line.matching_number and not all(reconciled_line in self for reconciled_line in matching2lines[line.matching_number])
+                ):
+                    line._check_reconciliation()
 
         move_container = {'records': self.move_id}
         with self.move_id._check_balanced(move_container),\
@@ -1611,6 +1666,8 @@ class AccountMoveLine(models.Model):
                                 body=msg,
                                 tracking_value_ids=tracking_value_ids
                             )
+            if not self.env.context.get('skip_analytic_sync'):
+                self.filtered(lambda l: l.parent_state == 'draft').analytic_line_ids.with_context(skip_analytic_sync=True).unlink()
 
         return result
 
@@ -2060,10 +2117,7 @@ class AccountMoveLine(models.Model):
                 and company_currency.compare_amounts(partial_credit_amount, partial_debit_amount_range[2]) <= 0
                 and company_currency.compare_amounts(partial_credit_amount, partial_debit_amount_range[0]) >= 0
             ):
-                if debit_fully_matched:
-                    partial_amount = remaining_debit_amount
-                else:
-                    partial_amount = -remaining_credit_amount
+                partial_amount = min(remaining_debit_amount, -remaining_credit_amount)
                 partial_debit_amount = partial_amount
                 partial_credit_amount = partial_amount
 
@@ -2170,9 +2224,15 @@ class AccountMoveLine(models.Model):
         credit_values['amount_residual'] = remaining_credit_amount
         credit_values['amount_residual_currency'] = remaining_credit_amount_curr
 
-        if debit_fully_matched:
+        if (
+            debit_currency.is_zero(debit_values['amount_residual_currency'])
+            and company_currency.is_zero(debit_values['amount_residual'])
+        ):
             res['debit_values'] = None
-        if credit_fully_matched:
+        if (
+            credit_currency.is_zero(credit_values['amount_residual_currency'])
+            and company_currency.is_zero(credit_values['amount_residual'])
+        ):
             res['credit_values'] = None
         return res
 
@@ -2258,7 +2318,9 @@ class AccountMoveLine(models.Model):
         all_results = []
 
         def process_amls(amls):
-            remaining_amls = amls.filtered(lambda aml: aml.id not in all_fully_reconciled_aml_ids)
+            remaining_amls = amls.filtered(lambda aml: aml.id not in all_fully_reconciled_aml_ids).sorted(
+                lambda aml: (aml.partner_id and aml.partner_id.id) or False
+            )
             amls_results, fully_reconciled_aml_ids = self._prepare_reconciliation_amls(
                 [
                     amls_values_map[aml]
@@ -3123,6 +3185,7 @@ class AccountMoveLine(models.Model):
 
         context = dict(self.env.context)
         context.pop('default_account_id', None)
+        context['skip_analytic_sync'] = True
         self.env['account.analytic.line'].with_context(context).create(analytic_line_vals)
 
     def _prepare_analytic_lines(self):
@@ -3136,6 +3199,8 @@ class AccountMoveLine(models.Model):
                 line_values = self._prepare_analytic_distribution_line(float(distribution), account_ids, distribution_on_each_plan)
                 if not self.currency_id.is_zero(line_values.get('amount')):
                     analytic_line_vals.append(line_values)
+
+            self._round_analytic_distribution_line(analytic_line_vals)
         return analytic_line_vals
 
     def _prepare_analytic_distribution_line(self, distribution, account_ids, distribution_on_each_plan):
@@ -3171,6 +3236,46 @@ class AccountMoveLine(models.Model):
             'company_id': self.company_id.id or self.env.company.id,
             'category': 'invoice' if self.move_id.is_sale_document() else 'vendor_bill' if self.move_id.is_purchase_document() else 'other',
         }
+
+    def _related_analytic_distribution(self):
+        """ Returns the analytic distribution set on the record which triggered the creation of this line. """
+        return {}
+
+    def _update_analytic_distribution(self):
+        if self.env.context.get('skip_analytic_sync'):
+            return
+        for line in self:
+            line.with_context(skip_analytic_sync=True).analytic_distribution = {
+                analytic_line._get_distribution_key(): -analytic_line.amount / line.balance * 100
+                if line.balance else 100
+                for analytic_line in line.analytic_line_ids
+            }
+
+    def _round_analytic_distribution_line(self, analytic_lines_vals):
+        """ Round the analytic lines amount, and cancel the rounding error. """
+        if not analytic_lines_vals:
+            return
+
+        rounding_error = 0
+        for line in analytic_lines_vals:
+            rounded_amount = self.company_id.currency_id.round(line['amount'])
+            rounding_error += rounded_amount - line['amount']
+            line['amount'] = rounded_amount
+
+        # distributing the rounding error
+        for line in analytic_lines_vals:
+            if self.currency_id.is_zero(rounding_error):
+                break
+            amt = max(
+                self.currency_id.rounding,
+                abs(self.currency_id.round(rounding_error / len(analytic_lines_vals)))
+            )
+            if rounding_error < 0.0:
+                line['amount'] += amt
+                rounding_error += amt
+            else:
+                line['amount'] -= amt
+                rounding_error -= amt
 
     # -------------------------------------------------------------------------
     # INSTALLMENTS
@@ -3330,7 +3435,7 @@ class AccountMoveLine(models.Model):
         """
         tax_fnames = ['balance', 'tax_line_id', 'tax_ids', 'tax_tag_ids']
         fiscal_fnames = tax_fnames + ['account_id', 'journal_id', 'amount_currency', 'currency_id', 'partner_id']
-        reconciliation_fnames = ['account_id', 'date', 'balance', 'amount_currency', 'currency_id', 'partner_id']
+        reconciliation_fnames = ['account_id', 'date', 'balance', 'amount_currency', 'currency_id']
         return {
             'tax': tax_fnames,
             'fiscal': fiscal_fnames,
@@ -3387,6 +3492,13 @@ class AccountMoveLine(models.Model):
 
     def _check_edi_line_tax_required(self):
         return self.product_id.type != 'combo'
+
+    def _filter_aml_lot_valuation(self):
+        """ Method used to filter the aml taken into account when computing the invoiced lot value in get_invoiced_lot_values
+        Intended to be overriden in localization.
+        """
+        self.ensure_one()
+        return self.move_id.state == 'posted'
 
     # -------------------------------------------------------------------------
     # PUBLIC ACTIONS

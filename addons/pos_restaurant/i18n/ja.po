@@ -3,8 +3,8 @@
 # 	* pos_restaurant
 # 
 # Translators:
-# Wil Odoo, 2024
 # Junko Augias, 2025
+# Wil Odoo, 2025
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-16 13:39+0000\n"
 "PO-Revision-Date: 2024-09-25 09:41+0000\n"
-"Last-Translator: Junko Augias, 2025\n"
+"Last-Translator: Wil Odoo, 2025\n"
 "Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -604,7 +604,7 @@ msgstr "ジャンプ"
 #. odoo-javascript
 #: code:addons/pos_restaurant/static/src/overrides/components/payment_screen/payment_screen.xml:0
 msgid "Keep Open"
-msgstr "オープンのまま残す"
+msgstr "保留にする"
 
 #. module: pos_restaurant
 #: model:ir.model.fields,field_description:pos_restaurant.field_restaurant_floor__write_uid
@@ -1144,13 +1144,13 @@ msgstr "テーブル"
 #. odoo-javascript
 #: code:addons/pos_restaurant/static/src/overrides/components/receipt_header_patch.js:0
 msgid "Table %(number)s"
-msgstr ""
+msgstr "テーブル %(number)s"
 
 #. module: pos_restaurant
 #. odoo-javascript
 #: code:addons/pos_restaurant/static/src/overrides/components/receipt_header_patch.js:0
 msgid "Table %(number)s, Guests: %(count)s"
-msgstr ""
+msgstr "テーブル %(number)s、 人数: %(count)s"
 
 #. module: pos_restaurant
 #: model:ir.model.fields,field_description:pos_restaurant.field_pos_config__module_pos_restaurant_appointment

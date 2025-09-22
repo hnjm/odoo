@@ -143,7 +143,7 @@ class AccountMove(models.Model):
         # Ensure the move is posted
         if self.state != 'posted':
             return _("Cannot send an entry that is not posted to TicketBAI.")
-        if self.l10n_es_tbai_state in ('sent', 'cancelled'):
+        if self.l10n_es_tbai_state in ('sent', 'cancelled') and not self.env.context.get('batuz_correction'):
             return _("This entry has already been posted.")
         if self.company_id.l10n_es_tbai_tax_agency == 'bizkaia' and self.is_purchase_document() and not self.ref:
             return _("You need to fill in the Reference field as the invoice number from your vendor.")
@@ -187,6 +187,14 @@ class AccountMove(models.Model):
     # -------------------------------------------------------------------------
     # WEB SERVICE CALLS
     # -------------------------------------------------------------------------
+
+    def l10n_es_tbai_resend_bill(self):
+        self.ensure_one()
+        self.l10n_es_tbai_post_document_id = False
+        if error := self.with_context(batuz_correction=True)._l10n_es_tbai_post():
+            error = error + "\n\n" + _("Be careful if you modified this vendor bill, "
+                                       "because the official version is still the previous one sent. ")
+            raise UserError(error)  # This way, we rollback when rejected and the old accepted document is kept
 
     def l10n_es_tbai_send_bill(self):
         for bill in self:
@@ -285,9 +293,14 @@ class AccountMove(models.Model):
         base_lines = [self._prepare_product_base_line_for_taxes_computation(x) for x in base_amls]
         for base_line in base_lines:
             base_line['name'] = base_line['record'].name
-        tax_amls = self.line_ids.filtered(lambda x: x.display_type == 'tax')
+        tax_amls = self.line_ids.filtered('tax_repartition_line_id')
         tax_lines = [self._prepare_tax_line_for_taxes_computation(x) for x in tax_amls]
         self.env['l10n_es_edi_tbai.document']._add_base_lines_tax_amounts(base_lines, self.company_id, tax_lines=tax_lines)
+        for base_line in base_lines:
+            sign = base_line['is_refund'] and -1 or 1
+            base_line['gross_price_unit'] = sign * base_line['gross_price_unit']
+            base_line['discount_amount'] = sign * base_line['discount_amount']
+            base_line['price_total'] = sign * base_line['price_total']
         taxes = self.invoice_line_ids.tax_ids.flatten_taxes_hierarchy()
         is_oss = any(tax._l10n_es_get_regime_code() == '17' for tax in taxes)
 
@@ -315,7 +328,6 @@ class AccountMove(models.Model):
             'ref': self.ref,
             'is_refund': self.move_type == 'in_refund',
             'invoice_date': self.invoice_date,
-            'tipofactura': 'F5' if self._l10n_es_is_dua() else 'F1',
              **self._l10n_es_tbai_get_vendor_bill_tax_values(),
         }
         # Check if intracom
@@ -323,12 +335,23 @@ class AccountMove(models.Model):
         mod_303_11 = self.env.ref('l10n_es.mod_303_casilla_11_balance')._get_matching_tags()
         tax_tags = self.invoice_line_ids.tax_ids.flatten_taxes_hierarchy().repartition_line_ids.tag_ids
         intracom = bool(tax_tags & (mod_303_10 + mod_303_11))
-        values['regime_key'] = ['09'] if intracom else ['01']
+        reagyp = self.invoice_line_ids.tax_ids.filtered(lambda t: t.l10n_es_type == 'sujeto_agricultura')
+        if intracom:
+            values['regime_key'] = ['09']
+        elif reagyp:
+            values['regime_key'] = ['19']
+        else:
+            values['regime_key'] = ['01']
         # Credit notes (factura rectificativa)
         if values['is_refund']:
             values['refund_reason'] = self.l10n_es_tbai_refund_reason
             values['credit_note_invoices'] = self.reversed_entry_id | self.l10n_es_tbai_reversed_ids
-
+        if reagyp:
+            values['tipofactura'] = 'F6'
+        elif self._l10n_es_is_dua():
+            values['tipofactura'] = 'F5'
+        else:
+            values['tipofactura'] = 'F1'
         return values
 
     def _l10n_es_tbai_get_vendor_bill_tax_values(self):

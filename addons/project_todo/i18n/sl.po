@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Wil Odoo, 2024
+# Aleš Pipan, 2025
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-09-25 08:39+0000\n"
 "PO-Revision-Date: 2024-09-25 09:41+0000\n"
-"Last-Translator: Wil Odoo, 2024\n"
+"Last-Translator: Aleš Pipan, 2025\n"
 "Language-Team: Slovenian (https://app.transifex.com/odoo/teams/41243/sl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,6 +35,10 @@ msgid ""
 "                    (/<span style=\"font-style: italic;\">checklist</span>)\n"
 "                </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"                    Dodaj kontrolni seznam\n"
+"                    (/<span style=\"font-style: italic;\">kontrolni seznam</span>)\n"
+"                </span>"
 
 #. module: project_todo
 #: model_terms:ir.ui.view,arch_db:project_todo.todo_user_onboarding
@@ -43,6 +48,10 @@ msgid ""
 "                    (/<span style=\"font-style: italic;\">separator</span>)\n"
 "                </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"                    Dodaj ločilo\n"
+"                    (/<span style=\"font-style: italic;\">ločilo</span>)\n"
+"                </span>"
 
 #. module: project_todo
 #: model_terms:ir.ui.view,arch_db:project_todo.todo_user_onboarding
@@ -53,6 +62,11 @@ msgid ""
 "                    to convert a text into a title\n"
 "                </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"                    Uporabite\n"
+"                    /<span style=\"font-style: italic;\">naslov</span>\n"
+"                    za pretvorbo besedila v naslov\n"
+"                </span>"
 
 #. module: project_todo
 #: model_terms:ir.ui.view,arch_db:project_todo.todo_user_onboarding
@@ -176,6 +190,8 @@ msgstr ""
 msgid ""
 "<span style=\"font-size: 14px;\">Press Ctrl+Z/⌘+Z to undo any change</span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">Pritisnite Ctrl+Z/⌘+Z, da razveljavite "
+"katero koli spremembo</span>"
 
 #. module: project_todo
 #: model_terms:ir.ui.view,arch_db:project_todo.todo_user_onboarding
@@ -333,7 +349,7 @@ msgstr "Združi po"
 #. module: project_todo
 #: model_terms:ir.ui.view,arch_db:project_todo.todo_user_onboarding
 msgid "Hey"
-msgstr ""
+msgstr "Hej"
 
 #. module: project_todo
 #: model:ir.model.fields,field_description:project_todo.field_mail_activity_todo_create__id
@@ -440,7 +456,7 @@ msgstr "Opravilo"
 #. odoo-python
 #: code:addons/project_todo/models/res_users.py:0
 msgid "To-Do"
-msgstr ""
+msgstr "Opravilo"
 
 #. module: project_todo
 #: model:ir.ui.menu,name:project_todo.menu_todo_todos

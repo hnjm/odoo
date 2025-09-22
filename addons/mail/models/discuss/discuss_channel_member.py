@@ -233,7 +233,7 @@ class ChannelMember(models.Model):
             :param is_typing: (boolean) tells whether the members are typing or not
         """
         for member in self:
-            member.channel_id._bus_send_store(Store(member).add(member, {"isTyping": is_typing}))
+            member.channel_id._bus_send_store(Store(member).add(member, {"isTyping": is_typing, "is_typing_dt": fields.Datetime.now()}))
 
     def _notify_mute(self):
         for member in self:
@@ -501,16 +501,15 @@ class ChannelMember(models.Model):
             last seen message.
         """
         self.ensure_one()
-        if self.seen_message_id.id >= message.id:
-            return
-        self.fetched_message_id = max(self.fetched_message_id.id, message.id)
-        self.seen_message_id = message.id
-        self.last_seen_dt = fields.Datetime.now()
+        target = self
+        if self.seen_message_id.id < message.id:
+            self.fetched_message_id = max(self.fetched_message_id.id, message.id)
+            self.seen_message_id = message.id
+            self.last_seen_dt = fields.Datetime.now()
+            if self.channel_id.channel_type in self.channel_id._types_allowing_seen_infos():
+                target = self.channel_id
         if not notify:
             return
-        target = self
-        if self.channel_id.channel_type in self.channel_id._types_allowing_seen_infos():
-            target = self.channel_id
         target._bus_send_store(
             self, fields={"channel": [], "persona": ["name"], "seen_message_id": True}
         )
@@ -524,9 +523,8 @@ class ChannelMember(models.Model):
 
         """
         self.ensure_one()
-        if message_id == self.new_message_separator:
-            return
-        self.new_message_separator = message_id
+        if message_id != self.new_message_separator:
+            self.new_message_separator = message_id
         self._bus_send_store(
             Store(
                 self,

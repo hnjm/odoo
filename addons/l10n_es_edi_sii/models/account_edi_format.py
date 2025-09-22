@@ -5,7 +5,6 @@ from collections import defaultdict
 import requests
 
 from odoo import _, fields, models
-from odoo.exceptions import UserError
 from odoo.tools import html_escape, zeep
 from odoo.tools.float_utils import float_round
 
@@ -201,29 +200,7 @@ class AccountEdiFormat(models.Model):
         }
 
     def _l10n_es_edi_get_partner_info(self, partner):
-        eu_country_codes = set(self.env.ref('base.europe').country_ids.mapped('code'))
-
-        partner_info = {}
-        IDOtro_ID = partner.vat or 'NO_DISPONIBLE'
-
-        if (not partner.country_id or partner.country_id.code == 'ES') and partner.vat:
-            # ES partner with VAT.
-            partner_info['NIF'] = partner.vat[2:] if partner.vat.startswith('ES') else partner.vat
-            if self.env.context.get('error_1117'):
-                partner_info['IDOtro'] = {'IDType': '07', 'ID': IDOtro_ID}
-
-        elif partner.country_id.code in eu_country_codes and partner.vat:
-            # European partner.
-            partner_info['IDOtro'] = {'IDType': '02', 'ID': IDOtro_ID}
-        else:
-            partner_info['IDOtro'] = {'ID': IDOtro_ID}
-            if partner.vat:
-                partner_info['IDOtro']['IDType'] = '04'
-            else:
-                partner_info['IDOtro']['IDType'] = '06'
-            if partner.country_id:
-                partner_info['IDOtro']['CodigoPais'] = partner.country_id.code
-        return partner_info
+        return partner._l10n_es_edi_get_partner_info()
 
     def _l10n_es_edi_get_invoices_info(self, invoices):
         eu_country_codes = set(self.env.ref('base.europe').country_ids.mapped('code'))
@@ -348,11 +325,6 @@ class AccountEdiFormat(models.Model):
                         invoice_node.setdefault('TipoDesglose', {})
                         invoice_node['TipoDesglose'].setdefault('DesgloseTipoOperacion', {})
                         invoice_node['TipoDesglose']['DesgloseTipoOperacion']['Entrega'] = tax_details_info_consu_vals['tax_details_info']
-                    if not invoice_node.get('TipoDesglose'):
-                        raise UserError(_(
-                            "In case of a foreign customer, you need to configure the tax scope on taxes:\n%s",
-                            "\n".join(invoice.line_ids.tax_ids.mapped('name'))
-                        ))
 
                     invoice_node['ImporteTotal'] = float_round(sign * (
                         tax_details_info_service_vals['tax_details']['base_amount']
@@ -626,8 +598,10 @@ class AccountEdiFormat(models.Model):
 
         if not move.company_id.vat:
             res.append(_("VAT number is missing on company %s", move.company_id.display_name))
+        total_taxes = self.env['account.tax']
         for line in move.invoice_line_ids.filtered(lambda line: line.display_type not in ('line_note', 'line_section')):
             taxes = line.tax_ids.flatten_taxes_hierarchy()
+            total_taxes |= taxes
             recargo_count = taxes.mapped('l10n_es_type').count('recargo')
             retention_count = taxes.mapped('l10n_es_type').count('retencion')
             sujeto_count = taxes.mapped('l10n_es_type').count('sujeto')
@@ -645,6 +619,11 @@ class AccountEdiFormat(models.Model):
                 res.append(_("Line %s should only have one no sujeto (localizations) tax.", line.display_name))
             if sujeto_count + no_sujeto_loc_count + no_sujeto_count > 1:
                 res.append(_("Line %s should only have one main tax.", line.display_name))
+        if move.is_inbound() and move.commercial_partner_id._l10n_es_is_foreign() and not any(t.tax_scope for t in total_taxes):
+            res.append(
+                _("In case of a foreign customer, you need to configure the tax scope on taxes:\n%s",
+                  "\n".join(total_taxes.mapped('name')))
+            )
         if move.move_type in ('in_invoice', 'in_refund'):
             if not move.ref:
                 res.append(_("You should put a vendor reference on this vendor bill. "))

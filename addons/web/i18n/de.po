@@ -1020,7 +1020,7 @@ msgstr "Alle Benutzer"
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/domain/domain_field.js:0
 msgid "Allow expressions"
-msgstr ""
+msgstr "Ausdrücke erlauben"
 
 #. module: web
 #. odoo-javascript
@@ -5511,7 +5511,7 @@ msgstr "Himbeerrot"
 #: code:addons/web/static/src/views/fields/field_tooltip.xml:0
 #: code:addons/web/static/src/views/view_button/view_button.xml:0
 msgid "Readonly:"
-msgstr "Nur Lesen:"
+msgstr "Schreibgeschützt:"
 
 #. module: web
 #. odoo-javascript
@@ -6137,7 +6137,7 @@ msgstr "Zeitzone für Ihren Benutzer einstellen"
 #: code:addons/web/static/src/views/fields/many2many_tags/many2many_tags_field.js:0
 msgid "Set an integer field to use colors with the tags."
 msgstr ""
-"Legen Sie ein Gnazzahlenfeld fest, um Farben mit den Stichworten zu "
+"Legen Sie ein Ganzzahlenfeld fest, um Farben mit den Stichworten zu "
 "verwenden."
 
 #. module: web
@@ -8709,7 +8709,7 @@ msgstr "Badeanzug"
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "bathroom"
-msgstr "Badzimmer"
+msgstr "Badezimmer"
 
 #. module: web
 #. odoo-javascript

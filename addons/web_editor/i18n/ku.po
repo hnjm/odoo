@@ -1,22 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* web_editor
-# 
+#
 # Translators:
 # Raz Omer Hussein, 2025
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-14 20:48+0000\n"
+"POT-Creation-Date: 2025-08-29 18:38+0000\n"
 "PO-Revision-Date: 2024-09-25 09:42+0000\n"
 "Last-Translator: Raz Omer Hussein, 2025\n"
 "Language-Team: Kurdish (https://app.transifex.com/odoo/teams/41243/ku/)\n"
+"Language: ku\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: ku\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: web_editor
@@ -703,7 +703,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_color_widget
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
 msgid "Color"
-msgstr ""
+msgstr "ڕەنگ"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
@@ -913,7 +913,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 msgid "Delete"
-msgstr ""
+msgstr "سڕینەوە"
 
 #. module: web_editor
 #. odoo-javascript
@@ -998,7 +998,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web_editor/static/src/components/media_dialog/media_dialog.js:0
 msgid "Documents"
-msgstr ""
+msgstr "بەڵگەنامەکان"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1097,7 +1097,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web_editor/static/src/components/media_dialog/image_selector.js:0
 msgid "Error"
-msgstr ""
+msgstr "هەڵە"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.colorpicker
@@ -1981,7 +1981,7 @@ msgstr "هیچکامیان"
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
 msgid "Normal"
-msgstr ""
+msgstr "ئاسایی"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2784,7 +2784,8 @@ msgstr ""
 #: code:addons/web_editor/static/src/js/wysiwyg/conflict_dialog.xml:0
 msgid ""
 "The version from the database will be used.\n"
-"                            If you need to keep your changes, copy the content below and edit the new document."
+"                            If you need to keep your changes, copy the "
+"content below and edit the new document."
 msgstr ""
 
 #. module: web_editor
@@ -3003,7 +3004,7 @@ msgstr ""
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.colorpicker
 msgid "Type"
-msgstr ""
+msgstr "جۆر"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3084,7 +3085,7 @@ msgstr ""
 #. module: web_editor
 #: model:ir.model,name:web_editor.model_ir_ui_view
 msgid "View"
-msgstr ""
+msgstr "بینین"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3118,6 +3119,12 @@ msgstr ""
 #. module: web_editor
 #: model:ir.model,name:web_editor.model_web_editor_converter_test
 msgid "Web Editor Converter Test"
+msgstr ""
+
+#. module: web_editor
+#. odoo-javascript
+#: code:addons/web_editor/static/src/js/editor/snippets.options.js:0
+msgid "WebP compression not supported on this browser"
 msgstr ""
 
 #. module: web_editor
@@ -3304,7 +3311,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 msgid "to"
-msgstr ""
+msgstr "بۆ"
 
 #. module: web_editor
 #. odoo-javascript

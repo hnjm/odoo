@@ -91,12 +91,14 @@ will update the cost of every lot/serial number in stock."),
         res = super(ProductTemplate, self).write(vals)
 
         for product_template, (products, description, products_orig_quantity_svl) in impacted_templates.items():
-            # Replenish the stock with the new cost method.
-            in_svl_vals_list = products._svl_replenish_stock(description, products_orig_quantity_svl)
-            in_stock_valuation_layers = SVL.create(in_svl_vals_list)
-            if product_template.valuation == 'real_time':
-                move_vals_list += Product._svl_replenish_stock_am(in_stock_valuation_layers)
-            products._update_lots_standard_price()
+            products = products.exists()
+            if products:
+                # Replenish the stock with the new cost method.
+                in_svl_vals_list = products._svl_replenish_stock(description, products_orig_quantity_svl)
+                in_stock_valuation_layers = SVL.create(in_svl_vals_list)
+                if product_template.valuation == 'real_time':
+                    move_vals_list += Product._svl_replenish_stock_am(in_stock_valuation_layers)
+                products._update_lots_standard_price()
 
         # Check access right
         if move_vals_list and not self.env['stock.valuation.layer'].has_access('read'):
@@ -189,7 +191,9 @@ will update the cost of every lot/serial number in stock."),
         for product in self:
             value_sum, quantity_sum = group_mapping.get(product._origin, (0, 0))
             value_svl = company_id.currency_id.round(value_sum)
-            avg_cost = value_svl / quantity_sum if quantity_sum else 0
+            avg_cost = 0
+            if not float_is_zero(quantity_sum, precision_rounding=product.uom_id.rounding):
+                avg_cost = value_svl / quantity_sum
             product.value_svl = value_svl
             product.quantity_svl = quantity_sum
             product.avg_cost = avg_cost
@@ -336,7 +340,7 @@ will update the cost of every lot/serial number in stock."),
 
     def _get_fifo_candidates(self, company, lot=False):
         candidates_domain = self._get_fifo_candidates_domain(company, lot=lot)
-        return self.env["stock.valuation.layer"].sudo().search(candidates_domain).sorted(lambda svl: svl._candidate_sort_key())
+        return self.env["stock.valuation.layer"].sudo().search(candidates_domain)
 
     def _get_qty_taken_on_candidate(self, qty_to_take_on_candidates, candidate):
         return min(qty_to_take_on_candidates, candidate.remaining_qty)
@@ -444,7 +448,7 @@ will update the cost of every lot/serial number in stock."),
         new_svl_vals_manual = []
         real_time_svls_to_vacuum = ValuationLayer
 
-        for product in self:
+        for product in self.with_company(company.id):
             all_candidates = all_candidates_by_product[product.id]
             current_real_time_svls = ValuationLayer
             for svl_to_vacuum in svls_to_vacuum_by_product[product.id]:
@@ -667,6 +671,14 @@ will update the cost of every lot/serial number in stock."),
 
         # empty out the stock for the impacted products
         empty_stock_svl_list = []
+        lots_by_product = defaultdict(lambda: self.env['stock.lot'])
+        res = self.env["stock.valuation.layer"]._read_group(
+            [("product_id", "in", impacted_products.ids), ("remaining_qty", "!=", 0)],
+            ["product_id"],
+            ["lot_id:recordset"],
+        )
+        for group in res:
+            lots_by_product[group[0].id] |= group[1]
         for product in impacted_products:
             # FIXME sle: why not use products_orig_quantity_svl here?
             if float_is_zero(product.quantity_svl, precision_rounding=product.uom_id.rounding):
@@ -674,13 +686,13 @@ will update the cost of every lot/serial number in stock."),
                 continue
             if product.lot_valuated:
                 if float_compare(product.quantity_svl, 0, precision_rounding=product.uom_id.rounding) > 0:
-                    for lot in product.stock_valuation_layer_ids.filtered(lambda l: l.remaining_qty).lot_id:
+                    for lot in lots_by_product[product.id]:
                         svsl_vals = product._prepare_out_svl_vals(lot.quantity_svl, self.env.company, lot=lot)
                         svsl_vals['description'] = description + svsl_vals.pop('rounding_adjustment', '')
                         svsl_vals['company_id'] = self.env.company.id
                         empty_stock_svl_list.append(svsl_vals)
                 else:
-                    for lot in product.stock_valuation_layer_ids.filtered(lambda l: l.remaining_qty).lot_id:
+                    for lot in lots_by_product[product.id]:
                         svsl_vals = product._prepare_in_svl_vals(abs(lot.quantity_svl), lot.value_svl / lot.quantity_svl, lot=lot)
                         svsl_vals['description'] = description + svsl_vals.pop('rounding_adjustment', '')
                         svsl_vals['company_id'] = self.env.company.id
@@ -878,10 +890,12 @@ will update the cost of every lot/serial number in stock."),
         if not qty_to_invoice:
             return 0
 
-        candidates = stock_moves\
-            .sudo()\
-            .filtered(lambda m: is_returned == bool(m.origin_returned_move_id and sum(m.stock_valuation_layer_ids.mapped('quantity')) >= 0))\
-            .mapped('stock_valuation_layer_ids')
+        candidates = self.env['stock.valuation.layer'].sudo()
+        for move in stock_moves.sudo():
+            move_candidates = move._get_layer_candidates()
+            if is_returned != bool(move.origin_returned_move_id and sum(move_candidates.mapped('quantity')) >= 0):
+                continue
+            candidates |= move_candidates
 
         if self.env.context.get('candidates_prefetch_ids'):
             candidates = candidates.with_prefetch(self.env.context.get('candidates_prefetch_ids'))

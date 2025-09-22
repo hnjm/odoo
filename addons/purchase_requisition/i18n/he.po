@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* purchase_requisition
-# 
+# * purchase_requisition
+#
 # Translators:
 # Fishfur A Banter <fishfurbanter@gmail.com>, 2024
 # Hed Shefer <hed@laylinetech.com>, 2024
@@ -22,20 +22,23 @@
 # דודי מלכה <Dudimalka6@gmail.com>, 2024
 # ZVI BLONDER <ZVIBLONDER@gmail.com>, 2024
 # or balmas, 2025
-# 
+# Yoram Lavi, 2025
+# or balmas <or@laylinetech.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-09-26 08:56+0000\n"
-"PO-Revision-Date: 2024-09-25 09:41+0000\n"
-"Last-Translator: or balmas, 2025\n"
-"Language-Team: Hebrew (https://app.transifex.com/odoo/teams/41243/he/)\n"
+"PO-Revision-Date: 2025-09-18 17:22+0000\n"
+"Last-Translator: or balmas <or@laylinetech.com>\n"
+"Language-Team: Hebrew <https://translate.odoo.com/projects/odoo-18/"
+"purchase_requisition/he/>\n"
+"Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: he\n"
-"Plural-Forms: nplurals=3; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: 2;\n"
+"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 2) ? 1 : 2);\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.report_purchaserequisition_document
@@ -45,22 +48,22 @@ msgstr "$50"
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.report_purchaserequisition_document
 msgid "$500"
-msgstr ""
+msgstr "$500"
 
 #. module: purchase_requisition
 #: model:ir.actions.report,print_report_name:purchase_requisition.action_report_purchase_requisitions
 msgid "'Purchase Agreement - %s' % (object.name)"
-msgstr ""
+msgstr "'הסכם רכש - %s' % (object.name)"
 
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.report_purchaserequisition_document
 msgid "02/16/2024"
-msgstr ""
+msgstr "02/16/2024"
 
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.report_purchaserequisition_document
 msgid "12/25/2024"
-msgstr ""
+msgstr "12/25/2024"
 
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.report_purchaserequisition_document
@@ -70,17 +73,17 @@ msgstr "15/09/2023"
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.view_purchase_requisition_form
 msgid "<span><strong>From</strong></span>"
-msgstr ""
+msgstr "<span><strong> מ-</strong></span>"
 
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.view_purchase_requisition_form
 msgid "<span><strong>to</strong></span>"
-msgstr ""
+msgstr "<span><strong> עד</strong></span>"
 
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.report_purchaserequisition_document
 msgid "<strong>Contact:</strong><br/>"
-msgstr ""
+msgstr "<strong>איש קשר:</strong><br/>"
 
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.report_purchaserequisition_document
@@ -133,12 +136,12 @@ msgstr "סוג הסכם"
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.view_purchase_requisition_form
 msgid "Agreement Validity"
-msgstr ""
+msgstr "תוקף ההסכם"
 
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.report_purchaserequisition_document
 msgid "Agreement Validity:"
-msgstr ""
+msgstr "תוקף ההסכם"
 
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_order__alternative_po_ids
@@ -154,7 +157,7 @@ msgstr "הזמנת רכש אלטרנטיבית"
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.purchase_requisition_alternative_warning_form
 msgid "Alternative Warning"
-msgstr ""
+msgstr "אזהרת חלופה "
 
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.purchase_order_form_inherit
@@ -164,7 +167,7 @@ msgstr "אלטרנטיבות"
 #. module: purchase_requisition
 #: model_terms:ir.actions.act_window,help:purchase_requisition.action_purchase_requisition
 msgid "An example of a purchase agreement is a blanket order."
-msgstr ""
+msgstr "הסכם מסגרת הוא דוגמה להסכם רכש "
 
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition_line__analytic_distribution
@@ -190,7 +193,7 @@ msgstr "כמות קבצים מצורפים"
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.report_purchaserequisition_document
 msgid "BO00004"
-msgstr ""
+msgstr "BO00004"
 
 #. module: purchase_requisition
 #: model:ir.model.fields.selection,name:purchase_requisition.selection__purchase_requisition__requisition_type__blanket_order
@@ -253,7 +256,7 @@ msgstr "נקה"
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.purchase_order_line_compare_tree
 msgid "Clear Selected"
-msgstr ""
+msgstr "נקה בחירה"
 
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.view_purchase_requisition_form
@@ -284,7 +287,7 @@ msgstr "מטבע החברה"
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_order_line__price_total_cc
 msgid "Company Subtotal"
-msgstr ""
+msgstr "סכום ביניים לחברה "
 
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.purchase_order_line_compare_tree
@@ -295,7 +298,7 @@ msgstr "סה\"כ לחברה"
 #. odoo-python
 #: code:addons/purchase_requisition/models/purchase.py:0
 msgid "Compare Order Lines"
-msgstr ""
+msgstr "השוואת שורות הזמנה"
 
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.purchase_order_form_inherit
@@ -329,7 +332,7 @@ msgstr ""
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition_create_alternative__copy_products
 msgid "Copy Products"
-msgstr ""
+msgstr "העתק מוצרים"
 
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.purchase_order_form_inherit
@@ -375,7 +378,7 @@ msgstr "נוצר ב-"
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition_create_alternative__creation_blocked
 msgid "Creation Blocked"
-msgstr ""
+msgstr "היצירה נחסמה"
 
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition__currency_id
@@ -390,7 +393,7 @@ msgstr "תאריך"
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.report_purchaserequisition_document
 msgid "Demo Reference"
-msgstr ""
+msgstr "אסמכתא לדמו"
 
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition__description
@@ -440,11 +443,12 @@ msgid ""
 "End date cannot be earlier than start date. Please check dates for "
 "agreements: %s"
 msgstr ""
+"תאריך סיום לא לא יכול להיות מקדם מתאריך התחלה. בדוק את התאריכים בהסכם: %s"
 
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.report_purchaserequisition_document
 msgid "Expected on"
-msgstr ""
+msgstr "צפוי ב-"
 
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition__message_follower_ids
@@ -468,6 +472,9 @@ msgid ""
 "            (e.g. a year) and you order products within this agreement to benefit\n"
 "            from the negotiated prices."
 msgstr ""
+"בהזמנת מסגרת (Blanket Order), ניתן לתעד הסכם עם הספק לתקופה מסוימת מראש \n"
+"           (לדוגמה, שנה) מזמינים מוצרים במסגרת הסכם זה בתנאים שסוכמו מראש לאורך כל תקופת ההסכם \n"
+"            על פי המחירים במשא ומתן."
 
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.view_purchase_requisition_filter
@@ -529,12 +536,16 @@ msgid ""
 " normally these fields are cleared w/warning message within form view, but "
 "we cannot recreate that in this case."
 msgstr ""
+"אם הספק שנבחר או אם לאחד מהמוצרים בהזמנת הרכש המקורית יש אזהרת חסימה, אנו "
+"מונעים את יצירת הזמנת הרכש החלופית. זאת משום שבדרך כלל שדות אלו מתנקים clear"
+" with warningומוצגת הודעת אזהרה במסך הטופס, אך במקרה זה אין לנו אפשרות לשחזר"
+" את ההתנהגות הזו."
 
 #. module: purchase_requisition
 #: model:ir.model.fields,help:purchase_requisition.field_purchase_requisition_create_alternative__copy_products
 msgid ""
 "If this is checked, the product quantities of the original PO will be copied"
-msgstr ""
+msgstr "אם אפשרות זו מסומנת, כמויות המוצרים מהזמנת הרכש המקורית יועתקו."
 
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition__message_is_follower
@@ -572,7 +583,7 @@ msgstr "פעילויות באיחור"
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.res_config_settings_view_form_purchase_requisition
 msgid "Link RFQs together and compare them"
-msgstr ""
+msgstr "קישור בין בקשות הצעת מחיר (RFQs) והשוואתן."
 
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.purchase_order_form_inherit
@@ -582,7 +593,7 @@ msgstr "קישור לבקשה להצעת מחיר קיימת"
 #. module: purchase_requisition
 #: model:res.groups,name:purchase_requisition.group_purchase_alternatives
 msgid "Manage Purchase Alternatives"
-msgstr ""
+msgstr "נהל רכש חלופי"
 
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition__message_has_error
@@ -597,7 +608,7 @@ msgstr "הודעות"
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.report_purchaserequisition_document
 msgid "Mitchell Admin"
-msgstr ""
+msgstr "Mitchell Admin"
 
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition__my_activity_date_deadline
@@ -654,7 +665,7 @@ msgstr "סוג הפעילות הבאה"
 #. odoo-python
 #: code:addons/purchase_requisition/models/purchase.py:0
 msgid "Nothing to clear"
-msgstr ""
+msgstr "אין מה לספק"
 
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition__message_needaction_counter
@@ -705,17 +716,17 @@ msgstr "הזמנות"
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition_create_alternative__origin_po_id
 msgid "Origin Po"
-msgstr ""
+msgstr "PO מקורי "
 
 #. module: purchase_requisition
 #: model:ir.model.fields,help:purchase_requisition.field_purchase_order__alternative_po_ids
 msgid "Other potential purchase orders for purchasing products"
-msgstr ""
+msgstr "הזמנות רכש נוספות שעשויות להיות רלוונטיות לרכישת מוצרים"
 
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition_alternative_warning__po_ids
 msgid "POs to Confirm"
-msgstr ""
+msgstr "הזמנת רכש לאישור"
 
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition__product_id
@@ -753,7 +764,7 @@ msgstr "הסכם רכש"
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.report_purchaserequisition_document
 msgid "Purchase Agreement:"
-msgstr ""
+msgstr "הסכם רכש"
 
 #. module: purchase_requisition
 #: model:ir.actions.act_window,name:purchase_requisition.action_purchase_requisition
@@ -767,7 +778,7 @@ msgstr "הסכמי רכש"
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_res_config_settings__group_purchase_alternatives
 msgid "Purchase Alternatives"
-msgstr ""
+msgstr "רכש חלופי "
 
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_order__purchase_group_id
@@ -802,7 +813,7 @@ msgstr "הזמנות רכש עם דרישה"
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.report_purchaserequisition_document
 msgid "Purchase Reference"
-msgstr ""
+msgstr "מספר הזמנת רכש"
 
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition__user_id
@@ -824,12 +835,12 @@ msgstr "שורת דרישת רכש"
 #. module: purchase_requisition
 #: model:ir.model.fields.selection,name:purchase_requisition.selection__purchase_requisition__requisition_type__purchase_template
 msgid "Purchase Template"
-msgstr ""
+msgstr "תבנית רכש"
 
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.view_purchase_requisition_filter
 msgid "Purchase Templates"
-msgstr ""
+msgstr "תבנית רכש"
 
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition_line__product_qty
@@ -906,14 +917,14 @@ msgstr "הצג את כל הרשומות שתאריך הפעולה הבא שלה�
 #. odoo-python
 #: code:addons/purchase_requisition/models/purchase.py:0
 msgid "Some not cleared"
-msgstr ""
+msgstr "חלק לא טופל"
 
 #. module: purchase_requisition
 #. odoo-python
 #: code:addons/purchase_requisition/models/purchase.py:0
 msgid ""
 "Some quantities were not cleared because their status is not a RFQ status."
-msgstr ""
+msgstr "חלק מהכמויות לא טופלו משום שהסטטוס שלהן אינו סטטוס של בקשת הצעת מחיר "
 
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition__date_start
@@ -959,6 +970,8 @@ msgstr "מחירון ספק"
 #: model:ir.model,name:purchase_requisition.model_purchase_order_group
 msgid "Technical model to group PO for call to tenders"
 msgstr ""
+"מודל טכני שמאפשר קיבוץ של דרישות רכש או שורות הזמנה מרובות תחת קול קורא אחד."
+" "
 
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.view_purchase_requisition_form
@@ -968,7 +981,7 @@ msgstr "תנאים והגבלות"
 #. module: purchase_requisition
 #: model:ir.model.fields,help:purchase_requisition.field_purchase_requisition_create_alternative__origin_po_id
 msgid "The original PO that this alternative PO is being created for."
-msgstr ""
+msgstr "הזמנת הרכש המקורית שעבורה נוצרת הזמנת הרכש החלופית הזו."
 
 #. module: purchase_requisition
 #. odoo-python
@@ -978,12 +991,14 @@ msgid ""
 " from the original order has a blocking warning on it and cannot be selected"
 " to create an alternative."
 msgstr ""
+"הספק שבחרת, או לפחות אחד מהמוצרים שאתה מנסה להעתיק מההזמנה המקורית, כולל "
+"אזהרה חוסמת – ולכן לא ניתן לבחור בו לצורך יצירת חלופה."
 
 #. module: purchase_requisition
 #. odoo-python
 #: code:addons/purchase_requisition/models/purchase.py:0
 msgid "There are no quantities to clear."
-msgstr ""
+msgstr "אין כמויות ברורות"
 
 #. module: purchase_requisition
 #. odoo-python
@@ -992,12 +1007,14 @@ msgid ""
 "There is already an open blanket order for this supplier. We suggest you "
 "complete this open blanket order, instead of creating a new one."
 msgstr ""
+"כבר קיימת הזמנת מסגרת פתוחה עבור ספק זה. אנו ממליצים להשלים את הזמנת המסגרת "
+"הפתוחה, במקום ליצור חדשה."
 
 #. module: purchase_requisition
 #. odoo-python
 #: code:addons/purchase_requisition/wizard/purchase_requisition_create_alternative.py:0
 msgid "This is a blocking warning!\n"
-msgstr ""
+msgstr "זוהי אזהרה חוסמת!\n"
 
 #. module: purchase_requisition
 #. odoo-python
@@ -1007,6 +1024,10 @@ msgid ""
 "\n"
 "Imagine the mess if someone confirms these duplicates: double the order, double the trouble :)"
 msgstr ""
+"כדי לסגור את דרישת הרכש הזו, יש לבטל את בקשות הצעות המחיר הקשורות איליה.\n"
+"\n"
+"דמיינו את הבלגן אם מישהו יאשר את הכפילויות האלה: הזמנה כפולה, צרות כפולות:)\n"
+" "
 
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.view_purchase_requisition_filter
@@ -1059,6 +1080,8 @@ msgid ""
 "Warning for %(partner)s:\n"
 "%(warning_message)s\n"
 msgstr ""
+"אזהרה עבור%(partner)s:\n"
+"%(warning_message)s\n"
 
 #. module: purchase_requisition
 #. odoo-python
@@ -1067,6 +1090,8 @@ msgid ""
 "Warning for %(product)s:\n"
 "%(warning_message)s\n"
 msgstr ""
+"אזהרה עבור%(product)s:\n"
+"%(warning_message)s\n"
 
 #. module: purchase_requisition
 #. odoo-python
@@ -1088,7 +1113,7 @@ msgstr "היסטורית התקשרויות מאתר האינטרנט"
 #. odoo-python
 #: code:addons/purchase_requisition/models/purchase.py:0
 msgid "What about the alternative Requests for Quotations?"
-msgstr ""
+msgstr "מה בהקשר לבקשה להצעת מחיר חלופית ?"
 
 #. module: purchase_requisition
 #: model:ir.model.fields,help:purchase_requisition.field_purchase_order__has_alternatives
@@ -1096,22 +1121,23 @@ msgid ""
 "Whether or not this purchase order is linked to another purchase order as an"
 " alternative."
 msgstr ""
+"האם הזמנת רכש זו מהווה חלופה להזמנת רכש אחרת, או שאינה מקושרת להזמנות אחרת"
 
 #. module: purchase_requisition
 #: model:ir.model,name:purchase_requisition.model_purchase_requisition_alternative_warning
 msgid "Wizard in case PO still has open alternative requests for quotation"
-msgstr ""
+msgstr "אשף במקרה של PO יש לו עדיין בקשות חלופיות פתוחות להצעת מחיר"
 
 #. module: purchase_requisition
 #: model:ir.model,name:purchase_requisition.model_purchase_requisition_create_alternative
 msgid "Wizard to preset values for alternative PO"
-msgstr ""
+msgstr "אשף לקביעת ערכים מראש עבור PO חלופי"
 
 #. module: purchase_requisition
 #. odoo-python
 #: code:addons/purchase_requisition/models/purchase_requisition.py:0
 msgid "You can only delete draft or cancelled requisitions."
-msgstr ""
+msgstr "אתה יכול למחוק דרישות רק בסטטוס טיוטה או מבוטלות "
 
 #. module: purchase_requisition
 #. odoo-python
@@ -1119,19 +1145,19 @@ msgstr ""
 msgid ""
 "You cannot change the Agreement Type or Company of a not draft purchase "
 "agreement."
-msgstr ""
+msgstr "אינך יכול לשנות את סוג הסכם הרכש של החברה כאשר הסכם הרכב אינו בטיוטה."
 
 #. module: purchase_requisition
 #. odoo-python
 #: code:addons/purchase_requisition/models/purchase_requisition.py:0
 msgid "You cannot confirm a blanket order with lines missing a price."
-msgstr ""
+msgstr "לא ניתן לאשר הזמנת מסגרת כאשר יש שורות שחסרות מחיר."
 
 #. module: purchase_requisition
 #. odoo-python
 #: code:addons/purchase_requisition/models/purchase_requisition.py:0
 msgid "You cannot confirm a blanket order with lines missing a quantity."
-msgstr ""
+msgstr "לא ניתן לאשר הזמנת מסגרת כאשר יש שורות שחסרות כמות."
 
 #. module: purchase_requisition
 #. odoo-python
@@ -1140,6 +1166,7 @@ msgid ""
 "You cannot confirm agreement '%(agreement)s' because it does not contain any"
 " product lines."
 msgstr ""
+"אינך יכול לאשר את ההסכם '%(agreement)s' משום שאינו מכיל שורות של מוצר."
 
 #. module: purchase_requisition
 #. odoo-python
@@ -1147,7 +1174,7 @@ msgstr ""
 msgid ""
 "You cannot have a negative or unit price of 0 for an already confirmed "
 "blanket order."
-msgstr ""
+msgstr "לא תוכל לקבל מחיר שלילי או מחיר ליחידה 0 עבור הזמנה מסגרת שכבר אושרה."
 
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.view_purchase_requisition_form

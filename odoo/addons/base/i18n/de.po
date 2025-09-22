@@ -2419,6 +2419,8 @@ msgid ""
 "\n"
 "Adds the support for services intrastat codes.\n"
 msgstr ""
+"\n"
+"Unterstützung für Intrastat-Codes für Dienstleistungen wurde hinzugefügt.\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_quality_mrp
@@ -6655,6 +6657,9 @@ msgid ""
 "Intrastat Reports for Services\n"
 "==============================\n"
 msgstr ""
+"\n"
+"Intrastat-Berichte für Dienstleistungen\n"
+"==============================\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_dk_intrastat
@@ -8342,7 +8347,7 @@ msgstr ""
 "\n"
 "Buchhaltungsmodul für Pakistan\n"
 "=======================================================\n"
-"Pakistan: Grundlegende Tabellen und Lokalisierung der Buchhaltung.\n"
+"Pakistan: Basispaket für Kontenplan und Lokalisierung.\n"
 "\n"
 "Aktiviert:\n"
 "\n"
@@ -11504,7 +11509,7 @@ msgstr ""
 "pain.008.001.02-Spezifikation), um sie zu Ihrer Bank zu senden, um\n"
 "eine Reihe von Zahlungen einzuziehen.\n"
 "\n"
-"Um für diese Zahlungsmethode in Frage zu kommen, muss der Kunde dem Unternehmen zuvor\n"
+"Um für diese Zahlungsmethode infrage zu kommen, muss der Kunde dem Unternehmen zuvor\n"
 "ein Mandat erteilt haben, in dem er sein Einverständnis zur Nutzung des Lastschriftverfahrens erklärt.\n"
 "Dieses Einverständnis muss in Odoo als „Kundenmandat“ codiert worden sein.\n"
 "\n"
@@ -12656,7 +12661,7 @@ msgstr ""
 "\n"
 "Buchhaltungsmodul für die Vereinigten Arabische Emirate\n"
 "=======================================================\n"
-"Vereinigte Arabische Emirate: Grundlegende Tabellen und Lokalisierung der Buchhaltung.\n"
+"Vereinigte Arabische Emirate: Basispaket für Kontenplan und Lokalisierung.\n"
 "\n"
 "Aktiviert:\n"
 "\n"
@@ -18821,7 +18826,7 @@ msgstr "Falsches Dateiformat: %s"
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_users__barcode
 msgid "Badge ID"
-msgstr "Ausweis ID"
+msgstr "Ausweis-ID"
 
 #. module: base
 #: model:res.country,name:base.bs
@@ -19191,7 +19196,7 @@ msgstr "Belgische Intrastat-Meldung"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_be_intrastat_services
 msgid "Belgian Intrastat Declaration (Services)"
-msgstr ""
+msgstr "Belgische Intrastat-Meldung (Dienstleistungen)"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_be_pos_restaurant
@@ -19539,7 +19544,7 @@ msgstr "Brasilien - Verkauf"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_br_sale_subscription
 msgid "Brazil - Sale Subscription"
-msgstr "Brasilien - Verkaufsabonnement"
+msgstr "Brasilien - Verkauf Abonnement"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_br_website_sale
@@ -22408,8 +22413,8 @@ msgstr "D - STROM-, GAS-, DAMPF- UND KLIMAANLAGENVERSORGUNG"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_delivery_dhl
-msgid "DHL Express Shipping"
-msgstr "DHL-Express-Versand"
+msgid "DHL Express Shipping (Legacy)"
+msgstr "DHL-Express-Versand (geerbt)"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_din5008
@@ -26282,7 +26287,7 @@ msgstr "Französische Intrastat-Meldung"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_fr_intrastat_services
 msgid "French Intrastat Declaration (Services)"
-msgstr ""
+msgstr "Französische Intrastat-Meldung (Dienstleistungen)"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_fr_hr_payroll
@@ -27914,7 +27919,7 @@ msgid ""
 "If set to true, the action will not be displayed on the right toolbar of a "
 "form view."
 msgstr ""
-"Wenn Wahr, dann wird die Aktion nicht in der rechten Werkzeugleiste einer "
+"Wenn Wahr, dann wird die Aktion nicht in der rechten Symbolleiste einer "
 "Formularansicht angezeigt."
 
 #. module: base
@@ -28932,7 +28937,7 @@ msgstr "Intrastat-Berichte"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_account_intrastat_services
 msgid "Intrastat Reports for Services"
-msgstr ""
+msgstr "Intrastat-Berichte für Dienstleistungen"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.report_irmodulereference
@@ -40124,8 +40129,14 @@ msgstr ""
 
 #. module: base
 #: model:ir.module.module,description:base.module_delivery_dhl
-msgid "Send your shippings through DHL and track them online"
-msgstr "Versenden Sie Ihre Lieferungen über DHL und verfolgen Sie sie online."
+msgid ""
+"This is the legacy integration with DHL Express that is no longer supported."
+" Please install the new \"DHL Express Shipping\" module and uninstall this "
+"one as soon as possible."
+msgstr ""
+"Dies ist die alte Integration mit DHL Express, die nicht mehr unterstützt "
+"wird. Bitte installieren Sie das neue Modul „DHL-Express-Versand“ und "
+"deinstallieren Sie dieses Modul so schnell wie möglich."
 
 #. module: base
 #: model:ir.module.module,description:base.module_delivery_fedex_rest
@@ -44354,10 +44365,10 @@ msgid ""
 "- 'Execute Existing Actions': define an action that triggers several other server actions\n"
 msgstr ""
 "Art der Serveraktion. Die folgenden Werte sind verfügbar:\n"
-"- „Einen Datensatz aktualieren“: Aktualisieren Sie die Werte eines Datensatzes.\n"
+"- „Einen Datensatz aktualisieren“: Aktualisieren Sie die Werte eines Datensatzes.\n"
 "- „Aktivität erstellen“: Erstellen Sie eine Aktivität (Dialog)\n"
 "- „E-Mail versenden“: Hinterlassen Sie eine Nachricht, oder Notiz oder senden Sie eine E-Mail (Dialog)\n"
-"- „SMS versenden“: Senden Sie eine SMS, protokollieren Sie diese in Dokumenten (SMS), log them on documents (SMS)\n"
+"- „SMS versenden“: Senden Sie eine SMS, protokollieren Sie diese in Dokumenten (SMS),\n"
 "- „Follower hinzufügen/entfernen“: Fügen Sie einem Datensatz Follower hinzu oder entfernen Sie sie (Dialog)\n"
 "- „Datensatz erstellen“: Erstellen Sie einen neuen Datensatz mit neuen Werten\n"
 "- „Code ausführen“: ein Block Python-Code, der ausgeführt wird\n"

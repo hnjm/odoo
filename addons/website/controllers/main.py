@@ -167,11 +167,12 @@ class Website(Home):
         """
         path = '/' + path
         mode_edit = bool(kw.pop('enable_editor', False))
+        mode_debug = kw.get('debug', 0)
         if kw:
             path += '?' + werkzeug.urls.url_encode(kw)
 
         if request.env.user._is_internal():
-            path = request.website.get_client_action_url(path, mode_edit)
+            path = request.website.get_client_action_url(path, mode_edit, mode_debug)
 
         return request.redirect(path)
 
@@ -228,7 +229,15 @@ class Website(Home):
         # Don't use `request.website.domain` here, the template is in charge of
         # detecting if the current URL is the domain one and add a `Disallow: /`
         # if it's not the case to prevent the crawler to continue.
-        return request.render('website.robots', {'url_root': request.httprequest.url_root}, mimetype='text/plain')
+        allowed_routes = self._get_allowed_robots_routes()
+        content = request.env['ir.ui.view']._render_template('website.robots',
+            {'url_root': request.httprequest.url_root})
+
+        if allowed_routes:
+            content += '\nUser-agent: *'
+            content += '\n' + '\n'.join(f"Allow: {route}" for route in allowed_routes)
+
+        return request.make_response(content, headers=[('Content-Type', 'text/plain')])
 
     @http.route('/sitemap.xml', type='http', auth="public", website=True, multilang=False, sitemap=False)
     def sitemap_xml_index(self, **kwargs):
@@ -797,7 +806,7 @@ class Website(Home):
             req.raise_for_status()
             response = req.content
         except OSError:
-            return []
+            return json.dumps([])
         xmlroot = ET.fromstring(response)
         return json.dumps([sugg[0].attrib['data'] for sugg in xmlroot if len(sugg) and sugg[0].attrib['data']])
 

@@ -1,26 +1,28 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* base
-# 
+# * base
+#
 # Translators:
 # Martin Trigaux, 2024
 # Ryoko Tsuda <ryoko@quartile.co>, 2024
 # Wil Odoo, 2025
 # Junko Augias, 2025
-# 
+# "Junko Augias (juau)" <juau@odoo.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-13 15:13+0000\n"
-"PO-Revision-Date: 2024-09-25 09:41+0000\n"
-"Last-Translator: Junko Augias, 2025\n"
-"Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
+"PO-Revision-Date: 2025-09-19 22:20+0000\n"
+"Last-Translator: \"Junko Augias (juau)\" <juau@odoo.com>\n"
+"Language-Team: Japanese <https://translate.odoo.com/projects/odoo-18/base/ja/"
+">\n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_at_reports
@@ -992,7 +994,7 @@ msgstr ""
 "\n"
 "- *アカウント > 設定 > 請求 > 仕訳*\n"
 "\n"
-"必要に応じて、新しいジャーナルを作成するか、**タイプ**の既存のジャーナルを選択します\n"
+"必要に応じて、新しい仕訳帳を作成するか、**タイプ**の既存の仕訳帳を選択します\n"
 "*“銀行”*に設定します。\n"
 "\n"
 "**詳細設定**で、ABAクレジット転送がチェックされていることを確認します。\n"
@@ -1018,7 +1020,7 @@ msgstr ""
 "\n"
 "-*会計構成支払い銀行口座*\n"
 "\n"
-"アカウントはジャーナル名としてリストに表示されます。\n"
+"アカウントは仕訳帳名としてリストに表示されます。\n"
 "\n"
 "編集すると**アカウント番号**が表示されます。 \n"
 "これはABAプロセスによって使用されるため、重要です。\n"
@@ -1054,7 +1056,7 @@ msgstr ""
 "\n"
 "**ベンダー**が有効なABA支払いアカウントを持つものであることを確認してください。\n"
 "\n"
-"ABA支払い用に設定されている正しい**支払いジャーナル**を選択します。\n"
+"ABA支払い用に設定されている正しい**支払い仕訳帳**を選択します。\n"
 "\n"
 "** ABA Credit Transfer **ラジオボタンを選択します。\n"
 "\n"
@@ -1111,7 +1113,7 @@ msgstr ""
 "\n"
 "会計アクセス権\n"
 "========================\n"
-"これはジャーナル項目と勘定科目一覧表など、すべてのアカウンティング機能への管理者ユーザのアクセスを提供します。\n"
+"これは仕訳帳項目と勘定科目一覧表など、すべてのアカウンティング機能への管理者ユーザのアクセスを提供します。\n"
 "\n"
 "ここで、デモ・ユーザーに会計アプリケーションのみユーザー権限の管理者に管理者とユーザーのアクセス権を割り当てます。\n"
 
@@ -2606,7 +2608,9 @@ msgid ""
 "Allow website visitors to chat with the collaborators. This module also brings a feedback tool for the livechat and web pages to display your channel with its ratings on the website.\n"
 msgstr ""
 "\n"
-"ウェブサイトの訪問者が共同編集者とチャットできるようにします。このモジュールは、WebチャットとWebページのフィードバックツールを提供して、ウェブサイトでの評価とともにチャネルを表示します。\n"
+"ウェブサイトの訪問者が共同編集者とチャットできるようにします。このモジュール"
+"は、ライブチャットとWebページのフィードバックツールを提供して、ウェブサイトで"
+"の評価とともにチャネルを表示します。\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_website_sale_mass_mailing
@@ -2737,7 +2741,7 @@ msgid ""
 msgstr ""
 "\n"
 "IoTボックスに接続されているデバイスをPOSで使用できるようにします。\n"
-"サポートされているデバイスには、決済端末、レシートプリンター、はかり、顧客画面などがあります。\n"
+"サポートされているデバイスには、決済端末、レシートプリンター、スケール、顧客画面などがあります。\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_us_1099
@@ -2777,7 +2781,7 @@ msgid ""
 "Allows using IoT devices, such as scales and printers, for delivery operations.\n"
 msgstr ""
 "\n"
-"はかりやプリンターなどのIoTデバイスを配信操作に使用できます。\n"
+"スケールやプリンターなどのIoTデバイスを配信操作に使用できます。\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_stock_delivery
@@ -3385,13 +3389,13 @@ msgid ""
 "When you reconcile, simply select the corresponding batch payment to reconcile all the payments in the batch.\n"
 msgstr ""
 "\n"
-"バッチ支払\n"
+"一括支払\n"
 "=======================================\n"
-"バッチ支払ではグループ支払いが可能です。\n"
+"一括支払ではグループ支払いが可能です。\n"
 "\n"
 "つまり、それだけに限定されませんが小切手については、銀行に一括して預け入れる前に、複数の小切手をまとめるために使われます。\n"
 "入金された合計金額は、銀行取引明細書に単一の取引として表示されます。\n"
-"消込時には、対応するバッチ支払いを選択するだけで、バッチ内のすべての支払いが消込されます。\n"
+"消込時には、対応する一括支払いを選択するだけで、バッチ内のすべての支払いが消込されます。\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_be_hr_payroll
@@ -4576,7 +4580,7 @@ msgstr ""
 "イタリアの会社でピッキングの送り状を印刷したい時、\n"
 "代わりにDDTが印刷されます。 これは配達伝票のようなものですが\n"
 "プロダクトの価値\n"
-"移動の理由、 運送会社などが含まれることで、DDTとなります。\n"
+"移動の理由、 配送業者などが含まれることで、DDTとなります。\n"
 "\n"
 "また、DDTには別のシーケンスを使用します。数にギャップがあってはならならない、そして商品が送付された時にのみ適用されるからです。\n"
 "\n"
@@ -4953,7 +4957,7 @@ msgid ""
 "=================\n"
 msgstr ""
 "\n"
-"EFTバッチ支払\n"
+"EFT一括支払\n"
 "=================\n"
 
 #. module: base
@@ -7663,7 +7667,7 @@ msgstr ""
 "会計履歴のインポートに便利なSAF-Tファイルのインポートモジュール。\n"
 "\n"
 "SAF-Tファイルは、いくつかの国の企業が税務当局に提出しなければならない標準的な会計報告書です。\n"
-"このモジュールでは、これらのファイルから勘定科目、ジャーナル、パートナー、税金、移動をインポートすることができます。\n"
+"このモジュールでは、これらのファイルから勘定科目、仕訳帳、パートナー、税金、移動をインポートすることができます。\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_se_sie4_import
@@ -8717,10 +8721,10 @@ msgid ""
 "For more information about RIBA standards, refer to the guidelines issued by the Italian Bankers Association (CBI).\n"
 msgstr ""
 "\n"
-"Ri.Ba. バッチ支払のエクスポート\n"
+"Ri.Ba. 一括支払のエクスポート\n"
 "================================\n"
 "\n"
-"このモジュールは、Odooのバッチ支払からRi.Ba.(Ricevute Bancarie)ファイルの生成が可能になります。 \n"
+"このモジュールは、Odooの一括支払からRi.Ba.(Ricevute Bancarie)ファイルの生成が可能になります。 \n"
 "債権管理に関するイタリアの銀行基準への準拠を促進します。\n"
 "\n"
 "- 複数の債権を1つのバッチにまとめて、管理と消込を効率化します。\n"
@@ -9312,7 +9316,7 @@ msgstr ""
 "QR請求書は以下の場合に生成されます:\n"
 "    - 請求書に記載された取引先が、スイスに完全な住所（番地、都市名、郵便番号、国名）を有している\n"
 "    - 請求書上でスイスQRコードを生成するオプションが選択されている（デフォルトで選択されている）\n"
-"    - 銀行ジャーナルに正しい口座番号/QR IBANが設定されている\n"
+"    - 銀行仕訳帳に正しい口座番号/QR IBANが設定されている\n"
 "    - (QR-IBAN使用時): 請求書の支払参照がQR参照である\n"
 "\n"
 "上記の条件を満たせば、QR請求書は自動的に作成されます。QR請求書は、印刷または郵送の際、請求書の後に付加されます。\n"
@@ -9509,10 +9513,10 @@ msgid ""
 "guide.\n"
 msgstr ""
 "\n"
-"AからBの間で商品を送った証明として配送ガイド (Complemento XML Carta de Porte)\n"
+"AからBの間で商品を送った証明として配送伝票 (Complemento XML Carta de Porte)\n"
 "が必要です。\n"
 "\n"
-"配送ガイドを作成できるのは、配送オーダが検証されて\n"
+"配送伝票を作成できるのは、配送オーダが検証されて\n"
 "からです。\n"
 
 #. module: base
@@ -9527,10 +9531,10 @@ msgid ""
 "guide.\n"
 msgstr ""
 "\n"
-"AからBの間で商品を送った証明として配送ガイド (Guía de Remisión) \n"
+"AからBの間で商品を送った証明として配送伝票 (Guía de Remisión) \n"
 "が必要です。\n"
 "\n"
-"配送ガイドを作成できるのは、配送オーダが検証されて\n"
+"配送伝票を作成できるのは、配送オーダが検証されて\n"
 "からです。\n"
 
 #. module: base
@@ -9549,14 +9553,15 @@ msgid ""
 "the SII.\n"
 msgstr ""
 "\n"
-"AからBの間で商品を送った証明として配送ガイド (guia de despacho) \n"
+"AからBの間で商品を送った証明として配送伝票 (guia de despacho) \n"
 "が必要です。\n"
 "\n"
-"それが取引先で設定可能なのは価格が配送ガイドで必要で\n"
+"それが取引先で設定可能なのは価格が配送伝票で必要で\n"
 "それが販売オーダまたはプロダクト自体に由来する\n"
 "必要がある場合です\n"
 "\n"
-"配送ガイドを作成できるのは、配送オーダが検証されてからです。その後、請求書と同じ流れで\n"
+"配送伝票を作成できるのは、配送オーダが検証されてからです。その後、"
+"請求書と同じ流れで\n"
 "SIIに送られます。\n"
 
 #. module: base
@@ -9817,7 +9822,7 @@ msgid ""
 "========================================================================\n"
 msgstr ""
 "\n"
-"これは、測定単位を管理するための基本モジュールです。\n"
+"これは、単位を管理するための基本モジュールです。\n"
 "========================================================================\n"
 
 #. module: base
@@ -11024,7 +11029,7 @@ msgid ""
 msgstr ""
 "\n"
 "モジュールを使用すると、事前に印刷された小切手用紙に支払いを印刷できます。\n"
-"会社の設定で出力(レイアウト、スタブ情報など)を構成し、ジャーナル設定で小切手の番号付け\n"
+"会社の設定で出力(レイアウト、スタブ情報など)を構成し、仕訳帳設定で小切手の番号付け\n"
 "(番号なしで事前に印刷された小切手を使用する場合)を管理できます。\n"
 "\n"
 "サポートされている形式\n"
@@ -11140,7 +11145,7 @@ msgid ""
 "if the product doesn't exists, inside barcode application.\n"
 msgstr ""
 "\n"
-"このモジュールでは、バーコードアプリケーション内にプロダクトが存在しない場合に、バーコードLookup APIキーを使用してバーコードからプロダクトを作成することができます。\n"
+"このモジュールでは、バーコードアプリケーション内にプロダクトが存在しない場合に、Barcode Lookup APIキーを使用してバーコードからプロダクトを作成することができます。\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_mrp_landed_costs
@@ -11305,7 +11310,7 @@ msgid ""
 msgstr ""
 "\n"
 "モジュールは、メーリングリストウィジェットを備えた新しいビルディングブロックをもたらし、ウェブサイトの任意のページにドロップします。\n"
-"訪問者はクリックするだけで、Eメールマーケティングアプリで管理されているメーリングリストに登録できます。\n"
+"訪問者はクリックするだけで、メールマーケティングアプリで管理されているメーリングリストに登録できます。\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_ar_pos
@@ -12156,7 +12161,7 @@ msgstr ""
 "\n"
 "このモジュールは、バッチピッキングとキャリアアプリケーション間のリンクを作成します。\n"
 "\n"
-"運送会社に応じてバッチを準備することができます。\n"
+"配送業者に応じてバッチを準備することができます。\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_approvals
@@ -13815,8 +13820,8 @@ msgid ""
 "                                <span colspan=\"2\">Month: %(month)s</span>\n"
 "                                <span colspan=\"2\">Day: %(day)s</span>"
 msgstr ""
-"<span colspan=\"2\">世紀表記ありの現在の年:%(year)s</span>\n"
-"<span colspan=\"2\">世紀表記なしの現在の年:%(y)s</span>\n"
+"<span colspan=\"2\">現在の年 (西暦4桁):%(year)s</span>\n"
+"<span colspan=\"2\">現在の年 (西暦2桁):%(y)s</span>\n"
 "<span colspan=\"2\">月:%(month)s</span>\n"
 "<span colspan=\"2\">日:%(day)s</span>"
 
@@ -13827,9 +13832,9 @@ msgid ""
 "                                <span colspan=\"2\">Week of the Year: %(woy)s</span>\n"
 "                                <span colspan=\"2\">Day of the Week (0:Monday): %(weekday)s</span>"
 msgstr ""
-"<span colspan=\"2\">年間通算日:%(doy)s</span>\n"
-"<span colspan=\"2\">週:%(woy)s</span>\n"
-"<span colspan=\"2\">曜日(0:月曜日):%(平日)s</span>"
+"<span colspan=\"2\">年間通算日: %(doy)s</span>\n"
+"                                <span colspan=\"2\">週: %(woy)s</span>\n"
+"                                <span colspan=\"2\">曜日 (0:月曜日): %(weekday)s</span>"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.sequence_view
@@ -14705,7 +14710,7 @@ msgstr "アカウント バンクステートメントのインポート"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_account_accountant_batch_payment
 msgid "Account Batch Payment Reconciliation"
-msgstr "口座バッチ支払消込"
+msgstr "口座一括支払消込"
 
 #. module: base
 #: model:ir.module.category,name:base.module_category_accounting_localizations_account_charts
@@ -16091,7 +16096,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,summary:base.module_account_accountant_batch_payment
 msgid "Allows using Reconciliation with the Batch Payment feature."
-msgstr "バッチ支払機能で消込を使用できるようにします。"
+msgstr "一括支払機能で消込を使用できるようにします。"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_account_accountant_check_printing
@@ -18895,12 +18900,12 @@ msgstr "モノのインターネットをサポートするための基本的な
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_account_batch_payment
 msgid "Batch Payment"
-msgstr "バッチ支払"
+msgstr "一括支払"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_delivery_stock_picking_batch
 msgid "Batch Transfer, Carrier"
-msgstr "一括転送、運送会社"
+msgstr "一括転送、配送業者"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_ar_website_sale
@@ -19693,7 +19698,7 @@ msgstr "CRM ゲーミフィケーション"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_crm_livechat
 msgid "CRM Livechat"
-msgstr "CRMWebチャット"
+msgstr "CRMライブチャット"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_crm_mail_plugin
@@ -19715,7 +19720,7 @@ msgstr "CRM企業版"
 #: model:ir.module.module,shortdesc:base.module_marketing_automation_crm
 #: model:ir.module.module,summary:base.module_marketing_automation_crm
 msgid "CRM in marketing automation"
-msgstr "マーケティング自動化におけるCRM"
+msgstr "マーケティングオートメーションにおけるCRM"
 
 #. module: base
 #: model:ir.model.fields.selection,name:base.selection__res_partner__tz__cst6cdt
@@ -20165,7 +20170,7 @@ msgstr "チャド"
 #. module: base
 #: model:ir.actions.act_window,name:base.action_res_users_my
 msgid "Change My Preferences"
-msgstr "設定の変更"
+msgstr "個人設定を変更"
 
 #. module: base
 #: model:ir.actions.act_window,name:base.change_password_wizard_action
@@ -20327,7 +20332,7 @@ msgstr "チリ-会計報告"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_cl_edi_stock
 msgid "Chile - E-Invoicing Delivery Guide"
-msgstr "チリ - 電子請求配送ガイド"
+msgstr "チリ - 電子請求配送伝票"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_cl_edi
@@ -21464,7 +21469,7 @@ msgstr "州/都道府県を作成"
 #. module: base
 #: model_terms:ir.actions.act_window,help:base.action_partner_title_contact
 msgid "Create a Title"
-msgstr "タイトルを作成"
+msgstr "件名を作成"
 
 #. module: base
 #: model_terms:ir.actions.act_window,help:base.action_ui_view_custom
@@ -21541,7 +21546,7 @@ msgstr "カスタマイズ可能なワークシートを作成"
 #. module: base
 #: model:ir.module.module,summary:base.module_crm_livechat
 msgid "Create lead from livechat conversation"
-msgstr "Webチャットの会話からリードを作成する"
+msgstr "ライブチャットの会話からリードを作成する"
 
 #. module: base
 #: model:ir.module.module,description:base.module_event_crm
@@ -21561,12 +21566,12 @@ msgstr "従業員の計画に基づき、勤怠から勤務エントリを作成
 #. module: base
 #: model:ir.module.module,summary:base.module_hr_work_entry_contract_attendance
 msgid "Create work entries from the employee's attendances"
-msgstr "従業員の出勤から作業エントリを作成"
+msgstr "従業員の出勤から勤務記録を作成"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_hr_work_entry_contract_planning
 msgid "Create work entries from the employee's planning"
-msgstr "従業員の計画から作業エントリを作成"
+msgstr "従業員の計画から勤務記録を作成"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.module_form
@@ -22086,8 +22091,8 @@ msgstr "D - 電気、ガス、蒸気、空調の供給"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_delivery_dhl
-msgid "DHL Express Shipping"
-msgstr "DHLエクスプレス配送"
+msgid "DHL Express Shipping (Legacy)"
+msgstr "DHL Express配送 (旧版)"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_din5008
@@ -22639,7 +22644,7 @@ msgstr "マージ先連絡先"
 #: model:ir.model.fields,field_description:base.field_ir_actions_act_window__res_model
 #: model:ir.model.fields,field_description:base.field_ir_actions_client__res_model
 msgid "Destination Model"
-msgstr "宛先モデル"
+msgstr "対象モデル"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_rule_form
@@ -23313,7 +23318,7 @@ msgstr "Eコマースコロンビアローカリゼーション"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_marketing_automation_website_sale
 msgid "E-Commerce Marketing Automation"
-msgstr "Eコマースマーケティング自動化"
+msgstr "Eコマースマーケティングオートメーション"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_l10n_ro_edi
@@ -23373,7 +23378,7 @@ msgstr "EET"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_nz_eft
 msgid "EFT Batch Payment"
-msgstr "EFT バッチ支払"
+msgstr "EFT 一括支払"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_hw_escpos
@@ -23468,7 +23473,7 @@ msgstr "エクアドル会計レポート"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_ec_edi_stock
 msgid "Ecuadorian Delivery Guide"
-msgstr "エクアドル配送ガイド"
+msgstr "エクアドル配送伝票"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_ec_edi_pos
@@ -24811,48 +24816,48 @@ msgstr "エキスポートタイプ"
 #: model:ir.module.module,description:base.module_l10n_us_hr_payroll_adp
 #: model:ir.module.module,summary:base.module_l10n_us_hr_payroll_adp
 msgid "Export Work Entries to ADP"
-msgstr "作業エントリをADPにエクスポート"
+msgstr "勤務記録をADPにエクスポート"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_be_hr_payroll_acerta
 #: model:ir.module.module,summary:base.module_l10n_be_hr_payroll_acerta
 msgid "Export Work Entries to Acerta"
-msgstr "作業エントリをAcertaにエクスポート"
+msgstr "勤務記録をAcertaにエクスポート"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_be_hr_payroll_group_s
 #: model:ir.module.module,summary:base.module_l10n_be_hr_payroll_group_s
 msgid "Export Work Entries to Group S"
-msgstr "作業エントリをGroup Sにエクスポート"
+msgstr "勤務記録をGroup Sにエクスポート"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_be_hr_payroll_partena
 #: model:ir.module.module,summary:base.module_l10n_be_hr_payroll_partena
 msgid "Export Work Entries to Partena"
-msgstr "作業エントリをPartenaにエクスポート"
+msgstr "勤務記録をPartenaにエクスポート"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_be_hr_payroll_prisma
 #: model:ir.module.module,summary:base.module_l10n_be_hr_payroll_prisma
 msgid "Export Work Entries to Prisma"
-msgstr "作業エントリをPrismaにエクスポート"
+msgstr "勤務記録をPrismaにエクスポート"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_be_hr_payroll_sd_worx
 #: model:ir.module.module,summary:base.module_l10n_be_hr_payroll_sd_worx
 msgid "Export Work Entries to SD Worx"
-msgstr "作業エントリをSD Worxにエクスポート"
+msgstr "勤務記録をSD Worxにエクスポート"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_be_hr_payroll_ucm
 #: model:ir.module.module,summary:base.module_l10n_be_hr_payroll_ucm
 msgid "Export Work Entries to UCM"
-msgstr "作業エントリをUCMにエクスポート"
+msgstr "勤務記録をUCMにエクスポート"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_l10n_in_enet_batch_payment
 msgid "Export batch payments as ENet files"
-msgstr "バッチ支払をENetファイルとしてエキスポート"
+msgstr "一括支払をENetファイルとしてエキスポート"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_l10n_au_aba
@@ -25837,7 +25842,7 @@ msgstr "フランス-POSのVAT不正防止認証(CGI 286 I-3 bis)"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_fr_hr_work_entry_holidays
 msgid "France - Work Entries Time Off"
-msgstr "フランス - 作業エントリ休暇"
+msgstr "フランス - 勤務記録休暇"
 
 #. module: base
 #: model:res.country,name:base.gf
@@ -25905,7 +25910,7 @@ msgstr "フルアクセス"
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_partner_industry__full_name
 msgid "Full Name"
-msgstr "名称 (フル)"
+msgstr "氏名"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_ui_menu__complete_name
@@ -27856,7 +27861,7 @@ msgstr "インド - 休暇"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_in_enet_batch_payment
 msgid "India ENet Batch Payment CSV Generator"
-msgstr "インドENetバッチ支払CSVジェネレータ"
+msgstr "インドENet一括支払CSVジェネレータ"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_in_purchase_stock
@@ -29614,7 +29619,7 @@ msgstr "ウェブサイト訪問からのリードジェネレーション"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_crm_livechat
 msgid "Lead Livechat Sessions"
-msgstr "Webチャットセッションをリードする"
+msgstr "ライブチャットセッションをリードする"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_social_crm
@@ -29972,7 +29977,7 @@ msgstr "リトアニアの税金標準監査ファイル"
 #: model:ir.module.category,name:base.module_category_website_live_chat
 #: model:ir.module.module,shortdesc:base.module_im_livechat
 msgid "Live Chat"
-msgstr "Webチャット"
+msgstr "ライブチャット"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_currency_rate_live
@@ -30037,7 +30042,7 @@ msgstr "ログ管理"
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.ir_logging_form_view
 msgid "Logging details"
-msgstr "ロギングの詳細"
+msgstr "ログ詳細"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_users__login
@@ -30665,7 +30670,7 @@ msgstr "応募者に送信する署名の管理"
 #: model:ir.module.module,summary:base.module_hr_work_entry_contract
 #: model:ir.module.module,summary:base.module_hr_work_entry_contract_enterprise
 msgid "Manage work entries"
-msgstr "作業エントリを管理する"
+msgstr "勤務記録を管理する"
 
 #. module: base
 #: model:ir.module.module,description:base.module_social_facebook
@@ -30841,7 +30846,7 @@ msgstr "マーケティング会社"
 #: model:ir.module.category,name:base.module_category_marketing_marketing_automation
 #: model:ir.module.module,shortdesc:base.module_marketing_automation
 msgid "Marketing Automation"
-msgstr "マーケティング自動化"
+msgstr "マーケティングオートメーション"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_marketing_automation_website_sale
@@ -31094,7 +31099,7 @@ msgstr "メキシコ - 会計"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_mx_edi_stock
 msgid "Mexico - Electronic Delivery Guide"
-msgstr "メキシコ - 電子配送ガイド"
+msgstr "メキシコ - 電子配送伝票"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_mx_reports_closing
@@ -32551,9 +32556,11 @@ msgstr ""
 "Odooブログ\n"
 "----------\n"
 "\n"
-"<a href=\"https://www.odoo.com/app/blog\">Odooブログ</a>で書き、デザインし、宣伝し、交流しましょう\n"
+"<a href=\"https://www.odoo.com/app/blog\""
+">Odooブログ</a>で書き、デザインし、宣伝し、交流しましょう\n"
 "\n"
-"Odooの企業版グレードのブログプラットフォームで自分を表現しましょう。素晴らしいブログポスト\n"
+"Odooの企業版グレードのブログプラットフォームで自分を表現しましょう。"
+"素晴らしいブログポスト\n"
 "を書き、訪問者と交流し、コンテンツを翻訳し、ソーシャルな動向を\n"
 "管理しましょう。\n"
 "\n"
@@ -32563,12 +32570,14 @@ msgstr ""
 "素敵なブログポストを書く\n"
 "--------------------------\n"
 "\n"
-"優れたデザインの*'ビルディングブロック'* をドラッグ＆ドロップして、画像、動画、コール・トゥ・アクション、引用、\n"
+"優れたデザインの*'ビルディングブロック'* "
+"をドラッグ＆ドロップして、画像、動画、コール・トゥ・アクション、引用、\n"
 "バナーなどを完全に統合する素敵なブログポストを\n"
 "作成しましょう。\n"
 "\n"
 "ユニークな*'インライン編集'*アプローチで、デザイナーでなくても\n"
-"素敵な、カッコ良いコンテンツを作成できます。1つ1つのブログポストがまるでプロのデザイナーがデザインしたかのように仕上がります。\n"
+"素敵な、カッコ良いコンテンツを作成できます。1つ1つのブログポストがまるでプロ"
+"のデザイナーがデザインしたかのように仕上がります。\n"
 "\n"
 "プロによる自動翻訳\n"
 "--------------------------------------\n"
@@ -32576,14 +32585,16 @@ msgstr ""
 "手間をかけずにブログ記事を多言語に翻訳しましょう。当社の\n"
 "翻訳 \"オンデマンド\"機能によりプロの翻訳者たちが\n"
 "全ての変更を自動的に翻訳します。 (\\$0.05単語毎)\n"
-"翻訳されたバージョンは一度プロに翻訳されると自動的に更新されます。(およそ32時間)\n"
+"翻訳されたバージョンは一度プロに翻訳されると自動的に更新されます。(およそ32時"
+"間)\n"
 "\n"
 "訪問者と関わる\n"
 "-------------------------\n"
 "\n"
 "統合されたウェブサイトライブチャット機能により、訪問者と\n"
 "リアルタイムでチャットを開始し、最近のポストに対する\n"
-"フィードバックを得たり、新しいポストのアイディアを得たりすることができます。\n"
+"フィードバックを得たり、新しいポストのアイディアを得たりすることができます。"
+"\n"
 "\n"
 "訪問者と交流することは、訪問者を顧客に変える\n"
 "有効な方法です。\n"
@@ -32591,14 +32602,16 @@ msgstr ""
 "訪問者のロイヤリティを確立する\n"
 "---------------------\n"
 "\n"
-"*フォロー*ボタンをワンクリックすることで訪問者は登録しなくてもブログのポストを\n"
+"*フォロー*"
+"ボタンをワンクリックすることで訪問者は登録しなくてもブログのポストを\n"
 "Eメールで簡単に受信できます。 ソーシャルメディアアイコンにより\n"
 "訪問者はベストなブログポストをシェアすることができます。\n"
 "\n"
 "Googleアナリティクス統合\n"
 "----------------------------\n"
 "\n"
-"セールスファネルの明確に把握しましょう。OdooのGoogleアナリティクストラッカーはショッピングカートや、コール・トゥ・アクション\n"
+"セールスファネルの明確に把握しましょう。OdooのGoogleアナリティクストラッカー"
+"はショッピングカートや、コール・トゥ・アクション\n"
 "などに関連した全てのイベントを追跡するために\n"
 "デフォルトで設定されています。\n"
 "\n"
@@ -32609,7 +32622,8 @@ msgstr ""
 "------------------------\n"
 "\n"
 "SEOツールはすぐに使用でき、設定は必要ありません。OdooはGoogleで\n"
-"最も検索されている単語に応じたタイトル用のキーワードの提案、Googleアナリティクスは訪問者の興味を追跡し、迅速なGoogle\n"
+"最も検索されている単語に応じた件名用のキーワードの提案、Googleアナリティクス"
+"は訪問者の興味を追跡し、迅速なGoogle\n"
 "インデックス化用にサイトマップが作成されるなどです。\n"
 "\n"
 "システムはGoogleでプロダクトやイベントを効果的に宣伝するために\n"
@@ -32618,17 +32632,21 @@ msgstr ""
 "デザイナーフレンドリーなテーマ\n"
 "------------------------\n"
 "\n"
-"テーマは素晴らしく、容易にデザインできます。新しいページや、テーマ、ビルディングブロック\n"
+"テーマは素晴らしく、容易にデザインできます。新しいページや、テーマ、"
+"ビルディングブロック\n"
 "を開発する必要はありません。クリーンなHTMLストラクチャ\n"
-"[bootstrap](http://getbootstrap.com/) CSSを使用しており、モジュール式なので簡単にテーマを分配することができます。\n"
+"[bootstrap](http://getbootstrap.com/) "
+"CSSを使用しており、モジュール式なので簡単にテーマを分配することができます。\n"
 "\n"
-"ビルディングブロックアプローチによりウェブサイトはエンドユーザが新しいコンテンツを作成した後\n"
+"ビルディングブロックアプローチによりウェブサイトはエンドユーザが新しいコンテ"
+"ンツを作成した後\n"
 "クリーンに保たれます。 \n"
 "\n"
 "簡単なアクセス権\n"
 "------------------\n"
 "\n"
-"ウェブサイトに対して、皆が同じアクセス権を持つわけではありません。 デザイナーはウェブサイトのレイアウトを\n"
+"ウェブサイトに対して、皆が同じアクセス権を持つわけではありません。 "
+"デザイナーはウェブサイトのレイアウトを\n"
 "管理し、編集者はコンテンツを承認し、作者はコンテンツを書きます。\n"
 "これにより、必要に応じて公開プロセスを整理することができます。\n"
 "\n"
@@ -33261,7 +33279,7 @@ msgstr ""
 "Odooメール一括配信\n"
 "-----------------\n"
 "\n"
-"Odoo <a href=\"https://www.odoo.com/app/email-marketing\">Eメールマーケティング</a>でリード、案件、顧客に簡単に\n"
+"Odoo <a href=\"https://www.odoo.com/app/email-marketing\">メールマーケティング</a>でリード、案件、顧客に簡単に\n"
 "メールを一括配信できます。 マーケティング\n"
 "キャンペーンのパフォーマンスを追跡して、コンバージョンレートを上げましょう。数クリックで\n"
 "プロフェッショナルなEメールをデザインし、テンプレートを再利用できます。\n"
@@ -33827,14 +33845,17 @@ msgstr ""
 "Odooウェブサイトビルダ\n"
 "--------------------\n"
 "\n"
-"素晴らしい <a href=\"https://www.odoo.com/app/website\">無料ウェブサイト</a>を手に入れて、\n"
-"Odoo <a href=\"https://www.odoo.com/app/website\">ウェブサイトビルダ</a>で簡単にカスタマイズしましょう。\n"
+"素晴らしい <a href=\"https://www.odoo.com/app/website\""
+">無料ウェブサイト</a>を手に入れて、\n"
+"Odoo <a href=\"https://www.odoo.com/app/website\""
+">ウェブサイトビルダ</a>で簡単にカスタマイズしましょう。\n"
 "\n"
 "超簡単なビルダで、企業レベルのウェブサイトを作成。細かく設計された\n"
 "ビルディングブロックを使用し、全てをインラインで編集できます。\n"
 "\n"
 "eコマース、イベント、ブログ、求人情報、\n"
-"顧客紹介、コールトゥアクションなど、すぐに使えるビジネス機能をご利用頂けます。\n"
+"顧客紹介、コールトゥアクションなど、すぐに使えるビジネス機能をご利用頂けます"
+"。\n"
 "\n"
 "全てをインラインで編集\n"
 "--------------------\n"
@@ -33844,7 +33865,8 @@ msgstr ""
 "複雑なバックエンドはもう必要ありません。\n"
 "\n"
 "\"プロダクト価格を変更？それとも太字にしたい？\n"
-"ブログタイトルを変更したい？\"クリックするだけで変更できます。本当に、見たままを手に入れることができます。\n"
+"ブログ件名を変更したい？\"クリックするだけで変更できます"
+"。本当に、見たままを手に入れることができます。\n"
 "\n"
 "素晴らしい。驚くほど美しい。\n"
 "---------------------------------\n"
@@ -33852,7 +33874,8 @@ msgstr ""
 "Odooのビルディングブロックにより、従来のWYSIWYGページエディター\n"
 "では不可能であった現代的なウェブサイトを作成できます。\n"
 "\n"
-"商品説明であれ、ブログであれ、静的なページであれ、きれいなコンテンツを作るのにプロのデザイナーである必要はありません。\n"
+"商品説明であれ、ブログであれ、静的なページであれ、きれいなコンテンツを作るの"
+"にプロのデザイナーである必要はありません。\n"
 "ドラッグ＆ドロップして、\n"
 "事前に定義されたビルディングブロックをカスタマイズするだけです。\n"
 "\n"
@@ -33863,24 +33886,30 @@ msgstr ""
 "すぐに使える企業版機能をワンクリックで有効化しましょう。\n"
 "\n"
 "\n"
-"従来のeコマースやCMSは、バックエンドに注力されていないため、その設計が不十分でした。\n"
-"Odooとの統合することで、オーダ、求人応募者、リードのフォローアップなどを行える最高の管理ソフトの恩恵を受けることができます。\n"
+"従来のeコマースやCMSは、バックエンドに注力されていないため、その設計が不十分"
+"でした。\n"
+"Odooとの統合することで、オーダ、求人応募者、リードのフォローアップなどを行え"
+"る最高の管理ソフトの恩恵を受けることができます。\n"
 "\n"
 "素晴らしいモジュール体験\n"
 "-------------------------\n"
 "\n"
-"ブートストラップをベースとしたレスポンシブデザインにより、モバイルフレンドリー\n"
-"なウェブサイトを実現します。全てのページが自動的に画面サイズ(携帯電話、タブレット、デスクトップ) に適応します。デフォルト機能なため、\n"
+"ブートストラップをベースとしたレスポンシブデザインにより、"
+"モバイルフレンドリー\n"
+"なウェブサイトを実現します。全てのページが自動的に画面サイズ(携帯電話、タブレ"
+"ット、デスクトップ) に適応します。デフォルト機能なため、\n"
 "モバイルコンテンツについて心配する必要はありません。\n"
 "\n"
 "指先で使えるSEOツール\n"
 "-----------------------------\n"
 "\n"
-"プロモート*ツールは、Googleで最も検索された言葉に従ってキーワードを提案します。\n"
+"プロモート*ツールは、Googleで最も検索された言葉に従ってキーワードを提案します"
+"。\n"
 "検索エンジン最適化ツールは、設定不要ですぐに\n"
 "使えます。\n"
 "\n"
-"Googleアナリティクスはデフォルトでショッピングカートのイベントをトラッキングします。サイトマップと\n"
+"Googleアナリティクスはデフォルトでショッピングカートのイベントをトラッキング"
+"します。サイトマップと\n"
 "構造化コンテンツが自動的に作成されます。\n"
 "\n"
 "多言語を簡単に\n"
@@ -33894,19 +33923,24 @@ msgstr ""
 "---------------------------\n"
 "\n"
 "素晴らしく、デザインしやすいテンプレート。新しいページ、テーマ、\n"
-"ビルディングブロックを作成するために開発する必要はありません。クリーンなHTML構造\n"
+"ビルディングブロックを作成するために開発する必要はありません。"
+"クリーンなHTML構造\n"
 "[boostrap](http://getbootstrap.com/) CSSを使用しています。\n"
 "\n"
-"統合されたテンプレートエディタを使って、全てのページをその場でカスタマイズ。Odooモジュールとして\n"
+"統合されたテンプレートエディタを使って、全てのページをその場でカスタマイズ。"
+"Odooモジュールとして\n"
 "として簡単に配布できます。\n"
 "\n"
 "流動的なグリッドレイアウト\n"
 "--------------------\n"
 "\n"
-"ビルディングブロックをドラッグ＆ドロップして、完璧なページをデザイン。レイアウトに合わせて動かしサイズを調整できます。\n"
+"ビルディングブロックをドラッグ＆ドロップして、完璧なページをデザイン。レイア"
+"ウトに合わせて動かしサイズを調整できます。\n"
 "\n"
-"ビルディングブロックは、反応が速くモバイルフレンドリーな流体グリッドシステムに基づいています。\n"
-"デバイスやビューポートのサイズが大きくなるにつれて、最大12カラムまで適切にスケールアップされます。\n"
+"ビルディングブロックは、反応が速くモバイルフレンドリーな流体グリッドシステム"
+"に基づいています。\n"
+"デバイスやビューポートのサイズが大きくなるにつれて、最大12カラムまで適切にス"
+"ケールアップされます。\n"
 "\n"
 "プロフェッショナルなテーマ\n"
 "-------------------\n"
@@ -33914,7 +33948,8 @@ msgstr ""
 "カスタムテーマや事前に定義されているテーマを再利用して、\n"
 "ウェブサイトの見た目や感じをカスタマイズしましょう。\n"
 "\n"
-"新しいカラースキームを簡単に試しましょう。クリックするだけで、いつでもテーマを変更できます。\n"
+"新しいカラースキームを簡単に試しましょう。クリックするだけで、いつでもテーマ"
+"を変更できます。\n"
 "\n"
 "Odooアプリとの統合\n"
 "-------------------------\n"
@@ -33931,7 +33966,8 @@ msgstr ""
 "\n"
 "### オンラインイベント\n"
 "\n"
-"カンファレンス、トレーニング、ウェビナーなど、オンラインイベントのスケジュール管理、企画、宣伝、販売。\n"
+"カンファレンス、トレーニング、ウェビナーなど、オンラインイベントのスケジュー"
+"ル管理、企画、宣伝、販売。\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_website_sale
@@ -35678,13 +35714,13 @@ msgstr "取引先タグ"
 #. module: base
 #: model:ir.model,name:base.model_res_partner_title
 msgid "Partner Title"
-msgstr "パートナータイトル"
+msgstr "パートナー件名"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_partner_title_form
 #: model_terms:ir.ui.view,arch_db:base.view_partner_title_tree
 msgid "Partner Titles"
-msgstr "取引先タイトル"
+msgstr "取引先件名"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_users__active_partner
@@ -36234,7 +36270,8 @@ msgstr "修正内容は指定のグループの全ユーザに適用されます
 msgid ""
 "Please use the change password wizard (in User Preferences or User menu) to "
 "change your own password."
-msgstr "あなた自身のパスワードを変更をするには、パスワード変更ウィザード（ユーザ設定またはユーザメニューの中の）を利用して下さい。"
+msgstr "あなた自身のパスワードを変更をするには、パスワード変更ウィザード（ユーザ個人"
+"設定またはユーザメニュー内）を利用して下さい。"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_pos_event_sale
@@ -36574,12 +36611,12 @@ msgstr "プロダクト在庫通知"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_product_barcodelookup
 msgid "Product Barcode Lookup"
-msgstr "バーコードLookupAPIキーを利用して、カメラでバーコードをスキャンしてプロダクトを作成できるモジュールです。"
+msgstr "プロダクト Barcode Lookup"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_product_barcodelookup
 msgid "Product Barcode Lookup for eCommerce"
-msgstr "Eコマース用プロダクトバーコード検索"
+msgstr "Eコマース用プロダクトBarcode Lookup"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_sale_comparison
@@ -37558,19 +37595,19 @@ msgstr "Razorpay OAuth 統合"
 #: model:ir.model.fields,field_description:base.field_ir_rule__perm_read
 #: model_terms:ir.ui.view,arch_db:base.view_rule_search
 msgid "Read"
-msgstr "読む"
+msgstr "読み取り"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_model_access__perm_read
 #: model_terms:ir.ui.view,arch_db:base.ir_access_view_search
 msgid "Read Access"
-msgstr "読出権限"
+msgstr "読み取りアクセス"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_model_fields__readonly
 #: model_terms:ir.ui.view,arch_db:base.view_model_fields_search
 msgid "Readonly"
-msgstr "読出のみ"
+msgstr "読み取り専用"
 
 #. module: base
 #: model:res.currency,currency_unit_label:base.BRL
@@ -39339,8 +39376,13 @@ msgstr "shiprocketで小包を送り、オンラインで追跡します"
 
 #. module: base
 #: model:ir.module.module,description:base.module_delivery_dhl
-msgid "Send your shippings through DHL and track them online"
-msgstr "DHLを通して発送し、オンラインで追跡します"
+msgid ""
+"This is the legacy integration with DHL Express that is no longer supported."
+" Please install the new \"DHL Express Shipping\" module and uninstall this "
+"one as soon as possible."
+msgstr ""
+"こちらは旧バージョンの DHL Express 連携モジュールであり、現在はサポートされていません。新しいDHL "
+"Express配送モジュールをインストールし、本モジュールはできるだけ早くアンインストールしてください。"
 
 #. module: base
 #: model:ir.module.module,description:base.module_delivery_fedex_rest
@@ -40364,7 +40406,7 @@ msgstr "スプレッドシートダッシュボード 製造用"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_spreadsheet_dashboard_marketing_automation
 msgid "Spreadsheet dashboard for marketing automation"
-msgstr "マーケティング自動化用スプレッドシートダッシュボード"
+msgstr "マーケティングオートメーション用スプレッドシートダッシュボード"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_spreadsheet_dashboard_hr_payroll
@@ -40541,7 +40583,7 @@ msgstr "在庫勘定"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_stock_barcode_barcodelookup
 msgid "Stock Barcode - Barcode Lookup"
-msgstr "在庫バーコード - バーコードLookup"
+msgstr "在庫バーコード - Barcode Lookup"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_stock_intrastat
@@ -41821,7 +41863,8 @@ msgid ""
 "The languages that you selected have been successfully installed."
 "                            Users can choose their favorite language in "
 "their preferences."
-msgstr "選択した言語が正常にインストールされました。 ユーザは環境設定で好きな言語を選択できます。"
+msgstr "選択した言語が正常にインストールされました。 "
+"ユーザは個人設定で好きな言語を選択できます。"
 
 #. module: base
 #. odoo-python
@@ -41829,7 +41872,8 @@ msgstr "選択した言語が正常にインストールされました。 ユ�
 msgid ""
 "The languages that you selected have been successfully installed. Users can "
 "choose their favorite language in their preferences."
-msgstr "選択した言語は正常にインストールされました。ユーザは追加設定で好きな言語を選択できます。"
+msgstr "選択した言語は正常にインストールされました。ユーザは個人設定で好きな言語を選"
+"択できます。"
 
 #. module: base
 #. odoo-python
@@ -42552,14 +42596,14 @@ msgstr ""
 msgid ""
 "This module allows you to create products from barcode using Barcode Lookup "
 "API Key"
-msgstr "このモジュールでは、バーコードLookup APIキーを使用してバーコードからプロダクトを作成することができます。"
+msgstr "このモジュールでは、Barcode Lookup APIキーを使用してバーコードからプロダクトを作成することができます。"
 
 #. module: base
 #: model:ir.module.module,description:base.module_website_product_barcodelookup
 msgid ""
 "This module allows you to display data get from barcode lookup API in the "
 "eCommerce"
-msgstr "このモジュールを使用すると、eコマースでバーコード検索APIから取得したデータを表示することができます。"
+msgstr "このモジュールを使用すると、eコマースでBarcode LookupAPIから取得したデータを表示することができます。"
 
 #. module: base
 #: model:ir.module.module,description:base.module_test_mail_sms
@@ -42751,7 +42795,7 @@ msgstr ""
 msgid ""
 "This module enables product creation by scanning barcodes with a camera, "
 "utilizing the Barcode Lookup API Key."
-msgstr "バーコードLookup APIキーを利用し、カメラでバーコードをスキャンしてプロダクトを作成するモジュールです。"
+msgstr "Barcode Lookup APIキーを利用し、カメラでバーコードをスキャンしてプロダクトを作成するモジュールです。"
 
 #. module: base
 #: model:ir.module.module,description:base.module_website_event_track_gantt
@@ -42885,7 +42929,7 @@ msgstr "木曜"
 #. module: base
 #: model:ir.module.module,summary:base.module_website_helpdesk_livechat
 msgid "Ticketing, Support, Livechat"
-msgstr "チケット、サポート、Webチャット"
+msgstr "チケット、サポート、ライブチャット"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_website_helpdesk_slides
@@ -42984,7 +43028,7 @@ msgstr "タイムシート / 勤怠レポート"
 #: model:ir.model.fields,field_description:base.field_res_partner__tz
 #: model:ir.model.fields,field_description:base.field_res_users__tz
 msgid "Timezone"
-msgstr "時間帯"
+msgstr "タイムゾーン"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_partner__tz_offset
@@ -43002,7 +43046,7 @@ msgstr "東ティモール民主共和国"
 #: model:ir.model.fields,field_description:base.field_res_partner_title__name
 #: model:ir.model.fields,field_description:base.field_res_users__title
 msgid "Title"
-msgstr "タイトル"
+msgstr "件名"
 
 #. module: base
 #: model:res.currency,currency_subunit_label:base.UZS
@@ -43250,7 +43294,7 @@ msgstr "モデル翻訳されたフィールドの翻訳は、偽の値とstr値
 #. module: base
 #: model:ir.module.module,description:base.module_stock_fleet
 msgid "Transport Management: organize packs in your fleet, or carriers."
-msgstr "輸送管理: フリート、または運送会社で荷物を整理します。"
+msgstr "輸送管理: フリート、または配送業者で荷物を整理します。"
 
 #. module: base
 #: model:res.partner.industry,name:base.res_partner_industry_H
@@ -44593,7 +44637,7 @@ msgstr "ビュー継承モード"
 #. module: base
 #: model:ir.module.module,summary:base.module_website_crm_livechat
 msgid "View livechat sessions for leads"
-msgstr "リードのWebチャットセッションを表示する"
+msgstr "リードのライブチャットセッションを表示する"
 
 #. module: base
 #: model:ir.actions.act_window,name:base.action_ui_view
@@ -44916,7 +44960,7 @@ msgstr "ウェブサイトのヘルプデスク"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_helpdesk_livechat
 msgid "Website IM Livechat Helpdesk"
-msgstr "ウェブサイトのIMWebチャットヘルプデスク"
+msgstr "ウェブサイトのIMライブチャットヘルプデスク"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_jitsi
@@ -44933,7 +44977,7 @@ msgstr "ウェブサイトリンク"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_livechat
 msgid "Website Live Chat"
-msgstr "ウェブサイトWebチャット"
+msgstr "ウェブサイトライブチャット"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_mail
@@ -45065,7 +45109,7 @@ msgstr "WhatsAppテスト"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_marketing_automation_whatsapp
 msgid "WhatsApp in Marketing Automation"
-msgstr "WhatsApp マーケティング自動化"
+msgstr "WhatsApp マーケティングオートメーション"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_whatsapp_delivery
@@ -45260,27 +45304,27 @@ msgstr "ウッドコーナーは、顧客が木、花、菌類を扱うのを助
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_hr_work_entry
 msgid "Work Entries"
-msgstr "作業エントリ"
+msgstr "勤務記録"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_hr_work_entry_contract_attendance
 msgid "Work Entries - Attendance"
-msgstr "作業エントリ - 勤怠"
+msgstr "勤務記録 - 勤怠"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_hr_work_entry_contract
 msgid "Work Entries - Contract"
-msgstr "作業エントリ-契約"
+msgstr "勤務記録-契約"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_hr_work_entry_contract_enterprise
 msgid "Work Entries - Contract Enterprise"
-msgstr "作業エントリ - 契約 企業版"
+msgstr "勤務記録 - 契約 企業版"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_hr_work_entry_contract_planning
 msgid "Work Entries - Planning"
-msgstr "作業エントリ - 計画"
+msgstr "勤務記録 - 計画"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_mrp_workorder
@@ -45323,13 +45367,13 @@ msgstr "書く"
 #: model:ir.model.fields,field_description:base.field_ir_model_access__perm_write
 #: model_terms:ir.ui.view,arch_db:base.ir_access_view_search
 msgid "Write Access"
-msgstr "更新権限"
+msgstr "書き込みアクセス"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_model_constraint__write_date
 #: model:ir.model.fields,field_description:base.field_ir_model_relation__write_date
 msgid "Write Date"
-msgstr "日付を書く"
+msgstr "更新日時"
 
 #. module: base
 #: model:ir.model.fields,help:base.field_ir_actions_server__code
@@ -46194,7 +46238,7 @@ msgstr "取得"
 msgid ""
 "has been successfully installed.\n"
 "                            Users can choose their favorite language in their preferences."
-msgstr "は正常にインストールされました。ユーザは環境設定で好きな言語を選択できます。"
+msgstr "は正常にインストールされました。ユーザは個人設定で好きな言語を選択できます。"
 
 #. module: base
 #. odoo-python
@@ -46376,7 +46420,7 @@ msgstr "properties_definition"
 #. odoo-python
 #: code:addons/base/models/ir_rule.py:0
 msgid "read"
-msgstr "読む"
+msgstr "読み取り"
 
 #. module: base
 #: model:ir.model.fields.selection,name:base.selection__ir_actions_server__value_field_to_show__resource_ref

@@ -3,7 +3,6 @@
 # 	* website_hr_recruitment
 # 
 # Translators:
-# Rita Bastos, 2025
 # João Alves, 2025
 # Maitê Dietze, 2025
 # Vasco Rodrigues, 2025
@@ -11,6 +10,7 @@
 # Peter Lawrence Romão <peterromao@yahoo.co.uk>, 2025
 # Martin Trigaux, 2025
 # J Ponte, 2025
+# Rita Bastos, 2025
 # Daniel Reis, 2025
 # 
 msgid ""
@@ -316,7 +316,7 @@ msgstr "Autonomia"
 #. odoo-javascript
 #: code:addons/website_hr_recruitment/static/src/fields/boolean_toggle_labeled_field.js:0
 msgid "Autosave"
-msgstr ""
+msgstr "Salvar automaticamente"
 
 #. module: website_hr_recruitment
 #: model_terms:ir.ui.view,arch_db:website_hr_recruitment.default_website_description
@@ -710,7 +710,7 @@ msgstr "Responsibilidades"
 #. module: website_hr_recruitment
 #: model:ir.model.fields,help:website_hr_recruitment.field_hr_job__website_id
 msgid "Restrict to a specific website."
-msgstr ""
+msgstr "Restringir a um website específico."
 
 #. module: website_hr_recruitment
 #: model_terms:ir.ui.view,arch_db:website_hr_recruitment.job_pages_kanban_view
