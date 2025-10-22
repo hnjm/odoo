@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* web
-# 
+# * web
+#
 # Translators:
 # Amit Spilman <amit@laylinetech.com>, 2024
 # Orel Nahmany, 2024
@@ -30,20 +30,21 @@
 # MichaelHadar, 2025
 # Yoram Lavi, 2025
 # or balmas, 2025
-# 
+# or balmas <or@laylinetech.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-23 18:39+0000\n"
-"PO-Revision-Date: 2024-09-25 09:42+0000\n"
-"Last-Translator: or balmas, 2025\n"
-"Language-Team: Hebrew (https://app.transifex.com/odoo/teams/41243/he/)\n"
+"POT-Creation-Date: 2025-10-16 18:39+0000\n"
+"PO-Revision-Date: 2025-09-28 22:21+0000\n"
+"Last-Translator: or balmas <or@laylinetech.com>\n"
+"Language-Team: Hebrew <https://translate.odoo.com/projects/odoo-18/web/he/>\n"
+"Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: he\n"
-"Plural-Forms: nplurals=3; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: 2;\n"
+"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 2) ? 1 : 2);\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #. module: web
 #. odoo-javascript
@@ -499,20 +500,20 @@ msgstr "<span class=\"text-nowrap\">$ 2,887.50</span>"
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
 msgid ""
-"<span class=\"text-nowrap\">$ <span "
-"class=\"oe_currency_value\">11,750.00</span></span>"
+"<span class=\"text-nowrap\">$ <span class=\"oe_currency_value\">11,750.00</"
+"span></span>"
 msgstr ""
-"<span class=\"text-nowrap\">$<span "
-"class=\"oe_currency_value\">11,750.00</span></span>"
+"<span class=\"text-nowrap\">$<span class=\"oe_currency_value\">11,750.00</"
+"span></span>"
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
 msgid ""
-"<span class=\"text-nowrap\">$ <span "
-"class=\"oe_currency_value\">7,500.00</span></span>"
+"<span class=\"text-nowrap\">$ <span class=\"oe_currency_value\">7,500.00</"
+"span></span>"
 msgstr ""
-"<span class=\"text-nowrap\">$<span "
-"class=\"oe_currency_value\">7,500.00</span></span>"
+"<span class=\"text-nowrap\">$<span class=\"oe_currency_value\">7,500.00</"
+"span></span>"
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
@@ -532,8 +533,10 @@ msgstr "<span class=\"text-nowrap\">מס 15%</span>"
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
 msgid ""
-"<span class=\"w-100 o_force_ltr\" itemprop=\"streetAddress\">77 Santa Barbara\n"
-"                                       Rd<br/>Pleasant Hill CA 94523<br/>United States</span>"
+"<span class=\"w-100 o_force_ltr\" itemprop=\"streetAddress\">77 Santa "
+"Barbara\n"
+"                                       Rd<br/>Pleasant Hill CA 94523<br/"
+">United States</span>"
 msgstr ""
 
 #. module: web
@@ -597,25 +600,30 @@ msgstr "<span>מחיר יחידה</span>"
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
 msgid ""
 "<span>[FURN_8220] Four Person Desk<br/>\n"
-"                                       Four person modern office workstation</span>"
+"                                       Four person modern office "
+"workstation</span>"
 msgstr ""
 "<span>[FURN_8220] שולחן עבודה לארבעה אנשים<br/>\n"
-"                                       סביבת עבודה מודרנית לארבעה במשרד</span>"
+"                                       סביבת עבודה מודרנית לארבעה במשרד</"
+"span>"
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
 msgid ""
 "<span>[FURN_8999] Three-Seat Sofa<br/>\n"
-"                                       Three Seater Sofa with Lounger in Steel Grey Colour</span>"
+"                                       Three Seater Sofa with Lounger in "
+"Steel Grey Colour</span>"
 msgstr ""
 "<span>[FURN_8999] ספה תלת-מושבית<br/>\n"
-"                                       ספה תלת-מושבית נפתחת לכיסא נוח בצבע אפור כסוף</span>"
+"                                       ספה תלת-מושבית נפתחת לכיסא נוח בצבע "
+"אפור כסוף</span>"
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
 msgid ""
 "<strong class=\"text-nowrap\">$ <span class=\"oe_currency_value\">\n"
-"                                                       22,137.50</span></strong>"
+"                                                       22,137.50</span></"
+"strong>"
 msgstr ""
 
 #. module: web
@@ -1118,8 +1126,7 @@ msgstr "העבר הכל לארכיון"
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/views/kanban/kanban_header.js:0
-msgid ""
-"Are you sure that you want to archive all the records from this column?"
+msgid "Are you sure that you want to archive all the records from this column?"
 msgstr "האם אתה בטוח שאתה רוצה להעביר לארכיון את כל הרשומות מעמודה זו?"
 
 #. module: web
@@ -1373,8 +1380,8 @@ msgstr "הפוך למשתמש על"
 #. odoo-python
 #: code:addons/web/controllers/export.py:0
 msgid ""
-"Binary fields can not be exported to Excel unless their content is "
-"base64-encoded. That does not seem to be the case for %s."
+"Binary fields can not be exported to Excel unless their content is base64-"
+"encoded. That does not seem to be the case for %s."
 msgstr ""
 
 #. module: web
@@ -1446,9 +1453,9 @@ msgstr "סוג הכפתור:"
 #. odoo-javascript
 #: code:addons/web/static/src/core/signature/signature_dialog.xml:0
 msgid ""
-"By clicking Adopt & Sign, I agree that the chosen signature/initials will be"
-" a valid electronic representation of my hand-written signature/initials for"
-" all purposes when it is used on documents, including legally binding "
+"By clicking Adopt & Sign, I agree that the chosen signature/initials will be "
+"a valid electronic representation of my hand-written signature/initials for "
+"all purposes when it is used on documents, including legally binding "
 "contracts."
 msgstr ""
 "על ידי לחיצה על אמץ וחתום, אני מסכים שהחתימה/ראשי התיבות שנבחרו יהיו ייצוג "
@@ -3026,7 +3033,8 @@ msgstr "טקסט תחתון מוצג בתחתית כל הדוחות."
 #. odoo-javascript
 #: code:addons/web/static/src/views/pivot/pivot_renderer.js:0
 msgid ""
-"For Excel compatibility, data cannot be exported if there are more than 16384 columns.\n"
+"For Excel compatibility, data cannot be exported if there are more than "
+"16384 columns.\n"
 "\n"
 "Tip: try to flip axis, filter further or reduce the number of measures."
 msgstr ""
@@ -3291,8 +3299,7 @@ msgstr "סמל"
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/url/url_field.js:0
-msgid ""
-"If True, the url will be used as it is, without any prefix added to it."
+msgid "If True, the url will be used as it is, without any prefix added to it."
 msgstr ""
 
 #. module: web
@@ -3331,8 +3338,8 @@ msgid ""
 "If checked, users will not be able to create records based through a popup "
 "form; they will still be able to create records based on the text input."
 msgstr ""
-"אם מסומן, המשתמשים לא יוכלו ליצור רשומות דרך טופס קופץ; הם עדיין יוכלו ליצור"
-" רשומות על בסיס קלט טקסטואלי."
+"אם מסומן, המשתמשים לא יוכלו ליצור רשומות דרך טופס קופץ; הם עדיין יוכלו ליצור "
+"רשומות על בסיס קלט טקסטואלי."
 
 #. module: web
 #. odoo-javascript
@@ -3418,8 +3425,7 @@ msgstr "התקנת אפליקציה"
 msgid ""
 "Install the app on your device to access it easily. Here are the steps to "
 "follow:"
-msgstr ""
-"התקן את האפליקציה במכשיר שלך כדי לגשת אליה בקלות. הנה השלבים שיש לבצע:"
+msgstr "התקן את האפליקציה במכשיר שלך כדי לגשת אליה בקלות. הנה השלבים שיש לבצע:"
 
 #. module: web
 #. odoo-javascript
@@ -3567,11 +3573,16 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/webclient/debug/profiling/profiling_qweb.xml:0
 msgid ""
-"It is possible that the \"t-call\" time does not correspond to the overall time of the\n"
-"            template. Because the global time (in the drop down) does not take into account the\n"
-"            duration which is not in the rendering (look for the template, read, inheritance,\n"
-"            compilation...). During rendering, the global time also takes part of the time to make\n"
-"            the profile as well as some part not logged in the function generated by the qweb."
+"It is possible that the \"t-call\" time does not correspond to the overall "
+"time of the\n"
+"            template. Because the global time (in the drop down) does not "
+"take into account the\n"
+"            duration which is not in the rendering (look for the template, "
+"read, inheritance,\n"
+"            compilation...). During rendering, the global time also takes "
+"part of the time to make\n"
+"            the profile as well as some part not logged in the function "
+"generated by the qweb."
 msgstr ""
 
 #. module: web
@@ -4891,8 +4902,8 @@ msgstr ""
 #. odoo-python
 #: code:addons/web/models/models.py:0
 msgid ""
-"Only types %(supported_types)s are supported for category (found type "
-"%(field_type)s)"
+"Only types %(supported_types)s are supported for category (found type %"
+"(field_type)s)"
 msgstr ""
 "רק סוגים %(supported_types)s נתמכים עבור הקטגוריה (סוג שנמצא %(field_type)s)"
 
@@ -4900,8 +4911,8 @@ msgstr ""
 #. odoo-python
 #: code:addons/web/models/models.py:0
 msgid ""
-"Only types %(supported_types)s are supported for filter (found type "
-"%(field_type)s)"
+"Only types %(supported_types)s are supported for filter (found type %"
+"(field_type)s)"
 msgstr ""
 "רק סוגים %(supported_types)s נתמכים עבור המסנן (סוג שנמצא %(field_type)s)"
 
@@ -6069,8 +6080,7 @@ msgstr "הגדרת עדיפות..."
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/datetime/datetime_field.js:0
 msgid ""
-"Set to true the full range input has to be display by default, even if "
-"empty."
+"Set to true the full range input has to be display by default, even if empty."
 msgstr ""
 
 #. module: web
@@ -6103,7 +6113,7 @@ msgstr "משותף"
 #. odoo-javascript
 #: code:addons/web/static/src/search/search_bar_menu/search_bar_menu.xml:0
 msgid "Shared filters"
-msgstr "סננים משותפים"
+msgstr "מסננים משותפים"
 
 #. module: web
 #. odoo-javascript
@@ -6531,12 +6541,24 @@ msgstr ""
 
 #. module: web
 #. odoo-javascript
+#: code:addons/web/static/src/core/utils/files.js:0
+msgid "The file is not an image, resizing is not possible"
+msgstr ""
+
+#. module: web
+#. odoo-javascript
 #: code:addons/web/static/src/core/errors/error_dialogs.xml:0
 #: code:addons/web/static/src/public/error_notifications.js:0
 msgid ""
-"The operation was interrupted. This usually means that the current operation"
-" is taking too much time."
+"The operation was interrupted. This usually means that the current operation "
+"is taking too much time."
 msgstr "הפעולה הופסקה. פירוש הדבר בדרך כלל שהפעולה הנוכחית אורכת זמן רב מדי."
+
+#. module: web
+#. odoo-javascript
+#: code:addons/web/static/src/core/utils/files.js:0
+msgid "The resizing of the image failed"
+msgstr ""
 
 #. module: web
 #. odoo-javascript
@@ -6548,8 +6570,8 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/utils/files.js:0
 msgid ""
-"The selected file (%(size)sB) is larger than the maximum allowed file size "
-"(%(maxSize)sB)."
+"The selected file (%(size)sB) is larger than the maximum allowed file size (%"
+"(maxSize)sB)."
 msgstr ""
 
 #. module: web
@@ -6697,7 +6719,8 @@ msgstr ""
 #: code:addons/web/static/src/views/fields/timezone_mismatch/timezone_mismatch_field.js:0
 msgid ""
 "Timezone Mismatch : This timezone is different from that of your browser.\n"
-"Please, set the same timezone as your browser's to avoid time discrepancies in your system."
+"Please, set the same timezone as your browser's to avoid time discrepancies "
+"in your system."
 msgstr ""
 
 #. module: web
@@ -6933,8 +6956,8 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/webclient/actions/reports/utils.js:0
 msgid ""
-"Unable to find Wkhtmltopdf on this system. The report will be shown in "
-"html.%(link)s"
+"Unable to find Wkhtmltopdf on this system. The report will be shown in html.%"
+"(link)s"
 msgstr ""
 
 #. module: web
@@ -7523,8 +7546,8 @@ msgstr ""
 #: code:addons/web/static/src/webclient/actions/reports/utils.js:0
 msgid ""
 "You should upgrade your version of Wkhtmltopdf to at least 0.12.0 in order "
-"to get a correct display of headers and footers as well as support for "
-"table-breaking between pages.%(link)s"
+"to get a correct display of headers and footers as well as support for table-"
+"breaking between pages.%(link)s"
 msgstr ""
 
 #. module: web

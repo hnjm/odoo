@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-12 01:50+0000\n"
-"PO-Revision-Date: 2025-09-15 15:58+0000\n"
+"POT-Creation-Date: 2025-10-16 18:37+0000\n"
+"PO-Revision-Date: 2025-10-20 16:04+0000\n"
 "Last-Translator: \"Fernanda Alvarez (mfar)\" <mfar@odoo.com>\n"
 "Language-Team: Spanish (Latin America) <https://translate.odoo.com/projects/"
 "odoo-18/account/es_419/>\n"
@@ -1005,14 +1005,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.portal_my_details_fields
 msgid ""
 "<small class=\"form-text text-muted\">\n"
-"                    You can choose how you want us to send your invoices, "
-"and with which electronic format.\n"
-"                </small>"
+"                        You can choose how you want us to send your "
+"invoices, and with which electronic format.\n"
+"                    </small>"
 msgstr ""
 "<small class=\"form-text text-muted\">\n"
-"                    Tú eliges cómo quieres que enviemos las facturas y en "
-"qué formato electrónico.\n"
-"                </small>"
+"                        Puedes elegir cómo quieres que te enviemos tus "
+"facturas y en qué formato electrónico.\n"
+"                    </small>"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.portal_my_invoices
@@ -4460,7 +4460,7 @@ msgstr "Diferencia por redondeo de base de efectivo"
 #. odoo-python
 #: code:addons/account/models/chart_template.py:0
 msgid "Cash basis transition account"
-msgstr "Cuenta de transición de base de efectivo"
+msgstr "Cuenta transitoria de base de efectivo"
 
 #. module: account
 #. odoo-python
@@ -4713,6 +4713,7 @@ msgstr "Cerrar"
 #: model:ir.model.fields,field_description:account.field_account_payment__payment_method_code
 #: model:ir.model.fields,field_description:account.field_account_payment_method__code
 #: model:ir.model.fields,field_description:account.field_account_payment_method_line__code
+#: model:ir.model.fields,field_description:account.field_account_payment_register__payment_method_code
 #: model:ir.model.fields,field_description:account.field_account_report_line__code
 #: model_terms:ir.ui.view,arch_db:account.view_account_form
 #: model_terms:ir.ui.view,arch_db:account.view_account_list
@@ -5057,9 +5058,9 @@ msgid ""
 "Conversion between Units of Measure can only occur if they belong to the "
 "same category. The conversion will be made based on the ratios."
 msgstr ""
-"La conversión entre las unidades de medidas solo puede ocurrir si pertenecen "
-"a la misma categoría. La conversión se realizará según los cambios "
-"establecidos."
+"La conversión entre unidades de medida solo puede ocurrir si pertenecen a la "
+"misma categoría. La conversión se realizará según las proporciones "
+"establecidas."
 
 #. module: account
 #: model_terms:ir.actions.act_window,help:account.action_amounts_to_settle
@@ -6251,6 +6252,13 @@ msgstr "Impuestos predeterminados que se utilizan cuando se compra el producto"
 #: model:ir.model.fields,help:account.field_product_template__taxes_id
 msgid "Default taxes used when selling the product"
 msgstr "Impuestos predeterminados que se utilizan cuando se vende el producto"
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid "Default value for 'company_id' for %(record)s is not an integer"
+msgstr ""
+"El valor predeterminado de \"company_id\" para %(record)s no es un entero"
 
 #. module: account
 #: model:account.account,name:account.1_deferred_revenue
@@ -12332,7 +12340,7 @@ msgstr "Referencia de pago"
 #: model:ir.model.fields,field_description:account.field_account_invoice_report__payment_state
 #: model:ir.model.fields,field_description:account.field_account_move__payment_state
 msgid "Payment Status"
-msgstr "Estado de pago"
+msgstr "Estado del pago"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_move_line__display_type__payment_term
@@ -12491,6 +12499,12 @@ msgid ""
 msgstr ""
 "Omitiremos los pagos relacionados con contactos que no tengan una cuenta "
 "bancaria especificada."
+
+#. module: account
+#: model:ir.model.fields,help:account.field_account_bank_statement_line__reconciled_payment_ids
+#: model:ir.model.fields,help:account.field_account_move__reconciled_payment_ids
+msgid "Payments that have been reconciled with this invoice."
+msgstr "Pagos que se conciliaron con esta factura."
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_payment_term_line__value__percent
@@ -13161,6 +13175,12 @@ msgstr "Facturas conciliadas"
 #: model:ir.model.fields,field_description:account.field_account_payment__reconciled_invoices_type
 msgid "Reconciled Invoices Type"
 msgstr "Tipo de facturas conciliadas"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__reconciled_payment_ids
+#: model:ir.model.fields,field_description:account.field_account_move__reconciled_payment_ids
+msgid "Reconciled Payments"
+msgstr "Pagos conciliados"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment__reconciled_statement_line_ids
@@ -13856,7 +13876,7 @@ msgstr "Escanear código de barras"
 #: code:addons/account/models/account_payment.py:0
 #: code:addons/account/wizard/account_payment_register.py:0
 msgid "Scan me with your banking app."
-msgstr "Escanéeme con su aplicación bancaria."
+msgstr "Escanéame con tu aplicación bancaria."
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_invoice_document
@@ -14707,7 +14727,7 @@ msgstr "El porcentaje de la línea del estado de cuenta no puede ser 0"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement__line_ids
 msgid "Statement lines"
-msgstr "Líneas de estado de cuenta"
+msgstr "Líneas del estado de cuenta"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__statement_line_ids
@@ -17500,7 +17520,7 @@ msgstr "Nombre del tipo"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.partner_view_buttons
 msgid "Type a message..."
-msgstr "Escriba un mensaje..."
+msgstr "Escribe un mensaje..."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_bank_statement_line__qr_code_method
@@ -19792,6 +19812,17 @@ msgid ""
 "{{ object.company_id.name }} Payment Receipt (Ref {{ object.name or 'n/a' }})"
 msgstr ""
 "{{ object.company_id.name }} Pago recibido (Ref {{ object.name or 'n/a' }})"
+
+#~ msgid ""
+#~ "<small class=\"form-text text-muted\">\n"
+#~ "                    You can choose how you want us to send your invoices, "
+#~ "and with which electronic format.\n"
+#~ "                </small>"
+#~ msgstr ""
+#~ "<small class=\"form-text text-muted\">\n"
+#~ "                    Tú eliges cómo quieres que enviemos las facturas y en "
+#~ "qué formato electrónico.\n"
+#~ "                </small>"
 
 #~ msgid ""
 #~ "Groupby feature isn't supported by aggregation engine. Please remove the "

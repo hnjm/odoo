@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-05 18:40+0000\n"
+"POT-Creation-Date: 2025-10-16 18:39+0000\n"
 "PO-Revision-Date: 2024-09-25 09:41+0000\n"
 "Last-Translator: Naser mars, 2025\n"
 "Language-Team: Persian (https://app.transifex.com/odoo/teams/41243/fa/)\n"
@@ -1959,6 +1959,12 @@ msgstr "مقایسه دو مقدار عددی، بازگشت ۱ اگر مساو�
 
 #. module: spreadsheet
 #. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
+msgid "Compute from totals"
+msgstr ""
+
+#. module: spreadsheet
+#. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "Compute the Matthews correlation coefficient of a dataset."
 msgstr "محاسبه ضریب همبستگی ماتیوز یک مجموعه داده."
@@ -3610,9 +3616,24 @@ msgstr ""
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
-msgid "Function [[FUNCTION_NAME]] expects number values for %s, but got a %s."
+msgid ""
+"Function [[FUNCTION_NAME]] expects number values for %s, but got a boolean."
 msgstr ""
-"تابع [[FUNCTION_NAME]] انتظار دارد مقادیر عددی برای %s، اما یک %s دریافت کرد."
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+msgid ""
+"Function [[FUNCTION_NAME]] expects number values for %s, but got a string."
+msgstr ""
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+msgid ""
+"Function [[FUNCTION_NAME]] expects number values for %s, but got an empty "
+"value."
+msgstr ""
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -8404,7 +8425,7 @@ msgstr "ماکس پوینت باید یک عدد باشد"
 
 #. module: spreadsheet
 #. odoo-javascript
-#: code:addons/spreadsheet/static/src/chart/odoo_menu/figure_component.js:0
+#: code:addons/spreadsheet/static/src/helpers/helpers.js:0
 msgid ""
 "The menu linked to this chart doesn't have an corresponding action. Please "
 "link the chart to another menu."
@@ -10890,12 +10911,8 @@ msgstr "تغییر مقدار از مقدار کلید"
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
-msgid ""
-"Value for parameter %d is missing, while the function [[FUNCTION_NAME]] "
-"expect a number or a range."
+msgid "Value for parameter %s is missing in [[FUNCTION_NAME]]."
 msgstr ""
-"مقدار برای پارامتر %d موجود نیست، در حالی که تابع [[FUNCTION_NAME]] انتظار "
-"یک عدد یا یک بازه را دارد."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -11734,6 +11751,19 @@ msgstr "دیروز"
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "zero"
 msgstr ""
+
+#~ msgid ""
+#~ "Function [[FUNCTION_NAME]] expects number values for %s, but got a %s."
+#~ msgstr ""
+#~ "تابع [[FUNCTION_NAME]] انتظار دارد مقادیر عددی برای %s، اما یک %s دریافت "
+#~ "کرد."
+
+#~ msgid ""
+#~ "Value for parameter %d is missing, while the function [[FUNCTION_NAME]] "
+#~ "expect a number or a range."
+#~ msgstr ""
+#~ "مقدار برای پارامتر %d موجود نیست، در حالی که تابع [[FUNCTION_NAME]] "
+#~ "انتظار یک عدد یا یک بازه را دارد."
 
 #~ msgid "Cannot multiply matrices : incompatible matrices size."
 #~ msgstr "نمی‌توان ماتریس‌ها را ضرب کرد: اندازه ماتریس‌ها ناسازگار است."

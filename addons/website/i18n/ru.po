@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-08 18:37+0000\n"
-"PO-Revision-Date: 2025-09-01 21:17+0000\n"
+"POT-Creation-Date: 2025-10-11 02:15+0000\n"
+"PO-Revision-Date: 2025-10-21 22:20+0000\n"
 "Last-Translator: \"Anastasiia Koroleva (koan)\" <koan@odoo.com>\n"
 "Language-Team: Russian <https://translate.odoo.com/projects/odoo-18/website/"
 "ru/>\n"
@@ -23,8 +23,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
-"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || ("
+"n%100>=11 && n%100<=14)? 2 : 3);\n"
 "X-Generator: Weblate 5.12.2\n"
 
 #. module: website
@@ -671,6 +671,8 @@ msgid ""
 "75% of clients use the service for over a decade consistently.<br/>This "
 "showcases remarkable loyalty and satisfaction with the quality provided."
 msgstr ""
+"75% клиентов пользуются услугами более десяти лет.<br/>Это демонстрирует "
+"исключительную лояльность и удовлетворенность предоставляемым качеством."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_map_options
@@ -700,7 +702,8 @@ msgstr "<b>Нажмите «Редактировать»</b> в выпадающ
 #: code:addons/website/static/src/js/tours/tour_utils.js:0
 msgid "<b>Click Edit</b> to start designing your homepage."
 msgstr ""
-"<b>Нажмите для редакции</ b>, чтобы начать проектирование главной страницы."
+"<b>Нажмите «Редактировать»</b>, чтобы начать работу над вашей главной "
+"страницей."
 
 #. module: website
 #. odoo-javascript
@@ -1676,42 +1679,42 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_grid
 msgid "<span class=\"display-5\">$50M</span>"
-msgstr ""
+msgstr "<span class=\"display-5\">50 млн $</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_grid
 msgid "<span class=\"display-5\">+225</span>"
-msgstr ""
+msgstr "<span class=\"display-5\">+225</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_grid
 msgid "<span class=\"display-5\">100,000</span>"
-msgstr ""
+msgstr "<span class=\"display-5\">100 000</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_grid
 msgid "<span class=\"display-5\">235,403</span>"
-msgstr ""
+msgstr "<span class=\"display-5\">235 403</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_grid
 msgid "<span class=\"display-5\">45,958</span>"
-msgstr ""
+msgstr "<span class=\"display-5\">45 958</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_grid
 msgid "<span class=\"display-5\">4x</span>"
-msgstr ""
+msgstr "<span class=\"display-5\">4x</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_grid
 msgid "<span class=\"display-5\">54%</span>"
-msgstr ""
+msgstr "<span class=\"display-5\">54%</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_grid
 msgid "<span class=\"display-5\">85%</span>"
-msgstr ""
+msgstr "<span class=\"display-5\">85%</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_accordion
@@ -1733,32 +1736,32 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_list
 msgid "<span class=\"h2-fs\">$50M</span>"
-msgstr ""
+msgstr "<span class=\"h2-fs\">50 млн $</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_list
 msgid "<span class=\"h2-fs\">100,000</span>"
-msgstr ""
+msgstr "<span class=\"h2-fs\">100 000</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_list
 msgid "<span class=\"h2-fs\">15%</span>"
-msgstr ""
+msgstr "<span class=\"h2-fs\">15%</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_list
 msgid "<span class=\"h2-fs\">20+</span>"
-msgstr ""
+msgstr "<span class=\"h2-fs\">20+</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_list
 msgid "<span class=\"h2-fs\">4x</span>"
-msgstr ""
+msgstr "<span class=\"h2-fs\">4x</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_list
 msgid "<span class=\"h2-fs\">85%</span>"
-msgstr ""
+msgstr "<span class=\"h2-fs\">85%</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.language_selector_inline
@@ -1996,6 +1999,8 @@ msgid ""
 "<span class=\"s_number display-1-fs\">12k</span><br/>\n"
 "                                <span class=\"h5-fs\">Useful options</span>"
 msgstr ""
+"<span class=\"s_number display-1-fs\">12 тыс.</span><br/>\n"
+"                                <span class=\"h5-fs\">полезных опций</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers
@@ -2003,6 +2008,8 @@ msgid ""
 "<span class=\"s_number display-1-fs\">45%</span><br/>\n"
 "                                <span class=\"h5-fs\">More leads</span>"
 msgstr ""
+"<span class=\"s_number display-1-fs\">На 45%</span><br/>\n"
+"                                <span class=\"h5-fs\">больше лидов</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers
@@ -2010,16 +2017,19 @@ msgid ""
 "<span class=\"s_number display-1-fs\">8+</span><br/>\n"
 "                                <span class=\"h5-fs\">Amazing pages</span>"
 msgstr ""
+"<span class=\"s_number display-1-fs\">8+</span><br/>\n"
+"                                <span class=\"h5-fs\">потрясающих "
+"страниц</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_charts
 msgid "<span class=\"s_progress_bar_text small d-none\">25%</span>"
-msgstr ""
+msgstr "<span class=\"s_progress_bar_text small d-none\">25%</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_charts
 msgid "<span class=\"s_progress_bar_text small d-none\">80%</span>"
-msgstr ""
+msgstr "<span class=\"s_progress_bar_text small d-none\">80%</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_progress_bar
@@ -2429,7 +2439,7 @@ msgstr "Карта и список ваших магазинов"
 #. odoo-python
 #: code:addons/website/models/website_menu.py:0
 msgid "A mega menu cannot have a parent or child menu."
-msgstr ""
+msgstr "Мега-меню не может иметь родительских или дочерних пунктов."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_product_catalog
@@ -2753,7 +2763,7 @@ msgstr "Добавьте эффекты выделения текста"
 #. odoo-python
 #: code:addons/website/models/res_config_settings.py:0
 msgid "Add Website"
-msgstr ""
+msgstr "Добавить вебсайт"
 
 #. module: website
 #. odoo-javascript
@@ -4450,7 +4460,6 @@ msgstr "Клиенты сэкономили 32 миллиона долларов
 #. odoo-javascript
 #: code:addons/website/static/src/components/resource_editor/resource_editor.xml:0
 #: code:addons/website/static/src/components/views/theme_preview.xml:0
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 #: code:addons/website/static/src/xml/website.xml:0
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
@@ -4583,7 +4592,7 @@ msgstr "Ориентация на сообщество <br class=\"d-none d-lg-i
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_masonry_block_alternation_text_template
 msgid "Community Focus"
-msgstr ""
+msgstr "Фокус на сообществе"
 
 #. module: website
 #: model:ir.model,name:website.model_res_company
@@ -5213,7 +5222,7 @@ msgstr "Аккаунт клиента"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_grid
 msgid "Customer Retention"
-msgstr ""
+msgstr "Удержание клиентов"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_cards_grid
@@ -6180,7 +6189,7 @@ msgstr "Редактировать %s"
 #. odoo-javascript
 #: code:addons/website/static/src/systray_items/edit_website.xml:0
 msgid "Edit -"
-msgstr ""
+msgstr "Редактировать –"
 
 #. module: website
 #. odoo-javascript
@@ -7554,7 +7563,7 @@ msgstr "Консоль Google Search"
 #. module: website
 #: model:ir.model.fields,field_description:website.field_res_config_settings__google_search_console
 msgid "Google Search Console Key"
-msgstr ""
+msgstr "Ключ Google Search Console"
 
 #. module: website
 #: model:ir.model.fields,help:website.field_res_config_settings__google_search_console
@@ -7616,7 +7625,7 @@ msgstr "Большее <br class=\"d-none d-lg-inline\"/>влияние"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_masonry_block_alternation_text_template
 msgid "Greater Impact"
-msgstr ""
+msgstr "Больший эффект"
 
 #. module: website
 #: model:ir.model.fields.selection,name:website.selection__website_controller_page__default_layout__grid
@@ -8145,7 +8154,7 @@ msgstr "Иконка"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_accordion_options
 msgid "Icon Position"
-msgstr ""
+msgstr "Позиция иконки"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_comparisons
@@ -8336,7 +8345,6 @@ msgstr "Галерея изображений"
 
 #. module: website
 #. odoo-javascript
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 msgid "Image Gallery Dialog"
 msgstr "Диалог галереи изображений"
@@ -8788,7 +8796,7 @@ msgstr "Недействительный API-ключ. Google вернул сл�
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_grid
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_list
 msgid "Inventory turnover"
-msgstr ""
+msgstr "Оборачиваемость запасов"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_image_gallery_options
@@ -9349,7 +9357,7 @@ msgstr "Текст Чата"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_carousel_intro
 msgid "Leading the future with innovation and strategy"
-msgstr "Лидерство в будущем с инновациями и стратегией"
+msgstr "Создаем будущее с помощью инноваций и стратегии"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_image_text_box
@@ -9988,13 +9996,14 @@ msgstr "Меню"
 #. odoo-python
 #: code:addons/website/models/website_menu.py:0
 msgid "Menus cannot have more than two levels of hierarchy."
-msgstr ""
+msgstr "Меню не могут иметь более двух уровней вложенности."
 
 #. module: website
 #. odoo-python
 #: code:addons/website/models/website_menu.py:0
 msgid "Menus with child menus cannot be added as a submenu."
 msgstr ""
+"Пункты меню, имеющие дочерние пункты, нельзя добавлять в качестве подменю."
 
 #. module: website
 #: model:ir.model,name:website.model_base_partner_merge_automatic_wizard
@@ -10489,7 +10498,6 @@ msgstr "Рассылка новостей"
 #. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/snippets/s_dynamic_snippet_carousel/000.xml:0
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 #: model_terms:ir.ui.view,arch_db:website.s_carousel
@@ -10868,7 +10876,7 @@ msgstr "Онлайн"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_grid
 msgid "Online Members"
-msgstr ""
+msgstr "Онлайн-участники"
 
 #. module: website
 #. odoo-javascript
@@ -11839,7 +11847,6 @@ msgstr "Предварительный просмотр этого URL-адре�
 #. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/snippets/s_dynamic_snippet_carousel/000.xml:0
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 #: model_terms:ir.ui.view,arch_db:website.s_carousel
@@ -12007,7 +12014,7 @@ msgstr "Проекторы"
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_grid
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_list
 msgid "Projects deployed"
-msgstr ""
+msgstr "Развернутые проекты"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_mega_menu_menus_logos
@@ -12094,7 +12101,7 @@ msgstr "Яркое изображение"
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website__domain_punycode
 msgid "Punycode Domain"
-msgstr ""
+msgstr "Домен в Punycode"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.cookie_policy
@@ -12529,7 +12536,7 @@ msgstr "Ограниченная группа"
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_grid
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_list
 msgid "Revenue Growth"
-msgstr ""
+msgstr "Рост выручки"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options_carousel_intro
@@ -14222,6 +14229,7 @@ msgstr "Предел должен находиться в диапазоне о�
 #: code:addons/website/static/src/client_actions/configurator/configurator.js:0
 msgid "The logo is too large. Please upload a logo smaller than 2.5 MB."
 msgstr ""
+"Логотип слишком большой. Пожалуйста, загрузите логотип размером менее 2,5 МБ."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_website_form_options
@@ -14250,6 +14258,12 @@ msgstr ""
 #: model:ir.model.fields,help:website.field_website_controller_page__name_slugified
 msgid "The name of the page usable in a URL"
 msgstr "Имя страницы, используемое в URL"
+
+#. module: website
+#. odoo-python
+#: code:addons/website/models/website.py:0
+msgid "The provided website domain is not a valid URL."
+msgstr "Указанный домен сайта не является действительным URL-адресом."
 
 #. module: website
 #. odoo-javascript
@@ -14968,7 +14982,7 @@ msgstr "Переход"
 #. odoo-javascript
 #: code:addons/website/static/src/systray_items/edit_website.xml:0
 msgid "Translate -"
-msgstr ""
+msgstr "Перевести –"
 
 #. module: website
 #. odoo-javascript
@@ -15083,7 +15097,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/website/static/src/xml/html_editor.xml:0
 msgid "Type your URL"
-msgstr ""
+msgstr "Введите ваш URL-адрес"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_controller_page__name_slugified
@@ -15111,7 +15125,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/website/models/website_rewrite.py:0
 msgid "URL must not start with '#'."
-msgstr ""
+msgstr "URL не должен начинаться с символа «#»."
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_rewrite__url_to
@@ -15439,7 +15453,7 @@ msgstr "Пользователь"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_list
 msgid "User Retention"
-msgstr ""
+msgstr "Удержание пользователей"
 
 #. module: website
 #: model:ir.model,name:website.model_website_custom_blocked_third_party_domains
@@ -16324,7 +16338,7 @@ msgstr "Переработка веб-сайта"
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_grid
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_list
 msgid "Website visitors"
-msgstr ""
+msgstr "Посетители вебсайта"
 
 #. module: website
 #: model:ir.actions.server,name:website.ir_actions_server_website_analytics
@@ -16952,7 +16966,7 @@ msgstr "и"
 #. odoo-python
 #: code:addons/website/models/website_rewrite.py:0
 msgid "base URL of 'URL to' should not be same as 'URL from'."
-msgstr ""
+msgstr "базовый URL «URL куда» не должен совпадать с «URL откуда»."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippets

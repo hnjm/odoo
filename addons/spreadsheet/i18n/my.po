@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-05 18:40+0000\n"
-"PO-Revision-Date: 2025-09-20 22:20+0000\n"
+"POT-Creation-Date: 2025-10-16 18:39+0000\n"
+"PO-Revision-Date: 2025-10-16 05:12+0000\n"
 "Last-Translator: Oakarmin Iron <oakarminiron@gmail.com>\n"
 "Language-Team: Burmese <https://translate.odoo.com/projects/odoo-18/"
 "spreadsheet/my/>\n"
@@ -565,7 +565,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "Accounting"
-msgstr ""
+msgstr "စာရင်းအင်း"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -801,7 +801,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "All"
-msgstr ""
+msgstr "အားလုံး"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -1168,7 +1168,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 msgid "Ascending"
-msgstr ""
+msgstr "ငယ်စဉ်ကြီး"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -1721,7 +1721,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 msgid "Code"
-msgstr ""
+msgstr "ကုဒ်"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -1805,7 +1805,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 msgid "Colors"
-msgstr ""
+msgstr "အရောင်များ"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -1859,7 +1859,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "Combo"
-msgstr ""
+msgstr "ကွန်ဘို"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -1871,6 +1871,12 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "Compare two numeric values, returning 1 if they're equal."
+msgstr ""
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
+msgid "Compute from totals"
 msgstr ""
 
 #. module: spreadsheet
@@ -1962,7 +1968,7 @@ msgstr "ပြင်ဆင်ရန်"
 #: code:addons/spreadsheet/static/src/hooks.js:0
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 msgid "Confirm"
-msgstr ""
+msgstr "အတည်ပြု"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -2103,7 +2109,7 @@ msgstr ""
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #: code:addons/spreadsheet/static/src/pivot/pivot_helpers.js:0
 msgid "Count"
-msgstr ""
+msgstr "အရေအတွက်"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -2208,7 +2214,7 @@ msgstr "ငွေကြေး"
 #. module: spreadsheet
 #: model:ir.model,name:spreadsheet.model_res_currency_rate
 msgid "Currency Rate"
-msgstr ""
+msgstr "ငွေလဲနှုန်း"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -2541,7 +2547,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "Day of Week"
-msgstr ""
+msgstr "ရက်"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -2706,7 +2712,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 msgid "Descending"
-msgstr ""
+msgstr "ကြီးစဉ်ငယ်"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -2724,7 +2730,7 @@ msgstr "ဒီဇိုင်း"
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "Detect automatically"
-msgstr ""
+msgstr "အလိုအလျှောက်သိ"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -3075,7 +3081,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "Error"
-msgstr ""
+msgstr "အယ်ရာ"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -3186,7 +3192,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "File"
-msgstr ""
+msgstr "ဖိုင်"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -3344,7 +3350,7 @@ msgstr ""
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 msgid "Format"
-msgstr ""
+msgstr "ဖော်မက်"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -3511,7 +3517,23 @@ msgstr ""
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
-msgid "Function [[FUNCTION_NAME]] expects number values for %s, but got a %s."
+msgid ""
+"Function [[FUNCTION_NAME]] expects number values for %s, but got a boolean."
+msgstr ""
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+msgid ""
+"Function [[FUNCTION_NAME]] expects number values for %s, but got a string."
+msgstr ""
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+msgid ""
+"Function [[FUNCTION_NAME]] expects number values for %s, but got an empty "
+"value."
 msgstr ""
 
 #. module: spreadsheet
@@ -3902,7 +3924,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "Image"
-msgstr ""
+msgstr "ရုပ်ပုံ"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -4520,7 +4542,7 @@ msgstr ""
 #: code:addons/spreadsheet/static/src/chart/odoo_chart/odoo_line_chart.js:0
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "Line"
-msgstr ""
+msgstr "လိုင်း"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -4551,7 +4573,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 msgid "Link URL"
-msgstr ""
+msgstr "လင့် URL"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -4709,7 +4731,7 @@ msgstr ""
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #: code:addons/spreadsheet/static/src/pivot/pivot_helpers.js:0
 msgid "Maximum"
-msgstr ""
+msgstr "အများဆုံး"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -4746,7 +4768,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 msgid "Measures"
-msgstr ""
+msgstr "တိုင်းတာချက်များ"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -4758,7 +4780,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "Medium"
-msgstr ""
+msgstr "တဆင့် (သို့) ကြားခံ"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -4824,7 +4846,7 @@ msgstr ""
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #: code:addons/spreadsheet/static/src/pivot/pivot_helpers.js:0
 msgid "Minimum"
-msgstr ""
+msgstr "အနဲဆုံး"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -4884,13 +4906,13 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "Misc"
-msgstr ""
+msgstr "အထွေထွေ"
 
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "Miscellaneous"
-msgstr ""
+msgstr "အထွေထွေ"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -5138,7 +5160,7 @@ msgstr ""
 #: code:addons/spreadsheet/static/src/pivot/pivot_model.js:0
 #: code:addons/spreadsheet/static/src/pivot/pivot_time_adapters.js:0
 msgid "None"
-msgstr ""
+msgstr "(None)မသတ်မှတ်"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -5538,7 +5560,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "Power"
-msgstr ""
+msgstr "ပါဝါ"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -5562,7 +5584,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 msgid "Preview"
-msgstr ""
+msgstr "ပရီဗျူး"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -5616,7 +5638,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "Purple"
-msgstr ""
+msgstr "ပါပယ်"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -6132,7 +6154,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 msgid "Search"
-msgstr ""
+msgstr "ရှာဖွေ"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -6256,7 +6278,7 @@ msgstr "ဆက်တင်များ"
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/components/share_button/share_button.xml:0
 msgid "Share"
-msgstr ""
+msgstr "ဝေမျှ"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -8171,7 +8193,7 @@ msgstr ""
 
 #. module: spreadsheet
 #. odoo-javascript
-#: code:addons/spreadsheet/static/src/chart/odoo_menu/figure_component.js:0
+#: code:addons/spreadsheet/static/src/helpers/helpers.js:0
 msgid ""
 "The menu linked to this chart doesn't have an corresponding action. Please "
 "link the chart to another menu."
@@ -10314,7 +10336,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 msgid "Title"
-msgstr ""
+msgstr "ခေါင်းစဉ်"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -10406,7 +10428,7 @@ msgstr "အင်္ဂါ"
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 msgid "Type"
-msgstr ""
+msgstr "အမျိုးအစား"
 
 #. module: spreadsheet
 #. odoo-python
@@ -10548,7 +10570,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 msgid "Update"
-msgstr ""
+msgstr "အပ်ဒိတ်"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -10590,9 +10612,7 @@ msgstr ""
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
-msgid ""
-"Value for parameter %d is missing, while the function [[FUNCTION_NAME]] "
-"expect a number or a range."
+msgid "Value for parameter %s is missing in [[FUNCTION_NAME]]."
 msgstr ""
 
 #. module: spreadsheet
@@ -10804,7 +10824,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "View"
-msgstr ""
+msgstr "ဗျူး"
 
 #. module: spreadsheet
 #. odoo-javascript

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-22 18:38+0000\n"
-"PO-Revision-Date: 2025-09-20 22:20+0000\n"
+"POT-Creation-Date: 2025-10-03 18:38+0000\n"
+"PO-Revision-Date: 2025-10-16 05:12+0000\n"
 "Last-Translator: Oakarmin Iron <oakarminiron@gmail.com>\n"
 "Language-Team: Burmese <https://translate.odoo.com/projects/odoo-18/mail/my/>"
 "\n"
@@ -637,7 +637,7 @@ msgstr "အကောင့်"
 #: model:ir.model.fields,field_description:mail.field_mail_activity_schedule__activity_category
 #: model:ir.model.fields,field_description:mail.field_mail_activity_type__category
 msgid "Action"
-msgstr ""
+msgstr "အက်ရှင်"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_discuss_channel__message_needaction
@@ -976,7 +976,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mail.view_email_server_form
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_form
 msgid "Advanced"
-msgstr ""
+msgstr "အထူးပြု"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.view_email_server_form
@@ -1840,7 +1840,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:mail.selection__mail_mail__state__cancel
 #: model:ir.model.fields.selection,name:mail.selection__mail_notification__notification_status__canceled
 msgid "Cancelled"
-msgstr ""
+msgstr "ပယ်ဖျက်ပြီး"
 
 #. module: mail
 #: model:ir.model,name:mail.model_mail_canned_response
@@ -1993,7 +1993,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mail.discuss_channel_rtc_session_view_search
 #: model_terms:ir.ui.view,arch_db:mail.discuss_channel_view_kanban
 msgid "Channel"
-msgstr ""
+msgstr "ချယ်နယ်"
 
 #. module: mail
 #: model:ir.model,name:mail.model_discuss_channel_member
@@ -2042,7 +2042,7 @@ msgstr ""
 #: model:ir.ui.menu,name:mail.discuss_channel_menu_settings
 #: model_terms:ir.ui.view,arch_db:mail.discuss_channel_member_view_tree
 msgid "Channels"
-msgstr ""
+msgstr "ချယ်နယ်များ"
 
 #. module: mail
 #: model:ir.actions.act_window,name:mail.discuss_channel_member_action
@@ -2074,7 +2074,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/mail/static/src/core/web/messaging_menu_patch.xml:0
 msgid "Chats"
-msgstr ""
+msgstr "ချက်များ"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_compose_message__use_exclusion_list
@@ -2189,7 +2189,7 @@ msgstr ""
 #. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__discuss_channel_member__fold_state__closed
 msgid "Closed"
-msgstr ""
+msgstr "ပိတ်ပြီး"
 
 #. module: mail
 #. odoo-javascript
@@ -2326,7 +2326,7 @@ msgstr "အတည်ပြုခြင်း"
 #. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__fetchmail_server__state__done
 msgid "Confirmed"
-msgstr ""
+msgstr "အတည်ပြုပြီး"
 
 #. module: mail
 #. odoo-javascript
@@ -2434,7 +2434,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mail.email_template_form
 #: model_terms:ir.ui.view,arch_db:mail.view_message_search
 msgid "Content"
-msgstr ""
+msgstr "ပါဝင်သောအကြောင်းအရာ"
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_canned_response__substitution
@@ -2450,7 +2450,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mail.field_mail_message__body
 #: model:ir.model.fields,field_description:mail.field_mail_scheduled_message__body
 msgid "Contents"
-msgstr ""
+msgstr "ပါဝင်သောအကြောင်းအရာများ"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_discuss_channel_member__fold_state
@@ -3142,7 +3142,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_form
 #: model_terms:ir.ui.view,arch_db:mail.view_document_file_kanban
 msgid "Document"
-msgstr ""
+msgstr "စာရွက်စာတမ်း"
 
 #. module: mail
 #: model:ir.model,name:mail.model_mail_followers
@@ -3586,7 +3586,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mail.field_mail_mail__is_internal
 #: model:ir.model.fields,field_description:mail.field_mail_message__is_internal
 msgid "Employee Only"
-msgstr ""
+msgstr "ဝန်ထမ်းများသာ"
 
 #. module: mail
 #. odoo-javascript
@@ -3668,7 +3668,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:mail.selection__survey_survey__activity_exception_decoration__danger
 #: model:ir.model.fields.selection,name:mail.selection__survey_user_input__activity_exception_decoration__danger
 msgid "Error"
-msgstr ""
+msgstr "အယ်ရာ"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_template_preview__error_msg
@@ -3759,7 +3759,7 @@ msgstr ""
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_search
 msgid "Failed"
-msgstr ""
+msgstr "မအောင်မြင်"
 
 #. module: mail
 #. odoo-javascript
@@ -3944,18 +3944,18 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/mail/static/src/chatter/web/chatter.xml:0
 msgid "Files"
-msgstr ""
+msgstr "ဖိုင်များ"
 
 #. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/core/common/thread_actions.js:0
 msgid "Fold"
-msgstr ""
+msgstr "ခေါက်သိမ်း"
 
 #. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__discuss_channel_member__fold_state__folded
 msgid "Folded"
-msgstr ""
+msgstr "ခေါက်သိမ်းထားပြီး"
 
 #. module: mail
 #. odoo-javascript
@@ -4187,7 +4187,7 @@ msgstr "အုပ်စု"
 #: model_terms:ir.ui.view,arch_db:mail.mail_alias_view_search
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_search
 msgid "Group By"
-msgstr ""
+msgstr "အုပ်စုအလိုက်"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.discuss_channel_view_form
@@ -4267,12 +4267,12 @@ msgstr ""
 #. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__res_users__notification_type__email
 msgid "Handle by Emails"
-msgstr ""
+msgstr "အီးမေးလ် ဖြင့်"
 
 #. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__res_users__notification_type__inbox
 msgid "Handle in Odoo"
-msgstr ""
+msgstr "အိုဒူး အတွင်း"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity_schedule__has_error
@@ -4390,7 +4390,7 @@ msgstr ""
 #: code:addons/mail/static/src/core/web/store_service_patch.js:0
 #: code:addons/mail/static/src/core/web/thread_patch.xml:0
 msgid "History"
-msgstr ""
+msgstr "သမိုင်း"
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_fetchmail_server__server
@@ -4519,7 +4519,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mail.field_res_partner__activity_exception_icon
 #: model:ir.model.fields,field_description:mail.field_res_users__activity_exception_icon
 msgid "Icon"
-msgstr ""
+msgstr "အိုင်ကွန်"
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_activity_mixin__activity_exception_icon
@@ -4671,7 +4671,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mail.field_mail_guest__image_1920
 #: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_image
 msgid "Image"
-msgstr ""
+msgstr "ရုပ်ပုံ"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_guest__image_1024
@@ -4728,7 +4728,7 @@ msgstr ""
 #: code:addons/mail/static/src/core/web/store_service_patch.js:0
 #: model:ir.model.fields.selection,name:mail.selection__mail_notification__notification_type__inbox
 msgid "Inbox"
-msgstr ""
+msgstr "အင်ဘောက်စ်"
 
 #. module: mail
 #. odoo-javascript
@@ -4960,7 +4960,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/core/common/channel_invitation.js:0
 msgid "Invite"
-msgstr ""
+msgstr "ဖိတ်"
 
 #. module: mail
 #. odoo-javascript
@@ -5189,7 +5189,7 @@ msgstr ""
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
 msgid "Key"
-msgstr ""
+msgstr "ကီး"
 
 #. module: mail
 #. odoo-python
@@ -5279,7 +5279,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mail.field_mail_wizard_invite__write_uid
 #: model:ir.model.fields,field_description:mail.field_res_users_settings_volumes__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "နောက်ဆုံးပြင်ဆင်သူ"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_discuss_channel__write_date
@@ -5790,12 +5790,12 @@ msgstr ""
 #. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__res_config_settings__tenor_content_filter__medium
 msgid "Medium"
-msgstr ""
+msgstr "တဆင့် (သို့) ကြားခံ"
 
 #. module: mail
 #: model:mail.activity.type,name:mail.mail_activity_data_meeting
 msgid "Meeting"
-msgstr ""
+msgstr "တွေ့ဆုံခြင်း"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_discuss_channel__member_count
@@ -5809,7 +5809,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mail.field_discuss_channel__channel_member_ids
 #: model_terms:ir.ui.view,arch_db:mail.discuss_channel_view_form
 msgid "Members"
-msgstr ""
+msgstr "အဖွဲ့ဝင်များ"
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_discuss_channel__group_ids
@@ -5834,7 +5834,7 @@ msgstr ""
 #. module: mail
 #: model:ir.model,name:mail.model_ir_ui_menu
 msgid "Menu"
-msgstr ""
+msgstr "မီနူး"
 
 #. module: mail
 #: model:ir.model,name:mail.model_base_partner_merge_automatic_wizard
@@ -5862,7 +5862,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:mail.selection__ir_actions_server__mail_post_method__comment
 #: model_terms:ir.ui.view,arch_db:mail.mail_message_view_form
 msgid "Message"
-msgstr ""
+msgstr "မက်ဆေ့ဂျ်"
 
 #. module: mail
 #. odoo-javascript
@@ -6035,7 +6035,7 @@ msgstr ""
 #: model:ir.ui.menu,name:mail.menu_mail_message
 #: model_terms:ir.ui.view,arch_db:mail.view_message_tree
 msgid "Messages"
-msgstr ""
+msgstr "မက်ဆေ့ဂျ်များ"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.view_message_search
@@ -6245,7 +6245,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/core/web/messaging_menu_patch.xml:0
 msgid "New Message"
-msgstr ""
+msgstr "မက်ဆေ့ဂျ် အသစ်"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_discuss_channel_member__new_message_separator
@@ -6288,7 +6288,7 @@ msgstr ""
 #: code:addons/mail/static/src/core/common/chat_window_model.js:0
 #: code:addons/mail/static/src/core/common/out_of_focus_service.js:0
 msgid "New message"
-msgstr "စာတို အသစ်"
+msgstr "မက်ဆေ့ဂျ် အသစ်"
 
 #. module: mail
 #. odoo-javascript
@@ -6336,7 +6336,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/mail/static/src/chatter/web/mail_composer_schedule_dialog.xml:0
 msgid "Next Monday Morning"
-msgstr ""
+msgstr "လာမည့် တနင်္လာ နံနက်"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity__has_recommended_activities
@@ -6347,7 +6347,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/mail/static/src/core/web/message_patch.js:0
 msgid "No"
-msgstr ""
+msgstr "မဟုတ်ဘူး"
 
 #. module: mail
 #. odoo-python
@@ -6508,7 +6508,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:mail.selection__mail_activity_type__category__default
 #: model_terms:ir.ui.view,arch_db:mail.mail_notification_layout
 msgid "None"
-msgstr ""
+msgstr "(None)မသတ်မှတ်"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_gateway_allowed__email_normalized
@@ -6544,7 +6544,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:mail.selection__ir_actions_server__mail_post_method__note
 #: model:mail.message.subtype,name:mail.mt_note
 msgid "Note"
-msgstr ""
+msgstr "မှတ်စု"
 
 #. module: mail
 #. odoo-javascript
@@ -6560,7 +6560,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mail.mail_notification_view_form
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_search
 msgid "Notification"
-msgstr ""
+msgstr "နိုတီ"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_mail__is_notification
@@ -6700,7 +6700,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mail.field_res_partner__message_has_error_counter
 #: model:ir.model.fields,field_description:mail.field_res_users__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "အယ်ရာ အရေအတွက်"
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_discuss_channel__message_needaction_counter
@@ -6730,7 +6730,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mail.mail_notification_layout
 #: model_terms:ir.ui.view,arch_db:mail.mail_notification_light
 msgid "Odoo"
-msgstr ""
+msgstr "အိုဒူး"
 
 #. module: mail
 #. odoo-javascript
@@ -6871,7 +6871,7 @@ msgstr ""
 #: code:addons/mail/static/src/core/common/thread_actions.js:0
 #: model:ir.model.fields.selection,name:mail.selection__discuss_channel_member__fold_state__open
 msgid "Open"
-msgstr ""
+msgstr "ဖွင့်"
 
 #. module: mail
 #. odoo-javascript
@@ -7227,7 +7227,7 @@ msgstr ""
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_discuss_channel__channel_partner_ids
 msgid "Partners"
-msgstr ""
+msgstr "ပါတနာများ"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_mail__notified_partner_ids
@@ -7314,7 +7314,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mail.field_mail_activity_schedule__plan_id
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_plan_view_search
 msgid "Plan"
-msgstr ""
+msgstr "အစီအစဉ်(Plan)"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity_schedule__plan_available_ids
@@ -7324,22 +7324,22 @@ msgstr ""
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity_schedule__plan_date
 msgid "Plan Date"
-msgstr ""
+msgstr "စီစဉ်သောနေ့"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_plan_view_form
 msgid "Plan Name"
-msgstr ""
+msgstr "အစီအစဉ် အမည်"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity_schedule__plan_summary
 msgid "Plan Summary"
-msgstr ""
+msgstr "အစီအစဉ် အကျဉ်း"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_schedule_view_form
 msgid "Plan summary"
-msgstr ""
+msgstr "အစီအစဉ် အကျဉ်း"
 
 #. module: mail
 #. odoo-javascript
@@ -7397,7 +7397,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:mail.selection__survey_survey__activity_state__planned
 #: model:ir.model.fields.selection,name:mail.selection__survey_user_input__activity_state__planned
 msgid "Planned"
-msgstr ""
+msgstr "စီစဉ်ပြီး"
 
 #. module: mail
 #. odoo-javascript
@@ -7414,13 +7414,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_plan_view_form
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_plan_view_tree
 msgid "Planning"
-msgstr ""
+msgstr "စီစဉ်ခြင်း"
 
 #. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/voice_message/common/voice_player.xml:0
 msgid "Play"
-msgstr ""
+msgstr "ပလေး"
 
 #. module: mail
 #. odoo-javascript
@@ -7565,7 +7565,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mail.field_mail_message__preview
 #: model_terms:ir.ui.view,arch_db:mail.email_template_form
 msgid "Preview"
-msgstr ""
+msgstr "ပရီဗျူး"
 
 #. module: mail
 #. odoo-javascript
@@ -7752,7 +7752,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/mail/static/src/core/common/notification_model.js:0
 msgid "Ready"
-msgstr ""
+msgstr "အဆင်သင့်"
 
 #. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__mail_notification__notification_status__ready
@@ -7769,7 +7769,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mail.field_mail_blacklist_remove__reason
 #: model_terms:ir.ui.view,arch_db:mail.mail_blacklist_remove_view_form
 msgid "Reason"
-msgstr ""
+msgstr "အကြောင်းပြချက်"
 
 #. module: mail
 #: model:res.groups,name:mail.group_mail_notification_type_inbox
@@ -7844,7 +7844,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/call/common/call_invitation.xml:0
 msgid "Refuse"
-msgstr ""
+msgstr "ငြင်းဆို"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_bounce_catchall
@@ -7931,7 +7931,7 @@ msgstr ""
 #: code:addons/mail/static/src/core/common/link_preview.xml:0
 #: code:addons/mail/static/src/core/common/message_reaction_menu.xml:0
 msgid "Remove"
-msgstr ""
+msgstr "ဖယ်ရှား"
 
 #. module: mail
 #. odoo-javascript
@@ -8113,7 +8113,7 @@ msgstr "တာဝန်ခံ"
 #: model:ir.model.fields,field_description:mail.field_res_partner__activity_user_id
 #: model:ir.model.fields,field_description:mail.field_res_users__activity_user_id
 msgid "Responsible User"
-msgstr ""
+msgstr "တာဝန်ရှိသူ"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_res_config_settings__restrict_template_rendering
@@ -8139,7 +8139,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_form
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_tree
 msgid "Retry"
-msgstr ""
+msgstr "ပြန်လုပ်ကြည့်"
 
 #. module: mail
 #. odoo-javascript
@@ -8239,7 +8239,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_schedule_view_form
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_form_popup
 msgid "Schedule"
-msgstr ""
+msgstr "စကက်ဂျူး"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_schedule_view_form
@@ -8351,7 +8351,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/mail/static/src/core/common/search_message_input.xml:0
 msgid "Search"
-msgstr ""
+msgstr "ရှာဖွေ"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_alias_view_search
@@ -8851,7 +8851,7 @@ msgstr ""
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_notification_view_form
 msgid "Source"
-msgstr ""
+msgstr "မူလအစ"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_message_translation__source_lang
@@ -8878,7 +8878,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mail.field_mail_mail__starred
 #: model:ir.model.fields,field_description:mail.field_mail_message__starred
 msgid "Starred"
-msgstr ""
+msgstr "⭐ပြထားသည်"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_res_partner__starred_message_ids
@@ -9137,7 +9137,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mail.field_res_partner__vat
 #: model:ir.model.fields,field_description:mail.field_res_users__vat
 msgid "Tax ID"
-msgstr ""
+msgstr "အခွန် အိုင်ဒီ"
 
 #. module: mail
 #. odoo-javascript
@@ -9348,11 +9348,6 @@ msgstr ""
 #. module: mail
 #: model:ir.model.constraint,message:mail.constraint_discuss_channel_uuid_unique
 msgid "The channel UUID must be unique"
-msgstr ""
-
-#. module: mail
-#: model:ir.model.constraint,message:mail.constraint_discuss_channel_channel_type_not_null
-msgid "The channel type cannot be empty"
 msgstr ""
 
 #. module: mail
@@ -9717,7 +9712,7 @@ msgstr "အချိန်ဇုန်"
 #: model:ir.model.fields,field_description:mail.field_ir_cron__activity_summary
 #: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_title
 msgid "Title"
-msgstr ""
+msgstr "ခေါင်းစဉ်"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_mail__email_to
@@ -9742,7 +9737,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/core/web/chat_window_patch.xml:0
 msgid "To :"
-msgstr ""
+msgstr "ဆီသို့ :"
 
 #. module: mail
 #. odoo-javascript
@@ -9753,7 +9748,7 @@ msgstr ""
 #. module: mail
 #: model:mail.activity.type,name:mail.mail_activity_data_todo
 msgid "To-Do"
-msgstr ""
+msgstr "လုပ်ရန်"
 
 #. module: mail
 #. odoo-javascript
@@ -9856,7 +9851,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/mail/static/src/chatter/web/mail_composer_schedule_dialog.xml:0
 msgid "Tomorrow Morning"
-msgstr ""
+msgstr "မနက်ဖြန် နံနက်"
 
 #. module: mail
 #. odoo-javascript
@@ -9970,7 +9965,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mail.field_mail_message__message_type
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_type_view_tree
 msgid "Type"
-msgstr ""
+msgstr "အမျိုးအစား"
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_activity_type__delay_from
@@ -10096,7 +10091,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/mail/models/mail_tracking_value.py:0
 msgid "Unknown"
-msgstr ""
+msgstr "မသိ"
 
 #. module: mail
 #. odoo-python
@@ -10162,7 +10157,7 @@ msgstr ""
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.view_message_search
 msgid "Unread messages"
-msgstr ""
+msgstr "မဖတ်ရသေးသော မက်ဆေ့ဂျ်များ"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_mail__unrestricted_attachment_ids
@@ -10506,7 +10501,7 @@ msgstr ""
 #: code:addons/mail/models/mail_thread.py:0
 #: model:ir.model,name:mail.model_ir_ui_view
 msgid "View"
-msgstr ""
+msgstr "ဗျူး"
 
 #. module: mail
 #. odoo-python
@@ -10536,7 +10531,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mail.field_ir_actions_act_window_view__view_mode
 #: model:ir.model.fields,field_description:mail.field_ir_ui_view__type
 msgid "View Type"
-msgstr ""
+msgstr "ဗျူးအမျိုးအစား"
 
 #. module: mail
 #. odoo-javascript
@@ -10554,7 +10549,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mail.field_ir_attachment__voice_ids
 #: model_terms:ir.ui.view,arch_db:mail.res_users_settings_view_form
 msgid "Voice"
-msgstr ""
+msgstr "အသံ"
 
 #. module: mail
 #: model:ir.ui.menu,name:mail.menu_call_settings
@@ -10624,7 +10619,7 @@ msgstr ""
 #: code:addons/mail/static/src/core/web/activity_button.js:0
 #: code:addons/mail/static/src/views/web/fields/list_activity/list_activity.js:0
 msgid "Warning"
-msgstr ""
+msgstr "❗သတိပေးချက်"
 
 #. module: mail
 #. odoo-python
@@ -10653,7 +10648,7 @@ msgstr ""
 #. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__ir_actions_server__activity_date_deadline_range_type__weeks
 msgid "Weeks"
-msgstr ""
+msgstr "ရက်သတ္တပါတ်"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.email_compose_message_wizard_form
@@ -10748,7 +10743,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/mail/static/src/core/web/message_patch.js:0
 msgid "Yes"
-msgstr ""
+msgstr "ဟုတ်တယ်"
 
 #. module: mail
 #. odoo-javascript
@@ -11162,7 +11157,7 @@ msgstr "ရက်"
 #. odoo-javascript
 #: code:addons/mail/static/src/core/web/activity.xml:0
 msgid "days overdue:"
-msgstr ""
+msgstr "ရက် ကျော်နေပြီ:"
 
 #. module: mail
 #. odoo-javascript
@@ -11394,7 +11389,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/gif_picker/common/gif_picker.xml:0
 msgid "list"
-msgstr ""
+msgstr "စာရင်း"
 
 #. module: mail
 #. odoo-javascript
@@ -11435,7 +11430,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:mail.selection__mail_activity_plan_template__delay_unit__months
 #: model:ir.model.fields.selection,name:mail.selection__mail_activity_type__delay_unit__months
 msgid "months"
-msgstr ""
+msgstr "လ"
 
 #. module: mail
 #. odoo-python

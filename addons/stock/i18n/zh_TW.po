@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-29 18:37+0000\n"
-"PO-Revision-Date: 2025-09-04 09:56+0000\n"
+"POT-Creation-Date: 2025-09-27 01:48+0000\n"
+"PO-Revision-Date: 2025-10-18 22:22+0000\n"
 "Last-Translator: \"Tony Ng (ngto)\" <ngto@odoo.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://translate.odoo.com/"
 "projects/odoo-18/stock/zh_Hant/>\n"
@@ -766,7 +766,7 @@ msgstr "<span>OBTRETU</span>"
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.product_view_kanban_catalog
 msgid "<span>On Hand: </span>"
-msgstr "<span>目前貨量：</span>"
+msgstr "<span>在庫：</span>"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.report_package_barcode_small
@@ -3770,7 +3770,7 @@ msgstr "產生批次號碼"
 #. odoo-javascript
 #: code:addons/stock/static/src/widgets/generate_serial.js:0
 msgid "Generate Serial numbers"
-msgstr "產生序列號碼"
+msgstr "產生序號"
 
 #. module: stock
 #. odoo-javascript
@@ -5926,7 +5926,7 @@ msgstr "在庫數量"
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.report_inventory
 msgid "On hand Quantity"
-msgstr "手上數量"
+msgstr "在庫數量"
 
 #. module: stock
 #: model:ir.model.fields,help:stock.field_stock_quant__available_quantity
@@ -9831,7 +9831,7 @@ msgstr "入庫總計"
 #: model_terms:ir.ui.view,arch_db:stock.product_product_stock_tree
 #: model_terms:ir.ui.view,arch_db:stock.view_stock_quant_tree_editable
 msgid "Total On Hand"
-msgstr "在庫總計"
+msgstr "在庫總數"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.product_product_stock_tree
@@ -11184,9 +11184,9 @@ msgstr "您不能使用兩次相同的序號. 請更正序號編碼."
 #. odoo-python
 #: code:addons/stock/models/stock_picking.py:0
 msgid ""
-"You cannot validate a transfer if no quantities are reserved. To force the "
-"transfer, encode quantities."
-msgstr "如果沒有保留數量，則無法驗證調撥。若要強制調撥，請對有關數量進行編碼。"
+"You cannot validate a transfer if no quantities are reserved, or if only non-"
+"reserved moves are picked.To force the transfer, encode quantities."
+msgstr ""
 
 #. module: stock
 #. odoo-python
@@ -11595,3 +11595,9 @@ msgstr "單位"
 msgid ""
 "{{ object.company_id.name }} Delivery Order (Ref {{ object.name or 'n/a' }})"
 msgstr "{{ object.company_id.name }} 送貨單 (參照 {{ object.name or 'n/a' }})"
+
+#~ msgid ""
+#~ "You cannot validate a transfer if no quantities are reserved. To force "
+#~ "the transfer, encode quantities."
+#~ msgstr ""
+#~ "如果沒有保留數量，則無法驗證調撥。若要強制調撥，請對有關數量進行編碼。"

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-16 13:39+0000\n"
-"PO-Revision-Date: 2025-09-20 22:20+0000\n"
+"PO-Revision-Date: 2025-10-15 05:31+0000\n"
 "Last-Translator: Oakarmin Iron <oakarminiron@gmail.com>\n"
 "Language-Team: Burmese <https://translate.odoo.com/projects/odoo-18/calendar/"
 "my/>\n"
@@ -545,7 +545,7 @@ msgstr ""
 #. module: calendar
 #: model:ir.model.fields,field_description:calendar.field_mail_activity_type__category
 msgid "Action"
-msgstr ""
+msgstr "အက်ရှင်"
 
 #. module: calendar
 #: model:ir.model.fields,field_description:calendar.field_calendar_event__message_needaction
@@ -650,13 +650,13 @@ msgstr ""
 #. module: calendar
 #: model:ir.model.fields,field_description:calendar.field_calendar_attendee__partner_id
 msgid "Attendee"
-msgstr ""
+msgstr "တက်ရောက်သူ"
 
 #. module: calendar
 #: model:ir.model.fields,field_description:calendar.field_calendar_event__partner_ids
 #: model_terms:ir.ui.view,arch_db:calendar.invitation_page_anonymous
 msgid "Attendees"
-msgstr ""
+msgstr "တက်ရောက်သူများ"
 
 #. module: calendar
 #: model:ir.model.fields,field_description:calendar.field_calendar_event__attendees_count
@@ -672,7 +672,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:calendar.selection__calendar_attendee__availability__free
 #: model:ir.model.fields.selection,name:calendar.selection__calendar_event__show_as__free
 msgid "Available"
-msgstr ""
+msgstr "ရနိုင်သည်"
 
 #. module: calendar
 #: model:ir.model.fields,field_description:calendar.field_calendar_attendee__availability
@@ -696,7 +696,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:calendar.selection__calendar_event__show_as__busy
 #: model_terms:ir.ui.view,arch_db:calendar.view_calendar_event_search
 msgid "Busy"
-msgstr ""
+msgstr "မအားပါ"
 
 #. module: calendar
 #: model:ir.model.fields,field_description:calendar.field_calendar_event__byday
@@ -889,7 +889,7 @@ msgstr ""
 #. module: calendar
 #: model:ir.model.fields,field_description:calendar.field_calendar_recurrence__count
 msgid "Count"
-msgstr ""
+msgstr "အရေအတွက်"
 
 #. module: calendar
 #: model:ir.model.fields,field_description:calendar.field_calendar_alarm__create_uid
@@ -929,7 +929,7 @@ msgstr ""
 #. module: calendar
 #: model:ir.model.fields.selection,name:calendar.selection__calendar_event__rrule_type_ui__daily
 msgid "Daily"
-msgstr ""
+msgstr "နေ့စဉ်"
 
 #. module: calendar
 #: model_terms:ir.ui.view,arch_db:calendar.invitation_page_anonymous
@@ -1369,7 +1369,7 @@ msgstr ""
 #. module: calendar
 #: model_terms:ir.ui.view,arch_db:calendar.view_calendar_event_search
 msgid "Group By"
-msgstr ""
+msgstr "အုပ်စုအလိုက်"
 
 #. module: calendar
 #: model:ir.model,name:calendar.model_ir_http
@@ -1384,7 +1384,7 @@ msgstr ""
 #. module: calendar
 #: model:ir.model.fields.selection,name:calendar.selection__calendar_alarm__interval__hours
 msgid "Hours"
-msgstr ""
+msgstr "နာရီ"
 
 #. module: calendar
 #: model:ir.model.fields,field_description:calendar.field_calendar_alarm__id
@@ -1506,7 +1506,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:calendar.field_calendar_provider_config__write_uid
 #: model:ir.model.fields,field_description:calendar.field_calendar_recurrence__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "နောက်ဆုံးပြင်ဆင်သူ"
 
 #. module: calendar
 #: model:ir.model.fields,field_description:calendar.field_calendar_alarm__write_date
@@ -1541,7 +1541,7 @@ msgstr "နေရာ"
 #. module: calendar
 #: model_terms:ir.ui.view,arch_db:calendar.invitation_page_anonymous
 msgid "Logo"
-msgstr ""
+msgstr "လိုဂို"
 
 #. module: calendar
 #: model:ir.model.fields,field_description:calendar.field_calendar_attendee__mail_tz
@@ -1564,7 +1564,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:calendar.selection__mail_activity_type__category__meeting
 #: model_terms:ir.ui.view,arch_db:calendar.view_calendar_event_search
 msgid "Meeting"
-msgstr ""
+msgstr "တွေ့ဆုံခြင်း"
 
 #. module: calendar
 #: model:ir.model.fields,field_description:calendar.field_calendar_event__name
@@ -1598,7 +1598,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:calendar.view_calendar_event_tree
 #: model_terms:ir.ui.view,arch_db:calendar.view_partners_form
 msgid "Meetings"
-msgstr ""
+msgstr "တွေ့ဆုံမှူများ"
 
 #. module: calendar
 #: model:ir.model.fields,field_description:calendar.field_calendar_event__message_has_error
@@ -1608,7 +1608,7 @@ msgstr ""
 #. module: calendar
 #: model:ir.model.fields,field_description:calendar.field_calendar_event__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "မက်ဆေ့ဂျ်များ"
 
 #. module: calendar
 #: model_terms:ir.ui.view,arch_db:calendar.calendar_provider_config_view_form
@@ -1645,7 +1645,7 @@ msgstr ""
 #. module: calendar
 #: model:ir.model.fields.selection,name:calendar.selection__calendar_event__rrule_type_ui__monthly
 msgid "Monthly"
-msgstr ""
+msgstr "လစဉ်"
 
 #. module: calendar
 #: model:ir.model.fields.selection,name:calendar.selection__calendar_event__rrule_type__monthly
@@ -1694,7 +1694,7 @@ msgstr ""
 #: code:addons/calendar/static/src/views/attendee_calendar/common/attendee_calendar_common_popover.xml:0
 #: model:ir.model.fields.selection,name:calendar.selection__calendar_attendee__state__declined
 msgid "No"
-msgstr ""
+msgstr "မဟုတ်ဘူး"
 
 #. module: calendar
 #: model_terms:ir.ui.view,arch_db:calendar.invitation_page_anonymous
@@ -1720,7 +1720,7 @@ msgstr "မဖျက်, သိမ်းထားပါ"
 #. module: calendar
 #: model:ir.model.fields.selection,name:calendar.selection__calendar_alarm__alarm_type__notification
 msgid "Notification"
-msgstr ""
+msgstr "နိုတီ"
 
 #. module: calendar
 #: model:calendar.alarm,name:calendar.alarm_notif_5
@@ -1765,7 +1765,7 @@ msgstr ""
 #. module: calendar
 #: model:ir.model.fields,field_description:calendar.field_calendar_event__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "အယ်ရာ အရေအတွက်"
 
 #. module: calendar
 #: model:ir.model.fields,help:calendar.field_calendar_event__message_needaction_counter
@@ -1787,7 +1787,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/calendar/static/src/js/services/calendar_notification_service.js:0
 msgid "OK"
-msgstr ""
+msgstr "အိုကေ"
 
 #. module: calendar
 #: model_terms:ir.ui.view,arch_db:calendar.view_calendar_event_form
@@ -1932,7 +1932,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:calendar.field_calendar_event__alarm_ids
 #: model:ir.ui.menu,name:calendar.calendar_submenu_reminders
 msgid "Reminders"
-msgstr ""
+msgstr "❕အကြောင်းကြားချက်များ"
 
 #. module: calendar
 #: model:ir.model.fields,field_description:calendar.field_calendar_event__rrule_type_ui
@@ -2307,7 +2307,7 @@ msgstr "အင်္ဂါ"
 #. module: calendar
 #: model:ir.model.fields,field_description:calendar.field_calendar_alarm__alarm_type
 msgid "Type"
-msgstr ""
+msgstr "အမျိုးအစား"
 
 #. module: calendar
 #. odoo-python
@@ -2366,7 +2366,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/calendar/static/src/views/attendee_calendar/common/attendee_calendar_common_popover.xml:0
 msgid "View"
-msgstr ""
+msgstr "ဗျူး"
 
 #. module: calendar
 #: model:ir.model.fields,field_description:calendar.field_calendar_event__wed
@@ -2389,31 +2389,31 @@ msgstr ""
 #. module: calendar
 #: model:ir.model.fields.selection,name:calendar.selection__calendar_event__rrule_type_ui__weekly
 msgid "Weekly"
-msgstr ""
+msgstr "အပါတ်စဉ်"
 
 #. module: calendar
 #: model:ir.model.fields.selection,name:calendar.selection__calendar_event__rrule_type__weekly
 #: model:ir.model.fields.selection,name:calendar.selection__calendar_recurrence__rrule_type__weekly
 msgid "Weeks"
-msgstr ""
+msgstr "ရက်သတ္တပါတ်"
 
 #. module: calendar
 #: model:ir.model.fields.selection,name:calendar.selection__calendar_event__rrule_type_ui__yearly
 msgid "Yearly"
-msgstr ""
+msgstr "နှစ်စဉ်"
 
 #. module: calendar
 #: model:ir.model.fields.selection,name:calendar.selection__calendar_event__rrule_type__yearly
 #: model:ir.model.fields.selection,name:calendar.selection__calendar_recurrence__rrule_type__yearly
 msgid "Years"
-msgstr ""
+msgstr "နှစ်"
 
 #. module: calendar
 #. odoo-javascript
 #: code:addons/calendar/static/src/views/attendee_calendar/common/attendee_calendar_common_popover.xml:0
 #: model:ir.model.fields.selection,name:calendar.selection__calendar_attendee__state__accepted
 msgid "Yes"
-msgstr ""
+msgstr "ဟုတ်တယ်"
 
 #. module: calendar
 #: model_terms:ir.ui.view,arch_db:calendar.invitation_page_anonymous

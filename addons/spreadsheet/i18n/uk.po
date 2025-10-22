@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-05 18:40+0000\n"
+"POT-Creation-Date: 2025-10-16 18:39+0000\n"
 "PO-Revision-Date: 2024-09-25 09:41+0000\n"
 "Last-Translator: Wil Odoo, 2025\n"
 "Language-Team: Ukrainian (https://app.transifex.com/odoo/teams/41243/uk/)\n"
@@ -1973,6 +1973,12 @@ msgstr "Порівняйте два числові значення, повер�
 
 #. module: spreadsheet
 #. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
+msgid "Compute from totals"
+msgstr ""
+
+#. module: spreadsheet
+#. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "Compute the Matthews correlation coefficient of a dataset."
 msgstr "Обчисліть коефіцієнт кореляції Метьюза для набору даних."
@@ -3626,9 +3632,24 @@ msgstr ""
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
-msgid "Function [[FUNCTION_NAME]] expects number values for %s, but got a %s."
+msgid ""
+"Function [[FUNCTION_NAME]] expects number values for %s, but got a boolean."
 msgstr ""
-"Функція [[FUNCTION_NAME]] очікує числових значень для %s, але отримує %s."
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+msgid ""
+"Function [[FUNCTION_NAME]] expects number values for %s, but got a string."
+msgstr ""
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+msgid ""
+"Function [[FUNCTION_NAME]] expects number values for %s, but got an empty "
+"value."
+msgstr ""
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -8440,7 +8461,7 @@ msgstr "Maxpoint має бути числом"
 
 #. module: spreadsheet
 #. odoo-javascript
-#: code:addons/spreadsheet/static/src/chart/odoo_menu/figure_component.js:0
+#: code:addons/spreadsheet/static/src/helpers/helpers.js:0
 msgid ""
 "The menu linked to this chart doesn't have an corresponding action. Please "
 "link the chart to another menu."
@@ -10959,12 +10980,8 @@ msgstr "Зміна значення від ключового значення"
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
-msgid ""
-"Value for parameter %d is missing, while the function [[FUNCTION_NAME]] "
-"expect a number or a range."
+msgid "Value for parameter %s is missing in [[FUNCTION_NAME]]."
 msgstr ""
-"Значення для параметра %d відсутнє, в той час. як функція [[FUNCTION_NAME]] "
-"очікує число або діапазон."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -11806,6 +11823,18 @@ msgstr "вчора"
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "zero"
 msgstr ""
+
+#~ msgid ""
+#~ "Function [[FUNCTION_NAME]] expects number values for %s, but got a %s."
+#~ msgstr ""
+#~ "Функція [[FUNCTION_NAME]] очікує числових значень для %s, але отримує %s."
+
+#~ msgid ""
+#~ "Value for parameter %d is missing, while the function [[FUNCTION_NAME]] "
+#~ "expect a number or a range."
+#~ msgstr ""
+#~ "Значення для параметра %d відсутнє, в той час. як функція "
+#~ "[[FUNCTION_NAME]] очікує число або діапазон."
 
 #~ msgid "Cannot multiply matrices : incompatible matrices size."
 #~ msgstr "Неможливо помножити матриці: несумісні розміри матриць."

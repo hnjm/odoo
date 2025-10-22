@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* website
+# * website
 #
 # Translators:
 # Martin Trigaux, 2024
@@ -8,20 +8,22 @@
 # Vo Thanh Thuy, 2024
 # Wil Odoo, 2025
 # Thi Huong Nguyen, 2025
-#
+# "Thi Huong Nguyen (thng)" <thng@odoo.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-08 18:37+0000\n"
-"PO-Revision-Date: 2024-09-25 09:42+0000\n"
-"Last-Translator: Thi Huong Nguyen, 2025\n"
-"Language-Team: Vietnamese (https://app.transifex.com/odoo/teams/41243/vi/)\n"
+"POT-Creation-Date: 2025-10-11 02:15+0000\n"
+"PO-Revision-Date: 2025-09-28 22:21+0000\n"
+"Last-Translator: \"Thi Huong Nguyen (thng)\" <thng@odoo.com>\n"
+"Language-Team: Vietnamese <https://translate.odoo.com/projects/odoo-18/"
+"website/vi/>\n"
 "Language: vi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #. module: website
 #. odoo-javascript
@@ -2344,10 +2346,11 @@ msgid ""
 "field as True to allow users to run this action. If it is set to False the "
 "action cannot be run through the website."
 msgstr ""
-"Một tác vụ máy chủ mã có thể được thực hiện từ trang web, sử dụng một bộ "
-"điều khiển chuyên dụng. Địa chỉ là <base>/ website / action /<website_path>. "
-"Đặt trường này là \"Đúng\" để cho phép người dùng chạy tác vụ này. Nếu nó "
-"được đặt thành \"Sai\" thì tác vụ không thể chạy qua trang web."
+"Một tác vụ phía máy chủ mã có thể được thực hiện từ trang web, sử dụng một "
+"bộ điều khiển chuyên dụng. Địa chỉ là <base>/ website / action /"
+"<website_path>. Đặt trường này là \"Đúng\" để cho phép người dùng chạy tác "
+"vụ này. Nếu nó được đặt thành \"Sai\" thì tác vụ không thể chạy qua trang "
+"web."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_color_blocks_2
@@ -4455,7 +4458,6 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/website/static/src/components/resource_editor/resource_editor.xml:0
 #: code:addons/website/static/src/components/views/theme_preview.xml:0
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 #: code:addons/website/static/src/xml/website.xml:0
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
@@ -8336,7 +8338,6 @@ msgstr "Thư viện hình ảnh"
 
 #. module: website
 #. odoo-javascript
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 msgid "Image Gallery Dialog"
 msgstr "Thư viện Hình ảnh"
@@ -10487,7 +10488,6 @@ msgstr "Popup bản tin email"
 #. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/snippets/s_dynamic_snippet_carousel/000.xml:0
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 #: model_terms:ir.ui.view,arch_db:website.s_carousel
@@ -11842,7 +11842,6 @@ msgstr "Xem trước URL này trong tab mới"
 #. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/snippets/s_dynamic_snippet_carousel/000.xml:0
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 #: model_terms:ir.ui.view,arch_db:website.s_carousel
@@ -14177,7 +14176,7 @@ msgstr "URL đầy đủ để truy cập tài liệu thông qua trang web."
 #: model:ir.model.fields,help:website.field_ir_actions_server__website_url
 #: model:ir.model.fields,help:website.field_ir_cron__website_url
 msgid "The full URL to access the server action through the website."
-msgstr "URL đầy đủ để truy cập tác vụ máy chủ thông qua trang web."
+msgstr "URL đầy đủ để truy cập tác vụ phía máy chủ thông qua trang web."
 
 #. module: website
 #. odoo-python
@@ -14251,6 +14250,12 @@ msgstr ""
 #: model:ir.model.fields,help:website.field_website_controller_page__name_slugified
 msgid "The name of the page usable in a URL"
 msgstr "Tên của trang có thể sử dụng được trong URL"
+
+#. module: website
+#. odoo-python
+#: code:addons/website/models/website.py:0
+msgid "The provided website domain is not a valid URL."
+msgstr ""
 
 #. module: website
 #. odoo-javascript

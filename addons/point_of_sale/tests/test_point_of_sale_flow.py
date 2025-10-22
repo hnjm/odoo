@@ -4,6 +4,7 @@
 import time
 from freezegun import freeze_time
 from datetime import datetime
+from unittest.mock import patch
 
 import odoo
 from odoo import fields, tools
@@ -12,6 +13,7 @@ from odoo.tools import float_compare, mute_logger, test_reports
 from odoo.tests import Form
 from odoo.addons.point_of_sale.tests.common import TestPointOfSaleCommon
 from odoo.addons.point_of_sale.tests.common_setup_methods import setup_product_combo_items
+from odoo.exceptions import UserError, ValidationError
 
 
 @odoo.tests.tagged('post_install', '-at_install')
@@ -114,6 +116,8 @@ class TestPointOfSaleFlow(TestPointOfSaleCommon):
             'last_order_preparation_change': '{}'
         })
 
+        order._compute_prices()
+
         payment_context = {"active_ids": order.ids, "active_id": order.id}
         order_payment = self.PosMakePayment.with_context(**payment_context).create({
             'amount': order.amount_total,
@@ -175,6 +179,7 @@ class TestPointOfSaleFlow(TestPointOfSaleCommon):
                 Command.create({
                     'product_id': self.product_a.id,
                     'qty': 1,
+                    'price_unit': 134.38,
                     'price_subtotal': 134.38,
                     'price_subtotal_incl': 134.38,
                 }),
@@ -446,6 +451,20 @@ class TestPointOfSaleFlow(TestPointOfSaleCommon):
         refund_payment.with_context(**payment_context).check()
 
         self.assertEqual(refund.state, 'paid')
+
+        refund_action = order.refund()
+        remaining_refund = self.PosOrder.browse(refund_action['res_id'])
+        self.assertEqual(remaining_refund.amount_total, -25.0)
+
+        payment_context = {"active_ids": remaining_refund.ids, "active_id": remaining_refund.id}
+        refund_payment = self.PosMakePayment.with_context(**payment_context).create({
+            'amount': remaining_refund.amount_total,
+            'payment_method_id': self.cash_payment_method.id,
+        })
+        refund_payment.with_context(**payment_context).check()
+
+        self.assertEqual(remaining_refund.state, 'paid')
+
         current_session.action_pos_session_closing_control()
         self.assertEqual(current_session.state, 'closed')
 
@@ -821,6 +840,10 @@ class TestPointOfSaleFlow(TestPointOfSaleCommon):
             invoice.action_post()
         self.assertAlmostEqual(
             invoice.amount_total, self.pos_order_pos1.amount_total, places=2, msg="Invoice not correct")
+
+        # It should no be possible to make the invoice draft
+        with self.assertRaises(UserError):
+            invoice.button_draft()
 
         # I close the session to generate the journal entries
         current_session.action_pos_session_closing_control()
@@ -2686,3 +2709,151 @@ class TestPointOfSaleFlow(TestPointOfSaleCommon):
         self.assertEqual(order.pos_reference, f'Order {session_id.id:05d}-003-0001', "Should find the correct order")
         order = self.env['pos.order'].search([('tracking_number', 'ilike', '03')])
         self.assertEqual(len(order), 0, "Should not find any order with the tracking number")
+
+    def test_refunded_order_has_uuid(self):
+        """ Test that a refunded order has a uuid generated. """
+        self.pos_config.open_ui()
+        current_session = self.pos_config.current_session_id
+
+        order = self.PosOrder.create({
+            'company_id': self.env.company.id,
+            'session_id': current_session.id,
+            'partner_id': self.partner1.id,
+            'lines': [(0, 0, {
+                'name': "OL/0001",
+                'product_id': self.product3.id,
+                'price_unit': 450,
+                'discount': 0,
+                'qty': 1,
+                'tax_ids': [[6, False, []]],
+                'price_subtotal': 450,
+                'price_subtotal_incl': 450,
+            })],
+            'pricelist_id': self.pos_config.pricelist_id.id,
+            'amount_paid': 450.0,
+            'amount_total': 450.0,
+            'amount_tax': 0.0,
+            'amount_return': 0.0,
+            'to_invoice': False,
+            'last_order_preparation_change': '{}'
+        })
+
+        payment_context = {"active_ids": order.ids, "active_id": order.id}
+        order_payment = self.PosMakePayment.with_context(payment_context).create({
+            'amount': order.amount_total,
+            'payment_method_id': self.bank_payment_method.id,
+        })
+        order_payment.with_context(payment_context).check()
+
+        refund_action = order.refund()
+        refund = self.PosOrder.browse(refund_action['res_id'])
+        self.assertTrue(refund.uuid, "The refund should have a uuid.")
+
+    def test_branch_company_access_cost_currency_id(self):
+        branch = self.env['res.company'].create({
+            'name': 'Branch 1',
+            'parent_id': self.env.company.id,
+            'chart_template': self.env.company.chart_template,
+            'country_id': self.env.company.country_id.id,
+        })
+        user = self.env['res.users'].create({
+            'name': 'Branch user',
+            'login': 'branch_user',
+            'email': 'branch@yourcompany.com',
+            'groups_id': [(6, 0, [self.ref('base.group_user'), self.ref('point_of_sale.group_pos_user')])],
+            'company_ids': [(4, branch.id)],
+            'company_id': branch.id,
+        })
+        product = self.env['product.product'].create({
+            'name': 'Product A',
+            'is_storable': True,
+            'company_id': self.env.company.id,
+        })
+        config = self.env['pos.config'].with_company(branch).create({
+            'name': 'Main',
+            'company_id': branch.id,
+        })
+        config.payment_method_ids.filtered(lambda pm: pm.is_cash_count).unlink()
+
+        config.open_ui()
+        current_session = config.current_session_id
+
+        order = self.env['pos.order'].with_user(user).with_company(branch).create({
+            'session_id': current_session.id,
+            'partner_id': self.partner1.id,
+            'company_id': branch.id,
+            'lines': [(0, 0, {
+                'name': "OL/0001",
+                'product_id': product.id,
+                'price_unit': 6,
+                'discount': 0,
+                'qty': 1,
+                'tax_ids': [[6, False, []]],
+                'price_subtotal': 6,
+                'price_subtotal_incl': 6,
+            })],
+            'amount_paid': 6.0,
+            'amount_total': 6.0,
+            'amount_tax': 0.0,
+            'amount_return': 0.0,
+            'to_invoice': False,
+            'last_order_preparation_change': '{}'
+        })
+
+        order_line = order.lines[0]
+        self.env.invalidate_all()
+        order_line.with_user(user).with_company(branch)._compute_total_cost(None)
+
+    def test_session_name_gap(self):
+        self.pos_config.open_ui()
+        session = self.pos_config.current_session_id
+        session.set_opening_control(0, None)
+        current_session_name = session.name
+        session.action_pos_session_closing_control()
+
+        self.pos_config.open_ui()
+        session = self.pos_config.current_session_id
+
+        def _post_cash_details_message_patch(*_args, **_kwargs):
+            raise UserError('Test Error')
+
+        with patch.object(self.env.registry.models['pos.session'], "_post_cash_details_message", _post_cash_details_message_patch):
+            with self.assertRaises(UserError):
+                session.set_opening_control(0, None)
+
+        session.set_opening_control(0, None)
+        self.assertEqual(int(session.name.split('/')[1]), int(current_session_name.split('/')[1]) + 1)
+
+    def test_delete_res_partner_linked_to_pos_order(self):
+        """ Test that a partner linked to a pos order cannot be deleted. """
+        partner = self.env['res.partner'].create({
+            'name': 'Partner test',
+        })
+        self.pos_config.open_ui()
+        current_session = self.pos_config.current_session_id
+
+        self.PosOrder.create({
+            'company_id': self.env.company.id,
+            'session_id': current_session.id,
+            'partner_id': partner.id,
+            'lines': [(0, 0, {
+                'name': "OL/0001",
+                'product_id': self.product3.id,
+                'price_unit': 450,
+                'discount': 0,
+                'qty': 1,
+                'tax_ids': [[6, False, []]],
+                'price_subtotal': 450,
+                'price_subtotal_incl': 450,
+            })],
+            'pricelist_id': self.pos_config.pricelist_id.id,
+            'amount_paid': 450.0,
+            'amount_total': 450.0,
+            'amount_tax': 0.0,
+            'amount_return': 0.0,
+            'to_invoice': False,
+            'last_order_preparation_change': '{}'
+        })
+
+        with self.assertRaises(ValidationError, msg='You cannot delete a customer that has point of sales orders. You can archive it instead.'):
+            partner.unlink()

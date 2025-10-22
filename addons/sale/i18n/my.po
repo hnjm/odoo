@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-07-11 18:39+0000\n"
-"PO-Revision-Date: 2025-09-20 22:20+0000\n"
+"PO-Revision-Date: 2025-10-15 09:51+0000\n"
 "Last-Translator: Oakarmin Iron <oakarminiron@gmail.com>\n"
 "Language-Team: Burmese <https://translate.odoo.com/projects/odoo-18/sale/my/>"
 "\n"
@@ -837,17 +837,17 @@ msgstr "ထည့်"
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.view_order_form
 msgid "Add a note"
-msgstr ""
+msgstr "မှတ်စု တစ်ခုတိုး"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.view_order_form
 msgid "Add a product"
-msgstr ""
+msgstr "ပစ္စည်း တစ်ခုတိုး"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.view_order_form
 msgid "Add a section"
-msgstr ""
+msgstr "အစိတ်အပိုင်း တစ်ခုတိုး"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.view_order_form
@@ -1058,7 +1058,7 @@ msgstr ""
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.report_saleorder_document
 msgid "Bacon Burger"
-msgstr ""
+msgstr "ဝက်သားပြား ဘာဂါ"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_payment_provider_onboarding_wizard__journal_name
@@ -1136,7 +1136,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale.field_sale_order__campaign_id
 #: model:ir.model.fields,field_description:sale.field_sale_report__campaign_id
 msgid "Campaign"
-msgstr ""
+msgstr "ကမ်ပိန်း"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order_cancel__can_edit_body
@@ -1181,7 +1181,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:sale.selection__sale_order__state__cancel
 #: model:ir.model.fields.selection,name:sale.selection__sale_report__state__cancel
 msgid "Cancelled"
-msgstr ""
+msgstr "ပယ်ဖျက်ပြီး"
 
 #. module: sale
 #. odoo-python
@@ -1206,12 +1206,12 @@ msgstr ""
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.view_order_form
 msgid "Catalog"
-msgstr ""
+msgstr "ကတ်တလောက်"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order_line__product_uom_category_id
 msgid "Category"
-msgstr ""
+msgstr "အမျိုးအမည်"
 
 #. module: sale
 #: model:product.template,name:sale.product_product_1_product_template
@@ -1253,7 +1253,7 @@ msgstr "ပိတ်"
 #. module: sale
 #: model:ir.ui.menu,name:sale.menu_product_combos
 msgid "Combo Choices"
-msgstr ""
+msgstr "ကွန်ဘို ရွေးစရာများ"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order_line__combo_item_id
@@ -1268,7 +1268,7 @@ msgstr ""
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_payment_provider__so_reference_type
 msgid "Communication"
-msgstr ""
+msgstr "ပြောဆိုဆက်သွယ်ရေး"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_template
@@ -1381,7 +1381,7 @@ msgstr "အတည်ပြု"
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_payment_link_wizard__confirmation_message
 msgid "Confirmation Message"
-msgstr ""
+msgstr "အတည်ပြု မက်ဆေ့ဂျ်"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.res_config_settings_view_form
@@ -1401,7 +1401,7 @@ msgstr "ဆက်သွယ်ရန်"
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order_cancel__body
 msgid "Contents"
-msgstr ""
+msgstr "ပါဝင်သောအကြောင်းအရာများ"
 
 #. module: sale
 #: model:ir.model.fields,help:sale.field_sale_order_line__product_uom_category_id
@@ -1540,7 +1540,7 @@ msgstr "ငွေကြေး"
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__currency_rate
 msgid "Currency Rate"
-msgstr ""
+msgstr "ငွေလဲနှုန်း"
 
 #. module: sale
 #: model:product.attribute.value,name:sale.product_attribute_value_7
@@ -1593,7 +1593,7 @@ msgstr ""
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__client_order_ref
 msgid "Customer Reference"
-msgstr ""
+msgstr "ဖောက်သည် အညွန်းစာ"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.view_order_form
@@ -1712,7 +1712,7 @@ msgstr ""
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__partner_shipping_id
 msgid "Delivery Address"
-msgstr ""
+msgstr "ပို့ဆောင်ရန် လိပ်စာ"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__commitment_date
@@ -1723,7 +1723,7 @@ msgstr "ပို့သော နေ့"
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_res_config_settings__module_delivery
 msgid "Delivery Methods"
-msgstr ""
+msgstr "ပစ္စည်းပို့ရမည့် နည်းလမ်းများ"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order_line__qty_delivered
@@ -1754,7 +1754,7 @@ msgstr "ဖော်ပြချက်"
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.view_order_form
 msgid "Disc.%"
-msgstr ""
+msgstr "ဒစ်စကောင့်%"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.mass_cancel_orders_view_form
@@ -1770,12 +1770,12 @@ msgstr "မလုပ်တော့"
 #: model_terms:ir.ui.view,arch_db:sale.sale_order_line_wizard_form
 #: model_terms:ir.ui.view,arch_db:sale.view_order_form
 msgid "Discount"
-msgstr ""
+msgstr "ဒစ်စကောင့်"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_report__discount
 msgid "Discount %"
-msgstr ""
+msgstr "ဒစ်စကောင့်%"
 
 #. module: sale
 #. odoo-python
@@ -1792,7 +1792,7 @@ msgstr ""
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order_line__discount
 msgid "Discount (%)"
-msgstr ""
+msgstr "ဒစ်စကောင့်(%)"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_report__discount_amount
@@ -1875,7 +1875,7 @@ msgstr ""
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_content
 msgid "Documents"
-msgstr ""
+msgstr "စာရွက်စာတမ်း(များ)"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_account_analytic_applicability__business_domain
@@ -2070,7 +2070,7 @@ msgstr ""
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__fiscal_position_id
 msgid "Fiscal Position"
-msgstr ""
+msgstr "ဘဏ္ဍာရေး တည်နေရာ"
 
 #. module: sale
 #: model:ir.model.fields,help:sale.field_sale_order__fiscal_position_id
@@ -2190,14 +2190,14 @@ msgstr ""
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_report__weight
 msgid "Gross Weight"
-msgstr ""
+msgstr "လုံးပေါင်း အလေးချိန်"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
 #: model_terms:ir.ui.view,arch_db:sale.view_sales_order_filter
 #: model_terms:ir.ui.view,arch_db:sale.view_sales_order_line_filter
 msgid "Group By"
-msgstr ""
+msgstr "အုပ်စုအလိုက်"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__has_active_pricelist
@@ -2254,7 +2254,7 @@ msgstr "အိုင်ဒီ"
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__activity_exception_icon
 msgid "Icon"
-msgstr ""
+msgstr "အိုင်ကွန်"
 
 #. module: sale
 #: model:ir.model.fields,help:sale.field_sale_order__activity_exception_icon
@@ -2299,7 +2299,7 @@ msgstr ""
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.view_order_form
 msgid "Immediate"
-msgstr ""
+msgstr "ချက်ခြင်း"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.res_config_settings_view_form
@@ -2349,7 +2349,7 @@ msgstr ""
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__partner_invoice_id
 msgid "Invoice Address"
-msgstr ""
+msgstr "ပြေစာလိပ်စာ"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order_cancel__display_invoice_alert
@@ -2379,7 +2379,7 @@ msgstr ""
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order_line__invoice_lines
 msgid "Invoice Lines"
-msgstr ""
+msgstr "ပြေစာလိုင်းများ"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.view_sale_advance_payment_inv
@@ -2391,7 +2391,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale.field_sale_order_line__invoice_status
 #: model:ir.model.fields,field_description:sale.field_sale_report__line_invoice_status
 msgid "Invoice Status"
-msgstr ""
+msgstr "ပြေစာ အခြေအနေ"
 
 #. module: sale
 #. odoo-python
@@ -2488,7 +2488,7 @@ msgstr ""
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__journal_id
 msgid "Invoicing Journal"
-msgstr ""
+msgstr "ပြေစာမှတ်သော ဂျာနယ်"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_product_product__invoice_policy
@@ -2570,12 +2570,12 @@ msgstr ""
 #. module: sale
 #: model:ir.model,name:sale.model_account_move
 msgid "Journal Entry"
-msgstr ""
+msgstr "ဂျာနယ်စာရင်း"
 
 #. module: sale
 #: model:ir.model,name:sale.model_account_move_line
 msgid "Journal Item"
-msgstr ""
+msgstr "ဂျာနယ်စာရင်းလိုင်း"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order_cancel__lang
@@ -2596,7 +2596,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale.field_sale_order_line__write_uid
 #: model:ir.model.fields,field_description:sale.field_sale_payment_provider_onboarding_wizard__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "နောက်ဆုံးပြင်ဆင်သူ"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_advance_payment_inv__write_date
@@ -2691,7 +2691,7 @@ msgstr ""
 #. module: sale
 #: model:ir.model.fields.selection,name:sale.selection__sale_order_line__qty_delivered_method__manual
 msgid "Manual"
-msgstr ""
+msgstr "မန်နူရယ်"
 
 #. module: sale
 #: model:ir.model.fields.selection,name:sale.selection__res_company__sale_onboarding_payment_method__manual
@@ -2715,7 +2715,7 @@ msgstr ""
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_res_config_settings__module_sale_margin
 msgid "Margins"
-msgstr ""
+msgstr "မာဂျင်များ"
 
 #. module: sale
 #: model:ir.actions.server,name:sale.model_sale_order_action_quotation_sent
@@ -2725,7 +2725,7 @@ msgstr ""
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.account_invoice_form
 msgid "Marketing"
-msgstr ""
+msgstr "မားကက်တင်း"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_account_bank_statement_line__medium_id
@@ -2733,13 +2733,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale.field_sale_order__medium_id
 #: model:ir.model.fields,field_description:sale.field_sale_report__medium_id
 msgid "Medium"
-msgstr ""
+msgstr "တဆင့် (သို့) ကြားခံ"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.product_template_form_view
 #: model_terms:ir.ui.view,arch_db:sale.res_partner_view_buttons
 msgid "Message"
-msgstr ""
+msgstr "မက်ဆေ့ဂျ်"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__message_has_error
@@ -2761,7 +2761,7 @@ msgstr ""
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "မက်ဆေ့ဂျ်များ"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_payment_provider_onboarding_wizard__manual_name
@@ -2781,7 +2781,7 @@ msgstr ""
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.report_saleorder_document
 msgid "Mitchell Admin"
-msgstr ""
+msgstr "မစ်ရှဲ အက်ဒမင်"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__my_activity_date_deadline
@@ -2796,7 +2796,7 @@ msgstr ""
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.sale_order_view_search_inherit_quotation
 msgid "My Quotations"
-msgstr ""
+msgstr "ကျွန်ုပ်၏ ကမ်းလှမ်းချက်များ"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.view_sales_order_line_filter
@@ -2837,7 +2837,7 @@ msgstr ""
 #. module: sale
 #: model:ir.model.fields.selection,name:sale.selection__product_template__expense_policy__no
 msgid "No"
-msgstr ""
+msgstr "မဟုတ်ဘူး"
 
 #. module: sale
 #: model:ir.model.fields.selection,name:sale.selection__product_template__sale_line_warn__no-message
@@ -2875,7 +2875,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:sale.selection__sale_order_line__display_type__line_note
 #: model_terms:ir.ui.view,arch_db:sale.view_order_form
 msgid "Note"
-msgstr ""
+msgstr "မှတ်စု"
 
 #. module: sale
 #: model:ir.model.fields.selection,name:sale.selection__sale_order__invoice_status__no
@@ -2905,7 +2905,7 @@ msgstr ""
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "အယ်ရာ အရေအတွက်"
 
 #. module: sale
 #: model:ir.model.fields,help:sale.field_sale_order__message_needaction_counter
@@ -2986,17 +2986,17 @@ msgstr "အွန်လိုင်း ပေးချေမှူများ"
 #: model:ir.model.fields,field_description:sale.field_res_company__portal_confirmation_sign
 #: model:ir.model.fields,field_description:sale.field_res_config_settings__portal_confirmation_sign
 msgid "Online Signature"
-msgstr ""
+msgstr "အွန်လိုင်း လက်မှတ်ထိုး"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__require_payment
 msgid "Online payment"
-msgstr ""
+msgstr "အွန်လိုင်း ပေးချေမှူ"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__require_signature
 msgid "Online signature"
-msgstr ""
+msgstr "အွန်လိုင်း လက်မှတ်ထိုး"
 
 #. module: sale
 #: model:ir.model.fields,help:sale.field_sale_advance_payment_inv__amount_invoiced
@@ -3037,7 +3037,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale.field_product_product__optional_product_ids
 #: model:ir.model.fields,field_description:sale.field_product_template__optional_product_ids
 msgid "Optional Products"
-msgstr ""
+msgstr "ထပ်ရွေးနိုင်သော ပစ္စည်းများ"
 
 #. module: sale
 #: model:ir.model.fields,help:sale.field_product_product__optional_product_ids
@@ -3097,7 +3097,7 @@ msgstr ""
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
 msgid "Order Date: Last 365 Days"
-msgstr ""
+msgstr "အော်ဒါရက် - နောက်ဆုံး ၃၆၅ ရက်"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_report__invoice_status
@@ -3277,17 +3277,17 @@ msgstr "ငွေပေးချေမှု စည်းကမ်းချက�
 #. module: sale
 #: model:ir.ui.menu,name:sale.payment_token_menu
 msgid "Payment Tokens"
-msgstr ""
+msgstr "ပေးချေမှူ တိုကင်များ"
 
 #. module: sale
 #: model:ir.model,name:sale.model_payment_transaction
 msgid "Payment Transaction"
-msgstr ""
+msgstr "ပေးချေမှူ မှတ်တမ်း"
 
 #. module: sale
 #: model:ir.ui.menu,name:sale.payment_transaction_menu
 msgid "Payment Transactions"
-msgstr ""
+msgstr "ပေးချေမှူ မှတ်တမ်းများ"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__amount_paid
@@ -3326,13 +3326,13 @@ msgstr ""
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.view_order_form
 msgid "Preview"
-msgstr ""
+msgstr "ပရီဗျူး"
 
 #. module: sale
 #. odoo-javascript
 #: code:addons/sale/static/src/js/product_list/product_list.xml:0
 msgid "Price"
-msgstr ""
+msgstr "စျေးနှုန်း"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order_line__price_reduce_taxexcl
@@ -3348,7 +3348,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale.field_sale_order__pricelist_id
 #: model:ir.model.fields,field_description:sale.field_sale_report__pricelist_id
 msgid "Pricelist"
-msgstr ""
+msgstr "ပစ္စည်းစျေးနှုန်း"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order_line__pricelist_item_id
@@ -3359,7 +3359,7 @@ msgstr ""
 #: model:ir.ui.menu,name:sale.menu_product_pricelist_main
 #: model_terms:ir.ui.view,arch_db:sale.res_config_settings_view_form
 msgid "Pricelists"
-msgstr ""
+msgstr "ပစ္စည်းစျေးနှုန်းများ"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.res_config_settings_view_form
@@ -3413,14 +3413,14 @@ msgstr ""
 #. module: sale
 #: model:ir.ui.menu,name:sale.menu_product_categories
 msgid "Product Categories"
-msgstr ""
+msgstr "ကုန်ပစ္စည်း Category များ"
 
 #. module: sale
 #: model:ir.model,name:sale.model_product_category
 #: model:ir.model.fields,field_description:sale.field_sale_report__categ_id
 #: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
 msgid "Product Category"
-msgstr ""
+msgstr "ကုန်ပစ္စည်း Category"
 
 #. module: sale
 #: model:ir.model,name:sale.model_product_document
@@ -3442,7 +3442,7 @@ msgstr ""
 #. module: sale
 #: model:ir.ui.menu,name:sale.menu_product_tags
 msgid "Product Tags"
-msgstr ""
+msgstr "ပစ္စည်း တက်ဂ်များ"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order_line__product_template_id
@@ -3452,7 +3452,7 @@ msgstr ""
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order_line__product_type
 msgid "Product Type"
-msgstr ""
+msgstr "ပစ္စည်းအမျိုးအစား"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order_line__product_uom_readonly
@@ -3523,7 +3523,7 @@ msgstr ""
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_report__product_uom_qty
 msgid "Qty Ordered"
-msgstr ""
+msgstr "အော်ဒါထားသော အရေအတွက်"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_report__qty_to_deliver
@@ -3716,7 +3716,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/sale/static/src/js/product/product.xml:0
 msgid "Remove"
-msgstr ""
+msgstr "ဖယ်ရှား"
 
 #. module: sale
 #. odoo-javascript
@@ -3767,7 +3767,7 @@ msgstr ""
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__activity_user_id
 msgid "Responsible User"
-msgstr ""
+msgstr "တာဝန်ရှိသူ"
 
 #. module: sale
 #: model:ir.model.fields,help:sale.field_crm_team__invoiced_target
@@ -3799,7 +3799,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/sale/static/src/js/sale_action_helper/sale_action_helper_dialog.xml:0
 msgid "Sale"
-msgstr ""
+msgstr "အရောင်း"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_product_document__attached_on_sale
@@ -3817,7 +3817,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale.field_sale_order_discount__sale_order_id
 #: model:ir.model.fields.selection,name:sale.selection__account_analytic_applicability__business_domain__sale_order
 msgid "Sale Order"
-msgstr ""
+msgstr "အရောင်း အော်ဒါ"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_account_bank_statement_line__sale_order_count
@@ -3840,7 +3840,7 @@ msgstr ""
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.account_invoice_form
 msgid "Sale Orders"
-msgstr ""
+msgstr "အရောင်း အော်ဒါများ"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_mass_cancel_orders__sale_orders_count
@@ -3952,7 +3952,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale.field_account_analytic_line__so_line
 #: model_terms:ir.ui.view,arch_db:sale.sale_order_line_view_form_readonly
 msgid "Sales Order Item"
-msgstr ""
+msgstr "အရောင်း အော်ဒါ ပစ္စည်း"
 
 #. module: sale
 #: model:ir.model,name:sale.model_sale_order_line
@@ -3960,7 +3960,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale.field_product_product__sale_line_warn
 #: model:ir.model.fields,field_description:sale.field_product_template__sale_line_warn
 msgid "Sales Order Line"
-msgstr ""
+msgstr "အရောင်း အော်ဒါလိုင်း"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_account_move_line__sale_line_ids
@@ -4104,7 +4104,7 @@ msgstr ""
 #. module: sale
 #: model:ir.model.fields.selection,name:sale.selection__sale_order_line__display_type__line_section
 msgid "Section"
-msgstr ""
+msgstr "အစိတ်အပိုင်း"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.view_order_form
@@ -4166,7 +4166,7 @@ msgstr ""
 #. module: sale
 #: model:ir.actions.server,name:sale.model_sale_order_send_mail
 msgid "Send an email"
-msgstr ""
+msgstr "အီးမေးလ် တစ်စောင်ပို့"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.sale_order_cancel_view_form
@@ -4211,7 +4211,7 @@ msgstr ""
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order_line__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "စီးကွင့်"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.res_config_settings_view_form
@@ -4232,7 +4232,7 @@ msgstr "ဆက်တင်များ"
 #. module: sale
 #: model:ir.actions.server,name:sale.model_sale_order_action_share
 msgid "Share"
-msgstr ""
+msgstr "ဝေမျှ"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.res_config_settings_view_form
@@ -4280,7 +4280,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale.field_sale_order__signature
 #: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_content
 msgid "Signature"
-msgstr ""
+msgstr "လက်မှတ်"
 
 #. module: sale
 #. odoo-python
@@ -4302,13 +4302,13 @@ msgstr "လက်မှတ်ထိုးချိန်"
 #: model:ir.model.fields,field_description:sale.field_product_product__sales_count
 #: model:ir.model.fields,field_description:sale.field_product_template__sales_count
 msgid "Sold"
-msgstr ""
+msgstr "ရောင်းပြီး"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.product_form_view_sale_order_button
 #: model_terms:ir.ui.view,arch_db:sale.product_template_form_view_sale_order_button
 msgid "Sold in the last 365 days"
-msgstr ""
+msgstr "နောက်ဆုံး ၃၆၅ ရက် အရောင်းများ"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.mass_cancel_orders_view_form
@@ -4329,7 +4329,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale.field_sale_order__source_id
 #: model:ir.model.fields,field_description:sale.field_sale_report__source_id
 msgid "Source"
-msgstr ""
+msgstr "မူလအစ"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__origin
@@ -4414,7 +4414,7 @@ msgstr "တက်ဂ်များ"
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.report_saleorder_document
 msgid "Tax 15%"
-msgstr ""
+msgstr "အခွန် 15%"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__tax_calculation_rounding_method
@@ -4435,7 +4435,7 @@ msgstr ""
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.report_saleorder_document
 msgid "Tax ID"
-msgstr ""
+msgstr "အခွန် အိုင်ဒီ"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.view_order_form
@@ -4969,12 +4969,12 @@ msgstr "တိုင်းတာသော ယူနစ်"
 #: model:ir.ui.menu,name:sale.next_id_16
 #: model_terms:ir.ui.view,arch_db:sale.res_config_settings_view_form
 msgid "Units of Measure"
-msgstr ""
+msgstr "တိုင်းတာသည့် ယူနစ်များ"
 
 #. module: sale
 #: model:ir.ui.menu,name:sale.menu_product_uom_categ_form_action
 msgid "Units of Measure Categories"
-msgstr ""
+msgstr "တိုင်းတာသည့် ယူနစ်များ ခွဲခြားပုံ"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.view_order_form
@@ -5107,7 +5107,7 @@ msgstr "ထုထည်"
 #: model:ir.model.fields.selection,name:sale.selection__res_partner__sale_warn__warning
 #: model_terms:ir.ui.view,arch_db:sale.product_template_form_view
 msgid "Warning"
-msgstr ""
+msgstr "❗သတိပေးချက်"
 
 #. module: sale
 #. odoo-python

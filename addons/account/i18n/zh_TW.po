@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-12 01:50+0000\n"
-"PO-Revision-Date: 2025-09-16 22:21+0000\n"
+"POT-Creation-Date: 2025-10-16 18:37+0000\n"
+"PO-Revision-Date: 2025-10-13 22:20+0000\n"
 "Last-Translator: \"Tony Ng (ngto)\" <ngto@odoo.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://translate.odoo.com/"
 "projects/odoo-18/account/zh_Hant/>\n"
@@ -983,13 +983,10 @@ msgstr "<i class=\"oi oi-fw o_button_icon oi-arrow-right\"/> 配置別名域"
 #: model_terms:ir.ui.view,arch_db:account.portal_my_details_fields
 msgid ""
 "<small class=\"form-text text-muted\">\n"
-"                    You can choose how you want us to send your invoices, "
-"and with which electronic format.\n"
-"                </small>"
+"                        You can choose how you want us to send your "
+"invoices, and with which electronic format.\n"
+"                    </small>"
 msgstr ""
-"<small class=\"form-text text-muted\">\n"
-"                    你可選擇希望我們發送發票的方式，以及使用的電子格式。\n"
-"                </small>"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.portal_my_invoices
@@ -1332,7 +1329,7 @@ msgstr "<span>=</span>"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_payment_receipt_document
 msgid "<span>Amount In Currency</span>"
-msgstr "<span>原幣金額</span>"
+msgstr "<span>該貨幣金額</span>"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.bill_preview
@@ -2891,7 +2888,7 @@ msgstr "金額類型"
 #: model:ir.model.fields,field_description:account.field_account_move_line__amount_currency
 #: model_terms:ir.ui.view,arch_db:account.view_account_payment_tree
 msgid "Amount in Currency"
-msgstr "外幣金額"
+msgstr "該貨幣金額"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment_register__source_amount
@@ -4538,6 +4535,7 @@ msgstr "關閉"
 #: model:ir.model.fields,field_description:account.field_account_payment__payment_method_code
 #: model:ir.model.fields,field_description:account.field_account_payment_method__code
 #: model:ir.model.fields,field_description:account.field_account_payment_method_line__code
+#: model:ir.model.fields,field_description:account.field_account_payment_register__payment_method_code
 #: model:ir.model.fields,field_description:account.field_account_report_line__code
 #: model_terms:ir.ui.view,arch_db:account.view_account_form
 #: model_terms:ir.ui.view,arch_db:account.view_account_list
@@ -6047,6 +6045,12 @@ msgid "Default taxes used when selling the product"
 msgstr "銷售該產品時，使用的預設稅項"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid "Default value for 'company_id' for %(record)s is not an integer"
+msgstr ""
+
+#. module: account
 #: model:account.account,name:account.1_deferred_revenue
 msgid "Deferred Revenue"
 msgstr "遞延收入"
@@ -6328,7 +6332,7 @@ msgstr "折扣日"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_line__discount_amount_currency
 msgid "Discount amount in Currency"
-msgstr "折扣金額於幣別"
+msgstr "該貨幣折扣金額"
 
 #. module: account
 #. odoo-python
@@ -12120,6 +12124,12 @@ msgid ""
 msgstr "若合作夥伴未有指定銀行賬戶，相關付款將被跳過。"
 
 #. module: account
+#: model:ir.model.fields,help:account.field_account_bank_statement_line__reconciled_payment_ids
+#: model:ir.model.fields,help:account.field_account_move__reconciled_payment_ids
+msgid "Payments that have been reconciled with this invoice."
+msgstr ""
+
+#. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_payment_term_line__value__percent
 msgid "Percent"
 msgstr "百分比"
@@ -12778,6 +12788,12 @@ msgid "Reconciled Invoices Type"
 msgstr "已對賬發票類型"
 
 #. module: account
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__reconciled_payment_ids
+#: model:ir.model.fields,field_description:account.field_account_move__reconciled_payment_ids
+msgid "Reconciled Payments"
+msgstr ""
+
+#. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment__reconciled_statement_line_ids
 msgid "Reconciled Statement Lines"
 msgstr "已核銷的對賬明細"
@@ -13045,7 +13061,7 @@ msgstr "殘值金額"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_line__amount_residual_currency
 msgid "Residual Amount in Currency"
-msgstr "殘值金額幣別"
+msgstr "該貨幣剩餘金額"
 
 #. module: account
 #. odoo-python
@@ -17035,7 +17051,7 @@ msgstr "未連稅金額，有正負號及貨幣符號"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_report__price_subtotal_currency
 msgid "Untaxed Amount in Currency"
-msgstr "以貨幣計算的未稅金額"
+msgstr "該貨幣未連稅金額"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.document_tax_totals_company_currency_template
@@ -17930,7 +17946,7 @@ msgstr "如果沒有至少一個應收/應付款明細，您將無法打開付�
 msgid ""
 "You can't provide a foreign currency without specifying an amount in 'Amount "
 "in Currency' field."
-msgstr "如果沒有在'貨幣金額'欄位中指定金額，您無法提供外幣."
+msgstr "若要提供外幣，必須在「該貨幣金額」欄位輸入金額。"
 
 #. module: account
 #. odoo-python
@@ -18980,6 +18996,16 @@ msgstr ""
 msgid ""
 "{{ object.company_id.name }} Payment Receipt (Ref {{ object.name or 'n/a' }})"
 msgstr "{{ object.company_id.name }} 付款收據(編號 {{ object.name 或 'n/a' }})"
+
+#~ msgid ""
+#~ "<small class=\"form-text text-muted\">\n"
+#~ "                    You can choose how you want us to send your invoices, "
+#~ "and with which electronic format.\n"
+#~ "                </small>"
+#~ msgstr ""
+#~ "<small class=\"form-text text-muted\">\n"
+#~ "                    你可選擇希望我們發送發票的方式，以及使用的電子格式。\n"
+#~ "                </small>"
 
 #~ msgid ""
 #~ "Groupby feature isn't supported by aggregation engine. Please remove the "

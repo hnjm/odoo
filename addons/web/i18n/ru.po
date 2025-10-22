@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-23 18:39+0000\n"
-"PO-Revision-Date: 2025-09-12 15:31+0000\n"
+"POT-Creation-Date: 2025-10-16 18:39+0000\n"
+"PO-Revision-Date: 2025-10-21 22:20+0000\n"
 "Last-Translator: \"Anastasiia Koroleva (koan)\" <koan@odoo.com>\n"
 "Language-Team: Russian <https://translate.odoo.com/projects/odoo-18/web/ru/>"
 "\n"
@@ -484,20 +484,20 @@ msgstr "<span class=\"text-nowrap\">$ 2 887,50</span>"
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
 msgid ""
-"<span class=\"text-nowrap\">$ <span "
-"class=\"oe_currency_value\">11,750.00</span></span>"
+"<span class=\"text-nowrap\">$ <span class=\"oe_currency_value\">11,750.00</"
+"span></span>"
 msgstr ""
-"<span class=\"text-nowrap\">$ <span class=\"oe_currency_value\">11 "
-"750,00</span></span>"
+"<span class=\"text-nowrap\">$ <span class=\"oe_currency_value\">11 750,00</"
+"span></span>"
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
 msgid ""
-"<span class=\"text-nowrap\">$ <span "
-"class=\"oe_currency_value\">7,500.00</span></span>"
+"<span class=\"text-nowrap\">$ <span class=\"oe_currency_value\">7,500.00</"
+"span></span>"
 msgstr ""
-"<span class=\"text-nowrap\">$ <span class=\"oe_currency_value\">7 "
-"500,00</span></span>"
+"<span class=\"text-nowrap\">$ <span class=\"oe_currency_value\">7 500,00</"
+"span></span>"
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
@@ -517,11 +517,15 @@ msgstr "<span class=\"text-nowrap\">Налог 15%</span>"
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
 msgid ""
-"<span class=\"w-100 o_force_ltr\" itemprop=\"streetAddress\">77 Santa Barbara\n"
-"                                       Rd<br/>Pleasant Hill CA 94523<br/>United States</span>"
+"<span class=\"w-100 o_force_ltr\" itemprop=\"streetAddress\">77 Santa "
+"Barbara\n"
+"                                       Rd<br/>Pleasant Hill CA 94523<br/"
+">United States</span>"
 msgstr ""
-"<span class=\"w-100 o_force_ltr\" itemprop=\"streetAddress\">77 Санта-Барбара\n"
-"                                       Rd<br/>Плезант-Хилл, CA 94523<br/>Соединенные Штаты</span>"
+"<span class=\"w-100 o_force_ltr\" itemprop=\"streetAddress\">77 Санта-"
+"Барбара\n"
+"                                       Rd<br/>Плезант-Хилл, CA 94523<br/"
+">Соединенные Штаты</span>"
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
@@ -586,28 +590,34 @@ msgstr "<span>Цена за единицу</span>"
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
 msgid ""
 "<span>[FURN_8220] Four Person Desk<br/>\n"
-"                                       Four person modern office workstation</span>"
+"                                       Four person modern office "
+"workstation</span>"
 msgstr ""
 "<span>[FURN_8220] Стол на четыре персоны<br/>\n"
-"                                       Современная офисная рабочая станция на четыре человека</span>"
+"                                       Современная офисная рабочая станция "
+"на четыре человека</span>"
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
 msgid ""
 "<span>[FURN_8999] Three-Seat Sofa<br/>\n"
-"                                       Three Seater Sofa with Lounger in Steel Grey Colour</span>"
+"                                       Three Seater Sofa with Lounger in "
+"Steel Grey Colour</span>"
 msgstr ""
 "<span>[FURN_8999] Трехместный диван<br/>\n"
-"                                       Трехместный диван с шезлонгом в стальном сером цвете</span>"
+"                                       Трехместный диван с шезлонгом в "
+"стальном сером цвете</span>"
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
 msgid ""
 "<strong class=\"text-nowrap\">$ <span class=\"oe_currency_value\">\n"
-"                                                       22,137.50</span></strong>"
+"                                                       22,137.50</span></"
+"strong>"
 msgstr ""
 "<strong class=\"text-nowrap\">$ <span class=\"oe_currency_value\">\n"
-"                                                       22 137,50</span></strong>"
+"                                                       22 137,50</span></"
+"strong>"
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.address_layout
@@ -1112,8 +1122,7 @@ msgstr "Архив Все"
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/views/kanban/kanban_header.js:0
-msgid ""
-"Are you sure that you want to archive all the records from this column?"
+msgid "Are you sure that you want to archive all the records from this column?"
 msgstr "Вы уверены, что хотите заархивировать все записи из этого столбца?"
 
 #. module: web
@@ -1369,8 +1378,8 @@ msgstr "Стать суперпользователем"
 #. odoo-python
 #: code:addons/web/controllers/export.py:0
 msgid ""
-"Binary fields can not be exported to Excel unless their content is "
-"base64-encoded. That does not seem to be the case for %s."
+"Binary fields can not be exported to Excel unless their content is base64-"
+"encoded. That does not seem to be the case for %s."
 msgstr ""
 "Двоичные поля нельзя экспортировать в Excel, если их содержимое не "
 "закодировано в base64. Похоже, это не относится к %s."
@@ -1448,15 +1457,15 @@ msgstr "Тип кнопки:"
 #. odoo-javascript
 #: code:addons/web/static/src/core/signature/signature_dialog.xml:0
 msgid ""
-"By clicking Adopt & Sign, I agree that the chosen signature/initials will be"
-" a valid electronic representation of my hand-written signature/initials for"
-" all purposes when it is used on documents, including legally binding "
+"By clicking Adopt & Sign, I agree that the chosen signature/initials will be "
+"a valid electronic representation of my hand-written signature/initials for "
+"all purposes when it is used on documents, including legally binding "
 "contracts."
 msgstr ""
-"Нажимая «Принять и подписать», я соглашаюсь с тем, что выбранная "
-"подпись/инициалы будут являться действительным электронным представлением "
-"моей рукописной подписи/инициалов для всех целей, включая юридически "
-"обязывающие контракты, при использовании в документах."
+"Нажимая «Принять и подписать», я соглашаюсь с тем, что выбранная подпись/"
+"инициалы будут являться действительным электронным представлением моей "
+"рукописной подписи/инициалов для всех целей, включая юридически обязывающие "
+"контракты, при использовании в документах."
 
 #. module: web
 #. odoo-javascript
@@ -3051,13 +3060,16 @@ msgstr "Текст нижнего колонтитула, отображаемы
 #. odoo-javascript
 #: code:addons/web/static/src/views/pivot/pivot_renderer.js:0
 msgid ""
-"For Excel compatibility, data cannot be exported if there are more than 16384 columns.\n"
+"For Excel compatibility, data cannot be exported if there are more than "
+"16384 columns.\n"
 "\n"
 "Tip: try to flip axis, filter further or reduce the number of measures."
 msgstr ""
-"Для совместимости с Excel данные не могут быть экспортированы, если столбцов больше 16384.\n"
+"Для совместимости с Excel данные не могут быть экспортированы, если столбцов "
+"больше 16384.\n"
 "\n"
-"Совет: попробуйте поменять оси местами, применить больше фильтров или уменьшить количество показателей."
+"Совет: попробуйте поменять оси местами, применить больше фильтров или "
+"уменьшить количество показателей."
 
 #. module: web
 #. odoo-javascript
@@ -3219,8 +3231,8 @@ msgid ""
 "click the <i class=\"fa fa-cloud-upload fa-fw\"></i> button now to ensure "
 "your work is saved before you exit this tab."
 msgstr ""
-"Внимание! Последние изменения слишком велики для автоматического сохранения."
-" Пожалуйста, нажмите кнопку <i class=\"fa fa-cloud-upload fa-fw\"></i> "
+"Внимание! Последние изменения слишком велики для автоматического сохранения. "
+"Пожалуйста, нажмите кнопку <i class=\"fa fa-cloud-upload fa-fw\"></i> "
 "сейчас, чтобы убедиться, что ваша работа сохранена, прежде чем покинуть эту "
 "вкладку."
 
@@ -3274,8 +3286,8 @@ msgid ""
 "numbers, underscores, hyphens, or dots in the database name, and you'll be "
 "golden."
 msgstr ""
-"Хьюстон, у нас проблема с именем базы данных! Убедитесь, что имя базы данных"
-" содержит только буквы, цифры, знаки подчеркивания, дефисы или точки, и все "
+"Хьюстон, у нас проблема с именем базы данных! Убедитесь, что имя базы данных "
+"содержит только буквы, цифры, знаки подчеркивания, дефисы или точки, и все "
 "будет в порядке."
 
 #. module: web
@@ -3330,8 +3342,7 @@ msgstr "Значок"
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/url/url_field.js:0
-msgid ""
-"If True, the url will be used as it is, without any prefix added to it."
+msgid "If True, the url will be used as it is, without any prefix added to it."
 msgstr "Если True, URL будет использован как есть, без добавления префикса."
 
 #. module: web
@@ -3344,8 +3355,8 @@ msgid ""
 msgstr ""
 "Если отмечено, нажатие на тег откроет форму для его прямого редактирования. "
 "Обратите внимание, что если также установлено поле цвета, редактирование "
-"тега будет иметь приоритет. Поэтому палитра цветов не будет отображаться при"
-" нажатии на тег."
+"тега будет иметь приоритет. Поэтому палитра цветов не будет отображаться при "
+"нажатии на тег."
 
 #. module: web
 #. odoo-javascript
@@ -3394,7 +3405,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/domain/domain_field.js:0
 msgid "If true, non-literals are accepted"
-msgstr ""
+msgstr "Если значение установлено в TRUE, допускаются нелитералы"
 
 #. module: web
 #. odoo-javascript
@@ -3616,17 +3627,26 @@ msgstr "Ислам"
 #. odoo-javascript
 #: code:addons/web/static/src/webclient/debug/profiling/profiling_qweb.xml:0
 msgid ""
-"It is possible that the \"t-call\" time does not correspond to the overall time of the\n"
-"            template. Because the global time (in the drop down) does not take into account the\n"
-"            duration which is not in the rendering (look for the template, read, inheritance,\n"
-"            compilation...). During rendering, the global time also takes part of the time to make\n"
-"            the profile as well as some part not logged in the function generated by the qweb."
+"It is possible that the \"t-call\" time does not correspond to the overall "
+"time of the\n"
+"            template. Because the global time (in the drop down) does not "
+"take into account the\n"
+"            duration which is not in the rendering (look for the template, "
+"read, inheritance,\n"
+"            compilation...). During rendering, the global time also takes "
+"part of the time to make\n"
+"            the profile as well as some part not logged in the function "
+"generated by the qweb."
 msgstr ""
 "Возможно, что время \"t-call\" не соответствует общему времени выполнения\n"
-"            шаблона. Потому что общее время (в выпадающем списке) не учитывает\n"
-"            продолжительность, которая не связана с рендерингом (поиск шаблона, чтение, наследование,\n"
-"            компиляция...). Во время рендеринга общее время также включает часть времени на создание\n"
-"            профиля, а также часть времени, не зарегистрированного в функции, сгенерированной qweb."
+"            шаблона. Потому что общее время (в выпадающем списке) не "
+"учитывает\n"
+"            продолжительность, которая не связана с рендерингом (поиск "
+"шаблона, чтение, наследование,\n"
+"            компиляция...). Во время рендеринга общее время также включает "
+"часть времени на создание\n"
+"            профиля, а также часть времени, не зарегистрированного в "
+"функции, сгенерированной qweb."
 
 #. module: web
 #. odoo-javascript
@@ -4951,21 +4971,21 @@ msgstr "Удалены первые %(count)s записей (из %(total)s в�
 #. odoo-python
 #: code:addons/web/models/models.py:0
 msgid ""
-"Only types %(supported_types)s are supported for category (found type "
-"%(field_type)s)"
+"Only types %(supported_types)s are supported for category (found type %"
+"(field_type)s)"
 msgstr ""
-"Для категории поддерживаются только типы %(supported_types)s (найден тип "
-"%(field_type)s)"
+"Для категории поддерживаются только типы %(supported_types)s (найден тип %"
+"(field_type)s)"
 
 #. module: web
 #. odoo-python
 #: code:addons/web/models/models.py:0
 msgid ""
-"Only types %(supported_types)s are supported for filter (found type "
-"%(field_type)s)"
+"Only types %(supported_types)s are supported for filter (found type %"
+"(field_type)s)"
 msgstr ""
-"Для фильтра поддерживаются только типы %(supported_types)s (найден тип "
-"%(field_type)s)"
+"Для фильтра поддерживаются только типы %(supported_types)s (найден тип %"
+"(field_type)s)"
 
 #. module: web
 #. odoo-javascript
@@ -5988,8 +6008,8 @@ msgid ""
 "Select <i class=\"fa fa-database\" role=\"img\" aria-label=\"Database\" "
 "title=\"Database\"/>"
 msgstr ""
-"Выберите <i class=\"fa fa-database\" role=\"img\" aria-label=\"База данных\""
-" title=\"База данных\"/>"
+"Выберите <i class=\"fa fa-database\" role=\"img\" aria-label=\"База данных\" "
+"title=\"База данных\"/>"
 
 #. module: web
 #. odoo-javascript
@@ -6136,8 +6156,7 @@ msgstr "Установить приоритет..."
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/datetime/datetime_field.js:0
 msgid ""
-"Set to true the full range input has to be display by default, even if "
-"empty."
+"Set to true the full range input has to be display by default, even if empty."
 msgstr ""
 "Установите значение true, чтобы полный диапазон ввода отображался по "
 "умолчанию, даже если он пуст."
@@ -6147,8 +6166,8 @@ msgstr ""
 #: code:addons/web/static/src/views/fields/datetime/datetime_field.js:0
 msgid "Set to true to display days, months (and hours) with unpadded numbers"
 msgstr ""
-"Установите значение true для отображения дней, месяцев (и часов) без ведущих"
-" нулей"
+"Установите значение true для отображения дней, месяцев (и часов) без ведущих "
+"нулей"
 
 #. module: web
 #. odoo-javascript
@@ -6271,8 +6290,8 @@ msgid ""
 "Something went wrong... If you really are stuck, share the report with your "
 "friendly support service"
 msgstr ""
-"Что-то пошло не так... Если вы действительно застряли, поделитесь отчетом с "
-"вашей дружелюбной службой поддержки"
+"Что-то пошло не так... Если вы не можете решить проблему самостоятельно, "
+"поделитесь отчетом с нашей службой поддержки"
 
 #. module: web
 #. odoo-javascript
@@ -6599,24 +6618,36 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/domain/domain_field.js:0
 msgid "The domain involves non-literals. Their evaluation might fail."
-msgstr ""
+msgstr "Домен содержит нелитералы. Их вычисление может завершиться с ошибкой."
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/domain/domain_field.js:0
 msgid "The domain should not involve non-literals"
-msgstr ""
+msgstr "Домен не должен содержать нелитералы"
+
+#. module: web
+#. odoo-javascript
+#: code:addons/web/static/src/core/utils/files.js:0
+msgid "The file is not an image, resizing is not possible"
+msgstr "Этот файл не является изображением, изменение размера невозможно"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/core/errors/error_dialogs.xml:0
 #: code:addons/web/static/src/public/error_notifications.js:0
 msgid ""
-"The operation was interrupted. This usually means that the current operation"
-" is taking too much time."
+"The operation was interrupted. This usually means that the current operation "
+"is taking too much time."
 msgstr ""
 "Операция была прервана. Обычно это означает, что текущая операция занимает "
 "слишком много времени."
+
+#. module: web
+#. odoo-javascript
+#: code:addons/web/static/src/core/utils/files.js:0
+msgid "The resizing of the image failed"
+msgstr "Ошибка при изменении размера изображения"
 
 #. module: web
 #. odoo-javascript
@@ -6628,11 +6659,11 @@ msgstr "Выбранное поле будет использовано для �
 #. odoo-javascript
 #: code:addons/web/static/src/core/utils/files.js:0
 msgid ""
-"The selected file (%(size)sB) is larger than the maximum allowed file size "
-"(%(maxSize)sB)."
+"The selected file (%(size)sB) is larger than the maximum allowed file size (%"
+"(maxSize)sB)."
 msgstr ""
-"Выбранный файл (%(size)sB) превышает максимальный допустимый размер файла "
-"(%(maxSize)sB)."
+"Выбранный файл (%(size)sB) превышает максимальный допустимый размер файла (%"
+"(maxSize)sB)."
 
 #. module: web
 #. odoo-javascript
@@ -6643,8 +6674,8 @@ msgid ""
 "browser console or server logs for details."
 msgstr ""
 "Компиляция стилей не удалась. Это ошибка администратора или разработчика, "
-"которую необходимо исправить для всей базы данных перед продолжением работы."
-" Подробности смотрите в консоли браузера или логах сервера."
+"которую необходимо исправить для всей базы данных перед продолжением работы. "
+"Подробности смотрите в консоли браузера или логах сервера."
 
 #. module: web
 #. odoo-javascript
@@ -6681,8 +6712,7 @@ msgstr "Возникла проблема при загрузке вашего �
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.address_layout
 msgid "This block is not always present depending on the printed document."
-msgstr ""
-"Этот блок присутствует не всегда в зависимости от печатного документа."
+msgstr "Этот блок присутствует не всегда в зависимости от печатного документа."
 
 #. module: web
 #. odoo-javascript
@@ -6789,10 +6819,13 @@ msgstr "Временной интервал"
 #: code:addons/web/static/src/views/fields/timezone_mismatch/timezone_mismatch_field.js:0
 msgid ""
 "Timezone Mismatch : This timezone is different from that of your browser.\n"
-"Please, set the same timezone as your browser's to avoid time discrepancies in your system."
+"Please, set the same timezone as your browser's to avoid time discrepancies "
+"in your system."
 msgstr ""
-"Несоответствие часового пояса: этот часовой пояс отличается от часового пояса вашего браузера.\n"
-"Установите тот же часовой пояс, что и в вашем браузере, чтобы избежать расхождений во времени в системе."
+"Несоответствие часового пояса: этот часовой пояс отличается от часового "
+"пояса вашего браузера.\n"
+"Установите тот же часовой пояс, что и в вашем браузере, чтобы избежать "
+"расхождений во времени в системе."
 
 #. module: web
 #. odoo-javascript
@@ -7029,8 +7062,8 @@ msgstr "Не удалось получить доступ к камере"
 #. odoo-javascript
 #: code:addons/web/static/src/webclient/actions/reports/utils.js:0
 msgid ""
-"Unable to find Wkhtmltopdf on this system. The report will be shown in "
-"html.%(link)s"
+"Unable to find Wkhtmltopdf on this system. The report will be shown in html.%"
+"(link)s"
 msgstr ""
 "Не удалось найти Wkhtmltopdf на этой системе. Отчет будет показан в формате "
 "HTML.%(link)s"
@@ -7184,8 +7217,7 @@ msgstr "Использовать это для моего Канбана"
 #: code:addons/web/static/src/views/fields/integer/integer_field.js:0
 msgid "Use a human readable format (e.g.: 500G instead of 500,000,000,000)."
 msgstr ""
-"Использовать человекочитаемый формат (например: 500G вместо "
-"500,000,000,000)."
+"Использовать человекочитаемый формат (например: 500G вместо 500,000,000,000)."
 
 #. module: web
 #. odoo-javascript
@@ -7616,8 +7648,7 @@ msgstr ""
 msgid ""
 "You need to select a model before opening the dynamic placeholder selector."
 msgstr ""
-"Вам нужно выбрать модель перед открытием селектора динамического "
-"заполнителя."
+"Вам нужно выбрать модель перед открытием селектора динамического заполнителя."
 
 #. module: web
 #. odoo-javascript
@@ -7634,8 +7665,8 @@ msgstr ""
 #: code:addons/web/static/src/webclient/actions/reports/utils.js:0
 msgid ""
 "You should upgrade your version of Wkhtmltopdf to at least 0.12.0 in order "
-"to get a correct display of headers and footers as well as support for "
-"table-breaking between pages.%(link)s"
+"to get a correct display of headers and footers as well as support for table-"
+"breaking between pages.%(link)s"
 msgstr ""
 "Вам следует обновить версию Wkhtmltopdf до как минимум 0.12.0, чтобы "
 "правильно отображались заголовки и нижние колонтитулы, а также "

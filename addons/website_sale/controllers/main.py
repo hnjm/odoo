@@ -170,7 +170,7 @@ class WebsiteSale(payment_portal.PaymentPortal):
         ProductTemplate = env['product.template']
         dom = sitemap_qs2dom(qs, '/shop', ProductTemplate._rec_name)
         dom += website.sale_product_domain()
-        for product in ProductTemplate.search(dom):
+        for product in ProductTemplate.with_context(prefetch_fields=False).search(dom):
             loc = '/shop/%s' % env['ir.http']._slug(product)
             if not qs or qs.lower() in loc:
                 yield {'loc': loc}
@@ -233,7 +233,7 @@ class WebsiteSale(payment_portal.PaymentPortal):
     ], type='http', auth="public", website=True, sitemap=sitemap_shop)
     def shop(self, page=0, category=None, search='', min_price=0.0, max_price=0.0, ppg=False, **post):
         if not request.website.has_ecommerce_access():
-            return request.redirect('/web/login')
+            return request.redirect(f'/web/login?redirect={request.httprequest.path}')
         try:
             min_price = float(min_price)
         except ValueError:
@@ -329,7 +329,8 @@ class WebsiteSale(payment_portal.PaymentPortal):
         if filter_by_price_enabled:
             # TODO Find an alternative way to obtain the domain through the search metadata.
             Product = request.env['product.template'].with_context(bin_size=True)
-            domain = self._get_shop_domain(search, category, attrib_values)
+            search_term = fuzzy_search_term if fuzzy_search_term else search
+            domain = self._get_shop_domain(search_term, category, attrib_values)
 
             # This is ~4 times more efficient than a search for the cheapest and most expensive products
             query = Product._where_calc(domain)
@@ -360,7 +361,12 @@ class WebsiteSale(payment_portal.PaymentPortal):
         if filter_by_tags_enabled and search_product:
             all_tags = ProductTag.search(
                 expression.AND([
-                    [('product_ids.is_published', '=', True), ('visible_on_ecommerce', '=', True)],
+                    [
+                        ('visible_on_ecommerce', '=', True),
+                        '|',
+                        ('product_template_ids.is_published', '=', True),
+                        ('product_product_ids.is_published', '=', True),
+                    ],
                     website_domain
                 ])
             )
@@ -459,7 +465,7 @@ class WebsiteSale(payment_portal.PaymentPortal):
     @route(['/shop/<model("product.template"):product>'], type='http', auth="public", website=True, sitemap=sitemap_products, readonly=True)
     def product(self, product, category='', search='', **kwargs):
         if not request.website.has_ecommerce_access():
-            return request.redirect('/web/login')
+            return request.redirect(f'/web/login?redirect={request.httprequest.path}')
 
         return request.render("website_sale.product", self._prepare_product_values(product, category, search, **kwargs))
 
@@ -756,7 +762,7 @@ class WebsiteSale(payment_portal.PaymentPortal):
         revive: Revival method when abandoned cart. Can be 'merge' or 'squash'
         """
         if not request.website.has_ecommerce_access():
-            return request.redirect('/web/login')
+            return request.redirect('/web/login?redirect=/shop/cart')
 
         order = request.website.sale_get_order()
         if order and order.state != 'draft':

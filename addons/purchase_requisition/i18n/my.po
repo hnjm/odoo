@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-09-26 08:56+0000\n"
-"PO-Revision-Date: 2025-09-20 22:20+0000\n"
+"PO-Revision-Date: 2025-10-15 11:28+0000\n"
 "Last-Translator: Oakarmin Iron <oakarminiron@gmail.com>\n"
 "Language-Team: Burmese <https://translate.odoo.com/projects/odoo-18/"
 "purchase_requisition/my/>\n"
@@ -204,7 +204,7 @@ msgstr ""
 #. module: purchase_requisition
 #: model:ir.model.fields.selection,name:purchase_requisition.selection__purchase_requisition__state__cancel
 msgid "Cancelled"
-msgstr ""
+msgstr "ပယ်ဖျက်ပြီး"
 
 #. module: purchase_requisition
 #. odoo-python
@@ -215,7 +215,7 @@ msgstr ""
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition_line__product_uom_category_id
 msgid "Category"
-msgstr ""
+msgstr "အမျိုးအမည်"
 
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.purchase_order_line_compare_tree
@@ -240,17 +240,17 @@ msgstr ""
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.view_purchase_requisition_form
 msgid "Close"
-msgstr ""
+msgstr "ပိတ်"
 
 #. module: purchase_requisition
 #: model:ir.model.fields.selection,name:purchase_requisition.selection__purchase_requisition__state__done
 msgid "Closed"
-msgstr ""
+msgstr "ပိတ်ပြီး"
 
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.report_purchaserequisition_document
 msgid "Code"
-msgstr ""
+msgstr "ကုဒ်"
 
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition__company_id
@@ -292,12 +292,12 @@ msgstr ""
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.view_purchase_requisition_form
 msgid "Confirm"
-msgstr ""
+msgstr "အတည်ပြု"
 
 #. module: purchase_requisition
 #: model:ir.model.fields.selection,name:purchase_requisition.selection__purchase_requisition__state__confirmed
 msgid "Confirmed"
-msgstr ""
+msgstr "အတည်ပြုပြီး"
 
 #. module: purchase_requisition
 #: model:ir.model.fields,help:purchase_requisition.field_purchase_requisition_line__product_uom_category_id
@@ -454,7 +454,7 @@ msgstr ""
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.view_purchase_requisition_filter
 msgid "Group By"
-msgstr ""
+msgstr "အုပ်စုအလိုက်"
 
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_order__has_alternatives
@@ -480,7 +480,7 @@ msgstr "အိုင်ဒီ"
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition__activity_exception_icon
 msgid "Icon"
-msgstr ""
+msgstr "အိုင်ကွန်"
 
 #. module: purchase_requisition
 #: model:ir.model.fields,help:purchase_requisition.field_purchase_requisition__activity_exception_icon
@@ -530,7 +530,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition_create_alternative__write_uid
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition_line__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "နောက်ဆုံးပြင်ဆင်သူ"
 
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_order_group__write_date
@@ -569,12 +569,12 @@ msgstr ""
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "မက်ဆေ့ဂျ်များ"
 
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.report_purchaserequisition_document
 msgid "Mitchell Admin"
-msgstr ""
+msgstr "မစ်ရှဲ အက်ဒမင်"
 
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition__my_activity_date_deadline
@@ -646,7 +646,7 @@ msgstr ""
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "အယ်ရာ အရေအတွက်"
 
 #. module: purchase_requisition
 #: model:ir.model.fields,help:purchase_requisition.field_purchase_requisition__message_needaction_counter
@@ -667,7 +667,7 @@ msgstr "အော်ဒါ"
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition_line__qty_ordered
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.report_purchaserequisition_document
 msgid "Ordered"
-msgstr ""
+msgstr "အော်ဒါပြီး"
 
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.view_purchase_requisition_filter
@@ -704,7 +704,7 @@ msgstr "ပစ္စည်း"
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition_line__product_uom_id
 msgid "Product Unit of Measure"
-msgstr ""
+msgstr "ရေတွက်ပုံ"
 
 #. module: purchase_requisition
 #: model:ir.model,name:purchase_requisition.model_product_product
@@ -817,7 +817,7 @@ msgstr "အရေအတွက်"
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.report_purchaserequisition_document
 msgid "RFQ"
-msgstr ""
+msgstr "🤝RFQ"
 
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.view_purchase_requisition_form
@@ -837,12 +837,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.report_purchaserequisition_document
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.view_purchase_requisition_filter
 msgid "Reference"
-msgstr ""
+msgstr "မှီငြမ်းချက်"
 
 #. module: purchase_requisition
 #: model:ir.actions.act_window,name:purchase_requisition.action_purchase_requisition_to_so
 msgid "Request for Quotation"
-msgstr ""
+msgstr "🤝RFQ🤝"
 
 #. module: purchase_requisition
 #: model:ir.actions.act_window,name:purchase_requisition.action_purchase_requisition_list
@@ -857,12 +857,12 @@ msgstr ""
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.view_purchase_requisition_form
 msgid "Reset to Draft"
-msgstr ""
+msgstr "အကြမ်း သို့ ပြန်ပြောင်း"
 
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition__activity_user_id
 msgid "Responsible User"
-msgstr ""
+msgstr "တာဝန်ရှိသူ"
 
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition__message_has_sms_error

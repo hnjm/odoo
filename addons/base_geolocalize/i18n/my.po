@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-09-26 08:55+0000\n"
-"PO-Revision-Date: 2025-09-10 13:57+0000\n"
+"PO-Revision-Date: 2025-10-03 16:18+0000\n"
 "Last-Translator: Oakarmin Iron <oakarminiron@gmail.com>\n"
 "Language-Team: Burmese <https://translate.odoo.com/projects/odoo-18/"
 "base_geolocalize/my/>\n"
@@ -45,7 +45,7 @@ msgstr ""
 #. module: base_geolocalize
 #: model_terms:ir.ui.view,arch_db:base_geolocalize.view_crm_partner_geo_form
 msgid "Compute based on address"
-msgstr ""
+msgstr "လိပ်စာအပေါ်အခြေခံပြီး တွက်ထုတ်ပါ"
 
 #. module: base_geolocalize
 #: model:ir.model,name:base_geolocalize.model_res_config_settings
@@ -96,7 +96,7 @@ msgstr ""
 #. module: base_geolocalize
 #: model_terms:ir.ui.view,arch_db:base_geolocalize.view_crm_partner_geo_form
 msgid "Geolocation"
-msgstr ""
+msgstr "ပထဝီနေရာ"
 
 #. module: base_geolocalize
 #: model:ir.model.fields,field_description:base_geolocalize.field_res_partner__date_localization
@@ -122,7 +122,7 @@ msgstr ""
 #. module: base_geolocalize
 #: model:ir.model.fields,field_description:base_geolocalize.field_base_geo_provider__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "နောက်ဆုံးပြင်ဆင်သူ"
 
 #. module: base_geolocalize
 #: model:ir.model.fields,field_description:base_geolocalize.field_base_geo_provider__write_date
@@ -132,12 +132,12 @@ msgstr "နောက်ဆုံးပြင်ဆင်ချိန်"
 #. module: base_geolocalize
 #: model_terms:ir.ui.view,arch_db:base_geolocalize.view_crm_partner_geo_form
 msgid "Lat :"
-msgstr ""
+msgstr "လတ္တီကျူ :"
 
 #. module: base_geolocalize
 #: model_terms:ir.ui.view,arch_db:base_geolocalize.view_crm_partner_geo_form
 msgid "Long:"
-msgstr ""
+msgstr "လောင်ဂျီကျူ:"
 
 #. module: base_geolocalize
 #: model:ir.model.fields,field_description:base_geolocalize.field_base_geo_provider__name
@@ -153,7 +153,7 @@ msgstr ""
 #. module: base_geolocalize
 #: model_terms:ir.ui.view,arch_db:base_geolocalize.view_crm_partner_geo_form
 msgid "Partner Assignment"
-msgstr ""
+msgstr "ပါတနာ သတ်မှတ်ချက်"
 
 #. module: base_geolocalize
 #. odoo-python
@@ -206,4 +206,4 @@ msgstr ""
 #. odoo-python
 #: code:addons/base_geolocalize/models/res_partner.py:0
 msgid "Warning"
-msgstr ""
+msgstr "❗သတိပေးချက်"

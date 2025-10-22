@@ -4,7 +4,7 @@
 import logging
 from contextlib import contextmanager
 from unittest.mock import patch
-from odoo import Command
+from odoo import Command, api
 
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 from odoo.tests import tagged
@@ -366,6 +366,11 @@ class TestPointOfSaleHttpCommon(AccountTestInvoicingHttpCommon):
                 'applied_on': '0_product_variant',
                 'min_quantity': 1,
                 'product_id': cls.wall_shelf.id,
+            }), (0, 0, {
+                'compute_price': 'fixed',
+                'fixed_price': 1,
+                'min_quantity': 5,
+                'product_tmpl_id': cls.monitor_stand.product_tmpl_id.id,
             })],
         })
 
@@ -610,6 +615,14 @@ class TestUi(TestPointOfSaleHttpCommon):
         last_order = self.env['pos.order'].search([], limit=1, order="id desc")
         self.assertEqual(last_order.lines[0].price_subtotal, 30.0)
         self.assertEqual(last_order.lines[0].price_subtotal_incl, 30.0)
+
+    def test_03_pos_with_lots(self):
+
+        # open a session, the /pos/ui controller will redirect to it
+        self.main_pos_config.with_user(self.pos_user).open_ui()
+
+        self.monitor_stand.tracking = 'lot'
+        self.start_tour("/pos/ui?config_id=%d" % self.main_pos_config.id, 'test_03_pos_with_lots', login="pos_user")
 
     def test_04_product_configurator(self):
         # Making one attribute inactive to verify that it doesn't show
@@ -1525,7 +1538,6 @@ class TestUi(TestPointOfSaleHttpCommon):
         })
         self.env['product.pricelist.item'].create({
             'pricelist_id': sale_10_pl.id,
-            'base': 'pricelist',
             'compute_price': 'percentage',
             'applied_on': '3_global',
             'percent_price': 10,
@@ -2127,10 +2139,39 @@ class TestUi(TestPointOfSaleHttpCommon):
         self.assertAlmostEqual(lines[3].balance, 352.59)
         self.assertAlmostEqual(lines[4].balance, 7771.01)
 
+    def test_ctrl_number_ignored(self):
+        self.start_tour("/pos/ui?config_id=%d" % self.main_pos_config.id, 'test_ctrl_number_ignored', login="pos_user")
+
     def test_click_all_orders_keep_customer(self):
         """Verify that clicking on 'All Orders' keeps the customer selected."""
         self.main_pos_config.with_user(self.pos_user).open_ui()
         self.start_tour("/pos/ui?config_id=%d" % self.main_pos_config.id, 'test_click_all_orders_keep_customer', login="pos_user")
+
+    def test_free_text_custom_attribute_on_receipt(self):
+        """ Test that free text (custom) attribute values are correctly shown on the PoS receipt screen. """
+        configurable_product = self.env['product.product'].search([('name', '=', 'Configurable Chair'), ('available_in_pos', '=', 'True')], limit=1)
+        configurable_product.attribute_line_ids[:2].unlink()
+        self.main_pos_config.with_user(self.pos_admin).open_ui()
+        self.start_pos_tour('test_free_text_custom_attribute_on_receipt', login="pos_admin")
+
+    def test_sync_from_ui_one_by_one(self):
+        """
+        Sync from UI is now syncing orders one by one.
+        sync_from_ui should be called 6 times in this tour (6 orders created).
+        """
+
+        pos_order = self.env.registry.models['pos.order']
+        sync_counter = {'count': 0}
+
+        @api.model
+        def sync_from_ui_patch(self, orders):
+            sync_counter['count'] += 1
+            return super(pos_order, self).sync_from_ui(orders)
+
+        with patch.object(pos_order, "sync_from_ui", sync_from_ui_patch):
+            self.start_pos_tour("test_sync_from_ui_one_by_one", login="pos_user")
+            self.assertEqual(sync_counter['count'], 6)
+
 
 # This class just runs the same tests as above but with mobile emulation
 class MobileTestUi(TestUi):

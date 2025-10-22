@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-12 01:50+0000\n"
-"PO-Revision-Date: 2025-09-15 06:06+0000\n"
+"POT-Creation-Date: 2025-10-16 18:37+0000\n"
+"PO-Revision-Date: 2025-10-21 22:20+0000\n"
 "Last-Translator: \"Kwanghee Park (kwpa)\" <kwpa@odoo.com>\n"
 "Language-Team: Korean <https://translate.odoo.com/projects/odoo-18/account/"
 "ko/>\n"
@@ -990,13 +990,13 @@ msgstr "<i class=\"oi oi-fw o_button_icon oi-arrow-right\"/> 별칭 도메인 �
 #: model_terms:ir.ui.view,arch_db:account.portal_my_details_fields
 msgid ""
 "<small class=\"form-text text-muted\">\n"
-"                    You can choose how you want us to send your invoices, "
-"and with which electronic format.\n"
-"                </small>"
+"                        You can choose how you want us to send your "
+"invoices, and with which electronic format.\n"
+"                    </small>"
 msgstr ""
 "<small class=\"form-text text-muted\">\n"
-"                    청구서를 전송하는 방법 및 전자 형식을 선택할 수 있습니"
-"다.\n"
+"                    청구서 전송 방법 및 전자 청구서 양식을 선택할 수 "
+"있습니다.\n"
 "                </small>"
 
 #. module: account
@@ -4598,6 +4598,7 @@ msgstr "닫기"
 #: model:ir.model.fields,field_description:account.field_account_payment__payment_method_code
 #: model:ir.model.fields,field_description:account.field_account_payment_method__code
 #: model:ir.model.fields,field_description:account.field_account_payment_method_line__code
+#: model:ir.model.fields,field_description:account.field_account_payment_register__payment_method_code
 #: model:ir.model.fields,field_description:account.field_account_report_line__code
 #: model_terms:ir.ui.view,arch_db:account.view_account_form
 #: model_terms:ir.ui.view,arch_db:account.view_account_list
@@ -6117,6 +6118,12 @@ msgstr "제품 구매 시 적용되는 기본 세금."
 #: model:ir.model.fields,help:account.field_product_template__taxes_id
 msgid "Default taxes used when selling the product"
 msgstr "제품 판매시 사용되는 기본 세금."
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid "Default value for 'company_id' for %(record)s is not an integer"
+msgstr "%(record)s에 대한 'company_id' 기본값이 정수가 아닙니다"
 
 #. module: account
 #: model:account.account,name:account.1_deferred_revenue
@@ -12251,6 +12258,13 @@ msgid ""
 msgstr "은행 계좌가 지정되지 않은 협력사와 관련된 결제는 건너뛰게 됩니다."
 
 #. module: account
+#: model:ir.model.fields,help:account.field_account_bank_statement_line__reconciled_payment_ids
+#: model:ir.model.fields,help:account.field_account_move__reconciled_payment_ids
+#, fuzzy
+msgid "Payments that have been reconciled with this invoice."
+msgstr "결제 내역에 대해 해당 청구서와 조정이 완료되었습니다."
+
+#. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_payment_term_line__value__percent
 msgid "Percent"
 msgstr "비율"
@@ -12910,6 +12924,12 @@ msgstr "조정 완료된 청구서"
 #: model:ir.model.fields,field_description:account.field_account_payment__reconciled_invoices_type
 msgid "Reconciled Invoices Type"
 msgstr "조정된 청구서 유형"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__reconciled_payment_ids
+#: model:ir.model.fields,field_description:account.field_account_move__reconciled_payment_ids
+msgid "Reconciled Payments"
+msgstr "결제 조정"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment__reconciled_statement_line_ids
@@ -19298,6 +19318,17 @@ msgid ""
 "{{ object.company_id.name }} Payment Receipt (Ref {{ object.name or 'n/a' }})"
 msgstr ""
 "{{ object.company_id.name }} 결제 영수증 (참조 {{ object.name or 'n/a' }})"
+
+#~ msgid ""
+#~ "<small class=\"form-text text-muted\">\n"
+#~ "                    You can choose how you want us to send your invoices, "
+#~ "and with which electronic format.\n"
+#~ "                </small>"
+#~ msgstr ""
+#~ "<small class=\"form-text text-muted\">\n"
+#~ "                    청구서를 전송하는 방법 및 전자 형식을 선택할 수 있습니"
+#~ "다.\n"
+#~ "                </small>"
 
 #~ msgid ""
 #~ "Groupby feature isn't supported by aggregation engine. Please remove the "

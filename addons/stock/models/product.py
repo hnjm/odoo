@@ -316,7 +316,7 @@ class Product(models.Model):
         if self.env.context.get('strict'):
             loc_domain = [('location_id', 'in', locations.ids)]
             dest_loc_domain = [('location_dest_id', 'in', locations.ids)]
-            dest_loc_domain_out = [('location_dest_id', 'in', locations.ids)]
+            dest_loc_domain_out = [('location_dest_id', 'not in', locations.ids)]
         elif locations:
             paths_domain = expression.OR([[('parent_path', '=like', loc.parent_path + '%')] for loc in locations])
             loc_domain = [('location_id', 'any', paths_domain)]
@@ -1052,6 +1052,8 @@ class ProductTemplate(models.Model):
 
     def action_product_tmpl_forecast_report(self):
         self.ensure_one()
+        if not self.env.user._get_default_warehouse_id():
+            self.env['stock.warehouse']._warehouse_redirect_warning()
         action = self.env["ir.actions.actions"]._for_xml_id('stock.stock_forecasted_product_template_action')
         return action
 

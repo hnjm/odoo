@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-29 18:38+0000\n"
-"PO-Revision-Date: 2025-09-20 22:20+0000\n"
+"PO-Revision-Date: 2025-10-16 05:12+0000\n"
 "Last-Translator: Oakarmin Iron <oakarminiron@gmail.com>\n"
 "Language-Team: Burmese <https://translate.odoo.com/projects/odoo-18/"
 "web_editor/my/>\n"
@@ -448,7 +448,7 @@ msgstr ""
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
 msgid "Background"
-msgstr ""
+msgstr "နောက်ခံ"
 
 #. module: web_editor
 #. odoo-javascript
@@ -529,7 +529,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/snippets.editor.js:0
 msgid "Block"
-msgstr ""
+msgstr "ဘလော့"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
@@ -714,7 +714,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
 msgid "Colors"
-msgstr ""
+msgstr "အရောင်များ"
 
 #. module: web_editor
 #. odoo-javascript
@@ -998,7 +998,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web_editor/static/src/components/media_dialog/media_dialog.js:0
 msgid "Documents"
-msgstr ""
+msgstr "စာရွက်စာတမ်း(များ)"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1097,7 +1097,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web_editor/static/src/components/media_dialog/image_selector.js:0
 msgid "Error"
-msgstr ""
+msgstr "အယ်ရာ"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.colorpicker
@@ -1221,7 +1221,7 @@ msgstr ""
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
 msgid "Format"
-msgstr ""
+msgstr "ဖော်မက်"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1454,7 +1454,7 @@ msgstr "အိုင်ဒီ"
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/snippets.editor.js:0
 msgid "Icon"
-msgstr ""
+msgstr "အိုင်ကွန်"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1518,7 +1518,7 @@ msgstr ""
 #: code:addons/web_editor/static/src/js/wysiwyg/wysiwyg.js:0
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
 msgid "Image"
-msgstr ""
+msgstr "ရုပ်ပုံ"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1536,7 +1536,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web_editor/static/src/components/media_dialog/media_dialog.js:0
 msgid "Images"
-msgstr ""
+msgstr "ရုပ်ပုံများ"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
@@ -1712,7 +1712,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/wysiwyg.xml:0
 msgid "Label"
-msgstr ""
+msgstr "လေဘယ်"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1724,7 +1724,7 @@ msgstr ""
 #. module: web_editor
 #: model:ir.model.fields,field_description:web_editor.field_web_editor_converter_test_sub__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "နောက်ဆုံးပြင်ဆင်သူ"
 
 #. module: web_editor
 #: model:ir.model.fields,field_description:web_editor.field_web_editor_converter_test_sub__write_date
@@ -1803,13 +1803,13 @@ msgstr ""
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 msgid "List"
-msgstr ""
+msgstr "စာရင်း"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/components/media_dialog/file_selector.xml:0
 msgid "Load more..."
-msgstr ""
+msgstr "ထပ်တင်ရန်..."
 
 #. module: web_editor
 #. odoo-javascript
@@ -1854,14 +1854,14 @@ msgstr ""
 #: code:addons/web_editor/static/src/js/wysiwyg/wysiwyg.js:0
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Media"
-msgstr ""
+msgstr "မီဒီယာ"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #: code:addons/web_editor/static/src/xml/wysiwyg.xml:0
 msgid "Medium"
-msgstr ""
+msgstr "တဆင့် (သို့) ကြားခံ"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1928,7 +1928,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/snippets.editor.js:0
 msgid "No"
-msgstr ""
+msgstr "မဟုတ်ဘူး"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1974,14 +1974,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
 msgid "None"
-msgstr ""
+msgstr "(None)မသတ်မှတ်"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
 msgid "Normal"
-msgstr ""
+msgstr "ပုံမှန်"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2073,14 +2073,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_editor.colorpicker
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
 msgid "Position"
-msgstr ""
+msgstr "အနေအထား"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/components/media_dialog/video_selector.xml:0
 #: code:addons/web_editor/static/src/xml/wysiwyg.xml:0
 msgid "Preview"
-msgstr ""
+msgstr "ပရီဗျူး"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2106,7 +2106,7 @@ msgstr ""
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
 msgid "Quality"
-msgstr ""
+msgstr "အရည်အသွေး"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2554,7 +2554,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/wysiwyg/wysiwyg.js:0
 msgid "Signature"
-msgstr ""
+msgstr "လက်မှတ်"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2671,7 +2671,7 @@ msgstr ""
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #: code:addons/web_editor/static/src/js/wysiwyg/wysiwyg.js:0
 msgid "Structure"
-msgstr ""
+msgstr "ပုံစံ"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2872,7 +2872,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/snippets.xml:0
 msgid "Title"
-msgstr ""
+msgstr "ခေါင်းစဉ်"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
@@ -3004,7 +3004,7 @@ msgstr ""
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.colorpicker
 msgid "Type"
-msgstr ""
+msgstr "အမျိုးအစား"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3033,7 +3033,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web_editor/static/src/components/media_dialog/image_selector.js:0
 msgid "Upload an image"
-msgstr ""
+msgstr "ပုံတစ်ပုံ အပ်လုဒ်"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3056,7 +3056,7 @@ msgstr ""
 #: code:addons/web_editor/static/src/js/editor/snippets.editor.js:0
 #: code:addons/web_editor/static/src/js/wysiwyg/wysiwyg.js:0
 msgid "Video"
-msgstr ""
+msgstr "ဗီဒီယို"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3074,7 +3074,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web_editor/static/src/components/media_dialog/media_dialog.js:0
 msgid "Videos"
-msgstr ""
+msgstr "ဗီဒီယိုများ"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3085,7 +3085,7 @@ msgstr ""
 #. module: web_editor
 #: model:ir.model,name:web_editor.model_ir_ui_view
 msgid "View"
-msgstr ""
+msgstr "ဗျူး"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3176,7 +3176,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/snippets.editor.js:0
 msgid "Yes"
-msgstr ""
+msgstr "ဟုတ်တယ်"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3317,7 +3317,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web_editor/static/src/components/media_dialog/video_selector.xml:0
 msgid "videos"
-msgstr ""
+msgstr "ဗီဒီယိုများ"
 
 #. module: web_editor
 #: model:ir.model,name:web_editor.model_ir_websocket

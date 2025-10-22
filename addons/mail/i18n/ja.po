@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-22 18:38+0000\n"
-"PO-Revision-Date: 2025-08-26 14:54+0000\n"
+"POT-Creation-Date: 2025-10-03 18:38+0000\n"
+"PO-Revision-Date: 2025-10-20 05:30+0000\n"
 "Last-Translator: \"Junko Augias (juau)\" <juau@odoo.com>\n"
 "Language-Team: Japanese <https://translate.odoo.com/projects/odoo-18/mail/ja/"
 ">\n"
@@ -2704,7 +2704,7 @@ msgstr "作成: #"
 #. odoo-javascript
 #: code:addons/mail/static/src/core/web/activity.xml:0
 msgid "Created"
-msgstr "作成済"
+msgstr "作成日"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_search
@@ -5402,7 +5402,7 @@ msgstr "メッセージコピーを保管"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_fetchmail_server__original
 msgid "Keep Original"
-msgstr "原本を保持する"
+msgstr "元を保持"
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_compose_message__auto_delete_keep_log
@@ -9700,11 +9700,6 @@ msgid "The channel UUID must be unique"
 msgstr "チャネルUUIDは一意にして下さい。"
 
 #. module: mail
-#: model:ir.model.constraint,message:mail.constraint_discuss_channel_channel_type_not_null
-msgid "The channel type cannot be empty"
-msgstr "チャネルタイプは空にすることはできません。"
-
-#. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/core/common/thread.xml:0
 msgid "The conversation is empty."
@@ -12126,3 +12121,6 @@ msgstr "{{ object.partner_id.lang }}"
 #: code:addons/mail/models/discuss/discuss_channel_member.py:0
 msgid "“%(member_name)s” in “%(channel_name)s”"
 msgstr "“%(member_name)s” 、 “%(channel_name)s内”"
+
+#~ msgid "The channel type cannot be empty"
+#~ msgstr "チャネルタイプは空にすることはできません。"

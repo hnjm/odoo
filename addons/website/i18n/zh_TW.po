@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-08 18:37+0000\n"
-"PO-Revision-Date: 2025-09-04 09:56+0000\n"
+"POT-Creation-Date: 2025-10-11 02:15+0000\n"
+"PO-Revision-Date: 2025-10-14 08:49+0000\n"
 "Last-Translator: \"Tony Ng (ngto)\" <ngto@odoo.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://translate.odoo.com/"
 "projects/odoo-18/website/zh_Hant/>\n"
@@ -4340,7 +4340,6 @@ msgstr "享用我們服務的客戶，已節省 $3,200 萬。"
 #. odoo-javascript
 #: code:addons/website/static/src/components/resource_editor/resource_editor.xml:0
 #: code:addons/website/static/src/components/views/theme_preview.xml:0
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 #: code:addons/website/static/src/xml/website.xml:0
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
@@ -8127,7 +8126,6 @@ msgstr "相簿"
 
 #. module: website
 #. odoo-javascript
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 msgid "Image Gallery Dialog"
 msgstr "相簿對話窗"
@@ -10248,7 +10246,6 @@ msgstr "通訊彈出"
 #. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/snippets/s_dynamic_snippet_carousel/000.xml:0
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 #: model_terms:ir.ui.view,arch_db:website.s_carousel
@@ -11551,7 +11548,6 @@ msgstr "以新分頁預覽此網址"
 #. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/snippets/s_dynamic_snippet_carousel/000.xml:0
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 #: model_terms:ir.ui.view,arch_db:website.s_carousel
@@ -13923,6 +13919,12 @@ msgid "The name of the page usable in a URL"
 msgstr "網址內可用的頁面名稱"
 
 #. module: website
+#. odoo-python
+#: code:addons/website/models/website.py:0
+msgid "The provided website domain is not a valid URL."
+msgstr ""
+
+#. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/js/editor/snippets.options.js:0
 msgid "The quick brown fox jumps over the lazy dog."
@@ -15397,9 +15399,8 @@ msgstr ""
 msgid ""
 "We are a team of passionate people whose goal is to improve everyone's life."
 "<br/>Our services are designed for small to medium size companies."
-msgstr ""
-"我們是一群充滿激情的人，他們的目標是改善每個人的生活.<br/>我們的服務專為中小"
-"型公司設計."
+msgstr "我們團隊充滿熱情，以改善每個人的生活為目標。<br/"
+">我們的服務專為中小型公司設計。"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_progress_bar

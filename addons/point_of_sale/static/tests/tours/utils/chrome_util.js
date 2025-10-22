@@ -1,3 +1,4 @@
+/* global posmodel */
 import * as Dialog from "@point_of_sale/../tests/tours/utils/dialog_util";
 import { negate } from "@point_of_sale/../tests/tours/utils/common";
 const { DateTime } = luxon;
@@ -23,6 +24,25 @@ export function clickMenuDropdownOption(name, { expectUnloadPage = false } = {})
         run: "click",
         expectUnloadPage,
     };
+}
+export function existMenuOption(name) {
+    return [
+        clickMenuButton(),
+        {
+            content: `check that ${name} exists in the burger menu`,
+            trigger: `span.dropdown-item:contains(${name})`,
+        },
+        clickMenuButton(),
+    ];
+}
+export function notExistMenuOption(name) {
+    return [
+        clickMenuButton(),
+        {
+            content: `check that ${name} doesn't exist in the burger menu`,
+            trigger: negate(`span.dropdown-item:contains(${name})`),
+        },
+    ];
 }
 export function isCashMoveButtonHidden() {
     return [
@@ -118,5 +138,20 @@ export function isSynced() {
     return {
         content: "Check if the request is proceeded",
         trigger: negate(".fa-spin", ".status-buttons"),
+    };
+}
+
+export function storedOrderCount(expectedCount) {
+    return {
+        content: `Stored order count should be ${expectedCount}`,
+        trigger: "body",
+        run: () => {
+            const actualCount = posmodel.data.models["pos.order"].length;
+            if (actualCount !== expectedCount) {
+                throw new Error(
+                    `Expected stored order count to be ${expectedCount}, but got ${actualCount}`
+                );
+            }
+        },
     };
 }

@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-08 18:37+0000\n"
-"PO-Revision-Date: 2025-08-26 14:54+0000\n"
+"POT-Creation-Date: 2025-10-11 02:15+0000\n"
+"PO-Revision-Date: 2025-10-21 22:20+0000\n"
 "Last-Translator: \"Junko Augias (juau)\" <juau@odoo.com>\n"
 "Language-Team: Japanese <https://translate.odoo.com/projects/odoo-18/website/"
 "ja/>\n"
@@ -2408,13 +2408,13 @@ msgstr "カンマ区切りのフィールド名リスト"
 #. module: website
 #: model:website.configurator.feature,description:website.feature_module_stores_locator
 msgid "A map and a listing of your stores"
-msgstr "マップ及びあなたの店舗リスト"
+msgstr "マップ・店舗リスト"
 
 #. module: website
 #. odoo-python
 #: code:addons/website/models/website_menu.py:0
 msgid "A mega menu cannot have a parent or child menu."
-msgstr ""
+msgstr "メガメニューには親メニューや子メニューを設定できません。"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_product_catalog
@@ -2728,7 +2728,7 @@ msgstr "テキストハイライト効果を追加"
 #. odoo-python
 #: code:addons/website/models/res_config_settings.py:0
 msgid "Add Website"
-msgstr ""
+msgstr "ウェブサイトを追加"
 
 #. module: website
 #. odoo-javascript
@@ -3266,13 +3266,13 @@ msgstr "付加"
 #. odoo-javascript
 #: code:addons/website/static/src/components/website_loader/website_loader.xml:0
 msgid "Applying your colors and design."
-msgstr "あなたの色とデザインを使用します。"
+msgstr "カラーとデザインを適用中です。"
 
 #. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/components/website_loader/website_loader.js:0
 msgid "Applying your colors and design..."
-msgstr "あなたの色とデザインを使用します..."
+msgstr "カラーとデザインを適用中です..."
 
 #. module: website
 #: model:ir.actions.act_window,name:website.action_website_add_features
@@ -3465,7 +3465,7 @@ msgstr "背景"
 #. odoo-javascript
 #: code:addons/website/static/src/js/tours/configurator_tour.js:0
 msgid "Background Shape"
-msgstr "背景形状"
+msgstr "背景図形"
 
 #. module: website
 #. odoo-javascript
@@ -3654,7 +3654,7 @@ msgstr "ブログ投稿"
 #. module: website
 #: model:website.configurator.feature,description:website.feature_module_news
 msgid "Blogging and posting relevant content"
-msgstr "関連内容をブログ・投稿する"
+msgstr "ブログ投稿および関連情報の発信"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippets
@@ -3771,7 +3771,7 @@ msgstr "コールトゥアクションボックス"
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 #: model_terms:ir.ui.view,arch_db:website.snippet_options_carousel
 msgid "Boxed"
-msgstr "囲む"
+msgstr "ボックス表示"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_countdown_options
@@ -3803,7 +3803,7 @@ msgstr "ビルディングブロックシステム"
 #: model_terms:ir.ui.view,arch_db:website.s_masonry_block_reversed_template
 #: model_terms:ir.ui.view,arch_db:website.s_masonry_block_texts_image_texts_template
 msgid "Building connections"
-msgstr "ビルディング接続"
+msgstr "つながりを築く"
 
 #. module: website
 #. odoo-javascript
@@ -3815,13 +3815,13 @@ msgstr "%sを作る"
 #. odoo-javascript
 #: code:addons/website/static/src/components/website_loader/website_loader.js:0
 msgid "Building your website."
-msgstr "ウェブサイト構築中。"
+msgstr "ウェブサイトを構築中です。"
 
 #. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/components/website_loader/website_loader.xml:0
 msgid "Building your website..."
-msgstr "ウェブサイトを作る..."
+msgstr "ウェブサイトを構築中です..."
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_theme_ir_asset__bundle
@@ -4042,7 +4042,7 @@ msgstr "カードリンク"
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 #: model_terms:ir.ui.view,arch_db:website.s_card
 msgid "Card title"
-msgstr "カード件名"
+msgstr "カードタイトル"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
@@ -4129,7 +4129,7 @@ msgstr "Cookie分類"
 #: model_terms:ir.ui.view,arch_db:website.s_website_form_options
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 msgid "Center"
-msgstr "中央"
+msgstr "中央に配置"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
@@ -4180,7 +4180,7 @@ msgstr "チャート"
 #. module: website
 #: model:website.configurator.feature,description:website.feature_module_live_chat
 msgid "Chat with visitors to improve traction"
-msgstr "訪問者とチャットしてトラクションを高めましょう"
+msgstr "チャット機能で訪問者とのエンゲージメントを向上"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_popup
@@ -4286,7 +4286,7 @@ msgstr "リストから選択"
 #. odoo-javascript
 #: code:addons/website/static/src/client_actions/configurator/configurator.xml:0
 msgid "Choose your favorite"
-msgstr "お気に入りを選択"
+msgstr "選択してください："
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_product_catalog
@@ -4412,7 +4412,6 @@ msgstr "弊社のサービスにより、お客様は$3200万のコスト削減�
 #. odoo-javascript
 #: code:addons/website/static/src/components/resource_editor/resource_editor.xml:0
 #: code:addons/website/static/src/components/views/theme_preview.xml:0
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 #: code:addons/website/static/src/xml/website.xml:0
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
@@ -5117,7 +5116,7 @@ msgstr "カスタムコード"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_website_form_options
 msgid "Custom Field"
-msgstr "カスタム項目"
+msgstr "カスタムフィールド"
 
 #. module: website
 #. odoo-javascript
@@ -5536,7 +5535,7 @@ msgstr ""
 #. module: website
 #: model:website.configurator.feature,description:website.feature_page_pricing
 msgid "Designed to drive conversion"
-msgstr "変換を促すために設計されている"
+msgstr "成約率の最大化を目指した価格設計"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_landing_s_text_cover
@@ -6325,7 +6324,7 @@ msgstr "エンパワーメント"
 #. odoo-python
 #: code:addons/website/models/website_snippet_filter.py:0
 msgid "Empty field name in “%s”"
-msgstr " “%s”での空フィールド名"
+msgstr "“%s” に空のフィールド名があります"
 
 #. module: website
 #. odoo-javascript
@@ -6348,7 +6347,7 @@ msgstr "あなたのGoogleアカウントに適切なGoogleマップAPIを有効
 #. odoo-javascript
 #: code:addons/website/static/src/components/website_loader/website_loader.js:0
 msgid "Enabling your %s."
-msgstr "%sを有効化中。"
+msgstr "%s を有効にしています。"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_showcase
@@ -6570,7 +6569,7 @@ msgstr "専門知識と知見"
 #. module: website
 #: model:website.configurator.feature,description:website.feature_page_privacy_policy
 msgid "Explain how you protect privacy"
-msgstr "どうプライバシーを守るかを説明"
+msgstr "プライバシーポリシーに関する説明"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_alert
@@ -6589,7 +6588,7 @@ msgstr "探索"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_showcase
 msgid "Explore a vast array of practical and beneficial choices."
-msgstr "実用的で有益な幅広い選択肢を検討しましょう。"
+msgstr "実用的で価値ある選択肢を多数ご用意しています。"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_quadrant
@@ -6862,7 +6861,7 @@ msgstr "塗りつぶし"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_tabs_options
 msgid "Fill and Justify"
-msgstr "記入と正当化"
+msgstr "均等配置"
 
 #. module: website
 #. odoo-javascript
@@ -6881,7 +6880,7 @@ msgstr "フィルター強度"
 #. odoo-javascript
 #: code:addons/website/static/src/components/website_loader/website_loader.js:0
 msgid "Finalizing."
-msgstr "最終確認中。"
+msgstr "最終処理中です。"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_company_team_detail
@@ -7382,7 +7381,7 @@ msgstr "GitHubアカウント"
 #. module: website
 #: model:website.configurator.feature,description:website.feature_module_forum
 msgid "Give visitors the information they need"
-msgstr "訪問者に必要な情報を提供"
+msgstr "必要な情報を訪問者と共有"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_mega_menu_menus_logos
@@ -8260,7 +8259,6 @@ msgstr "画像ギャラリー"
 
 #. module: website
 #. odoo-javascript
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 msgid "Image Gallery Dialog"
 msgstr "画像ギャラリーダイアログ"
@@ -8293,7 +8291,7 @@ msgstr "画像テキスト画像"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippets
 msgid "Image Title"
-msgstr "画像件名"
+msgstr "画像タイトル"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_card_options
@@ -8312,7 +8310,7 @@ msgstr "画像"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippets
 msgid "Images Constellation"
-msgstr "画像 星座"
+msgstr "画像のコンステレーション"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippets
@@ -8458,7 +8456,7 @@ msgstr "内側"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippets
 msgid "Inner content"
-msgstr "内側コンテンツ"
+msgstr "内部コンテンツ"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_carousel_intro
@@ -9068,7 +9066,7 @@ msgstr "ランディングページ"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_card_options
 msgid "Landscape - 4/3"
-msgstr "横長 - 4/3"
+msgstr "横向き - 4:3"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_visitor__lang_id
@@ -9353,7 +9351,7 @@ msgstr "顧客にプロセスを説明しましょう。"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_title_form
 msgid "Let's Connect"
-msgstr "接続しましょう"
+msgstr "お気軽にご連絡ください"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_call_to_action_about
@@ -9429,7 +9427,7 @@ msgstr "ライン"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 msgid "Line Height"
-msgstr "ラインの高さ"
+msgstr "行の高さ"
 
 #. module: website
 #. odoo-javascript
@@ -9685,7 +9683,7 @@ msgstr "マーク記号"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_masonry_block_mosaic_template
 msgid "Mark the difference"
-msgstr "違いを生み出す"
+msgstr "違いを実感してください"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_website_form_options
@@ -9900,13 +9898,14 @@ msgstr "メニュー"
 #. odoo-python
 #: code:addons/website/models/website_menu.py:0
 msgid "Menus cannot have more than two levels of hierarchy."
-msgstr ""
+msgstr "メニューの階層は2階層までに制限されています。"
 
 #. module: website
 #. odoo-python
 #: code:addons/website/models/website_menu.py:0
 msgid "Menus with child menus cannot be added as a submenu."
 msgstr ""
+"子メニューを持つメニューは、他のメニューのサブメニューとして追加できません。"
 
 #. module: website
 #: model:ir.model,name:website.model_base_partner_merge_automatic_wizard
@@ -9982,7 +9981,7 @@ msgstr "最小軸"
 #. odoo-javascript
 #: code:addons/website/static/src/js/editor/snippets.options.js:0
 msgid "Min-Height"
-msgstr "最小の高度"
+msgstr "最小高さ"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
@@ -9999,7 +9998,7 @@ msgstr "分"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 msgid "Mirror Blur"
-msgstr "ミラー・ブラー"
+msgstr "ミラーぼかし"
 
 #. module: website
 #. odoo-javascript
@@ -10033,12 +10032,12 @@ msgstr "モックアップ画像"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 msgid "Modal"
-msgstr "モダル"
+msgstr "モーダル"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 msgid "Modal title"
-msgstr "モダル件名"
+msgstr "モーダルタイトル"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_theme_ir_ui_view__mode
@@ -10149,13 +10148,15 @@ msgstr "詳細"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_showcase
 msgid "More leads"
-msgstr "更なるリード"
+msgstr "より多くのリード"
 
 #. module: website
 #: model_terms:digest.tip,tip_description:website.digest_tip_website_4
 msgid ""
 "More than 90 shapes exist and their colors are picked to match your Theme."
-msgstr "あなたのテーマに合わせる90個以上の形状や色から選択します。"
+msgstr ""
+"90種類以上の図形が用意されており、それぞれの色はテーマに合わせて自動的に調整"
+"されます。"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_masonry_block_options
@@ -10392,7 +10393,6 @@ msgstr "ニュースレターポップアップ"
 #. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/snippets/s_dynamic_snippet_carousel/000.xml:0
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 #: model_terms:ir.ui.view,arch_db:website.s_carousel
@@ -10484,7 +10484,7 @@ msgstr "検索結果は見つかりませんでした。 別のキーワード�
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_dynamic_snippet_options_template
 msgid "No title"
-msgstr "件名なし"
+msgstr "タイトルなし"
 
 #. module: website
 #. odoo-javascript
@@ -10958,7 +10958,7 @@ msgstr "当社の使命"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_landing_3_s_text_block_h2
 msgid "Our Offer"
-msgstr "私たちのオファー"
+msgstr "ご提案内容"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_about_map_s_text_block_h2
@@ -11373,7 +11373,7 @@ msgstr "ページの説明が設定されていません。"
 #. odoo-javascript
 #: code:addons/website/static/src/js/utils.js:0
 msgid "Page title not set."
-msgstr "ページ件名が設定されていません。"
+msgstr "ページタイトルが設定されていません。"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_theme_website_page__copy_ids
@@ -11728,7 +11728,6 @@ msgstr "新しいタブでこのURLをプレビュー"
 #. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/snippets/s_dynamic_snippet_carousel/000.xml:0
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 #: model_terms:ir.ui.view,arch_db:website.s_carousel
@@ -11950,7 +11949,7 @@ msgstr "求人情報を公開"
 #. module: website
 #: model:website.configurator.feature,description:website.feature_module_event
 msgid "Publish on-site and online events"
-msgstr "現地、又はオンラインでのイベントを公開"
+msgstr "オンライン・現地イベントの発信"
 
 #. module: website
 #. odoo-javascript
@@ -12814,7 +12813,7 @@ msgstr "全て見る <i class=\"fa fa-long-arrow-right ms-2\"/>"
 #: model_terms:ir.ui.view,arch_db:website.s_discovery
 #: model_terms:ir.ui.view,arch_db:website.s_empowerment
 msgid "See more <i class=\"fa fa-long-arrow-right\" role=\"img\"/>"
-msgstr "ｓらに見る<i class=\"fa fa-long-arrow-right\" role=\"img\"/>"
+msgstr "さらに見る<i class=\"fa fa-long-arrow-right\" role=\"img\"/>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_references_grid
@@ -13026,12 +13025,12 @@ msgstr "共有"
 #. module: website
 #: model:website.configurator.feature,description:website.feature_module_elearning
 msgid "Share knowledge publicly or for a fee"
-msgstr "無料、又は有料でナレッジを共有"
+msgstr "ナレッジシェア（無料・有料対応)"
 
 #. module: website
 #: model:website.configurator.feature,description:website.feature_module_success_stories
 msgid "Share your best case studies"
-msgstr "一番良い事例研究を共有"
+msgstr "成功事例を共有"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_res_config_settings__shared_user_account
@@ -13257,7 +13256,7 @@ msgstr "右にスライド"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_carousel
 msgid "Slide Title"
-msgstr "スライド件名"
+msgstr "スライドタイトル"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_tabs_options
@@ -13360,7 +13359,8 @@ msgid ""
 "Some quick example text to build on the card title and make up the bulk of "
 "the card's content."
 msgstr ""
-"カード件名をベースに、カード内容の大部分を構成する簡単ないくつかの例文。"
+"カードタイトルに続く簡単なサンプル本文テキストです。本文の大部分を構成しま"
+"す。"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
@@ -13401,7 +13401,7 @@ msgstr "間隔"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.grid_layout_options
 msgid "Spacing (Y, X)"
-msgstr "スペーシング (Y, X)"
+msgstr "余白 (縦・横)"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_pricelist_boxed
@@ -13577,7 +13577,7 @@ msgstr "ストレージ"
 #. module: website
 #: model:website.configurator.feature,name:website.feature_module_stores_locator
 msgid "Stores Locator"
-msgstr "店舗検索機能"
+msgstr "店舗検索"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_carousel
@@ -13637,7 +13637,7 @@ msgstr "ストローク幅"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippets
 msgid "Structure"
-msgstr "給与体系"
+msgstr "構成"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_accordion_options
@@ -13676,7 +13676,7 @@ msgstr "送信"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_product_list
 msgid "Subtle"
-msgstr "繊細"
+msgstr "控えめ"
 
 #. module: website
 #. odoo-javascript
@@ -14124,6 +14124,12 @@ msgid "The name of the page usable in a URL"
 msgstr "URLで使用可能なページ名"
 
 #. module: website
+#. odoo-python
+#: code:addons/website/models/website.py:0
+msgid "The provided website domain is not a valid URL."
+msgstr ""
+
+#. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/js/editor/snippets.options.js:0
 msgid "The quick brown fox jumps over the lazy dog."
@@ -14562,7 +14568,7 @@ msgstr "タイムゾーン"
 #: model:digest.tip,name:website.digest_tip_website_4
 #: model_terms:digest.tip,tip_description:website.digest_tip_website_4
 msgid "Tip: Add shapes to energize your Website"
-msgstr "ヒント: 図形を追加してサイトに活力をつけましょう"
+msgstr "ヒント：図形を追加して、ウェブサイトに動きを加えましょう"
 
 #. module: website
 #: model:digest.tip,name:website.digest_tip_website_0
@@ -14601,7 +14607,7 @@ msgstr "件名"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippets
 msgid "Title - Form"
-msgstr "件名 - フォーム"
+msgstr "タイトル - フォーム"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippets
@@ -16097,7 +16103,7 @@ msgstr "サイト訪問者: 非アクティブ訪問者をクリア"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.menu_tree
 msgid "Website menu"
-msgstr "サイトメニュー"
+msgstr "ウェブサイトメニュー"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_ir_ui_view__website_meta_description
@@ -16524,7 +16530,7 @@ msgstr "ブログ投稿、製品などから結果を得ます"
 #. odoo-javascript
 #: code:addons/website/static/src/client_actions/configurator/configurator.xml:0
 msgid "You'll be able to create your pages later on."
-msgstr "後でページを作成できます。"
+msgstr "ページの作成は後から行えます。"
 
 #. module: website
 #. odoo-javascript
@@ -16538,7 +16544,7 @@ msgstr "YouTube"
 #. odoo-javascript
 #: code:addons/website/static/src/js/send_mail_form.js:0
 msgid "Your Company"
-msgstr "貴社"
+msgstr "会社名"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_dynamic_snippet_template

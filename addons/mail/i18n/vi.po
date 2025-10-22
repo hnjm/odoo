@@ -1,26 +1,28 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* mail
+# * mail
 #
 # Translators:
 # Martin Trigaux, 2024
 # Wil Odoo, 2025
 # Thi Huong Nguyen, 2025
 # Duy BQ <duybq86@gmail.com>, 2025
-#
+# "Thi Huong Nguyen (thng)" <thng@odoo.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-22 18:38+0000\n"
-"PO-Revision-Date: 2024-09-25 09:41+0000\n"
-"Last-Translator: Duy BQ <duybq86@gmail.com>, 2025\n"
-"Language-Team: Vietnamese (https://app.transifex.com/odoo/teams/41243/vi/)\n"
+"POT-Creation-Date: 2025-10-03 18:38+0000\n"
+"PO-Revision-Date: 2025-09-28 22:21+0000\n"
+"Last-Translator: \"Thi Huong Nguyen (thng)\" <thng@odoo.com>\n"
+"Language-Team: Vietnamese <https://translate.odoo.com/projects/odoo-18/mail/"
+"vi/>\n"
 "Language: vi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #. module: mail
 #. odoo-python
@@ -9753,11 +9755,6 @@ msgid "The channel UUID must be unique"
 msgstr "UUID của Nhóm thảo luận phải là duy nhất"
 
 #. module: mail
-#: model:ir.model.constraint,message:mail.constraint_discuss_channel_channel_type_not_null
-msgid "The channel type cannot be empty"
-msgstr "Loại của Nhóm thảo luận không được để trống"
-
-#. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/core/common/thread.xml:0
 msgid "The conversation is empty."
@@ -10438,7 +10435,7 @@ msgid ""
 "- 'Execute Existing Actions': define an action that triggers several other "
 "server actions\n"
 msgstr ""
-"Loại tác vụ máy chủ. Các giá trị sau đây khả dụng:\n"
+"Loại tác vụ phía máy chủ. Các giá trị sau đây khả dụng:\n"
 "- 'Cập nhật bản ghi': cập nhật giá trị của bản ghi\n"
 "- 'Tạo hoạt động': tạo một hoạt động (Thảo luận)\n"
 "- 'Gửi email': gửi tin nhắn, ghi chú hoặc email (Thảo luận)\n"
@@ -10448,8 +10445,8 @@ msgstr ""
 "- 'Thực thi mã': một khối mã Python sẽ được thực thi\n"
 "- 'Gửi thông báo Webhook': gửi yêu cầu POST tới hệ thống bên ngoài, hay còn "
 "gọi là Webhook\n"
-"- 'Thực thi tác vụ hiện có': xác định một tác vụ kích hoạt một số tác vụ máy "
-"chủ khác\n"
+"- 'Thực thi tác vụ hiện có': xác định một tác vụ kích hoạt một số tác vụ "
+"phía máy chủ khác\n"
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_activity_mixin__activity_exception_decoration
@@ -12201,3 +12198,6 @@ msgstr "{{ object.partner_id.lang }}"
 #: code:addons/mail/models/discuss/discuss_channel_member.py:0
 msgid "“%(member_name)s” in “%(channel_name)s”"
 msgstr "“%(member_name)s” trong “%(channel_name)s”"
+
+#~ msgid "The channel type cannot be empty"
+#~ msgstr "Loại của Nhóm thảo luận không được để trống"

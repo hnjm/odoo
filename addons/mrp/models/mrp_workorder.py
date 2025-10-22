@@ -345,7 +345,7 @@ class MrpWorkorder(models.Model):
             delta_duration = new_order_duration - old_order_duration
 
             if delta_duration > 0:
-                if order.state not in ('progress', 'done'):
+                if order.state not in ('progress', 'done', 'cancel'):
                     order.state = 'progress'
                 enddate = fields.Datetime.now()
                 date_start = enddate - timedelta(seconds=_float_duration_to_second(delta_duration))
@@ -589,7 +589,7 @@ class MrpWorkorder(models.Model):
         for workorder in self:
             intervals = Intervals([
                 [t.date_start, t.date_end, t]
-                for t in workorder.time_ids if not date or t.date_end < date
+                for t in workorder.time_ids if t.date_end and (not date or t.date_end < date)
             ])
             duration = sum_intervals(intervals)
             total += duration * workorder.workcenter_id.costs_hour

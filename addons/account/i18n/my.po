@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-12 01:50+0000\n"
-"PO-Revision-Date: 2025-09-20 22:20+0000\n"
+"POT-Creation-Date: 2025-10-16 18:37+0000\n"
+"PO-Revision-Date: 2025-10-16 05:12+0000\n"
 "Last-Translator: Oakarmin Iron <oakarminiron@gmail.com>\n"
 "Language-Team: Burmese <https://translate.odoo.com/projects/odoo-18/account/"
 "my/>\n"
@@ -95,13 +95,13 @@ msgstr ""
 #. odoo-python
 #: code:addons/account/models/product.py:0
 msgid "%(amount)s Excl. Taxes"
-msgstr ""
+msgstr "%(amount)s အခွန်မပါ"
 
 #. module: account
 #. odoo-python
 #: code:addons/account/models/product.py:0
 msgid "%(amount)s Incl. Taxes"
-msgstr ""
+msgstr "%(amount)s အခွန်ပါပြီး"
 
 #. module: account
 #. odoo-python
@@ -164,7 +164,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/account/models/account_move.py:0
 msgid "%(ref)s (%(currency_amount)s)"
-msgstr ""
+msgstr "(%(currency_amount)s) %(ref)s"
 
 #. module: account
 #. odoo-python
@@ -790,9 +790,9 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.portal_my_details_fields
 msgid ""
 "<small class=\"form-text text-muted\">\n"
-"                    You can choose how you want us to send your invoices, "
-"and with which electronic format.\n"
-"                </small>"
+"                        You can choose how you want us to send your "
+"invoices, and with which electronic format.\n"
+"                    </small>"
 msgstr ""
 
 #. module: account
@@ -1627,7 +1627,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__currency_id
 msgid "Account Currency"
-msgstr ""
+msgstr "အကောင့် ငွေကြေး"
 
 #. module: account
 #: model:onboarding.onboarding,name:account.onboarding_onboarding_account_dashboard
@@ -1645,12 +1645,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.view_account_group_form
 #: model_terms:ir.ui.view,arch_db:account.view_account_group_tree
 msgid "Account Group"
-msgstr ""
+msgstr "အကောင့် အုပ်စု"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_report__filter_hierarchy
 msgid "Account Groups"
-msgstr ""
+msgstr "အကောင့် အုပ်စုများ"
 
 #. module: account
 #. odoo-python
@@ -1674,7 +1674,7 @@ msgstr "အကောင့် ကိုင်ဆောင်သူ"
 #: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__acc_holder_name
 #: model:ir.model.fields,field_description:account.field_res_partner_bank__acc_holder_name
 msgid "Account Holder Name"
-msgstr ""
+msgstr "အကောင့် ကိုင်ဆောင်သူ အမည်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__journal_id
@@ -1682,12 +1682,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.view_account_journal_form
 #: model_terms:ir.ui.view,arch_db:account.view_account_journal_tree
 msgid "Account Journal"
-msgstr ""
+msgstr "အကောင့် ဂျာနယ်"
 
 #. module: account
 #: model:ir.model,name:account.model_account_journal_group
 msgid "Account Journal Group"
-msgstr ""
+msgstr "အကောင့် ဂျာနယ် အုပ်စု"
 
 #. module: account
 #: model:ir.model,name:account.model_account_lock_exception
@@ -1704,7 +1704,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_fiscal_position__account_ids
 #: model_terms:ir.ui.view,arch_db:account.view_account_position_form
 msgid "Account Mapping"
-msgstr ""
+msgstr "အကောင့် သတ်မှတ်ချက်"
 
 #. module: account
 #: model:ir.model,name:account.model_account_move_reversal
@@ -1731,7 +1731,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_move_line__account_name
 #: model_terms:ir.ui.view,arch_db:account.view_account_form
 msgid "Account Name"
-msgstr ""
+msgstr "အကောင့် အမည်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_journal__bank_acc_number
@@ -1758,7 +1758,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_category_property_form
 msgid "Account Properties"
-msgstr ""
+msgstr "အကောင့် ဝိသေသများ"
 
 #. module: account
 #: model:account.account,name:account.1_receivable
@@ -1792,13 +1792,13 @@ msgstr ""
 #. module: account
 #: model:ir.model,name:account.model_account_account_tag
 msgid "Account Tag"
-msgstr ""
+msgstr "အကောင့် တဂ်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_product_product__account_tag_ids
 #: model:ir.model.fields,field_description:account.field_product_template__account_tag_ids
 msgid "Account Tags"
-msgstr ""
+msgstr "အကောင့် တဂ်များ"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_tax_view_tree
@@ -1866,12 +1866,12 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_group_search
 msgid "Account group"
-msgstr ""
+msgstr "အကောင့် အုပ်စု"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_group_search
 msgid "Account groups"
-msgstr ""
+msgstr "အကောင့် အုပ်စုများ"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_setup_bank_manual_config__acc_holder_name
@@ -1894,7 +1894,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_fiscal_position_account__account_src_id
 msgid "Account on Product"
-msgstr ""
+msgstr "ပစ္စည်းနှင့်ဆိုင်သောအကောင့်"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_tax_repartition_line__account_id
@@ -1927,7 +1927,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_fiscal_position_account__account_dest_id
 msgid "Account to Use Instead"
-msgstr ""
+msgstr "သုံးရမည့် အကောင့်"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_automatic_entry_wizard__destination_account_id
@@ -1974,7 +1974,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.view_account_form
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 msgid "Accounting"
-msgstr ""
+msgstr "စာရင်းအင်း"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_journal__accounting_date
@@ -1987,7 +1987,7 @@ msgstr "စာရင်းဝင်သော နေ့"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_partner_property_form
 msgid "Accounting Entries"
-msgstr ""
+msgstr "စာရင်းအင်း အဝင်အထွက်"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
@@ -1997,13 +1997,13 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_journal_form
 msgid "Accounting Information"
-msgstr ""
+msgstr "စာရင်းအင်း အချက်အလက်"
 
 #. module: account
 #. odoo-python
 #: code:addons/account/models/onboarding_onboarding_step.py:0
 msgid "Accounting Periods"
-msgstr ""
+msgstr "စာရင်းအင်း ကာလများ"
 
 #. module: account
 #: model:ir.model,name:account.model_account_report
@@ -2049,7 +2049,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account.selection__account_account_tag__applicability__accounts
 #: model_terms:ir.ui.view,arch_db:account.view_account_search
 msgid "Accounts"
-msgstr ""
+msgstr "အကောင့်များ"
 
 #. module: account
 #: model:ir.model,name:account.model_account_fiscal_position_account
@@ -2118,7 +2118,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_automatic_entry_wizard__action
 #: model:ir.model.fields,field_description:account.field_account_report_line__action_id
 msgid "Action"
-msgstr ""
+msgstr "အက်ရှင်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__message_needaction
@@ -2237,7 +2237,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__res_company__terms_type__plain
 msgid "Add a Note"
-msgstr ""
+msgstr "မှတ်စု တစ်ခုတိုး"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
@@ -2281,7 +2281,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 msgid "Add a note"
-msgstr ""
+msgstr "မှတ်စု တစ်ခုတိုး"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
@@ -2296,7 +2296,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 msgid "Add a section"
-msgstr ""
+msgstr "အစိတ်အပိုင်း တစ်ခုတိုး"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
@@ -2360,7 +2360,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_journal_form
 msgid "Advanced Settings"
-msgstr ""
+msgstr "အထူး ဆက်တင်များ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_tax__include_base_amount
@@ -2471,7 +2471,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__reconcile
 msgid "Allow Reconciliation"
-msgstr ""
+msgstr "ကိုက်ညှိခြင်းReconcile ပြုနိုင်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_config_settings__module_account_check_printing
@@ -2496,12 +2496,12 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__allowed_journal_ids
 msgid "Allowed Journals"
-msgstr ""
+msgstr "ခွင့်ပြုထားသော ဂျာနယ်များ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_journal__account_control_ids
 msgid "Allowed accounts"
-msgstr ""
+msgstr "ခွင့်ပြုထားသော အကောင့်များ"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
@@ -2860,7 +2860,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account_tag__applicability
 msgid "Applicability"
-msgstr ""
+msgstr "သက်ရောက်နိုင်ခြေ"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_company_form_view_onboarding_sale_tax
@@ -2941,7 +2941,7 @@ msgstr "ပိုင်ဆိုင်မှု"
 #: code:addons/account/static/src/components/account_type_selection/account_type_selection.js:0
 #: model_terms:ir.ui.view,arch_db:account.view_account_search
 msgid "Assets"
-msgstr ""
+msgstr "ပိုင်ဆိုင်မှူများ"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_move__auto_post__at_date
@@ -2956,7 +2956,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_report_expression__date_scope__to_beginning_of_period
 msgid "At the beginning of the period"
-msgstr ""
+msgstr "ကာလ အစတွင်"
 
 #. module: account
 #. odoo-javascript
@@ -3032,7 +3032,7 @@ msgstr "သြဂုတ်"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_reconcile_model_search
 msgid "Auto validate"
-msgstr ""
+msgstr "အလိုအလျှာက် အတည်ပြု"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_journal__autocheck_on_post
@@ -3124,7 +3124,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_partner_property_form
 msgid "Automation"
-msgstr ""
+msgstr "အလိုအလျှောက်လုပ်ဆောင်ချက်"
 
 #. module: account
 #. odoo-python
@@ -3141,14 +3141,14 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_report__availability_condition
 msgid "Availability"
-msgstr ""
+msgstr "ရနိုင်ခြေ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_reversal__available_journal_ids
 #: model:ir.model.fields,field_description:account.field_account_payment__available_journal_ids
 #: model:ir.model.fields,field_description:account.field_account_payment_register__available_journal_ids
 msgid "Available Journal"
-msgstr ""
+msgstr "ရနိုင်သော ဂျာနယ်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment__available_partner_bank_ids
@@ -3182,7 +3182,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/account/models/chart_template.py:0
 msgid "BILL"
-msgstr ""
+msgstr "ဘီလ်"
 
 #. module: account
 #. odoo-javascript
@@ -3199,7 +3199,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_invoice_document
 msgid "Bacon Burger"
-msgstr ""
+msgstr "ဝက်သားပြား ဘာဂါ"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__res_partner__trust__bad
@@ -3209,7 +3209,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_line__balance
 msgid "Balance"
-msgstr ""
+msgstr "လက်ကျန်"
 
 #. module: account
 #. odoo-javascript
@@ -3243,13 +3243,13 @@ msgstr "ဘာဏ်"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
 msgid "Bank & Cash"
-msgstr ""
+msgstr "ဘာဏ် & ငွေသား"
 
 #. module: account
 #. odoo-python
 #: code:addons/account/models/account_account.py:0
 msgid "Bank & Cash accounts cannot be shared between companies."
-msgstr ""
+msgstr "ဘာဏ် & ငွေသား အကောင့်များကို အခြားကုမ္ပဏီများနှင့် တွဲသုံးလို့မရပါ။"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_journal__bank_account_id
@@ -3278,14 +3278,14 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_statement
 msgid "Bank Account Name"
-msgstr ""
+msgstr "ဘာဏ် အကောင့်အမည်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__account_number
 #: model_terms:ir.ui.view,arch_db:account.view_account_journal_form
 #: model_terms:ir.ui.view,arch_db:account.view_base_document_layout
 msgid "Bank Account Number"
-msgstr ""
+msgstr "ဘာဏ်အကောင့် နံပါတ်"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_bank_statement_line__partner_bank_id
@@ -3311,7 +3311,7 @@ msgstr ""
 #. module: account
 #: model:account.account,name:account.1_expense_finance
 msgid "Bank Fees"
-msgstr ""
+msgstr "ဘာဏ်ကြေးများ"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.setup_bank_account_wizard
@@ -3321,13 +3321,13 @@ msgstr "ဘဏ် အမှတ်အသား ကုဒ်"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_company__bank_journal_ids
 msgid "Bank Journals"
-msgstr ""
+msgstr "ဘာဏ် ဂျာနယ်များ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__bank_partner_id
 #: model:ir.model.fields,field_description:account.field_account_move__bank_partner_id
 msgid "Bank Partner"
-msgstr ""
+msgstr "ဘာဏ် ပါတနာ"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_reconcile_model_tree
@@ -3342,40 +3342,40 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
 msgid "Bank Setup"
-msgstr ""
+msgstr "ဘာဏ် ဖန်တီးခြင်း"
 
 #. module: account
 #: model:ir.model,name:account.model_account_bank_statement
 #: model_terms:ir.ui.view,arch_db:account.report_statement
 msgid "Bank Statement"
-msgstr ""
+msgstr "ဘာဏ် စတိတ်မန့်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_config_settings__module_account_bank_statement_extract
 msgid "Bank Statement Digitization"
-msgstr ""
+msgstr "ဘာဏ် စတိတ်မန့် ဒစ်ဂျစ်တယ်အပြောင်း"
 
 #. module: account
 #: model:ir.model,name:account.model_account_bank_statement_line
 msgid "Bank Statement Line"
-msgstr ""
+msgstr "ဘာဏ် စတိတ်မန့်လိုင်း"
 
 #. module: account
 #: model:ir.actions.act_window,name:account.action_bank_statement_tree
 msgid "Bank Statements"
-msgstr ""
+msgstr "ဘာဏ် စတိတ်မန့်များ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_config_settings__account_journal_suspense_account_id
 msgid "Bank Suspense"
-msgstr ""
+msgstr "ဘာဏ်ကြားခံ"
 
 #. module: account
 #. odoo-python
 #: code:addons/account/models/chart_template.py:0
 #: model:account.account,name:account.1_account_journal_suspense_account_id
 msgid "Bank Suspense Account"
-msgstr ""
+msgstr "ဘာဏ် ကြားခံ အကောင့်"
 
 #. module: account
 #. odoo-python
@@ -3406,7 +3406,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:account.action_account_moves_journal_bank_cash
 #: model:ir.model.fields.selection,name:account.selection__account_account__account_type__asset_cash
 msgid "Bank and Cash"
-msgstr ""
+msgstr "ဘာဏ် နှင့် ငွေသား"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_statement
@@ -3470,7 +3470,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_tax_repartition_line__repartition_type
 msgid "Based On"
-msgstr ""
+msgstr "အခြေတည်၍"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_journal__invoice_reference_type__partner
@@ -3499,7 +3499,7 @@ msgstr ""
 #. module: account
 #: model:res.groups,name:account.group_account_basic
 msgid "Basic"
-msgstr ""
+msgstr "အခြေခံ"
 
 #. module: account
 #. odoo-python
@@ -3521,7 +3521,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/account/static/src/components/account_resequence/account_resequence.xml:0
 msgid "Before"
-msgstr ""
+msgstr "မတိုင်မှီ"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_payment_register__installments_mode__before_date
@@ -3550,7 +3550,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
 #: model_terms:ir.ui.view,arch_db:account.view_account_bill_filter
 msgid "Bill"
-msgstr "ဘေလ်"
+msgstr "ဘီလ်"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_in_invoice_bill_tree
@@ -3563,12 +3563,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 #: model_terms:ir.ui.view,arch_db:account.view_move_line_payment_tree
 msgid "Bill Date"
-msgstr ""
+msgstr "ဘီလ်ရက်စွဲ"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 msgid "Bill Reference"
-msgstr ""
+msgstr "ဘီလ် အညွှန်း"
 
 #. module: account
 #. odoo-python
@@ -3596,23 +3596,23 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
 msgid "Bills to Pay"
-msgstr ""
+msgstr "ပေးရန် ဘီလ်များ"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
 msgid "Bills to Validate"
-msgstr ""
+msgstr "အတည်ပြုရန် ဘီလ်များ"
 
 #. module: account
 #. odoo-python
 #: code:addons/account/models/account_journal_dashboard.py:0
 msgid "Bills to pay"
-msgstr ""
+msgstr "ပေးရန် ဘီလ်များ"
 
 #. module: account
 #: model:account.account,name:account.1_to_receive_pay
 msgid "Bills to receive"
-msgstr ""
+msgstr "ရရန် ဘီလ်များ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_report_column__blank_if_zero
@@ -3626,7 +3626,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account.selection__account_move__status_in_payment__blocked
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 msgid "Blocked"
-msgstr ""
+msgstr "ဘလော့ထားသည်"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__res_partner__invoice_warn__block
@@ -3663,7 +3663,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_report__filter_budgets
 msgid "Budgets"
-msgstr ""
+msgstr "ဘတ်ဂျက်များ"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_reconcile_model__rule_type__writeoff_button
@@ -3780,7 +3780,7 @@ msgstr "ပယ်ပြီး"
 #: model:ir.model.fields.selection,name:account.selection__account_move__status_in_payment__cancel
 #: model_terms:ir.ui.view,arch_db:account.view_account_invoice_filter
 msgid "Cancelled"
-msgstr ""
+msgstr "ပယ်ဖျက်ပြီး"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_invoice_document
@@ -3848,7 +3848,7 @@ msgstr ""
 #. module: account
 #: model:account.account,name:account.1_capital
 msgid "Capital"
-msgstr ""
+msgstr "အရင်းအနီး"
 
 #. module: account
 #: model_terms:ir.actions.act_window,help:account.action_move_in_invoice
@@ -3925,7 +3925,7 @@ msgstr ""
 #: code:addons/account/models/chart_template.py:0
 #: model:account.account,name:account.1_cash_diff_income
 msgid "Cash Difference Gain"
-msgstr ""
+msgstr "ငွေ ဒစ်စကောင့် အရ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_company__default_cash_difference_income_account_id
@@ -3937,21 +3937,21 @@ msgstr ""
 #: code:addons/account/models/chart_template.py:0
 #: model:account.account,name:account.1_cash_diff_expense
 msgid "Cash Difference Loss"
-msgstr ""
+msgstr "ငွေသား ဒစ်စကောင့် အရှံး"
 
 #. module: account
 #. odoo-python
 #: code:addons/account/models/chart_template.py:0
 #: model:account.account,name:account.1_cash_discount_gain
 msgid "Cash Discount Gain"
-msgstr ""
+msgstr "ငွေသား ဒစ်စကောင့် အမြတ်"
 
 #. module: account
 #. odoo-python
 #: code:addons/account/models/chart_template.py:0
 #: model:account.account,name:account.1_cash_discount_loss
 msgid "Cash Discount Loss"
-msgstr ""
+msgstr "ငွေ ဒစ်စကောင့် အရှံး"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment_term__early_pay_discount_computation
@@ -4018,14 +4018,14 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 msgid "Catalog"
-msgstr ""
+msgstr "ကတ်တလောက်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_analytic_line__category
 #: model:ir.model.fields,field_description:account.field_account_move_line__product_uom_category_id
 #: model_terms:ir.ui.view,arch_db:account.view_account_analytic_line_filter_inherit_account
 msgid "Category"
-msgstr ""
+msgstr "အမျိုးအမည်"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_default_terms_and_conditions
@@ -4050,7 +4050,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account.selection__account_automatic_entry_wizard__action__change_period
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 msgid "Change Period"
-msgstr ""
+msgstr "ကာလ ပြောင်း"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_payment_register__writeoff_label
@@ -4104,7 +4104,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_report__chart_template
 #: model:ir.ui.menu,name:account.menu_action_account_form
 msgid "Chart of Accounts"
-msgstr ""
+msgstr "အကောင့်များ၏ ဇယား"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_report__availability_condition__coa
@@ -4241,6 +4241,7 @@ msgstr "ပိတ်"
 #: model:ir.model.fields,field_description:account.field_account_payment__payment_method_code
 #: model:ir.model.fields,field_description:account.field_account_payment_method__code
 #: model:ir.model.fields,field_description:account.field_account_payment_method_line__code
+#: model:ir.model.fields,field_description:account.field_account_payment_register__payment_method_code
 #: model:ir.model.fields,field_description:account.field_account_report_line__code
 #: model_terms:ir.ui.view,arch_db:account.view_account_form
 #: model_terms:ir.ui.view,arch_db:account.view_account_list
@@ -4487,7 +4488,7 @@ msgstr ""
 #. module: account
 #: model:onboarding.onboarding.step,button_text:account.onboarding_onboarding_step_fiscal_year
 msgid "Configure"
-msgstr ""
+msgstr "ပြင်ဆင်"
 
 #. module: account
 #. odoo-python
@@ -4521,7 +4522,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
 msgid "Connect your bank. Match invoices automatically."
-msgstr ""
+msgstr "ဘာဏ်များနှင့် ချိတ်ဆက်ပါ။"
 
 #. module: account
 #. odoo-python
@@ -4563,7 +4564,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_send_wizard__mail_body
 msgid "Contents"
-msgstr ""
+msgstr "ပါဝင်သောအကြောင်းအရာများ"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_journal_form
@@ -4592,17 +4593,17 @@ msgstr ""
 #: model:account.account,name:account.1_cost_of_goods_sold
 #: model:ir.model.fields.selection,name:account.selection__account_move_line__display_type__cogs
 msgid "Cost of Goods Sold"
-msgstr ""
+msgstr "ရောင်းကုန် ကုန်ကျစရိတ်"
 
 #. module: account
 #: model:account.account,name:account.1_cost_of_production
 msgid "Cost of Production"
-msgstr ""
+msgstr "ထုတ်လုပ်မှုကုန်ကျစရိတ်"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_account__account_type__expense_direct_cost
 msgid "Cost of Revenue"
-msgstr ""
+msgstr "ရောင်းကုန် ကုန်ကျစရိတ်"
 
 #. module: account
 #. odoo-python
@@ -5023,7 +5024,7 @@ msgstr "ဖန်တီးချိန်"
 #: model_terms:ir.ui.view,arch_db:account.view_account_move_filter
 #: model_terms:ir.ui.view,arch_db:account.view_account_move_line_filter
 msgid "Credit"
-msgstr ""
+msgstr "ခရဲဒစ်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_partial_reconcile__credit_amount_currency
@@ -5035,7 +5036,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account.selection__account_account__account_type__liability_credit_card
 #: model:ir.model.fields.selection,name:account.selection__account_journal__type__credit
 msgid "Credit Card"
-msgstr ""
+msgstr "ခရက်ဒစ် ကဒ်"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_journal_form
@@ -5052,12 +5053,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_res_partner__credit_limit
 #: model:ir.model.fields,field_description:account.field_res_users__credit_limit
 msgid "Credit Limit"
-msgstr ""
+msgstr "ခရက်ဒစ် လစ်မစ်"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_partner_property_form
 msgid "Credit Limits"
-msgstr ""
+msgstr "ခရက်ဒစ် လစ်မစ်များ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_partial_reconcile__credit_move_id
@@ -5072,7 +5073,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.report_invoice_document
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 msgid "Credit Note"
-msgstr ""
+msgstr "ခရက်ဒစ်နှုတ်"
 
 #. module: account
 #. odoo-python
@@ -5098,7 +5099,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.view_account_invoice_report_search
 #: model_terms:ir.ui.view,arch_db:account.view_account_move_line_payment_filter
 msgid "Credit Notes"
-msgstr ""
+msgstr "ခရက်ဒစ်နှုတ်များ"
 
 #. module: account
 #: model:ir.actions.act_window,name:account.action_credit_statement_tree
@@ -5114,7 +5115,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_payment_receipt_document
 msgid "Credit card"
-msgstr ""
+msgstr "ခရက်ဒစ် ကဒ်"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_move_line__matched_credit_ids
@@ -5184,7 +5185,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_move__invoice_currency_rate
 #: model:ir.model.fields,field_description:account.field_account_move_line__currency_rate
 msgid "Currency Rate"
-msgstr ""
+msgstr "ငွေလဲနှုန်း"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_report__currency_translation
@@ -5235,7 +5236,7 @@ msgstr ""
 #: model:account.account,name:account.1_current_liabilities
 #: model:ir.model.fields.selection,name:account.selection__account_account__account_type__liability_current
 msgid "Current Liabilities"
-msgstr ""
+msgstr "ရေတို ပေးရန်ရှိများ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_journal__current_statement_balance
@@ -5360,7 +5361,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 msgid "Customer Reference"
-msgstr ""
+msgstr "ဖောက်သည် အညွန်းစာ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment__partner_id
@@ -5564,7 +5565,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_analytic_account__debit
 #: model:ir.model.fields,field_description:account.field_account_move_line__debit
 msgid "Debit"
-msgstr ""
+msgstr "ဒဲဘစ်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_partial_reconcile__debit_amount_currency
@@ -5616,7 +5617,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_payment_method_line__default_account_id
 #: model_terms:ir.ui.view,arch_db:account.view_account_journal_form
 msgid "Default Account"
-msgstr ""
+msgstr "ပုံမှန် အကောင့်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_journal__default_account_type
@@ -5641,7 +5642,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_journal_form
 msgid "Default Income Account"
-msgstr ""
+msgstr "ပုံမှန် အဝင် အကောင့်"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
@@ -5688,12 +5689,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_account__tax_ids
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
 msgid "Default Taxes"
-msgstr ""
+msgstr "ပုံမှန် အခွန်များ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_config_settings__use_invoice_terms
 msgid "Default Terms & Conditions"
-msgstr ""
+msgstr "ပုံမှန် စည်းကမ်းသတ်မှတ်ချက်များ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_company__invoice_terms
@@ -5742,6 +5743,12 @@ msgstr ""
 #: model:ir.model.fields,help:account.field_product_product__taxes_id
 #: model:ir.model.fields,help:account.field_product_template__taxes_id
 msgid "Default taxes used when selling the product"
+msgstr ""
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid "Default value for 'company_id' for %(record)s is not an integer"
 msgstr ""
 
 #. module: account
@@ -5811,7 +5818,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_move__partner_shipping_id
 #: model:res.groups,name:account.group_delivery_invoice_address
 msgid "Delivery Address"
-msgstr ""
+msgstr "ပို့ဆောင်ရန် လိပ်စာ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__delivery_date
@@ -5850,12 +5857,12 @@ msgstr ""
 #: code:addons/account/wizard/account_merge_wizard.py:0
 #: model:ir.model.fields,field_description:account.field_account_account__deprecated
 msgid "Deprecated"
-msgstr ""
+msgstr "ပိတ်သိမ်းပြီး"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_account__account_type__expense_depreciation
 msgid "Depreciation"
-msgstr ""
+msgstr "တန်ဖိုးလျှော့ချခြင်း"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_tax__description
@@ -5885,7 +5892,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_fiscal_position__auto_apply
 msgid "Detect Automatically"
-msgstr ""
+msgstr "အလိုအလျှောက်သိ"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_tax__type_tax_use
@@ -5950,7 +5957,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 msgid "Disc.%"
-msgstr ""
+msgstr "ဒစ်စကောင့်%"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_company_form_view_onboarding
@@ -5966,17 +5973,17 @@ msgstr "မလုပ်တော့"
 #: code:addons/account/models/account_move_line.py:0
 #: model:ir.model.fields.selection,name:account.selection__account_move_line__display_type__discount
 msgid "Discount"
-msgstr ""
+msgstr "ဒစ်စကောင့်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment_term__discount_percentage
 msgid "Discount %"
-msgstr ""
+msgstr "ဒစ်စကောင့်%"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_line__discount
 msgid "Discount (%)"
-msgstr ""
+msgstr "ဒစ်စကောင့်(%)"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_line__discount_allocation_dirty
@@ -6012,17 +6019,17 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.view_move_line_payment_tree
 #: model_terms:ir.ui.view,arch_db:account.view_move_line_tree
 msgid "Discount Date"
-msgstr ""
+msgstr "ဒစ်စကောင့်နေ့"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment_term__discount_days
 msgid "Discount Days"
-msgstr ""
+msgstr "ဒစ်စကောင့် နေ့များ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_line__discount_amount_currency
 msgid "Discount amount in Currency"
-msgstr ""
+msgstr "ငွေကြေးအလိုက် ဒစ်စကောင့် ပမာဏ"
 
 #. module: account
 #. odoo-python
@@ -6559,7 +6566,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.view_move_line_payment_tree
 #: model_terms:ir.ui.view,arch_db:account.view_move_line_tree
 msgid "Edit"
-msgstr "ပြင်ပြင်"
+msgstr "ပြင်"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_bank_statement_line__tax_totals
@@ -6607,12 +6614,12 @@ msgstr ""
 #. module: account
 #: model:account.account,name:account.1_employee_payroll_taxes
 msgid "Employee Payroll Taxes"
-msgstr ""
+msgstr "ဝန်ထမ်း လစာ အခွန်များ"
 
 #. module: account
 #: model:account.account,name:account.1_employer_payroll_taxes
 msgid "Employer Payroll Taxes"
-msgstr ""
+msgstr "အလုပ်ရှင် လစာ အခွန်များ"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_bank_statement_search
@@ -6739,7 +6746,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account.selection__account_account__internal_group__equity
 #: model_terms:ir.ui.view,arch_db:account.view_account_search
 msgid "Equity"
-msgstr ""
+msgstr "အရင်းအနှီး"
 
 #. module: account
 #. odoo-python
@@ -6761,7 +6768,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/account/models/res_config_settings.py:0
 msgid "Error!"
-msgstr ""
+msgstr "အယ်ရာ!"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_journal__invoice_reference_model__euro
@@ -6778,7 +6785,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment_term__example_amount
 msgid "Example Amount"
-msgstr ""
+msgstr "ဉပမာ ပမာဏ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment_term__example_invalid
@@ -6798,7 +6805,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_payment_term_form
 msgid "Example:"
-msgstr ""
+msgstr "ဉပမာ:"
 
 #. module: account
 #. odoo-javascript
@@ -6812,7 +6819,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_company__currency_exchange_journal_id
 msgid "Exchange Gain or Loss Journal"
-msgstr ""
+msgstr "ငွေလဲ အရှံး အမြတ် ဂျာနယ်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_full_reconcile__exchange_move_id
@@ -6834,7 +6841,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__expected_currency_rate
 #: model:ir.model.fields,field_description:account.field_account_move__expected_currency_rate
 msgid "Expected Currency Rate"
-msgstr ""
+msgstr "မျော်လင့်ထားသော ငွေလဲနှုန်း"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_company__expects_chart_of_accounts
@@ -7034,7 +7041,7 @@ msgstr ""
 #. module: account
 #: model:account.account.tag,name:account.account_tag_financing
 msgid "Financing Activities"
-msgstr ""
+msgstr "ငွေကြေး လှုပ်ရှားမှုများ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_reconcile_model_partner_mapping__payment_ref_regex
@@ -7081,12 +7088,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_res_company__account_fiscal_country_id
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
 msgid "Fiscal Country"
-msgstr ""
+msgstr "ဘဏ္ဍာရေး နိုင်ငံ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_config_settings__account_fiscal_country_id
 msgid "Fiscal Country Code"
-msgstr ""
+msgstr "ဘဏ္ဍာရေး နိုင်ငံ ကုဒ်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment_term__fiscal_country_codes
@@ -7097,7 +7104,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_res_users__fiscal_country_codes
 #: model:ir.model.fields,field_description:account.field_uom_uom__fiscal_country_codes
 msgid "Fiscal Country Codes"
-msgstr ""
+msgstr "ဘဏ္ဍာရေး နိုင်ငံ ကုဒ်များ"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_partner_property_form
@@ -7107,12 +7114,12 @@ msgstr "ဘဏ္ဍာရေး အချက်အလက်"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
 msgid "Fiscal Localization"
-msgstr ""
+msgstr "ဘဏ္ဍာရေး ဒေသအလိုက်"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
 msgid "Fiscal Periods"
-msgstr ""
+msgstr "ဘဏ္ဍာရေး ကာလများ"
 
 #. module: account
 #: model:ir.model,name:account.model_account_fiscal_position
@@ -7129,23 +7136,23 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.view_account_position_form
 #: model_terms:ir.ui.view,arch_db:account.view_account_position_tree
 msgid "Fiscal Position"
-msgstr ""
+msgstr "ဘဏ္ဍာရေး တည်နေရာ"
 
 #. module: account
 #: model:ir.actions.act_window,name:account.action_account_fiscal_position_form
 #: model:ir.ui.menu,name:account.menu_action_account_fiscal_position_form
 msgid "Fiscal Positions"
-msgstr ""
+msgstr "ဘဏ္ဍာရေး တည်နေရာများ"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.setup_financial_year_opening_form
 msgid "Fiscal Year End"
-msgstr ""
+msgstr "ဘဏ္ဍာရေး ကာလ အဆုံး"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_report_external_value__foreign_vat_fiscal_position_id
 msgid "Fiscal position"
-msgstr ""
+msgstr "ဘဏ္ဍာရေး တည်နေရာ"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_bank_statement_line__fiscal_position_id
@@ -7155,18 +7162,20 @@ msgid ""
 "customers or sales orders/invoices. The default value comes from the "
 "customer."
 msgstr ""
+"အခွန်နှင့် အကောင့်များအတွက် ဘဏ္ဍာရေးဆိုင်ရာ နေရာဒေသ များကို အသုံးပြုပါသည်။ မူရင်းတန်ဖိုးသည် "
+"ဖောက်သည်ထံမှလာသည်။"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_financial_year_op__fiscalyear_last_day
 #: model:ir.model.fields,field_description:account.field_res_company__fiscalyear_last_day
 msgid "Fiscalyear Last Day"
-msgstr ""
+msgstr "ဘဏ္ဍာရေး ကာလ နောက်ဆုံးရက်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_financial_year_op__fiscalyear_last_month
 #: model:ir.model.fields,field_description:account.field_res_company__fiscalyear_last_month
 msgid "Fiscalyear Last Month"
-msgstr ""
+msgstr "ဘဏ္ဍာရေး ကာလ နောက်ဆုံးလ"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_payment_term_line__value__fixed
@@ -7178,12 +7187,12 @@ msgstr ""
 #. module: account
 #: model:account.account,name:account.1_fixed_assets
 msgid "Fixed Asset"
-msgstr ""
+msgstr "ခိုင်မာသော ပိုင်ဆိုင်မှူ"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_account__account_type__asset_fixed
 msgid "Fixed Assets"
-msgstr ""
+msgstr "ခိုင်မာသော ပိုင်ဆိုင်မှူများ"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_report_column__figure_type__float
@@ -7301,12 +7310,12 @@ msgstr ""
 #. module: account
 #: model:account.account,name:account.1_income_currency_exchange
 msgid "Foreign Exchange Gain"
-msgstr ""
+msgstr "ငွေလဲ အရ"
 
 #. module: account
 #: model:account.account,name:account.1_expense_currency_exchange
 msgid "Foreign Exchange Loss"
-msgstr ""
+msgstr "ငွေလဲ အရှံး"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_fiscal_position__foreign_vat
@@ -7403,7 +7412,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_report_expression__date_scope__previous_tax_period
 msgid "From previous tax period"
-msgstr ""
+msgstr "လွန်ခဲ့သော အခွန်ကာလ မှ"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_report_expression__date_scope__from_fiscalyear
@@ -7530,7 +7539,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account.selection__account_tax__tax_scope__consu
 #: model_terms:ir.ui.view,arch_db:account.view_account_tax_search
 msgid "Goods"
-msgstr ""
+msgstr "ရောင်းကုန်များ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__group_id
@@ -7552,7 +7561,7 @@ msgstr "အုပ်စု"
 #: model_terms:ir.ui.view,arch_db:account.view_message_tree_audit_log_search
 #: model_terms:ir.ui.view,arch_db:account.view_partner_bank_search_inherit
 msgid "Group By"
-msgstr ""
+msgstr "အုပ်စုအလိုက်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment_register__group_payment
@@ -7600,7 +7609,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_report__filter_growth_comparison
 msgid "Growth Comparison"
-msgstr ""
+msgstr "တိုးတက်မှူ နှိုင်းယှဉ်ချက်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_company__hard_lock_date
@@ -7837,7 +7846,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__activity_exception_icon
 #: model:ir.model.fields,field_description:account.field_res_partner_bank__activity_exception_icon
 msgid "Icon"
-msgstr ""
+msgstr "အိုင်ကွန်"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_bank_statement_line__activity_exception_icon
@@ -8184,14 +8193,14 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account.selection__account_account__internal_group__income
 #: model_terms:ir.ui.view,arch_db:account.view_account_search
 msgid "Income"
-msgstr ""
+msgstr "ဝင်ငွေ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_product_category__property_account_income_categ_id
 #: model:ir.model.fields,field_description:account.field_product_product__property_account_income_id
 #: model:ir.model.fields,field_description:account.field_product_template__property_account_income_id
 msgid "Income Account"
-msgstr ""
+msgstr "ဝင်ငွေ အကောင့်"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_journal_form
@@ -8328,7 +8337,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_config_settings__transfer_account_id
 msgid "Internal Transfer"
-msgstr ""
+msgstr "လုပ်ငန်းတွင်း ရွေ့ပြောင်းမှူ"
 
 #. module: account
 #. odoo-python
@@ -8336,7 +8345,7 @@ msgstr ""
 #: model:account.reconcile.model,name:account.1_internal_transfer_reco
 #: model:ir.actions.act_window,name:account.action_account_payments_transfer
 msgid "Internal Transfers"
-msgstr ""
+msgstr "လုပ်ငန်းတွင်း ရွေ့ပြောင်းမှူများ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_line__account_type
@@ -8438,7 +8447,7 @@ msgstr ""
 #. module: account
 #: model:account.account.tag,name:account.account_tag_investing
 msgid "Investing & Extraordinary Activities"
-msgstr ""
+msgstr "ရင်းနှီးမြှုပ်နှံမှုနှင့် ထူးကဲသော လှုပ်ရှားမှုများ"
 
 #. module: account
 #. odoo-python
@@ -8538,7 +8547,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 msgid "Invoice Lines"
-msgstr ""
+msgstr "ပြေစာလိုင်းများ"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_invoice_report_view_tree
@@ -8576,7 +8585,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_report__state
 msgid "Invoice Status"
-msgstr ""
+msgstr "ပြေစာ အခြေအနေ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__tax_totals
@@ -8640,7 +8649,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__invoice_line_ids
 #: model:ir.model.fields,field_description:account.field_account_move__invoice_line_ids
 msgid "Invoice lines"
-msgstr ""
+msgstr "ပြေစာလိုင်းများ"
 
 #. module: account
 #: model:mail.message.subtype,description:account.mt_invoice_paid
@@ -8766,7 +8775,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
 msgid "Invoices to Validate"
-msgstr ""
+msgstr "အတည်ပြုရန် ပြေစာများ"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_payment__reconciled_bill_ids
@@ -9031,12 +9040,12 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_journal_form
 msgid "Journal Account"
-msgstr ""
+msgstr "ဂျာနယ်၏ အကောင့်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__currency_id
 msgid "Journal Currency"
-msgstr ""
+msgstr "ဂျာနယ်၏ ငွေကြေး"
 
 #. module: account
 #. odoo-javascript
@@ -9051,18 +9060,18 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.view_account_reconcile_model_form
 #: model_terms:ir.ui.view,arch_db:account.view_move_tree
 msgid "Journal Entries"
-msgstr ""
+msgstr "ဂျာနယ်စာရင်းများ"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_move_filter
 msgid "Journal Entries by Date"
-msgstr ""
+msgstr "ရက်အလိုက် ဂျာနယ်စာရင်းများ"
 
 #. module: account
 #. odoo-python
 #: code:addons/account/models/account_journal_dashboard.py:0
 msgid "Journal Entries to Hash"
-msgstr ""
+msgstr "ဟက်ရှ်(#)ရန် ဂျာနယ်စာရင်းများ"
 
 #. module: account
 #. odoo-javascript
@@ -9086,14 +9095,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.view_move_line_payment_tree
 #: model_terms:ir.ui.view,arch_db:account.view_move_line_tree
 msgid "Journal Entry"
-msgstr ""
+msgstr "ဂျာနယ်စာရင်း"
 
 #. module: account
 #. odoo-javascript
 #: code:addons/account/static/src/components/account_payment_field/account_payment.xml:0
 #: code:addons/account/static/src/components/account_payment_field/account_payment_field.js:0
 msgid "Journal Entry Info"
-msgstr ""
+msgstr "ဂျာနယ်စာရင်းလိုင်း အချက်အလက်"
 
 #. module: account
 #: model:ir.model,name:account.model_account_move_line
@@ -9102,31 +9111,31 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.view_account_move_line_payment_filter
 #: model_terms:ir.ui.view,arch_db:account.view_move_line_form
 msgid "Journal Item"
-msgstr ""
+msgstr "ဂျာနယ်စာရင်းလိုင်း"
 
 #. module: account
 #. odoo-python
 #: code:addons/account/models/account_move_line.py:0
 msgid "Journal Item %s created"
-msgstr ""
+msgstr "ဂျာနယ်စာရင်းလိုင်း %s ကိုဖန်တီးခဲ့သည်"
 
 #. module: account
 #. odoo-python
 #: code:addons/account/models/account_move_line.py:0
 msgid "Journal Item %s deleted"
-msgstr ""
+msgstr "ဂျာနယ်စာရင်းလိုင်း %s ကိုဖျက်ခဲ့သည်"
 
 #. module: account
 #. odoo-python
 #: code:addons/account/models/account_move_line.py:0
 msgid "Journal Item %s updated"
-msgstr ""
+msgstr "ဂျာနယ်စာရင်းလိုင်း %s ကိုပြင်ခဲ့သည်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment_register__writeoff_label
 #: model:ir.model.fields,field_description:account.field_account_reconcile_model_line__label
 msgid "Journal Item Label"
-msgstr ""
+msgstr "ဂျာနယ်စာရင်းလိုင်း၏ လေဘယ်"
 
 #. module: account
 #. odoo-python
@@ -9146,13 +9155,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.view_move_line_pivot
 #: model_terms:ir.ui.view,arch_db:account.view_move_line_tree
 msgid "Journal Items"
-msgstr ""
+msgstr "ဂျာနယ်စာရင်းလိုင်းများ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_journal__name
 #: model_terms:ir.ui.view,arch_db:account.report_statement
 msgid "Journal Name"
-msgstr ""
+msgstr "ဂျာနယ် အမည်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_company__account_journal_suspense_account_id
@@ -9167,7 +9176,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment_register__line_ids
 msgid "Journal items"
-msgstr ""
+msgstr "ဂျာနယ်စာရင်းလိုင်းများ"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_move_line_filter
@@ -9207,14 +9216,14 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/account/static/src/components/account_payment_field/account_payment.xml:0
 msgid "Journal:"
-msgstr ""
+msgstr "ဂျာနယ်:"
 
 #. module: account
 #: model:ir.actions.act_window,name:account.action_account_journal_form
 #: model:ir.model.fields,field_description:account.field_account_report__filter_journals
 #: model:ir.ui.menu,name:account.menu_action_account_journal_form
 msgid "Journals"
-msgstr ""
+msgstr "ဂျာနယ်များ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_reconcile_model__match_journal_ids
@@ -9299,7 +9308,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.view_account_payment_register_form
 #: model_terms:ir.ui.view,arch_db:account.view_account_reconcile_model_form
 msgid "Label"
-msgstr ""
+msgstr "လေဘယ်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_reconcile_model__match_label_param
@@ -9329,12 +9338,12 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_report__default_opening_date_filter__previous_month
 msgid "Last Month"
-msgstr ""
+msgstr "နောက်ဆုံးလ"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_report__default_opening_date_filter__previous_quarter
 msgid "Last Quarter"
-msgstr ""
+msgstr "နောက်ဆုံး ၃လပါတ်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_journal__last_statement_id
@@ -9344,7 +9353,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_report__default_opening_date_filter__previous_tax_period
 msgid "Last Tax Period"
-msgstr ""
+msgstr "နောက်ဆုံး အခွန်ကာလ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__write_uid
@@ -9395,7 +9404,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_tax_repartition_line__write_uid
 #: model:ir.model.fields,field_description:account.field_validate_account_move__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "နောက်ဆုံးပြင်ဆင်သူ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__write_date
@@ -9451,7 +9460,7 @@ msgstr "နောက်ဆုံးပြင်ဆင်ချိန်"
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_report__default_opening_date_filter__previous_year
 msgid "Last Year"
-msgstr ""
+msgstr "နောက်ဆုံးနှစ်"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_move_line__discount_date
@@ -9560,18 +9569,18 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/account/static/src/components/account_type_selection/account_type_selection.js:0
 msgid "Liabilities"
-msgstr ""
+msgstr "ပေးရန်ရှိများ"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_account__internal_group__liability
 #: model_terms:ir.ui.view,arch_db:account.view_account_search
 msgid "Liability"
-msgstr ""
+msgstr "ပေးရန်ရှိ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_reconcile_model__line_ids
 msgid "Line"
-msgstr ""
+msgstr "လိုင်း"
 
 #. module: account
 #. odoo-python
@@ -9595,7 +9604,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_report__line_ids
 msgid "Lines"
-msgstr ""
+msgstr "လိုင်းများ"
 
 #. module: account
 #. odoo-python
@@ -9613,7 +9622,7 @@ msgstr ""
 #: code:addons/account/models/chart_template.py:0
 #: model:account.account,name:account.1_transfer_account_id
 msgid "Liquidity Transfer"
-msgstr ""
+msgstr "ငွေကြေး အရွေ့အပြောင်း"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_report__load_more_limit
@@ -9650,7 +9659,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.bill_preview
 msgid "Logo"
-msgstr ""
+msgstr "လိုဂို"
 
 #. module: account
 #: model:onboarding.onboarding.step,done_text:account.onboarding_onboarding_step_base_document_layout
@@ -9817,7 +9826,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_statement
 msgid "Marc Demo"
-msgstr ""
+msgstr "မာစ် ဒီမို"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__res_company__fiscalyear_last_month__3
@@ -9827,12 +9836,12 @@ msgstr "မတ်လ"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_report__price_margin
 msgid "Margin"
-msgstr ""
+msgstr "မာဂျင်"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
 msgid "Margin Analysis"
-msgstr ""
+msgstr "မာဂျင် စိတ်ဖြာလေ့လာခြင်း"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_payment_form
@@ -9967,12 +9976,12 @@ msgstr ""
 #. module: account
 #: model:ir.model,name:account.model_ir_ui_menu
 msgid "Menu"
-msgstr ""
+msgstr "မီနူး"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_merge_wizard_form
 msgid "Merge"
-msgstr ""
+msgstr "ပေါင်း"
 
 #. module: account
 #. odoo-python
@@ -9993,7 +10002,7 @@ msgstr ""
 #. module: account
 #: model:ir.model,name:account.model_mail_message
 msgid "Message"
-msgstr ""
+msgstr "မက်ဆေ့ဂျ်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__message_has_error
@@ -10027,7 +10036,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_res_company__message_ids
 #: model:ir.model.fields,field_description:account.field_res_partner_bank__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "မက်ဆေ့ဂျ်များ"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_message_tree_audit_log_search
@@ -10051,14 +10060,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.view_account_move_filter
 #: model_terms:ir.ui.view,arch_db:account.view_account_move_line_filter
 msgid "Miscellaneous"
-msgstr ""
+msgstr "အထွေထွေ"
 
 #. module: account
 #. odoo-python
 #: code:addons/account/models/chart_template.py:0
 #: model:account.journal,name:account.1_general
 msgid "Miscellaneous Operations"
-msgstr ""
+msgstr "အထွေထွေ လုပ်ငန်းများ"
 
 #. module: account
 #. odoo-python
@@ -10130,7 +10139,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_move__auto_post__monthly
 msgid "Monthly"
-msgstr ""
+msgstr "လစဉ်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_report__move_id
@@ -10293,7 +10302,7 @@ msgstr ""
 #: model:account.report.column,name:account.generic_tax_report_column_net
 #: model:account.report.column,name:account.generic_tax_report_tax_account_column_net
 msgid "Net"
-msgstr ""
+msgstr "အသားတင်"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_payment_term__early_pay_discount_computation__excluded
@@ -10392,7 +10401,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_move__auto_post__no
 msgid "No"
-msgstr ""
+msgstr "မဟုတ်ဘူး"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_payment_search
@@ -10477,18 +10486,18 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_account__account_type__asset_non_current
 msgid "Non-current Assets"
-msgstr ""
+msgstr "ရေရှည် ပိုင်ဆိုင်မှူများ"
 
 #. module: account
 #: model:account.account,name:account.1_non_current_liabilities
 #: model:ir.model.fields.selection,name:account.selection__account_account__account_type__liability_non_current
 msgid "Non-current Liabilities"
-msgstr ""
+msgstr "ရေရှည် ပေးရန်ရှိများ"
 
 #. module: account
 #: model:account.account,name:account.1_non_current_assets
 msgid "Non-current assets"
-msgstr ""
+msgstr "ရေရှည် ပိုင်ဆိုင်မှူများ"
 
 #. module: account
 #. odoo-python
@@ -10501,7 +10510,7 @@ msgstr ""
 #: code:addons/account/models/account_tax.py:0
 #: model:ir.model.fields.selection,name:account.selection__account_tax__type_tax_use__none
 msgid "None"
-msgstr ""
+msgstr "(None)မသတ်မှတ်"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__res_partner__trust__normal
@@ -10564,7 +10573,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.view_account_reconcile_model_form
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 msgid "Note"
-msgstr ""
+msgstr "မှတ်စု"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_reconcile_model__match_note_param
@@ -10588,7 +10597,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_fiscal_position__note
 msgid "Notes"
-msgstr ""
+msgstr "မှတ်စုများ"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__res_company__fiscalyear_last_month__11
@@ -10656,7 +10665,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_res_company__message_has_error_counter
 #: model:ir.model.fields,field_description:account.field_res_partner_bank__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "အယ်ရာ အရေအတွက်"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_account__message_needaction_counter
@@ -10711,7 +10720,7 @@ msgstr "အောက်တိုဘာ"
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_journal__invoice_reference_model__odoo
 msgid "Odoo"
-msgstr ""
+msgstr "အိုဒူး"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_report_expression__engine__domain
@@ -10880,7 +10889,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account.selection__account_invoice_report__state__posted
 #: model:ir.model.fields.selection,name:account.selection__account_journal__invoice_reference_type__none
 msgid "Open"
-msgstr ""
+msgstr "ဖွင့်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__opening_balance
@@ -10938,7 +10947,7 @@ msgstr ""
 #. module: account
 #: model:account.account.tag,name:account.account_tag_operating
 msgid "Operating Activities"
-msgstr ""
+msgstr "လုပ်ငန်းလည်ပတ်လှုပ်ရှားမှုများ"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_reconcile_model_form
@@ -10959,7 +10968,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account.selection__account_report__filter_hide_0_lines__optional
 #: model:ir.model.fields.selection,name:account.selection__account_report__filter_hierarchy__optional
 msgid "Optional"
-msgstr ""
+msgstr "ရွေးချယ်ခွင့်"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_account__tag_ids
@@ -11040,7 +11049,7 @@ msgstr "အခြား"
 #: model:account.account,name:account.1_other_income
 #: model:ir.model.fields.selection,name:account.selection__account_account__account_type__income_other
 msgid "Other Income"
-msgstr ""
+msgstr "အခြား ဝင်ငွေ"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
@@ -11207,7 +11216,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
 msgid "Package"
-msgstr ""
+msgstr "ပါကင်"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_invoice_report__payment_state__paid
@@ -11218,7 +11227,7 @@ msgstr ""
 #: model:mail.message.subtype,name:account.mt_invoice_paid
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 msgid "Paid"
-msgstr ""
+msgstr "ပေးပြီး"
 
 #. module: account
 #. odoo-python
@@ -11268,19 +11277,19 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 msgid "Partial"
-msgstr ""
+msgstr "တစ်စိတ်တစ်ပိုင်း"
 
 #. module: account
 #: model:ir.model,name:account.model_account_partial_reconcile
 msgid "Partial Reconcile"
-msgstr ""
+msgstr "တစ်စိတ်တစ်ပိုင်း ခြေခြင်း"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_invoice_report__payment_state__partial
 #: model:ir.model.fields.selection,name:account.selection__account_move__payment_state__partial
 #: model:ir.model.fields.selection,name:account.selection__account_move__status_in_payment__partial
 msgid "Partially Paid"
-msgstr ""
+msgstr "တစ်စိတ်တစ်ပိုင်း ပေးပြီး"
 
 #. module: account
 #. odoo-python
@@ -11315,7 +11324,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_res_partner__contract_ids
 #: model:ir.model.fields,field_description:account.field_res_users__contract_ids
 msgid "Partner Contracts"
-msgstr ""
+msgstr "ပါတနာ့ စာချုပ်များ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__partner_credit
@@ -11332,7 +11341,7 @@ msgstr ""
 #. module: account
 #: model:ir.actions.act_window,name:account.action_account_moves_ledger_partner
 msgid "Partner Ledger"
-msgstr ""
+msgstr "ပါတနာ လယ်ဂျာ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_partner__use_partner_credit_limit
@@ -11353,18 +11362,18 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__partner_name
 msgid "Partner Name"
-msgstr ""
+msgstr "ပါတနာအမည်"
 
 #. module: account
 #: model:ir.ui.menu,name:account.account_reports_partners_reports_menu
 msgid "Partner Reports"
-msgstr ""
+msgstr "ပါတနာ ရီပို့များ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment__partner_type
 #: model:ir.model.fields,field_description:account.field_account_payment_register__partner_type
 msgid "Partner Type"
-msgstr ""
+msgstr "ပါတနာ အမျိုးအစား"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_partner__partner_vat_placeholder
@@ -11375,7 +11384,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_reconcile_model__match_partner
 msgid "Partner is Set"
-msgstr ""
+msgstr "ပါတနာ သတ်မှတ်ထားသည်"
 
 #. module: account
 #: model:ir.model,name:account.model_account_reconcile_model_partner_mapping
@@ -11394,7 +11403,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_report__filter_partner
 #: model_terms:ir.ui.view,arch_db:account.view_message_tree_audit_log_search
 msgid "Partners"
-msgstr ""
+msgstr "ပါတနာများ"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.partner_missing_account_list_view
@@ -11424,7 +11433,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 #: model_terms:ir.ui.view,arch_db:account.view_move_line_payment_tree
 msgid "Pay"
-msgstr ""
+msgstr "ပေး"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
@@ -11437,7 +11446,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.view_account_move_line_filter
 #: model_terms:ir.ui.view,arch_db:account.view_account_search
 msgid "Payable"
-msgstr ""
+msgstr "ပေးရန်ရှိ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_partner__debit_limit
@@ -11448,12 +11457,12 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_report__filter_account_type__both
 msgid "Payable and receivable"
-msgstr ""
+msgstr "ပေးရန်ရှိ နှင့် ရရန်ရှိ"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.product_template_form_view
 msgid "Payables"
-msgstr ""
+msgstr "ပေးရန်ရှိများ"
 
 #. module: account
 #. odoo-python
@@ -11468,12 +11477,12 @@ msgstr "ငွေပေးချေမှု"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment_method_line__payment_account_id
 msgid "Payment Account"
-msgstr ""
+msgstr "ပေးချေသည့် အကောင့်"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_payment_receipt_document
 msgid "Payment Amount:"
-msgstr ""
+msgstr "ပေးချေသည့် အကောင့်:"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_invoice_document
@@ -11489,18 +11498,18 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__payment_count
 #: model:ir.model.fields,field_description:account.field_account_move__payment_count
 msgid "Payment Count"
-msgstr ""
+msgstr "ပေးချေမှူ အရေအတွက်"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_payment_tree
 msgid "Payment Currency"
-msgstr ""
+msgstr "ပေးချေသည့် ငွေကြေး"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment_register__payment_date
 #: model_terms:ir.ui.view,arch_db:account.view_account_payment_search
 msgid "Payment Date"
-msgstr ""
+msgstr "ပေးချေသည့် ရက်"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_payment_receipt_document
@@ -11541,12 +11550,12 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_payment_method_line_tree
 msgid "Payment Method Name"
-msgstr ""
+msgstr "ငွေပေးချေမှု နည်းလမ်းအမည်"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_payment_receipt_document
 msgid "Payment Method:"
-msgstr ""
+msgstr "ငွေပေးချေမှု နည်းလမ်:"
 
 #. module: account
 #: model:ir.model,name:account.model_account_payment_method
@@ -11567,7 +11576,7 @@ msgstr ""
 #: model:ir.actions.report,name:account.action_report_payment_receipt
 #: model_terms:ir.ui.view,arch_db:account.report_payment_receipt_document
 msgid "Payment Receipt"
-msgstr ""
+msgstr "ငွေပေးချေမှု ပြေစာ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment__payment_receipt_title
@@ -11638,7 +11647,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_payment_method_line__payment_type
 #: model:ir.model.fields,field_description:account.field_account_payment_register__payment_type
 msgid "Payment Type"
-msgstr ""
+msgstr "ပေးချေမှူ အမျိုးအစား"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
@@ -11653,18 +11662,18 @@ msgstr ""
 #. module: account
 #: model_terms:account.payment.term,note:account.account_payment_term_15days
 msgid "Payment terms: 15 Days"
-msgstr ""
+msgstr "၁၅ ရက်အတွင်း"
 
 #. module: account
 #: model_terms:account.payment.term,note:account.account_payment_term_21days
 msgid "Payment terms: 21 Days"
-msgstr ""
+msgstr "ပေးချေရန်:၂၁ ရက်"
 
 #. module: account
 #: model_terms:account.payment.term,note:account.account_payment_term_30days
 #: model_terms:ir.ui.view,arch_db:account.bill_preview
 msgid "Payment terms: 30 Days"
-msgstr ""
+msgstr "ပေးချေရန်:၃၀ ရက်"
 
 #. module: account
 #: model_terms:account.payment.term,note:account.account_payment_term_30days_early_discount
@@ -11684,7 +11693,7 @@ msgstr ""
 #. module: account
 #: model_terms:account.payment.term,note:account.account_payment_term_45days
 msgid "Payment terms: 45 Days"
-msgstr ""
+msgstr "ပေးချေရန်:၄၅ ရက်"
 
 #. module: account
 #: model_terms:account.payment.term,note:account.account_payment_term_90days_on_the_10th
@@ -11699,12 +11708,12 @@ msgstr ""
 #. module: account
 #: model_terms:account.payment.term,note:account.account_payment_term_immediate
 msgid "Payment terms: Immediate Payment"
-msgstr ""
+msgstr "ပေးချေရန်:လက်ငင်း"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_invoice_document
 msgid "Payment within 30 calendar day"
-msgstr ""
+msgstr "ပေးချေရန်: ရက် ၃၀ အတွင်း"
 
 #. module: account
 #: model:mail.template,name:account.mail_template_data_payment_receipt
@@ -11739,6 +11748,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.view_account_payment_register_form
 msgid ""
 "Payments related to partners with no bank account specified will be skipped."
+msgstr ""
+
+#. module: account
+#: model:ir.model.fields,help:account.field_account_bank_statement_line__reconciled_payment_ids
+#: model:ir.model.fields,help:account.field_account_move__reconciled_payment_ids
+msgid "Payments that have been reconciled with this invoice."
 msgstr ""
 
 #. module: account
@@ -11794,7 +11809,7 @@ msgstr "ကာလ"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_report__filter_period_comparison
 msgid "Period Comparison"
-msgstr ""
+msgstr "ကာလ နှိုင်းယှဉ်ခြင်း"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_partner_bank_search_inherit
@@ -11894,7 +11909,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.view_account_move_line_filter
 #: model_terms:ir.ui.view,arch_db:account.view_account_move_line_payment_filter
 msgid "Posted"
-msgstr ""
+msgstr "ပိုစ်ပြီး"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__posted_before
@@ -11998,7 +12013,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 #: model_terms:ir.ui.view,arch_db:account.view_payment_term_form
 msgid "Preview"
-msgstr ""
+msgstr "ပရီဗျူး"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_accrued_orders_wizard__preview_data
@@ -12028,7 +12043,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 msgid "Price"
-msgstr ""
+msgstr "စျေးနှုန်း"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_tax__price_include
@@ -12044,7 +12059,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.account_move_send_wizard_form
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 msgid "Print"
-msgstr ""
+msgstr "ပရင့်"
 
 #. module: account
 #. odoo-python
@@ -12082,7 +12097,7 @@ msgstr "ပစ္စည်း"
 #. module: account
 #: model:ir.ui.menu,name:account.menu_product_product_categories
 msgid "Product Categories"
-msgstr ""
+msgstr "ကုန်ပစ္စည်း Category များ"
 
 #. module: account
 #: model:ir.model,name:account.model_product_category
@@ -12092,22 +12107,22 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_move_line__product_category_id
 #: model_terms:ir.ui.view,arch_db:account.view_account_invoice_report_search
 msgid "Product Category"
-msgstr ""
+msgstr "ကုန်ပစ္စည်း Category"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_report__quantity
 msgid "Product Quantity"
-msgstr ""
+msgstr "ပစ္စည်း အရေအတွက်"
 
 #. module: account
 #: model:account.account,name:account.1_income
 msgid "Product Sales"
-msgstr ""
+msgstr "ပစ္စည်း အရောင်း"
 
 #. module: account
 #: model:ir.model,name:account.model_uom_uom
 msgid "Product Unit of Measure"
-msgstr ""
+msgstr "ရေတွက်ပုံ"
 
 #. module: account
 #: model:ir.model,name:account.model_product_product
@@ -12127,7 +12142,7 @@ msgstr "ပစ္စည်းများ"
 #. module: account
 #: model:account.account,name:account.1_to_receive_rec
 msgid "Products to receive"
-msgstr ""
+msgstr "ပစ္စည်းများ လက်ခံရရှိရန်"
 
 #. module: account
 #. odoo-javascript
@@ -12202,7 +12217,7 @@ msgstr "အဝယ် အခွန်များ"
 #. module: account
 #: model:account.account,name:account.1_expense_invest
 msgid "Purchase of Equipments"
-msgstr ""
+msgstr "အီကွစ်မန့် များ ဝယ်ခ"
 
 #. module: account
 #: model:ir.actions.act_window,name:account.action_account_moves_journal_purchase
@@ -12232,7 +12247,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
 msgid "QR Codes"
-msgstr ""
+msgstr "QR ကုဒ်များ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_line__quantity
@@ -12247,7 +12262,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_move__auto_post__quarterly
 msgid "Quarterly"
-msgstr ""
+msgstr "၃ လပါတ်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__quick_edit_mode
@@ -12294,7 +12309,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_lock_exception__reason
 msgid "Reason"
-msgstr ""
+msgstr "အကြောင်းပြချက်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_reversal__reason
@@ -12320,7 +12335,7 @@ msgstr "လက်ခံပြေစာများ"
 #: model_terms:ir.ui.view,arch_db:account.view_account_move_line_filter
 #: model_terms:ir.ui.view,arch_db:account.view_account_search
 msgid "Receivable"
-msgstr ""
+msgstr "ရရန်ရှိ"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.product_template_form_view
@@ -12397,6 +12412,12 @@ msgid "Reconciled Invoices Type"
 msgstr ""
 
 #. module: account
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__reconciled_payment_ids
+#: model:ir.model.fields,field_description:account.field_account_move__reconciled_payment_ids
+msgid "Reconciled Payments"
+msgstr ""
+
+#. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment__reconciled_statement_line_ids
 msgid "Reconciled Statement Lines"
 msgstr ""
@@ -12458,7 +12479,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_move_line__ref
 #: model_terms:ir.ui.view,arch_db:account.view_account_reconcile_model_form
 msgid "Reference"
-msgstr ""
+msgstr "မှီငြမ်းချက်"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_payment__payment_reference
@@ -12476,7 +12497,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account.selection__account_tax_repartition_line__document_type__refund
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
 msgid "Refund"
-msgstr ""
+msgstr "ပြန်အမ်း"
 
 #. module: account
 #. odoo-python
@@ -12495,7 +12516,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.view_account_bill_filter
 #: model_terms:ir.ui.view,arch_db:account.view_account_move_line_payment_filter
 msgid "Refunds"
-msgstr ""
+msgstr "ပြန်အမ်းများ"
 
 #. module: account
 #: model_terms:ir.actions.act_window,help:account.action_bank_statement_tree
@@ -12641,12 +12662,12 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_payment_form
 msgid "Reset To Draft"
-msgstr ""
+msgstr "အကြမ်း သို့ ပြန်ပြောင်း"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 msgid "Reset to Draft"
-msgstr ""
+msgstr "အကြမ်း သို့ ပြန်ပြောင်း"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_reversal__residual
@@ -12686,7 +12707,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__activity_user_id
 #: model:ir.model.fields,field_description:account.field_res_partner_bank__activity_user_id
 msgid "Responsible User"
-msgstr ""
+msgstr "တာဝန်ရှိသူ"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_tax__tax_scope
@@ -12710,7 +12731,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_digest_digest__kpi_account_total_revenue
 #: model:ir.model.fields.selection,name:account.selection__account_automatic_entry_wizard__account_type__income
 msgid "Revenue"
-msgstr "အမြတ်"
+msgstr "ဝင်ငွေ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_automatic_entry_wizard__revenue_accrual_account
@@ -12770,7 +12791,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:account.action_view_account_move_reversal
 #: model_terms:ir.ui.view,arch_db:account.view_account_move_reversal
 msgid "Reverse"
-msgstr ""
+msgstr "ဗြောင်းပြန်"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
@@ -12819,7 +12840,7 @@ msgstr ""
 #. module: account
 #: model:onboarding.onboarding.step,title:account.onboarding_onboarding_step_chart_of_accounts
 msgid "Review Chart of Accounts"
-msgstr ""
+msgstr "အကောင့်များ၏ ဇယားကိုကြည့်ရန်"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_lock_exception_form
@@ -12948,17 +12969,17 @@ msgstr ""
 #. module: account
 #: model:account.account,name:account.1_expense_salary
 msgid "Salary Expenses"
-msgstr ""
+msgstr "ဝန်ထမ်း လခ"
 
 #. module: account
 #: model:account.account,name:account.1_salary_payable
 msgid "Salary Payable"
-msgstr ""
+msgstr "ပေးရန်ရှိသော လစာ"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_tax_search
 msgid "Sale"
-msgstr ""
+msgstr "အရောင်း"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_config_settings__group_show_sale_receipts
@@ -12985,7 +13006,7 @@ msgstr ""
 #. module: account
 #: model:account.account,name:account.1_expense_sales
 msgid "Sales Expenses"
-msgstr ""
+msgstr "အရောင်း ကုန်ကျစရိတ်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_lock_exception__sale_lock_date
@@ -13175,7 +13196,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account.selection__account_move_line__display_type__line_section
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 msgid "Section"
-msgstr ""
+msgstr "အစိတ်အပိုင်း"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_report__section_main_report_ids
@@ -13509,12 +13530,12 @@ msgstr "ဝန်ဆောင်မှူများ"
 #. module: account
 #: model:onboarding.onboarding.step,title:account.onboarding_onboarding_step_company_data
 msgid "Set Company Data"
-msgstr ""
+msgstr "ကုမ္ပဏီ ဒေတာ သတ်မှတ်ရန်"
 
 #. module: account
 #: model:onboarding.onboarding.step,title:account.onboarding_onboarding_step_fiscal_year
 msgid "Set Periods"
-msgstr ""
+msgstr "ကာလများ သတ်မှတ်ရန်"
 
 #. module: account
 #. odoo-python
@@ -13599,12 +13620,12 @@ msgstr ""
 #. module: account
 #: model:ir.actions.server,name:account.model_account_move_action_share
 msgid "Share"
-msgstr ""
+msgstr "ဝေမျှ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_journal__code
 msgid "Short Code"
-msgstr ""
+msgstr "ကုဒ်အတို"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_journal__code
@@ -13854,7 +13875,7 @@ msgstr ""
 #. module: account
 #: model:ir.ui.menu,name:account.account_reports_legal_statements_menu
 msgid "Statement Reports"
-msgstr ""
+msgstr "စတိတ်မန့် ရီပို့များ"
 
 #. module: account
 #. odoo-python
@@ -13949,7 +13970,7 @@ msgstr ""
 #. module: account
 #: model:account.account,name:account.1_stock_valuation
 msgid "Stock Valuation"
-msgstr ""
+msgstr "စတော့တန်ဖိုးဖြတ်ခြင်း"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
@@ -14097,12 +14118,12 @@ msgstr "အခွန်"
 #: model_terms:ir.ui.view,arch_db:account.document_tax_totals_template
 #: model_terms:ir.ui.view,arch_db:account.report_invoice_document
 msgid "Tax 15%"
-msgstr ""
+msgstr "အခွန် 15%"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_tax_group__advance_tax_payment_account_id
 msgid "Tax Advance Account"
-msgstr ""
+msgstr "အခွန်ကြိုတင်အကောင့်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_company__tax_calculation_rounding_method
@@ -14172,19 +14193,19 @@ msgstr ""
 #: model:ir.model,name:account.model_account_tax_group
 #: model:ir.model.fields,field_description:account.field_account_tax__tax_group_id
 msgid "Tax Group"
-msgstr ""
+msgstr "အခွန် အုပ်စု"
 
 #. module: account
 #: model:ir.actions.act_window,name:account.action_tax_group
 #: model:ir.ui.menu,name:account.menu_action_tax_group
 msgid "Tax Groups"
-msgstr ""
+msgstr "အခွန် အုပ်စုများ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_base_document_layout__vat
 #: model_terms:ir.ui.view,arch_db:account.report_invoice_document
 msgid "Tax ID"
-msgstr ""
+msgstr "အခွန် အိုင်ဒီ"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_tax__price_include_override__tax_included
@@ -14212,7 +14233,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_fiscal_position__tax_ids
 #: model_terms:ir.ui.view,arch_db:account.view_account_position_form
 msgid "Tax Mapping"
-msgstr ""
+msgstr "အခွန် သတ်မှတ်ချက်"
 
 #. module: account
 #: model:ir.model,name:account.model_account_fiscal_position_tax
@@ -14227,7 +14248,7 @@ msgstr "အခွန် အမည်"
 #. module: account
 #: model:account.account,name:account.1_tax_paid
 msgid "Tax Paid"
-msgstr ""
+msgstr "ပေးထားပြီး အခွန်များ"
 
 #. module: account
 #: model:account.account,name:account.1_tax_payable
@@ -14252,7 +14273,7 @@ msgstr "အခွန် ရရန်ရှိ အကောင့်"
 #. module: account
 #: model:account.account,name:account.1_tax_received
 msgid "Tax Received"
-msgstr ""
+msgstr "ရရှိပြီး အခွန်များ"
 
 #. module: account
 #: model:ir.model,name:account.model_account_tax_repartition_line
@@ -14337,12 +14358,12 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_fiscal_position_tax__tax_src_id
 msgid "Tax on Product"
-msgstr ""
+msgstr "ပစ္စည်းပေါ်ရှိ အခွန်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_fiscal_position_tax__tax_dest_id
 msgid "Tax to Apply"
-msgstr ""
+msgstr "ထမ်းရမည့်အခွန်"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_tax__is_used
@@ -14481,7 +14502,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_config_settings__invoice_terms
 msgid "Terms & Conditions"
-msgstr ""
+msgstr "စည်းကမ်းသတ်မှတ်ချက်များ"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_config_settings__invoice_terms_html
@@ -15970,7 +15991,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
 msgid "To Validate"
-msgstr ""
+msgstr "အတည်ပြုရန်"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.email_template_mail_gateway_failed
@@ -16018,7 +16039,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_partner_bank_search_inherit
 msgid "To validate"
-msgstr ""
+msgstr "အတည်ပြုရန်"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_report__default_opening_date_filter__today
@@ -16297,7 +16318,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__acc_type
 #: model_terms:ir.ui.view,arch_db:account.view_account_reconcile_model_search
 msgid "Type"
-msgstr ""
+msgstr "အမျိုးအစား"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__type_name
@@ -16395,7 +16416,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
 msgid "Units of Measure"
-msgstr ""
+msgstr "တိုင်းတာသည့် ယူနစ်များ"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_payment_form
@@ -16417,12 +16438,12 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/account/static/src/components/many2many_tax_tags/many2many_tax_tags.js:0
 msgid "Unnamed"
-msgstr ""
+msgstr "အမည်မပေးရသေး"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
 msgid "Unpaid"
-msgstr ""
+msgstr "မပေးရသေး"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_move_filter
@@ -16548,7 +16569,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/account/models/res_config_settings.py:0
 msgid "Update Terms & Conditions"
-msgstr ""
+msgstr "စည်းကမ်းသတ်မှတ်ချက်များ ပြင်ရန်"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
@@ -16567,7 +16588,7 @@ msgstr ""
 #: code:addons/account/static/src/components/account_file_uploader/account_file_uploader.xml:0
 #: code:addons/account/static/src/components/document_file_uploader/document_file_uploader.xml:0
 msgid "Upload"
-msgstr ""
+msgstr "အပ်လုဒ်"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
@@ -16761,7 +16782,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_payment_form
 msgid "Validate"
-msgstr ""
+msgstr "အတည်ပြု"
 
 #. module: account
 #: model:ir.model,name:account.model_validate_account_move
@@ -16789,7 +16810,7 @@ msgstr ""
 #. module: account
 #: model:mail.message.subtype,name:account.mt_invoice_validated
 msgid "Validated"
-msgstr ""
+msgstr "အတည်ပြုပြီး"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.validate_account_move_view
@@ -16936,7 +16957,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/account/static/src/components/account_payment_field/account_payment.xml:0
 msgid "View"
-msgstr ""
+msgstr "ဗျူး"
 
 #. module: account
 #. odoo-python
@@ -16957,7 +16978,7 @@ msgstr ""
 #: code:addons/account/static/src/components/json_checkboxes/json_checkboxes.xml:0
 #: model:ir.model.fields.selection,name:account.selection__res_partner__invoice_warn__warning
 msgid "Warning"
-msgstr ""
+msgstr "❗သတိပေးချက်"
 
 #. module: account
 #. odoo-python
@@ -17122,7 +17143,7 @@ msgstr ""
 #. module: account
 #: model:account.account,name:account.1_wip
 msgid "Work in Progress"
-msgstr ""
+msgstr "လုပ်နေဆဲ WIP"
 
 #. module: account
 #. odoo-javascript
@@ -17154,7 +17175,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_move__auto_post__yearly
 msgid "Yearly"
-msgstr ""
+msgstr "နှစ်စဉ်"
 
 #. module: account
 #. odoo-javascript
@@ -18065,12 +18086,12 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_company_form_view_onboarding
 msgid "e.g. My Company"
-msgstr ""
+msgstr "ဉပမာ- My Company"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_company_form_view_onboarding
 msgid "e.g. https://www.odoo.com"
-msgstr ""
+msgstr "ဉပမာ- https://www.odoo.com"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_journal_form

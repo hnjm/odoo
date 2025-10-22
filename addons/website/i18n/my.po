@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-08 18:37+0000\n"
-"PO-Revision-Date: 2025-09-20 22:20+0000\n"
+"POT-Creation-Date: 2025-10-11 02:15+0000\n"
+"PO-Revision-Date: 2025-10-16 05:12+0000\n"
 "Last-Translator: Oakarmin Iron <oakarminiron@gmail.com>\n"
 "Language-Team: Burmese <https://translate.odoo.com/projects/odoo-18/website/"
 "my/>\n"
@@ -2250,7 +2250,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website.field_website_rewrite__redirect_type
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 msgid "Action"
-msgstr ""
+msgstr "အက်ရှင်"
 
 #. module: website
 #. odoo-javascript
@@ -2329,7 +2329,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_media_list_options
 msgid "Add Media"
-msgstr ""
+msgstr "မီဒီယာထည့်"
 
 #. module: website
 #. odoo-javascript
@@ -2547,7 +2547,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/website/static/src/js/editor/snippets.editor.js:0
 msgid "Advanced"
-msgstr ""
+msgstr "အထူးပြု"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_masonry_block_alternation_text_image_template
@@ -3099,7 +3099,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.s_tabs_options
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 msgid "Background"
-msgstr ""
+msgstr "နောက်ခံ"
 
 #. module: website
 #. odoo-javascript
@@ -3173,7 +3173,7 @@ msgstr ""
 #: code:addons/website/static/src/components/dialog/add_page_dialog.js:0
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_groups
 msgid "Basic"
-msgstr ""
+msgstr "အခြေခံ"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
@@ -3188,7 +3188,7 @@ msgstr ""
 #. module: website
 #: model:ir.model.fields.selection,name:website.selection__theme_ir_asset__directive__before
 msgid "Before"
-msgstr ""
+msgstr "မတိုင်မှီ"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_comparisons
@@ -3246,7 +3246,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 msgid "Block"
-msgstr ""
+msgstr "ဘလော့"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_res_config_settings__website_block_third_party_domains
@@ -3640,7 +3640,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 #: model_terms:ir.ui.view,arch_db:website.snippets
 msgid "Card"
-msgstr ""
+msgstr "ကဒ်"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippets
@@ -3737,7 +3737,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.theme_view_search
 msgid "Category"
-msgstr ""
+msgstr "အမျိုးအမည်"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.cookie_policy
@@ -3843,7 +3843,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.s_company_team
 #: model_terms:ir.ui.view,arch_db:website.s_company_team_basic
 msgid "Chief Executive Officer"
-msgstr ""
+msgstr "စီအီးအို"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_company_team
@@ -3861,7 +3861,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.s_company_team_basic
 #: model_terms:ir.ui.view,arch_db:website.s_company_team_detail
 msgid "Chief Technical Officer"
-msgstr ""
+msgstr "စီတီအို"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_menu__child_id
@@ -3970,7 +3970,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/website/static/src/client_actions/website_preview/website_preview.xml:0
 msgid "Click on"
-msgstr ""
+msgstr "ကလစ်လိုက်ပါ"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_embed_code
@@ -4022,7 +4022,6 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/website/static/src/components/resource_editor/resource_editor.xml:0
 #: code:addons/website/static/src/components/views/theme_preview.xml:0
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 #: code:addons/website/static/src/xml/website.xml:0
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
@@ -4112,7 +4111,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.s_progress_bar_options
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 msgid "Colors"
-msgstr ""
+msgstr "အရောင်များ"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_carousel_intro_options
@@ -4178,7 +4177,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 #: model_terms:ir.ui.view,arch_db:website.s_mega_menu_odoo_menu
 msgid "Components"
-msgstr ""
+msgstr "ပါဝင်ပစ္စည်းများ"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_cards_soft
@@ -4195,7 +4194,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_mega_menu_odoo_menu
 msgid "Computers"
-msgstr ""
+msgstr "ကွန်ပျူတာများ"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_mega_menu_odoo_menu
@@ -4368,7 +4367,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.searchbar_input_snippet_options
 #: model_terms:ir.ui.view,arch_db:website.snippets
 msgid "Content"
-msgstr ""
+msgstr "ပါဝင်သောအကြောင်းအရာ"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_res_config_settings__cdn_activated
@@ -4505,7 +4504,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/website/static/src/systray_items/new_content.js:0
 msgid "Course"
-msgstr ""
+msgstr "သင်တန်း"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.record_cover
@@ -5953,7 +5952,7 @@ msgstr ""
 #: code:addons/website/static/src/xml/website_form.xml:0
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 msgid "Error"
-msgstr ""
+msgstr "အယ်ရာ"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_pricelist_cafe
@@ -6592,7 +6591,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.s_title_form
 #: model_terms:ir.ui.view,arch_db:website.snippets
 msgid "Form"
-msgstr ""
+msgstr "ဖောင်"
 
 #. module: website
 #: model:ir.model.fields,help:website.field_ir_model__website_form_label
@@ -6606,7 +6605,7 @@ msgstr ""
 #: code:addons/website/static/src/components/resource_editor/resource_editor.xml:0
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 msgid "Format"
-msgstr ""
+msgstr "ဖော်မက်"
 
 #. module: website
 #. odoo-javascript
@@ -7054,7 +7053,7 @@ msgstr "အုပ်စု"
 #: model_terms:ir.ui.view,arch_db:website.website_visitor_page_view_search
 #: model_terms:ir.ui.view,arch_db:website.website_visitor_view_search
 msgid "Group By"
-msgstr ""
+msgstr "အုပ်စုအလိုက်"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_controller_page__groups_id
@@ -7147,7 +7146,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 msgid "Header"
-msgstr ""
+msgstr "ခေါင်းစီး"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_theme_website_page__header_color
@@ -7377,7 +7376,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.template_footer_links
 #: model_terms:ir.ui.view,arch_db:website.template_footer_minimalist
 msgid "Home"
-msgstr ""
+msgstr "ဟုမ်း"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
@@ -7430,7 +7429,7 @@ msgstr ""
 #: code:addons/website/static/src/snippets/s_countdown/000.js:0
 #: model_terms:ir.ui.view,arch_db:website.s_countdown
 msgid "Hours"
-msgstr ""
+msgstr "နာရီ"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.template_footer_contact
@@ -7460,7 +7459,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_company_team_detail
 msgid "Human Resources Manager"
-msgstr ""
+msgstr "HR မန်နေဂျာ"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_google_map_options
@@ -7539,7 +7538,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.s_blockquote_options
 #: model_terms:ir.ui.view,arch_db:website.s_rating_options
 msgid "Icon"
-msgstr ""
+msgstr "အိုင်ကွန်"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_accordion_options
@@ -7642,7 +7641,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 #: model_terms:ir.ui.view,arch_db:website.snippets
 msgid "Image"
-msgstr ""
+msgstr "ရုပ်ပုံ"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippets
@@ -7714,7 +7713,6 @@ msgstr ""
 
 #. module: website
 #. odoo-javascript
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 msgid "Image Gallery Dialog"
 msgstr ""
@@ -7761,7 +7759,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.s_masonry_block_options
 #: model_terms:ir.ui.view,arch_db:website.snippets
 msgid "Images"
-msgstr ""
+msgstr "ရုပ်ပုံများ"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippets
@@ -8415,7 +8413,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website.field_website_controller_page__key
 #: model:ir.model.fields,field_description:website.field_website_page__key
 msgid "Key"
-msgstr ""
+msgstr "ကီး"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_masonry_block_default_template
@@ -8485,7 +8483,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.s_website_form_options
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 msgid "Label"
-msgstr ""
+msgstr "လေဘယ်"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_ir_model__website_form_label
@@ -8606,7 +8604,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website.field_website_snippet_filter__write_uid
 #: model:ir.model.fields,field_description:website.field_website_visitor__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "နောက်ဆုံးပြင်ဆင်သူ"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_theme_ir_asset__write_date
@@ -8855,7 +8853,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.s_chart_options
 #: model_terms:ir.ui.view,arch_db:website.s_process_steps_options
 msgid "Line"
-msgstr ""
+msgstr "လိုင်း"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
@@ -8938,7 +8936,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:website.selection__website_controller_page__default_layout__list
 #: model_terms:ir.ui.view,arch_db:website.s_website_controller_page_listing_layout
 msgid "List"
-msgstr ""
+msgstr "စာရင်း"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_features
@@ -9006,7 +9004,7 @@ msgstr ""
 #: code:addons/website/static/src/js/editor/snippets.editor.js:0
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 msgid "Logo"
-msgstr ""
+msgstr "လိုဂို"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.template_footer_centered
@@ -9101,7 +9099,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 msgid "Margins"
-msgstr ""
+msgstr "မာဂျင်များ"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_website_form_options
@@ -9126,7 +9124,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_landing_s_features
 msgid "Marketing"
-msgstr ""
+msgstr "မားကက်တင်း"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_company_team_detail
@@ -9174,7 +9172,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_media_list_options
 msgid "Media"
-msgstr ""
+msgstr "မီဒီယာ"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippets
@@ -9204,7 +9202,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.s_rating_options
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 msgid "Medium"
-msgstr ""
+msgstr "တဆင့် (သို့) ကြားခံ"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_about_full_1_s_text_block_h2
@@ -9251,7 +9249,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website.field_website_page_properties__menu_ids
 #: model:ir.model.fields,field_description:website.field_website_page_properties_base__menu_ids
 msgid "Menu"
-msgstr ""
+msgstr "မီနူး"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
@@ -9318,7 +9316,7 @@ msgstr ""
 #: model:ir.ui.menu,name:website.menu_website_menu_list
 #: model_terms:ir.ui.view,arch_db:website.website_controller_pages_form_view
 msgid "Menus"
-msgstr ""
+msgstr "မီနူးများ"
 
 #. module: website
 #. odoo-python
@@ -9340,7 +9338,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_facebook_page_options
 msgid "Messages"
-msgstr ""
+msgstr "မက်ဆေ့ဂျ်များ"
 
 #. module: website
 #. odoo-python
@@ -9549,7 +9547,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_mega_menu_odoo_menu
 msgid "Monitors"
-msgstr ""
+msgstr "မော်နီတာများ"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_color_blocks_2
@@ -9807,7 +9805,6 @@ msgstr ""
 #. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/snippets/s_dynamic_snippet_carousel/000.xml:0
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 #: model_terms:ir.ui.view,arch_db:website.s_carousel
@@ -9918,7 +9915,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.snippet_options_carousel
 #: model_terms:ir.ui.view,arch_db:website.snippet_options_shadow_widgets
 msgid "None"
-msgstr ""
+msgstr "(None)မသတ်မှတ်"
 
 #. module: website
 #: model:website,prevent_zero_price_sale_text:website.default_website
@@ -10029,7 +10026,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/website/static/src/client_actions/configurator/configurator.xml:0
 msgid "OR"
-msgstr ""
+msgstr "သို့မဟုတ်"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
@@ -10072,7 +10069,7 @@ msgstr ""
 #: code:addons/website/static/src/components/dialog/page_properties.xml:0
 #: code:addons/website/static/src/components/translator/translator.js:0
 msgid "Ok"
-msgstr ""
+msgstr "အိုကေ"
 
 #. module: website
 #. odoo-javascript
@@ -10278,7 +10275,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_website_form_options
 msgid "Optional"
-msgstr ""
+msgstr "ရွေးချယ်ခွင့်"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.searchbar_input_snippet_options
@@ -10617,7 +10614,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.website_controller_pages_form_view
 #: model_terms:ir.ui.view,arch_db:website.website_visitor_page_view_search
 msgid "Page"
-msgstr ""
+msgstr "ပေ့ဂျ်"
 
 #. module: website
 #. odoo-javascript
@@ -10666,7 +10663,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.website_page_properties_view_form
 #: model_terms:ir.ui.view,arch_db:website.website_pages_tree_view
 msgid "Page Title"
-msgstr ""
+msgstr "ပေ့ဂျ် ခေါင်းစီး"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_page__url
@@ -10675,7 +10672,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.website_page_properties_view_form
 #: model_terms:ir.ui.view,arch_db:website.website_pages_tree_view
 msgid "Page URL"
-msgstr ""
+msgstr "ပေ့ဂျ် URL"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_configurator_feature__page_view_id
@@ -10734,7 +10731,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.website_visitor_view_form
 #: model_terms:ir.ui.view,arch_db:website.website_visitor_view_tree
 msgid "Pages"
-msgstr ""
+msgstr "ပေ့ဂျ်များ"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
@@ -10805,7 +10802,7 @@ msgstr ""
 #. module: website
 #: model:ir.actions.act_window,name:website.visitor_partner_action
 msgid "Partners"
-msgstr ""
+msgstr "ပါတနာများ"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_references
@@ -10835,7 +10832,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_process_steps
 msgid "Pay"
-msgstr ""
+msgstr "ပေး"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_pricelist_boxed
@@ -10858,7 +10855,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.s_features
 #: model_terms:ir.ui.view,arch_db:website.s_features_wave
 msgid "Performance"
-msgstr ""
+msgstr "စွမ်းဆောင်ရည်"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_landing_2_s_cover
@@ -10884,7 +10881,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_mega_menu_thumbnails
 msgid "Phones"
-msgstr ""
+msgstr "ဖုန်းများ"
 
 #. module: website
 #. odoo-javascript
@@ -11001,7 +10998,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.s_website_form_options
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 msgid "Position"
-msgstr ""
+msgstr "အနေအထား"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_media_list
@@ -11045,7 +11042,7 @@ msgstr ""
 #: code:addons/website/static/src/components/dialog/seo.xml:0
 #: code:addons/website/static/src/xml/website.editor.xml:0
 msgid "Preview"
-msgstr ""
+msgstr "ပရီဗျူး"
 
 #. module: website
 #. odoo-javascript
@@ -11062,7 +11059,6 @@ msgstr ""
 #. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/snippets/s_dynamic_snippet_carousel/000.xml:0
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 #: model_terms:ir.ui.view,arch_db:website.s_carousel
@@ -11082,7 +11078,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippets
 msgid "Pricelist"
-msgstr ""
+msgstr "ပစ္စည်းစျေးနှုန်း"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippets
@@ -11121,12 +11117,12 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_mega_menu_thumbnails
 msgid "Printers"
-msgstr ""
+msgstr "ပရင်တာများ"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_theme_ir_ui_view__priority
 msgid "Priority"
-msgstr ""
+msgstr "ဉီးစားပေး"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
@@ -11184,7 +11180,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_tabs
 msgid "Profile"
-msgstr ""
+msgstr "ပရိုဖိုင်"
 
 #. module: website
 #. odoo-javascript
@@ -11335,7 +11331,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_rating
 msgid "Quality"
-msgstr ""
+msgstr "အရည်အသွေး"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_cards_grid
@@ -11605,7 +11601,7 @@ msgstr ""
 #: code:addons/website/static/src/xml/website.editor.xml:0
 #: model:ir.model.fields.selection,name:website.selection__theme_ir_asset__directive__remove
 msgid "Remove"
-msgstr ""
+msgstr "ဖယ်ရှား"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_card_options
@@ -11669,7 +11665,7 @@ msgstr "ရီပို့ တင်ပြခြင်း"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_website_form_options
 msgid "Required"
-msgstr ""
+msgstr "လိုအပ်သည်"
 
 #. module: website
 #. odoo-javascript
@@ -11955,7 +11951,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_rating_options
 msgid "Score"
-msgstr ""
+msgstr "ရမှတ်"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_mega_menu_thumbnails
@@ -12011,7 +12007,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.snippets
 #: model_terms:ir.ui.view,arch_db:website.website_search_box
 msgid "Search"
-msgstr ""
+msgstr "ရှာဖွေ"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_landing_2_s_text_block_h2
@@ -12197,7 +12193,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_contact_info
 msgid "Send an email"
-msgstr ""
+msgstr "အီးမေးလ် တစ်စောင်ပို့"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.template_footer_contact
@@ -12342,7 +12338,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.s_share
 #: model_terms:ir.ui.view,arch_db:website.snippets
 msgid "Share"
-msgstr ""
+msgstr "ဝေမျှ"
 
 #. module: website
 #: model:website.configurator.feature,description:website.feature_module_elearning
@@ -13089,7 +13085,7 @@ msgstr ""
 #. module: website
 #: model:ir.model.fields,field_description:website.field_theme_ir_asset__target
 msgid "Target"
-msgstr ""
+msgstr "တားဂက်"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_page_properties__target_model_id
@@ -13411,6 +13407,12 @@ msgstr ""
 #. module: website
 #: model:ir.model.fields,help:website.field_website_controller_page__name_slugified
 msgid "The name of the page usable in a URL"
+msgstr ""
+
+#. module: website
+#. odoo-python
+#: code:addons/website/models/website.py:0
+msgid "The provided website domain is not a valid URL."
 msgstr ""
 
 #. module: website
@@ -13852,7 +13854,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.s_text_block_h2
 #: model_terms:ir.ui.view,arch_db:website.snippets
 msgid "Title"
-msgstr ""
+msgstr "ခေါင်းစဉ်"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippets
@@ -14124,7 +14126,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.s_website_form_options
 #: model_terms:ir.ui.view,arch_db:website.website_page_properties_view_form
 msgid "Type"
-msgstr ""
+msgstr "အမျိုးအစား"
 
 #. module: website
 #. odoo-javascript
@@ -14312,7 +14314,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/website/static/src/client_actions/configurator/configurator.xml:0
 msgid "Upload"
-msgstr ""
+msgstr "အပ်လုဒ်"
 
 #. module: website
 #. odoo-javascript
@@ -14556,7 +14558,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.snippet_options_background_options
 #: model_terms:ir.ui.view,arch_db:website.snippets
 msgid "Video"
-msgstr ""
+msgstr "ဗီဒီယို"
 
 #. module: website
 #: model:ir.model,name:website.model_ir_ui_view
@@ -14564,7 +14566,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website.field_website_page__view_id
 #: model_terms:ir.ui.view,arch_db:website.website_controller_pages_form_view
 msgid "View"
-msgstr ""
+msgstr "ဗျူး"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_controller_page__arch
@@ -14581,13 +14583,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:website.field_website_page__name
 #: model:ir.model.fields,field_description:website.field_website_page_properties__name
 msgid "View Name"
-msgstr ""
+msgstr "ဗျူးအမည်"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_controller_page__type
 #: model:ir.model.fields,field_description:website.field_website_page__type
 msgid "View Type"
-msgstr ""
+msgstr "ဗျူးအမျိုးအစား"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_controller_page__mode
@@ -14713,7 +14715,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.website_visitor_page_view_search
 #: model_terms:ir.ui.view,arch_db:website.website_visitor_view_kanban
 msgid "Visitor"
-msgstr ""
+msgstr "ဧည့်သည်"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.website_visitor_page_view_graph
@@ -14742,7 +14744,7 @@ msgstr ""
 #: model:ir.ui.menu,name:website.website_visitor_menu
 #: model_terms:ir.ui.view,arch_db:website.website_visitor_view_graph
 msgid "Visitors"
-msgstr ""
+msgstr "ဧည့်သည်များ"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.website_visitor_view_form
@@ -14767,7 +14769,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.s_badge_options
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 msgid "Warning"
-msgstr ""
+msgstr "❗သတိပေးချက်"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_controller_page__warning_info
@@ -15345,7 +15347,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/website/static/src/client_actions/website_preview/website_preview.xml:0
 msgid "Welcome to your"
-msgstr ""
+msgstr "ကြိုဆိုပါတယ် ဒါဟာသင့်ရဲ့"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_services_0_s_three_columns
@@ -16123,7 +16125,7 @@ msgstr ""
 #. module: website
 #: model:website.configurator.feature,name:website.feature_module_elearning
 msgid "eLearning"
-msgstr ""
+msgstr "သင်ကြားရေး"
 
 #. module: website
 #. odoo-python
@@ -16374,7 +16376,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/website/static/src/client_actions/website_preview/website_preview.xml:0
 msgid "in the top right corner to start designing."
-msgstr ""
+msgstr "ဆိုတဲ့ ညာဘက်ပေါ်မှာရှိတဲ့ခလုပ်ကို၊ ဒီဇိုင်းလုပ်ချင်တယ်ဆိုရင်။"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.template_footer_links

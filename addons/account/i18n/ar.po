@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* account
+# * account
 #
 # Translators:
 # Mustafa Rawi <mustafa@mrawi.com>, 2024
@@ -10,21 +10,23 @@
 # Mustafa J. Kadhem <safi2266@gmail.com>, 2025
 # Malaz Abuidris <msea@odoo.com>, 2025
 # Wil Odoo, 2025
-#
+# MAHAMADASIF ANSARI <maan@odoo.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-12 01:50+0000\n"
-"PO-Revision-Date: 2024-09-25 09:41+0000\n"
-"Last-Translator: Wil Odoo, 2025\n"
-"Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
+"POT-Creation-Date: 2025-10-16 18:37+0000\n"
+"PO-Revision-Date: 2025-10-16 10:48+0000\n"
+"Last-Translator: MAHAMADASIF ANSARI <maan@odoo.com>\n"
+"Language-Team: Arabic <https://translate.odoo.com/projects/odoo-18/account/"
+"ar/>\n"
 "Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_journal__type
@@ -984,14 +986,10 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.portal_my_details_fields
 msgid ""
 "<small class=\"form-text text-muted\">\n"
-"                    You can choose how you want us to send your invoices, "
-"and with which electronic format.\n"
-"                </small>"
+"                        You can choose how you want us to send your "
+"invoices, and with which electronic format.\n"
+"                    </small>"
 msgstr ""
-"<small class=\"form-text text-muted\">\n"
-"                    يمكنك اختيار الطريقة التي تريدنا أن نرسل بها فواتيرك، "
-"وبأي صيغة إلكترونية.\n"
-"                </small>"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.portal_my_invoices
@@ -4603,6 +4601,7 @@ msgstr "إغلاق"
 #: model:ir.model.fields,field_description:account.field_account_payment__payment_method_code
 #: model:ir.model.fields,field_description:account.field_account_payment_method__code
 #: model:ir.model.fields,field_description:account.field_account_payment_method_line__code
+#: model:ir.model.fields,field_description:account.field_account_payment_register__payment_method_code
 #: model:ir.model.fields,field_description:account.field_account_report_line__code
 #: model_terms:ir.ui.view,arch_db:account.view_account_form
 #: model_terms:ir.ui.view,arch_db:account.view_account_list
@@ -6122,6 +6121,12 @@ msgstr "الضرائب الافتراضية المطبقة عند شراء ال�
 #: model:ir.model.fields,help:account.field_product_template__taxes_id
 msgid "Default taxes used when selling the product"
 msgstr "الضرائب الافتراضية المطبقة عند بيع المنتج "
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid "Default value for 'company_id' for %(record)s is not an integer"
+msgstr ""
 
 #. module: account
 #: model:account.account,name:account.1_deferred_revenue
@@ -11011,7 +11016,7 @@ msgstr "الأصول غير المتداولة"
 #. odoo-python
 #: code:addons/account/wizard/account_merge_wizard.py:0
 msgid "Non-trade %s"
-msgstr "غير تجارية %s "
+msgstr "غير تجارية %s"
 
 #. module: account
 #. odoo-python
@@ -12279,6 +12284,12 @@ msgstr ""
 "سيتم تخطي المدفوعات المتعلقة بالشركاء الذين ليست لديهم حسابات بنكية محددة. "
 
 #. module: account
+#: model:ir.model.fields,help:account.field_account_bank_statement_line__reconciled_payment_ids
+#: model:ir.model.fields,help:account.field_account_move__reconciled_payment_ids
+msgid "Payments that have been reconciled with this invoice."
+msgstr ""
+
+#. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_payment_term_line__value__percent
 msgid "Percent"
 msgstr "بالمئة "
@@ -12937,6 +12948,12 @@ msgstr "فواتير العميل المسوّاة "
 #: model:ir.model.fields,field_description:account.field_account_payment__reconciled_invoices_type
 msgid "Reconciled Invoices Type"
 msgstr "نوع الفواتير المسواة "
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__reconciled_payment_ids
+#: model:ir.model.fields,field_description:account.field_account_move__reconciled_payment_ids
+msgid "Reconciled Payments"
+msgstr ""
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment__reconciled_statement_line_ids
@@ -17023,7 +17040,7 @@ msgstr "تتبع التكاليف والإيرادات حسب المشروع أ�
 #. odoo-python
 #: code:addons/account/wizard/account_merge_wizard.py:0
 msgid "Trade %s"
-msgstr "تجاري"
+msgstr "تجاري %s"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__transaction_details
@@ -19348,6 +19365,17 @@ msgid ""
 "{{ object.company_id.name }} Payment Receipt (Ref {{ object.name or 'n/a' }})"
 msgstr ""
 "{{ object.company_id.name }} إيصال الدفع  (المرجع {{ object.name or 'n/a' }})"
+
+#~ msgid ""
+#~ "<small class=\"form-text text-muted\">\n"
+#~ "                    You can choose how you want us to send your invoices, "
+#~ "and with which electronic format.\n"
+#~ "                </small>"
+#~ msgstr ""
+#~ "<small class=\"form-text text-muted\">\n"
+#~ "                    يمكنك اختيار الطريقة التي تريدنا أن نرسل بها فواتيرك، "
+#~ "وبأي صيغة إلكترونية.\n"
+#~ "                </small>"
 
 #~ msgid ""
 #~ "Groupby feature isn't supported by aggregation engine. Please remove the "
