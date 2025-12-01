@@ -17,7 +17,7 @@ import { WebsiteDialog } from '../dialog/dialog';
 import { PageOption } from "./page_options";
 import { Component, onWillStart, useEffect, onWillUnmount } from "@odoo/owl";
 import { EditHeadBodyDialog } from "../edit_head_body_dialog/edit_head_body_dialog";
-import { router } from "@web/core/browser/router";
+import { router, routerBus } from "@web/core/browser/router";
 import { OptimizeSEODialog } from "@website/components/dialog/seo";
 
 /**
@@ -158,12 +158,17 @@ export class WysiwygAdapterComponent extends Wysiwyg {
                         history.pushState({ skipRouteChange: true }, '');
                         hasFakeState = true;
                     },
-                    onLeave: () => history.back(),
-                    reloadIframe: false
+                    onLeave: () => {},
+                    reloadIframe: true,
                 });
             };
+            const skipLoadOnBeforeRouteChange = () => {
+                router.skipLoad = true;
+            };
+            routerBus.addEventListener("BEFORE_ROUTE_CHANGE", skipLoadOnBeforeRouteChange);
             window.addEventListener('popstate', leaveOnBackNavigation);
             return () => {
+                routerBus.removeEventListener("BEFORE_ROUTE_CHANGE", skipLoadOnBeforeRouteChange);
                 window.removeEventListener('popstate', leaveOnBackNavigation);
                 if (hasFakeState) {
                     // prevent router from reloading state from scratch
@@ -1422,5 +1427,20 @@ export class WysiwygAdapterComponent extends Wysiwyg {
             return;
         }
         this._hideDropdowns();
+    }
+    /**
+     * @override
+     */
+    async _onMediaDialogSave(params, element) {
+        await super._onMediaDialogSave(...arguments);
+        // This wasn't needed before activating the "iframe video" public widget
+        // in the edit mode. It should allow destroying newly added iframes and
+        // prevent saving them in the DOM.
+        if (element.classList.contains("media_iframe_video")) {
+            this._websiteRootEvent("widgets_start_request", {
+                editableMode: true,
+                $target: $(element),
+            });
+        }
     }
 }

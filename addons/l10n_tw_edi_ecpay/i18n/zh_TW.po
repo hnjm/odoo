@@ -1,28 +1,35 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* l10n_tw_edi_ecpay
+# * l10n_tw_edi_ecpay
 #
+# Weblate <noreply-mt-weblate@weblate.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-20 08:59+0000\n"
-"PO-Revision-Date: 2025-08-20 08:59+0000\n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"POT-Creation-Date: 2025-11-03 15:47+0000\n"
+"PO-Revision-Date: 2025-11-08 09:22+0000\n"
+"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
+"Language-Team: Chinese (Traditional Han script) <https://translate.odoo.com/"
+"projects/odoo-18-l10n/l10n_tw_edi_ecpay/zh_Hant/>\n"
+"Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: \n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model.fields,help:l10n_tw_edi_ecpay.field_account_bank_statement_line__l10n_tw_edi_carrier_type
 #: model:ir.model.fields,help:l10n_tw_edi_ecpay.field_account_move__l10n_tw_edi_carrier_type
 msgid ""
 "\n"
-"    - Citizen Digital Certificate: The carrier number format is 2 capital letters following 14 digits.\n"
-"    - Mobile Barcode: The carrier number format is / following 7 alphanumeric or +-. string.\n"
-"    - EasyCard or iPass: The carrier number is the card hidden code, the carrier number 2 is the card visible code.\n"
+"    - Citizen Digital Certificate: The carrier number format is 2 capital "
+"letters following 14 digits.\n"
+"    - Mobile Barcode: The carrier number format is / following 7 "
+"alphanumeric or +-. string.\n"
+"    - EasyCard or iPass: The carrier number is the card hidden code, the "
+"carrier number 2 is the card visible code.\n"
 "        "
 msgstr ""
 
@@ -34,8 +41,8 @@ msgstr ""
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model.fields.selection,name:l10n_tw_edi_ecpay.selection__account_move__l10n_tw_edi_zero_tax_rate_reason__72
 msgid ""
-"72: No.2 Services related to export sales, or services provided domestically"
-" but used abroad"
+"72: No.2 Services related to export sales, or services provided domestically "
+"but used abroad"
 msgstr ""
 
 #. module: l10n_tw_edi_ecpay
@@ -48,8 +55,8 @@ msgstr ""
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model.fields.selection,name:l10n_tw_edi_ecpay.selection__account_move__l10n_tw_edi_zero_tax_rate_reason__74
 msgid ""
-"74: No.4 Sale of goods or services for operation by the operator of the FREE"
-" Trade Zone"
+"74: No.4 Sale of goods or services for operation by the operator of the FREE "
+"Trade Zone"
 msgstr ""
 
 #. module: l10n_tw_edi_ecpay
@@ -64,8 +71,8 @@ msgstr ""
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model.fields.selection,name:l10n_tw_edi_ecpay.selection__account_move__l10n_tw_edi_zero_tax_rate_reason__76
 msgid ""
-"76: No.6 Ships, aircraft and distant-water fishing vessels for international"
-" transportation"
+"76: No.6 Ships, aircraft and distant-water fishing vessels for international "
+"transportation"
 msgstr ""
 
 #. module: l10n_tw_edi_ecpay
@@ -78,8 +85,8 @@ msgstr ""
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model.fields.selection,name:l10n_tw_edi_ecpay.selection__account_move__l10n_tw_edi_zero_tax_rate_reason__78
 msgid ""
-"78: No.8 The bonded area operator sells goods that are not directly exported"
-" by the taxable area operator and the taxable area operator is not exported "
+"78: No.8 The bonded area operator sells goods that are not directly exported "
+"by the taxable area operator and the taxable area operator is not exported "
 "to the taxation area"
 msgstr ""
 
@@ -89,6 +96,14 @@ msgid ""
 "79: No.9 The bonded area operator sells the goods that the taxable area "
 "operator deposits into the bonded warehouse or logistics center managed by "
 "the free port area or customs administration for export"
+msgstr ""
+
+#. module: l10n_tw_edi_ecpay
+#. odoo-python
+#: code:addons/l10n_tw_edi_ecpay/models/account_move.py:0
+msgid ""
+"A tax ID is required for company contact or individual contact under a "
+"company."
 msgstr ""
 
 #. module: l10n_tw_edi_ecpay
@@ -119,7 +134,7 @@ msgstr ""
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model.fields,field_description:l10n_tw_edi_ecpay.field_account_move_reversal__l10n_tw_edi_refund_agreement_type
 msgid "Agreement Type"
-msgstr ""
+msgstr "協議類型"
 
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model.fields,field_description:l10n_tw_edi_ecpay.field_account_bank_statement_line__l10n_tw_edi_allowance_notify_way
@@ -177,7 +192,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_tw_edi_ecpay.field_account_bank_statement_line__l10n_tw_edi_carrier_type
 #: model:ir.model.fields,field_description:l10n_tw_edi_ecpay.field_account_move__l10n_tw_edi_carrier_type
 msgid "Carrier Type"
-msgstr ""
+msgstr "Carrier Type"
 
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model.fields.selection,name:l10n_tw_edi_ecpay.selection__account_move__l10n_tw_edi_carrier_type__2
@@ -194,7 +209,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/l10n_tw_edi_ecpay/models/account_move.py:0
 msgid ""
-"Clearance mark and Zero tax rate reason is required for zero tax rate "
+"Clearance mark and zero tax rate reason are required for a zero tax rate "
 "invoice."
 msgstr ""
 
@@ -202,7 +217,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:l10n_tw_edi_ecpay.l10n_tw_edi_invoice_cancel_form
 #: model_terms:ir.ui.view,arch_db:l10n_tw_edi_ecpay.l10n_tw_edi_invoice_print_form
 msgid "Close"
-msgstr ""
+msgstr "關閉"
 
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model,name:l10n_tw_edi_ecpay.model_res_company
@@ -239,19 +254,19 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_tw_edi_ecpay.field_l10n_tw_edi_invoice_cancel__create_uid
 #: model:ir.model.fields,field_description:l10n_tw_edi_ecpay.field_l10n_tw_edi_invoice_print__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "建立人員"
 
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model.fields,field_description:l10n_tw_edi_ecpay.field_l10n_tw_edi_invoice_cancel__create_date
 #: model:ir.model.fields,field_description:l10n_tw_edi_ecpay.field_l10n_tw_edi_invoice_print__create_date
 msgid "Created on"
-msgstr ""
+msgstr "建立於"
 
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model.fields,field_description:l10n_tw_edi_ecpay.field_account_bank_statement_line__l10n_tw_edi_invoice_create_date
 #: model:ir.model.fields,field_description:l10n_tw_edi_ecpay.field_account_move__l10n_tw_edi_invoice_create_date
 msgid "Creation Date"
-msgstr ""
+msgstr "建立日期"
 
 #. module: l10n_tw_edi_ecpay
 #. odoo-python
@@ -274,7 +289,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_tw_edi_ecpay.field_l10n_tw_edi_invoice_cancel__display_name
 #: model:ir.model.fields,field_description:l10n_tw_edi_ecpay.field_l10n_tw_edi_invoice_print__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "顯示名稱"
 
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model.fields,field_description:l10n_tw_edi_ecpay.field_l10n_tw_edi_invoice_cancel__invoice_id
@@ -301,7 +316,7 @@ msgstr ""
 #: code:addons/l10n_tw_edi_ecpay/models/account_move.py:0
 msgid ""
 "Duty free with special tax type cannot be mixed with duty free without "
-"special tax type."
+"special tax type or having more than one special tax type."
 msgstr ""
 
 #. module: l10n_tw_edi_ecpay
@@ -336,8 +351,7 @@ msgstr ""
 #. module: l10n_tw_edi_ecpay
 #. odoo-python
 #: code:addons/l10n_tw_edi_ecpay/utils.py:0
-msgid ""
-"ECPay API Error: Invalid HashIV. Please check your ECPay configuration."
+msgid "ECPay API Error: Invalid HashIV. Please check your ECPay configuration."
 msgstr ""
 
 #. module: l10n_tw_edi_ecpay
@@ -355,6 +369,11 @@ msgstr ""
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model.fields.selection,name:l10n_tw_edi_ecpay.selection__account_move__l10n_tw_edi_carrier_type__1
 msgid "ECpay e-invoice carrier"
+msgstr ""
+
+#. module: l10n_tw_edi_ecpay
+#: model:ir.model,name:l10n_tw_edi_ecpay.model_account_tax
+msgid "ETA tax codes mixin"
 msgstr ""
 
 #. module: l10n_tw_edi_ecpay
@@ -413,7 +432,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:l10n_tw_edi_ecpay.selection__account_move__l10n_tw_edi_allowance_notify_way__email
 #: model:ir.model.fields.selection,name:l10n_tw_edi_ecpay.selection__account_move_reversal__l10n_tw_edi_allowance_notify_way__email
 msgid "Email"
-msgstr ""
+msgstr "電郵"
 
 #. module: l10n_tw_edi_ecpay
 #. odoo-python
@@ -479,7 +498,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_tw_edi_ecpay.field_l10n_tw_edi_invoice_cancel__id
 #: model:ir.model.fields,field_description:l10n_tw_edi_ecpay.field_l10n_tw_edi_invoice_print__id
 msgid "ID"
-msgstr ""
+msgstr "識別號"
 
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model,name:l10n_tw_edi_ecpay.model_l10n_tw_edi_invoice_cancel
@@ -494,7 +513,7 @@ msgstr ""
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model.fields.selection,name:l10n_tw_edi_ecpay.selection__account_move__l10n_tw_edi_state__invalid
 msgid "Invalid"
-msgstr ""
+msgstr "無效的"
 
 #. module: l10n_tw_edi_ecpay
 #. odoo-python
@@ -512,7 +531,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_tw_edi_ecpay.field_account_bank_statement_line__l10n_tw_edi_state
 #: model:ir.model.fields,field_description:l10n_tw_edi_ecpay.field_account_move__l10n_tw_edi_state
 msgid "Invoice Status"
-msgstr ""
+msgstr "發票狀態"
 
 #. module: l10n_tw_edi_ecpay
 #. odoo-python
@@ -538,14 +557,14 @@ msgstr ""
 #. odoo-python
 #: code:addons/l10n_tw_edi_ecpay/models/account_move.py:0
 msgid ""
-"Invoice type 08 must be used with tax type 3 or 4. Please check the tax type"
-" on the invoice lines."
+"Invoice type 08 must be used with tax type 3 or 4. Please check the tax type "
+"on the invoice lines."
 msgstr ""
 
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model.fields.selection,name:l10n_tw_edi_ecpay.selection__account_move__l10n_tw_edi_state__invoiced
 msgid "Invoiced"
-msgstr ""
+msgstr "已開立發票"
 
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model.fields,field_description:l10n_tw_edi_ecpay.field_account_bank_statement_line__l10n_tw_edi_is_b2b
@@ -561,9 +580,19 @@ msgid "Is Zero Tax Rate"
 msgstr ""
 
 #. module: l10n_tw_edi_ecpay
+#: model:ir.model.fields,field_description:l10n_tw_edi_ecpay.field_account_move_line__l10n_tw_edi_ecpay_item_sequence
+msgid "Item Sequence"
+msgstr ""
+
+#. module: l10n_tw_edi_ecpay
 #: model:ir.model,name:l10n_tw_edi_ecpay.model_account_move
 msgid "Journal Entry"
 msgstr "日記賬記項"
+
+#. module: l10n_tw_edi_ecpay
+#: model:ir.model,name:l10n_tw_edi_ecpay.model_account_move_line
+msgid "Journal Item"
+msgstr "日記賬項目"
 
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model.fields,field_description:l10n_tw_edi_ecpay.field_account_move_reversal__l10n_tw_edi_ecpay_invoice_id
@@ -579,13 +608,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_tw_edi_ecpay.field_l10n_tw_edi_invoice_cancel__write_uid
 #: model:ir.model.fields,field_description:l10n_tw_edi_ecpay.field_l10n_tw_edi_invoice_print__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "最後更新者"
 
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model.fields,field_description:l10n_tw_edi_ecpay.field_l10n_tw_edi_invoice_cancel__write_date
 #: model:ir.model.fields,field_description:l10n_tw_edi_ecpay.field_l10n_tw_edi_invoice_print__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "最後更新於"
 
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model.fields,field_description:l10n_tw_edi_ecpay.field_account_bank_statement_line__l10n_tw_edi_love_code
@@ -612,14 +641,14 @@ msgstr ""
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model.fields.selection,name:l10n_tw_edi_ecpay.selection__account_tax__l10n_tw_edi_special_tax_type__2
 msgid ""
-"Night clubs or restaurants providing entertaining show programs: Tax rate is"
-" 15%"
+"Night clubs or restaurants providing entertaining show programs: Tax rate is "
+"15%"
 msgstr ""
 
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model.fields.selection,name:l10n_tw_edi_ecpay.selection__account_move_reversal__l10n_tw_edi_refund_agreement_type__offline
 msgid "Offline"
-msgstr ""
+msgstr "離線"
 
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model.fields.selection,name:l10n_tw_edi_ecpay.selection__account_move__l10n_tw_edi_refund_agreement_type__offline
@@ -629,7 +658,7 @@ msgstr ""
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model.fields.selection,name:l10n_tw_edi_ecpay.selection__account_move_reversal__l10n_tw_edi_refund_agreement_type__online
 msgid "Online"
-msgstr ""
+msgstr "網上進行"
 
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model.fields.selection,name:l10n_tw_edi_ecpay.selection__account_move__l10n_tw_edi_refund_agreement_type__online
@@ -640,22 +669,14 @@ msgstr ""
 #: model:ir.model.fields.selection,name:l10n_tw_edi_ecpay.selection__account_move__l10n_tw_edi_allowance_notify_way__phone
 #: model:ir.model.fields.selection,name:l10n_tw_edi_ecpay.selection__account_move_reversal__l10n_tw_edi_allowance_notify_way__phone
 msgid "Phone"
-msgstr ""
+msgstr "電話"
 
 #. module: l10n_tw_edi_ecpay
 #. odoo-python
 #: code:addons/l10n_tw_edi_ecpay/models/account_move.py:0
 msgid ""
-"Phone number contains invalid characters! Only digits, '+' and spaces are "
-"allowed."
-msgstr ""
-
-#. module: l10n_tw_edi_ecpay
-#. odoo-python
-#: code:addons/l10n_tw_edi_ecpay/models/account_move.py:0
-msgid ""
-"Phone number must start with country code and please add a space after the "
-"country code (i.e +866 234 567 890)."
+"Phone number contains invalid characters! It should be in the format: '+886 "
+"0997624293'."
 msgstr ""
 
 #. module: l10n_tw_edi_ecpay
@@ -674,8 +695,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/l10n_tw_edi_ecpay/models/account_move.py:0
 msgid ""
-"Please fill in the customer email or phone number for Ecpay invoice "
-"creation."
+"Please fill in the customer email or phone number for Ecpay invoice creation."
 msgstr ""
 
 #. module: l10n_tw_edi_ecpay
@@ -715,7 +735,7 @@ msgstr ""
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model.fields,field_description:l10n_tw_edi_ecpay.field_l10n_tw_edi_invoice_cancel__reason
 msgid "Reason"
-msgstr ""
+msgstr "原因"
 
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model.fields,help:l10n_tw_edi_ecpay.field_l10n_tw_edi_invoice_cancel__reason
@@ -794,25 +814,6 @@ msgid "Taiwan Electronic Invoicing"
 msgstr ""
 
 #. module: l10n_tw_edi_ecpay
-#: model:ir.model,name:l10n_tw_edi_ecpay.model_account_tax
-msgid "Tax"
-msgstr "稅金"
-
-#. module: l10n_tw_edi_ecpay
-#. odoo-python
-#: code:addons/l10n_tw_edi_ecpay/models/account_move.py:0
-msgid "Tax id is invalid. Should be 8 digits."
-msgstr ""
-
-#. module: l10n_tw_edi_ecpay
-#. odoo-python
-#: code:addons/l10n_tw_edi_ecpay/models/account_move.py:0
-msgid ""
-"Tax id is required for company contact or individual contact under a "
-"company."
-msgstr ""
-
-#. module: l10n_tw_edi_ecpay
 #. odoo-python
 #: code:addons/l10n_tw_edi_ecpay/models/account_move.py:0
 msgid ""
@@ -833,8 +834,8 @@ msgstr ""
 #. odoo-python
 #: code:addons/l10n_tw_edi_ecpay/models/account_move.py:0
 msgid ""
-"The invoice has been successfully sent to Ecpay with Ecpay invoice number "
-"%(invoice_number)s."
+"The invoice has been successfully sent to Ecpay with Ecpay invoice number %"
+"(invoice_number)s."
 msgstr ""
 
 #. module: l10n_tw_edi_ecpay
@@ -855,6 +856,12 @@ msgid "The sales amounts from reinsurance premiums shall be taxed at 1%"
 msgstr ""
 
 #. module: l10n_tw_edi_ecpay
+#. odoo-python
+#: code:addons/l10n_tw_edi_ecpay/models/account_move.py:0
+msgid "The tax ID is invalid. It should be in the format: '12345678'."
+msgstr ""
+
+#. module: l10n_tw_edi_ecpay
 #: model:ir.model.fields.selection,name:l10n_tw_edi_ecpay.selection__account_move__l10n_tw_edi_refund_state__to_be_agreed
 msgid "To be agreed"
 msgstr ""
@@ -862,7 +869,7 @@ msgstr ""
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model.fields.selection,name:l10n_tw_edi_ecpay.selection__account_move__l10n_tw_edi_state__valid
 msgid "Valid"
-msgstr ""
+msgstr "有效"
 
 #. module: l10n_tw_edi_ecpay
 #: model:ir.model.fields.selection,name:l10n_tw_edi_ecpay.selection__account_move__l10n_tw_edi_clearance_mark__2
@@ -879,8 +886,8 @@ msgstr ""
 #. odoo-python
 #: code:addons/l10n_tw_edi_ecpay/models/account_move.py:0
 msgid ""
-"You cannot issue an allowance for an invoice that was not sent to Ecpay. "
-"Invoice number: %(invoice_number)s"
+"You cannot issue an allowance for invoice %(invoice_number)s as it was not "
+"sent to Ecpay. "
 msgstr ""
 
 #. module: l10n_tw_edi_ecpay

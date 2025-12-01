@@ -7,13 +7,14 @@
 # Nurlan Farajov <coolinuxoid@gmail.com>, 2025
 # erpgo translator <jumshud@erpgo.az>, 2025
 # ERPGo Odoo <erpgo.odoo@gmail.com>, 2025.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-14 20:48+0000\n"
-"PO-Revision-Date: 2025-10-06 22:21+0000\n"
-"Last-Translator: ERPGo Odoo <erpgo.odoo@gmail.com>\n"
+"POT-Creation-Date: 2025-10-31 18:38+0000\n"
+"PO-Revision-Date: 2025-11-21 06:44+0000\n"
+"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Azerbaijani <https://translate.odoo.com/projects/odoo-18/"
 "web_editor/az/>\n"
 "Language: az\n"
@@ -49,15 +50,16 @@ msgid ""
 "'Alt tag' specifies an alternate text for an image, if the image cannot be "
 "displayed (slow connection, missing image, screen reader ...)."
 msgstr ""
-"“Alt teq” şəkil göstərilmədikdə (yavaş bağlantı, şəkil yoxdur, ekran oxuyucu"
-" və s.) onun əvəzinə göstəriləcək alternativ mətni təyin edir."
+"“Alt teq” şəkil göstərilmədikdə (yavaş bağlantı, şəkil yoxdur, ekran oxuyucu "
+"və s.) onun əvəzinə göstəriləcək alternativ mətni təyin edir."
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/wysiwyg/widgets/alt_dialog.xml:0
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "'Title tag' is shown as a tooltip when you hover the picture."
-msgstr "\"Başlıq teq”i şəklin üzərinə gətirdiyiniz zaman ipucu kimi göstərilir."
+msgstr ""
+"\"Başlıq teq”i şəklin üzərinə gətirdiyiniz zaman ipucu kimi göstərilir."
 
 #. module: web_editor
 #. odoo-javascript
@@ -323,7 +325,7 @@ msgstr "Airy &amp; Zigs"
 #. odoo-javascript
 #: code:addons/web_editor/static/src/components/media_dialog/file_selector.js:0
 msgid "Alert"
-msgstr "Xəbərdarlığ"
+msgstr "Xəbərdarlıq"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
@@ -836,12 +838,12 @@ msgstr "URL yaradın."
 #. module: web_editor
 #: model:ir.model.fields,field_description:web_editor.field_web_editor_converter_test_sub__create_uid
 msgid "Created by"
-msgstr "Tərəfindən yaradılıb"
+msgstr "Yaradan"
 
 #. module: web_editor
 #: model:ir.model.fields,field_description:web_editor.field_web_editor_converter_test_sub__create_date
 msgid "Created on"
-msgstr "Tarixdə yaradıldı"
+msgstr "Yaradılma tarixi"
 
 #. module: web_editor
 #. odoo-javascript
@@ -964,8 +966,8 @@ msgid ""
 "Discover a world of awesomeness in our copyright-free image haven. No legal "
 "drama, just nice images!"
 msgstr ""
-"Müəllif hüququ olmayan şəkillərlə dolu heyrətamiz bir dünyanı kəşf edin. Heç"
-" bir hüquqi problem yoxdur — sadəcə gözəl şəkillər!"
+"Müəllif hüququ olmayan şəkillərlə dolu heyrətamiz bir dünyanı kəşf edin. Heç "
+"bir hüquqi problem yoxdur — sadəcə gözəl şəkillər!"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1411,12 +1413,6 @@ msgstr "Yüksəklik"
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/components/media_dialog/video_selector.js:0
-msgid "Hide Dailymotion logo"
-msgstr "Dailymotion loqosunu gizlədin"
-
-#. module: web_editor
-#. odoo-javascript
-#: code:addons/web_editor/static/src/components/media_dialog/video_selector.js:0
 msgid "Hide fullscreen button"
 msgstr "Tam ekran düyməsini gizlət"
 
@@ -1425,12 +1421,6 @@ msgstr "Tam ekran düyməsini gizlət"
 #: code:addons/web_editor/static/src/components/media_dialog/video_selector.js:0
 msgid "Hide player controls"
 msgstr "Oynadıcı kontrol düymələrini gizlət"
-
-#. module: web_editor
-#. odoo-javascript
-#: code:addons/web_editor/static/src/components/media_dialog/video_selector.js:0
-msgid "Hide sharing button"
-msgstr "Paylaşım düyməsini gizlədin"
 
 #. module: web_editor
 #: model:ir.model.fields,field_description:web_editor.field_html_field_history_mixin__html_field_history
@@ -1462,7 +1452,7 @@ msgstr "ID"
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/snippets.editor.js:0
 msgid "Icon"
-msgstr "İkon"
+msgstr "Simvol"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1689,6 +1679,12 @@ msgstr "İmzanızı daxil edin"
 
 #. module: web_editor
 #. odoo-javascript
+#: code:addons/web_editor/static/src/components/media_dialog/video_selector.xml:0
+msgid "Instagram"
+msgstr ""
+
+#. module: web_editor
+#. odoo-javascript
 #: code:addons/web_editor/static/src/xml/snippets.xml:0
 msgid "Install"
 msgstr "Quraşdır"
@@ -1770,7 +1766,7 @@ msgstr "Xətti"
 #: code:addons/web_editor/static/src/js/wysiwyg/widgets/link.js:0
 #: code:addons/web_editor/static/src/js/wysiwyg/wysiwyg.js:0
 msgid "Link"
-msgstr "Bağlantı"
+msgstr "Link"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2802,10 +2798,12 @@ msgstr "Təqdim olunan url etibarlı deyil"
 #: code:addons/web_editor/static/src/js/wysiwyg/conflict_dialog.xml:0
 msgid ""
 "The version from the database will be used.\n"
-"                            If you need to keep your changes, copy the content below and edit the new document."
+"                            If you need to keep your changes, copy the "
+"content below and edit the new document."
 msgstr ""
 "Verilənlər bazasından olan versiya istifadə olunacaq.\n"
-"                            Dəyişikliklərinizi saxlamaq lazımdırsa, aşağıdakı məzmunu kopyalayın və yeni sənədi redaktə edin."
+"                            Dəyişikliklərinizi saxlamaq lazımdırsa, "
+"aşağıdakı məzmunu kopyalayın və yeni sənədi redaktə edin."
 
 #. module: web_editor
 #. odoo-javascript
@@ -2968,7 +2966,7 @@ msgstr "Nömrələnməmiş siyahını aktiv/deaktiv et"
 #: code:addons/web_editor/static/src/js/wysiwyg/widgets/alt_dialog.xml:0
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Tooltip"
-msgstr "İpucu"
+msgstr "Çıxan izah"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3148,6 +3146,18 @@ msgstr "Veb Redaktoru Çevirici Testi"
 
 #. module: web_editor
 #. odoo-javascript
+#: code:addons/web_editor/static/src/js/editor/snippets.options.js:0
+msgid "WebGL is not enabled on your browser."
+msgstr ""
+
+#. module: web_editor
+#. odoo-javascript
+#: code:addons/web_editor/static/src/js/editor/snippets.options.js:0
+msgid "WebP compression not supported on this browser"
+msgstr ""
+
+#. module: web_editor
+#. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #: code:addons/web_editor/static/src/js/wysiwyg/wysiwyg.js:0
 msgid "Widgets"
@@ -3175,8 +3185,7 @@ msgid ""
 "Wow, it feels a bit empty in here. Upload from the button in the top right "
 "corner!"
 msgstr ""
-"Vay, burada bir az boşluq hiss olunur. Yuxarı sağ küncdəki düymədən "
-"yükləyin!"
+"Vay, burada bir az boşluq hiss olunur. Yuxarı sağ küncdəki düymədən yükləyin!"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3209,8 +3218,7 @@ msgid ""
 "first save it on your computer and then upload it here."
 msgstr ""
 "Bu şəkillə sahəni əvəz etmək mümkün deyil. Əgər bu şəkildən istifadə etmək "
-"istəyirsinizsə, əvvəlcə onu kompüterinizə qeyd edin və sonra buraya "
-"yükləyin."
+"istəyirsinizsə, əvvəlcə onu kompüterinizə qeyd edin və sonra buraya yükləyin."
 
 #. module: web_editor
 #. odoo-javascript
@@ -3241,12 +3249,6 @@ msgstr ""
 #: code:addons/web_editor/static/src/xml/snippets.xml:0
 msgid "You might not be able to customize it anymore."
 msgstr "Onu fərdiləşdirmək artıq mümkün olmaya bilər."
-
-#. module: web_editor
-#. odoo-javascript
-#: code:addons/web_editor/static/src/components/media_dialog/video_selector.xml:0
-msgid "Youku"
-msgstr "Youku"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3358,3 +3360,12 @@ msgstr "websocket mesajlarının idarə edilməsi"
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "www.example.com"
 msgstr "www.nümunə.com"
+
+#~ msgid "Hide Dailymotion logo"
+#~ msgstr "Dailymotion loqosunu gizlədin"
+
+#~ msgid "Hide sharing button"
+#~ msgstr "Paylaşım düyməsini gizlədin"
+
+#~ msgid "Youku"
+#~ msgstr "Youku"

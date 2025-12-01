@@ -132,6 +132,19 @@ registry.category("web_tour.tours").add("PosSettleOrderNotGroupable", {
         ].flat(),
 });
 
+registry.category("web_tour.tours").add("test_import_lot_groupable_and_non_groupable", {
+    steps: () =>
+        [
+            Chrome.startPoS(),
+            Dialog.confirm("Open Register"),
+            PosSale.settleNthOrder(1, { loadSN: true }),
+            PosSale.selectedOrderLinesHasLots("Groupable Product", []),
+            ProductScreen.checkOrderlinesNumber(5),
+            ProductScreen.totalAmountIs(60),
+            ProductScreen.selectedOrderlineHas("Groupable Product", "1", "10"),
+        ].flat(),
+});
+
 registry.category("web_tour.tours").add("PosSettleOrderWithNote", {
     steps: () =>
         [
@@ -211,6 +224,16 @@ registry.category("web_tour.tours").add("PoSSaleOrderWithDownpayment", {
             PosSale.settleNthOrder(1),
             ProductScreen.selectedOrderlineHas("Down Payment (POS)"),
             ProductScreen.totalAmountIs(980.0),
+        ].flat(),
+});
+
+registry.category("web_tour.tours").add("test_settle_so_with_non_pos_groupable_uom", {
+    steps: () =>
+        [
+            Chrome.startPoS(),
+            Dialog.confirm("Open Register"),
+            PosSale.settleNthOrder(1),
+            ProductScreen.selectedOrderlineHas("Pomme de Terre", "0.5", "5.00"),
         ].flat(),
 });
 
@@ -508,6 +531,19 @@ registry.category("web_tour.tours").add("test_multiple_lots_sale_order_2", {
     steps: () =>
         [
             Chrome.startPoS(),
+            PosSale.settleNthOrder(1, { loadSN: false }),
+            Order.hasLine({ productName: "Product", quantity: "3.0" }),
+            {
+                content: "Check that the line-lot-icon has text-danger class",
+                trigger: `.order-container .orderline:has(.product-name:contains("Product")) .line-lot-icon.text-danger`,
+            },
+        ].flat(),
+});
+
+registry.category("web_tour.tours").add("test_multiple_lots_sale_order_3", {
+    steps: () =>
+        [
+            Chrome.startPoS(),
             PosSale.settleNthOrder(1, { loadSN: true }),
             PosSale.selectedOrderLinesHasLots("Product", ["1002"]),
             Utils.negateStep(...PosSale.selectedOrderLinesHasLots("Product", ["1001"])),
@@ -537,5 +573,25 @@ registry.category("web_tour.tours").add("test_selected_partner_quotation_loading
             ProductScreen.clickCustomer("A Test Partner 2"),
             PosSale.settleNthOrder(1),
             ProductScreen.selectedOrderlineHas("Product B", "2.00"),
+        ].flat(),
+});
+registry.category("web_tour.tours").add("test_ecommerce_paid_order_is_hidden_in_pos", {
+    steps: () =>
+        [
+            Chrome.startPoS(),
+            Dialog.confirm("Open Register"),
+            ProductScreen.clickPartnerButton(),
+            ProductScreen.clickCustomer("A Test Partner 1"),
+            PosSale.checkOrdersListEmpty(),
+        ].flat(),
+});
+registry.category("web_tour.tours").add("test_ecommerce_unpaid_order_is_shown_in_pos", {
+    steps: () =>
+        [
+            Chrome.startPoS(),
+            Dialog.confirm("Open Register"),
+            ProductScreen.clickPartnerButton(),
+            ProductScreen.clickCustomer("A Test Partner 1"),
+            PosSale.checkOrdersListNotEmpty(),
         ].flat(),
 });

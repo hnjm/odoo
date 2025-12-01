@@ -21,12 +21,18 @@ class AccountMove(models.Model):
     )
 
     def _l10n_sa_is_simplified(self):
+        # DEPRECATED - to be removed in master
         """
             Returns True if the customer is an individual, i.e: The invoice is B2C
         :return:
         """
         self.ensure_one()
-        return self.partner_id.company_type == 'person'
+
+        return (
+            self.partner_id.commercial_partner_id.company_type == "person"
+            if self.partner_id.commercial_partner_id
+            else self.partner_id.company_type == "person"
+        )
 
     @api.depends('amount_total_signed', 'amount_tax_signed', 'l10n_sa_confirmation_datetime', 'company_id',
                  'company_id.vat', 'journal_id', 'journal_id.l10n_sa_production_csid_json', 'edi_document_ids',

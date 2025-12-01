@@ -589,6 +589,9 @@ class StockQuant(models.Model):
     def _compute_display_name(self):
         """name that will be displayed in the detailed operation"""
         for record in self:
+            if not record.ids:
+                record.display_name = ''
+                continue
             name = [record.location_id.display_name]
             if record.lot_id:
                 name.append(record.lot_id.name)
@@ -1053,8 +1056,12 @@ class StockQuant(models.Model):
             raise ValidationError(_('Quantity or Reserved Quantity should be set.'))
         self = self.sudo()
         quants = self._gather(product_id, location_id, lot_id=lot_id, package_id=package_id, owner_id=owner_id, strict=True)
-        if lot_id and quantity > 0:
-            quants = quants.filtered(lambda q: q.lot_id)
+        if lot_id:
+            if float_compare(quantity, 0, precision_rounding=product_id.uom_id.rounding) > 0:
+                quants = quants.filtered(lambda q: q.lot_id)
+            else:
+                # Don't remove quantity from a negative quant without lot
+                quants = quants.filtered(lambda q: float_compare(q.quantity, 0, precision_rounding=q.product_uom_id.rounding) > 0 or q.lot_id)
 
         if location_id.should_bypass_reservation():
             incoming_dates = []
@@ -1647,10 +1654,13 @@ class QuantPackage(models.Model):
         return super().write(vals)
 
     def unpack(self):
+        if not self.quant_ids:
+            return
+        quants = self.quant_ids
         self.quant_ids.move_quants(message=_("Quantities unpacked"), unpack=True)
         # Quant clean-up, mostly to avoid multiple quants of the same product. For example, unpack
         # 2 packages of 50, then reserve 100 => a quant of -50 is created at transfer validation.
-        self.quant_ids._quant_tasks()
+        quants._quant_tasks()
 
     def action_view_picking(self):
         action = self.env["ir.actions.actions"]._for_xml_id("stock.action_picking_tree_all")

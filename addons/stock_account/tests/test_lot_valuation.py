@@ -811,3 +811,40 @@ class TestLotValuation(TestStockValuationCommon):
                 with picking_form.move_ids_without_package.edit(0) as mv:
                     mv.quantity = 5.0
         self.assertEqual(in_move.quantity, 2)
+
+    def test_lot_valuation_no_error_no_quantity(self):
+        """
+        Checks that an empty move line with no lot and a product valued by lot does not trigger the
+        no lot error
+        """
+        move = self.env['stock.move'].create({
+            'name': 'in move name',
+            'product_id': self.product1.id,
+            'location_id': self.supplier_location.id,
+            'location_dest_id': self.stock_location.id,
+            'product_uom': self.uom_unit.id,
+            'product_uom_qty': 2,
+            'price_unit': 2,
+            'picked': True,
+            'picking_type_id': self.picking_type_in.id,
+            'move_line_ids': [Command.create({
+                'product_id': self.product1.id,
+                'location_id': self.supplier_location.id,
+                'location_dest_id': self.stock_location.id,
+                'product_uom_id': self.uom_unit.id,
+                'quantity': 2.0,
+                'picked': True,
+                'lot_id': self.lot1.id,
+            })for sml in range(2)],
+        })
+        move.move_line_ids[1].quantity = 0
+        move.move_line_ids[1].lot_id = False
+        move._action_done()
+        self.assertEqual(move.quantity, 2)
+
+    def test_lot_svl_zero_standard_price(self):
+        self.product1.standard_price = 0
+        self._make_in_move(self.product1, 10, 0, lot_ids=[self.lot1])
+        self._make_in_move(self.product1, 10, 10, lot_ids=[self.lot2])
+        out_move = self._make_out_move(self.product1, 1, lot_ids=[self.lot1])
+        self.assertEqual(out_move.stock_valuation_layer_ids[0].value, 0)

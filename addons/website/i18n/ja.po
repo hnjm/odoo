@@ -10,13 +10,14 @@
 # Ryoko Tsuda <ryoko@quartile.co>, 2025
 # "Junko Augias (juau)" <juau@odoo.com>, 2025.
 # Yoshi Tashiro <tashiro@quartile.co>, 2025.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-11 02:15+0000\n"
-"PO-Revision-Date: 2025-10-21 22:20+0000\n"
-"Last-Translator: \"Junko Augias (juau)\" <juau@odoo.com>\n"
+"POT-Creation-Date: 2025-10-24 18:36+0000\n"
+"PO-Revision-Date: 2025-11-21 06:39+0000\n"
+"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Japanese <https://translate.odoo.com/projects/odoo-18/website/"
 "ja/>\n"
 "Language: ja\n"
@@ -7163,7 +7164,7 @@ msgstr "フリーグリッド"
 #. module: website
 #: model:ir.model.fields.selection,name:website.selection__website__auth_signup_uninvited__b2c
 msgid "Free sign up"
-msgstr "無料サインアップ"
+msgstr "無料登録"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_faq_collapse
@@ -14013,6 +14014,20 @@ msgid "The evolution of our company"
 msgstr "当社の変革"
 
 #. module: website
+#. odoo-python
+#: code:addons/website/models/website_form.py:0
+msgid ""
+"The field '%(field)s' cannot be deleted because it is referenced in a "
+"website view.\n"
+"Model: %(model)s\n"
+"View: %(view)s"
+msgstr ""
+"フィールド '%(field)s' "
+"はウェブサイトビューで参照されているため、削除できません。\n"
+"モデル%(model)s\n"
+"ビュー：%(view)s"
+
+#. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/snippets/s_website_form/options.js:0
 msgid "The field “%(field)s” is mandatory for the action “%(action)s”."
@@ -14127,7 +14142,7 @@ msgstr "URLで使用可能なページ名"
 #. odoo-python
 #: code:addons/website/models/website.py:0
 msgid "The provided website domain is not a valid URL."
-msgstr ""
+msgstr "入力されたウェブサイトのドメインは有効な URL ではありません。"
 
 #. module: website
 #. odoo-javascript

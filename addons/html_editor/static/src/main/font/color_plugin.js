@@ -7,6 +7,7 @@ import {
     TEXT_CLASSES_REGEX,
     BG_CLASSES_REGEX,
     RGBA_REGEX,
+    hasTextColorClass,
 } from "@html_editor/utils/color";
 import { fillEmpty, unwrapContents } from "@html_editor/utils/dom";
 import {
@@ -24,6 +25,7 @@ import { _t } from "@web/core/l10n/translation";
 import { withSequence } from "@html_editor/utils/resource";
 import { isBlock } from "@html_editor/utils/blocks";
 import { callbacksForCursorUpdate } from "@html_editor/utils/selection";
+import { removeEmptyTextNodes } from "../../utils/dom";
 
 const RGBA_OPACITY = 0.6;
 const HEX_OPACITY = "99";
@@ -275,7 +277,8 @@ export class ColorPlugin extends Plugin {
                         node,
                         '[style*="color"], [style*="background-color"], [style*="background-image"]'
                     ) ||
-                    closestElement(node, "span");
+                    closestElement(node, "span") ||
+                    closestElement(node, (node) => hasTextColorClass(node, mode));
 
                 const faNodes = font?.querySelectorAll(".fa");
                 if (faNodes && Array.from(faNodes).some((faNode) => faNode.contains(node))) {
@@ -294,7 +297,10 @@ export class ColorPlugin extends Plugin {
                 if (
                     font &&
                     font.nodeName !== "T" &&
-                    (font.nodeName !== "SPAN" || font.style[mode] || font.style.backgroundImage) &&
+                    (font.nodeName !== "SPAN" ||
+                        font.style[mode] ||
+                        font.style.backgroundImage ||
+                        hasTextColorClass(font, mode)) &&
                     (isColorGradient(color) ||
                         color === "" ||
                         !hasInlineGradient ||
@@ -326,6 +332,12 @@ export class ColorPlugin extends Plugin {
                         );
                         const isGradientBeingUpdated = closestGradientEl && isColorGradient(color);
                         const splitnode = isGradientBeingUpdated ? closestGradientEl : font;
+                        const cursors = this.dependencies.selection.preserveSelection();
+                        this.dispatchTo("clean_handlers", splitnode);
+                        // Remove empty text nodes (replaced FEFFs) before splitting,
+                        // to prevent creating empty elements in the DOM.
+                        removeEmptyTextNodes(splitnode, cursors);
+                        cursors.restore();
                         font = this.dependencies.split.splitAroundUntil(
                             selectedChildren,
                             splitnode

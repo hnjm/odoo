@@ -815,7 +815,7 @@ class TestPickShip(TestStockCommon):
             }) for i, p in enumerate((self.productA, self.productB, self.productC))]
         })
         for move in picking_client.move_ids:
-            move.quantity = move.product_uom_qty 
+            move.quantity = move.product_uom_qty
         picking_client.move_ids.picked = True
         picking_client.button_validate()
         stock_return_picking_form = Form(self.env['stock.return.picking']
@@ -2673,6 +2673,64 @@ class TestSinglePicking(TestStockCommon):
             ('Shell 2', 'LOT004', 2.0),
         ])
 
+    def test_unreservation_on_qty_decrease_2(self):
+        """
+        Check that the move_lines are unreserved correctly when decreasing quantity via
+        internal method `_set_quantity_done_prepare_vals`
+        """
+        packages = self.env['stock.quant.package'].create([
+            {'name': 'pack1'}, {'name': 'pack2'},
+        ])
+        loc = self.env['stock.location'].browse(self.stock_location)
+        self.env['stock.quant']._update_available_quantity(self.productA, loc, 3, package_id=packages[0])
+        self.env['stock.quant']._update_available_quantity(self.productA, loc, 2, package_id=packages[1])
+
+        move = self.env['stock.move'].create({
+            'name': 'test_unreservation_on_qty_decrease_2',
+            'product_id': self.productA.id,
+            'product_uom_qty': 10,
+            'product_uom': self.productA.uom_id.id,
+            'location_id': self.stock_location,
+            'location_dest_id': self.customer_location,
+            'picking_type_id': self.picking_type_out,
+            })
+        move._action_confirm()
+        move._action_assign()
+        self.assertEqual(move.quantity, 5)
+        move.move_line_ids = move._set_quantity_done_prepare_vals(1)
+        self.assertRecordValues(move.move_line_ids, [{
+            'quantity': 1, 'result_package_id': packages[0].id,
+        }])
+
+    def test_unreservation_on_qty_decrease_3(self):
+        """
+        Check that the move_lines are unreserved correctly when decreasing quantity via
+        internal method `_set_quantity_done_prepare_vals`
+        """
+        packages = self.env['stock.quant.package'].create([
+            {'name': 'pack1'},
+        ])
+        loc = self.env['stock.location'].browse(self.stock_location)
+        self.env['stock.quant']._update_available_quantity(self.productA, loc, 3, package_id=packages[0])
+        self.env['stock.quant']._update_available_quantity(self.productA, loc, 2)
+
+        move = self.env['stock.move'].create({
+            'name': 'test_unreservation_on_qty_decrease_3',
+            'product_id': self.productA.id,
+            'product_uom_qty': 10,
+            'product_uom': self.productA.uom_id.id,
+            'location_id': self.stock_location,
+            'location_dest_id': self.customer_location,
+            'picking_type_id': self.picking_type_out,
+            })
+        move._action_confirm()
+        move._action_assign()
+        self.assertEqual(move.quantity, 5)
+        move.move_line_ids = move._set_quantity_done_prepare_vals(1)
+        self.assertRecordValues(move.move_line_ids, [{
+            'quantity': 1, 'result_package_id': packages[0].id,
+        }])
+
     def test_onchange_picking_locations(self):
         """
         Check that changing the location/destination of a picking propagets the info
@@ -3764,8 +3822,8 @@ class TestPickShipBackorder(TestStockCommon):
                 "name": "Lot Product",
                 "type": "consu",
                 "is_storable": True,
+                "tracking": "lot",
                 "uom_id": cls.env.ref("uom.product_uom_unit").id,
-                "uom_po_id": cls.env.ref("uom.product_uom_unit").id,
             }
         )
 
@@ -3782,7 +3840,8 @@ class TestPickShipBackorder(TestStockCommon):
             }
         )
 
-        cls.stock_location = cls.env.ref("stock.stock_location_stock")
+        cls.warehouse = cls.env["stock.warehouse"].search([], limit=1)
+        cls.stock_location = cls.warehouse.out_type_id.default_location_src_id or cls.warehouse.lot_stock_id
 
         cls.env["stock.quant"]._update_available_quantity(
             cls.product_lot, cls.stock_location, 5.0, lot_id=cls.lot1
@@ -3794,8 +3853,7 @@ class TestPickShipBackorder(TestStockCommon):
     def test_pick_assign_and_backorder(self):
         cust = self.env.ref("stock.stock_location_customers")
         pg = self.env["procurement.group"].create({"name": "sale order"})
-        warehouse = self.env["stock.warehouse"].search([], limit=1)
-        warehouse.delivery_steps = "pick_ship"
+        self.warehouse.delivery_steps = "pick_ship"
         self.env["procurement.group"].run(
             [
                 pg.Procurement(
@@ -3805,8 +3863,8 @@ class TestPickShipBackorder(TestStockCommon):
                     cust,
                     "sale_order",
                     "sale_order",
-                    warehouse.company_id,
-                    {"warehouse_id": warehouse, "group_id": pg},
+                    self.warehouse.company_id,
+                    {"warehouse_id": self.warehouse, "group_id": pg},
                 )
             ]
         )

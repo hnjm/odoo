@@ -603,6 +603,28 @@ QUnit.module("Base Import Tests", (hooks) => {
         );
     });
 
+    QUnit.test("Import view: import a CSV file with uppercase extension", async function (assert) {
+        registerFakeHTTPService((route, params) => {
+            assert.strictEqual(route, "/base_import/set_file");
+            assert.strictEqual(
+                params.ufile[0].name,
+                "fake_file.CSV",
+                "file with uppercase .CSV extension is correctly uploaded to the server"
+            );
+        });
+        await createImportAction();
+
+        // Simulate uploading a .CSV file (uppercase extension)
+        const file = new File(["fake_file"], "fake_file.CSV", { type: "text/plain" });
+        await editInput(target, ".o_control_panel_main_buttons input[type='file'].d-none", file);
+
+        assert.containsOnce(
+            target,
+            ".o_import_data_sidepanel .o_import_formatting",
+            "formatting options are shown for uppercase extention .CSV file"
+        );
+    });
+
     QUnit.test("Import view: additional options in debug", async function (assert) {
         patchWithCleanup(odoo, { debug: true });
         registerFakeHTTPService();
@@ -1234,6 +1256,43 @@ QUnit.module("Base Import Tests", (hooks) => {
             target.querySelector("input#o_import_row_start").value,
             "1",
             "the import will resume at line 1"
+        );
+    });
+
+    QUnit.test("Import view: test in batches then reset starting row", async function (assert) {
+        registerFakeHTTPService();
+
+        patchWithCleanup(ImportAction.prototype, {
+            get isBatched() {
+                return true;
+            },
+        });
+
+        await createImportAction({
+            "base_import.import/execute_import": (route, args) => executeImport(args, true),
+        });
+
+        const file = new File(["fake_file"], "fake_file.xls", { type: "text/plain" });
+        await editInput(target, ".o_control_panel_main_buttons input[type='file']", file);
+        await editInput(target, "input#o_import_batch_limit", 1);
+
+        // click on the test button
+        await click(target.querySelector(".o_control_panel_main_buttons button:nth-child(2)"));
+        await nextTick();
+        assert.strictEqual(target.querySelector("input#o_import_row_start").value, "2");
+        await nextTick();
+        assert.strictEqual(target.querySelector("input#o_import_row_start").value, "3");
+
+        // The import is now done
+        await nextTick();
+        assert.strictEqual(
+            target.querySelector(".o_import_data_content .alert-info").textContent,
+            "Everything seems valid."
+        );
+        assert.strictEqual(
+            target.querySelector("input#o_import_row_start").value,
+            "1",
+            "the actual import will start at line 1 after testing"
         );
     });
 

@@ -6,7 +6,7 @@ from markupsafe import Markup
 from urllib.parse import urlparse
 
 from odoo import api, fields, models, modules, tools, _
-from odoo.exceptions import UserError, AccessError, RedirectWarning
+from odoo.exceptions import UserError, AccessError, RedirectWarning, ValidationError
 from odoo.service import security
 from odoo.tools.safe_eval import safe_eval, time
 from odoo.tools.misc import find_in_path
@@ -786,7 +786,10 @@ class IrActionsReport(models.Model):
                 handle_error(error=e, error_stream=stream)
         result_stream = io.BytesIO()
         streams.append(result_stream)
-        writer.write(result_stream)
+        try:
+            writer.write(result_stream)
+        except PdfReadError:
+            raise UserError(_("Odoo is unable to merge the generated PDFs."))
         return result_stream
 
     def _render_qweb_pdf_prepare_streams(self, report_ref, data, res_ids=None):
@@ -1186,28 +1189,10 @@ class IrActionsReport(models.Model):
 
     @api.model
     def _prepare_local_attachments(self, attachments):
-        attachments_with_data = self.env['ir.attachment']
         for attachment in attachments:
-            if not attachment._is_remote_source():
-                attachments_with_data |= attachment
-            elif (stream := attachment._to_http_stream()) and stream.url:
-                # call `_to_http_stream()` in case the attachment is an url or cloud storage attachment
+            if attachment._is_remote_source():
                 try:
-                    response = requests.get(stream.url, timeout=10)
-                    response.raise_for_status()
-                    attachment_data = response.content
-                    if not attachment_data:
-                        _logger.warning("Attachment %s at with URL %s retrieved successfully, but no content was found.", attachment.id, attachment.url)
-                        continue
-                    attachments_with_data |= self.env['ir.attachment'].new({
-                        'db_datas': attachment_data,
-                        'name': attachment.name,
-                        'mimetype': attachment.mimetype,
-                        'res_model': attachment.res_model,
-                        'res_id': attachment.res_id
-                    })
-                except requests.exceptions.RequestException as e:
-                    _logger.error("Request for attachment %s with URL %s failed: %s", attachment.id, attachment.url, e)
-            else:
-                _logger.error("Unexpected edge case: Is not being considered as a local or remote attachment, attachment ID:%s will be skipped.", attachment.id)
-        return attachments_with_data
+                    attachment._migrate_remote_to_local()
+                except (ValidationError, requests.exceptions.RequestException) as e:
+                    _logger.error("Failed to migrate attachment %s to local: %s", attachment.id, e)
+        return attachments.filtered(lambda a: not a._is_remote_source())

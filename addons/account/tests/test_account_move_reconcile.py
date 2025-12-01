@@ -1155,6 +1155,7 @@ class TestAccountMoveReconcile(AccountTestInvoicingCommon):
     def test_reconcile_one_foreign_currency_fallback_company_currency(self):
         comp_curr = self.company_data['currency']
         foreign_curr = self.other_currency_3
+        foreign_curr.rounding = 0.001   # to be able to check the amounts up to the 3rd digit
 
         line_1 = self.create_line_for_reconciliation(-10.0, -10.0, comp_curr, '2017-01-01')
         line_2 = self.create_line_for_reconciliation(1000000.0, 100.0, foreign_curr, '2017-01-01')
@@ -5028,6 +5029,25 @@ class TestAccountMoveReconcile(AccountTestInvoicingCommon):
         (line_1 + line_4).reconcile()
         self.assertRegex(line_1.matching_number, r'^\d+')
         self.assertTrue(line_1.full_reconcile_id)
+
+    def test_reconcile_import_same_matching_different_account(self):
+        """Test that matching upon posting does not clear other same import matching not reconciled yet"""
+        comp_curr = self.company_data['currency']
+
+        line_1 = self.create_line_for_reconciliation(100.0, 100.0, comp_curr, '2016-01-01', self.receivable_account)
+        line_2 = self.create_line_for_reconciliation(-100.0, -100.0, comp_curr, '2016-01-01', self.receivable_account)
+        line_3 = self.create_line_for_reconciliation(200.0, 200.0, comp_curr, '2016-01-01', self.extra_receivable_account_1)
+        line_4 = self.create_line_for_reconciliation(-200.0, -200.0, comp_curr, '2016-01-01', self.extra_receivable_account_1)
+        (line_1 + line_2 + line_3 + line_4).move_id.button_draft()
+        (line_1 + line_2 + line_3 + line_4).matching_number = '11111'  # Will be converted to a temporary number
+        # posting triggers the matching of the imported values
+        (line_1 + line_2).move_id.action_post()
+        self.assertRegex(line_1.matching_number, r'^\d+')
+        self.assertTrue(line_1.full_reconcile_id)
+        # reconciliation of line 1 and 2 should not remove import matching on line 3 and 4
+        self.assertEqual(line_3.matching_number, 'I11111')
+        (line_3 + line_4).move_id.action_post()
+        self.assertTrue(line_3.full_reconcile_id)
 
     def test_reconcile_payment_custom_rate(self):
         """When reconciling a payment we want to take the accounting rate and not the odoo rate.

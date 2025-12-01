@@ -73,7 +73,7 @@ class SaleOrderLine(models.Model):
     is_configurable_product = fields.Boolean(
         string="Is the product configurable?",
         related='product_template_id.has_configurable_attributes',
-        depends=['product_id'])
+        depends=['product_template_id'])
     is_downpayment = fields.Boolean(
         string="Is a down payment",
         help="Down payments are made when creating invoices from a sales order."
@@ -947,9 +947,9 @@ class SaleOrderLine(models.Model):
             for invoice_line in line._get_invoice_lines():
                 if invoice_line.move_id.state != 'cancel' or invoice_line.move_id.payment_state == 'invoicing_legacy':
                     if invoice_line.move_id.move_type == 'out_invoice':
-                        qty_invoiced += invoice_line.product_uom_id._compute_quantity(invoice_line.quantity, line.product_uom)
+                        qty_invoiced += invoice_line.product_uom_id._compute_quantity(invoice_line.quantity, line.product_uom, round=False)
                     elif invoice_line.move_id.move_type == 'out_refund':
-                        qty_invoiced -= invoice_line.product_uom_id._compute_quantity(invoice_line.quantity, line.product_uom)
+                        qty_invoiced -= invoice_line.product_uom_id._compute_quantity(invoice_line.quantity, line.product_uom, round=False)
             line.qty_invoiced = qty_invoiced
 
     @api.depends('invoice_lines.move_id.state', 'invoice_lines.quantity')
@@ -1533,7 +1533,7 @@ class SaleOrderLine(models.Model):
         if len(self) == 1:
             res = {
                 'quantity': self.product_uom_qty,
-                'price': self.price_unit,
+                'price': self._get_discounted_price(),
                 'readOnly': (
                     self.order_id._is_readonly()
                     or self.product_id.sale_line_warn == 'block'
@@ -1599,8 +1599,12 @@ class SaleOrderLine(models.Model):
             )
         return amount
 
+    def _get_discounted_price(self):
+        self.ensure_one()
+        return self.price_unit * (1 - (self.discount or 0.0) / 100.0)
+
     def has_valued_move_ids(self):
-        return self.move_ids
+        return None  # TODO: remove in master
 
     def _get_linked_line(self):
         """ Return the linked line of this line, if any.

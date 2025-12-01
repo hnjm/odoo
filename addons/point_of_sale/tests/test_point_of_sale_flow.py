@@ -841,9 +841,17 @@ class TestPointOfSaleFlow(TestPointOfSaleCommon):
         self.assertAlmostEqual(
             invoice.amount_total, self.pos_order_pos1.amount_total, places=2, msg="Invoice not correct")
 
-        # It should no be possible to make the invoice draft
-        with self.assertRaises(UserError):
+        # Making the invoice draft should send a warning notification to the user
+        with patch.object(self.env.registry['bus.bus'], '_sendone') as mock_send:
             invoice.button_draft()
+            mock_send.assert_called_with(self.env.user.partner_id, 'simple_notification', {
+                'type': 'warning',
+                'title': "Warning: Invoice Reset Risk",
+                'message': "This invoice is linked to a POS Order, resetting it to draft prevents closing the session. You should rather refund the order or create a credit note.",
+                'sticky': True,
+            })
+
+        invoice.action_post()
 
         # I close the session to generate the journal entries
         current_session.action_pos_session_closing_control()
@@ -2709,6 +2717,8 @@ class TestPointOfSaleFlow(TestPointOfSaleCommon):
         self.assertEqual(order.pos_reference, f'Order {session_id.id:05d}-003-0001', "Should find the correct order")
         order = self.env['pos.order'].search([('tracking_number', 'ilike', '03')])
         self.assertEqual(len(order), 0, "Should not find any order with the tracking number")
+        with self.assertRaises(UserError):
+            self.env['pos.order'].search([('tracking_number', 'ilike', '1234')])
 
     def test_refunded_order_has_uuid(self):
         """ Test that a refunded order has a uuid generated. """
@@ -2857,3 +2867,54 @@ class TestPointOfSaleFlow(TestPointOfSaleCommon):
 
         with self.assertRaises(ValidationError, msg='You cannot delete a customer that has point of sales orders. You can archive it instead.'):
             partner.unlink()
+
+    def test_split_payment_linked_to_accounting_partner(self):
+        self.bank_payment_method.write({'split_transactions': True})
+        self.pos_config.open_ui()
+        current_session = self.pos_config.current_session_id
+
+        child_partner = self.env['res.partner'].create({
+            'name': 'partner1 child',
+            'parent_id': self.partner1.id
+        })
+        product_order = {
+            'amount_paid': 750,
+            'amount_tax': 0,
+            'amount_return': 0,
+            'amount_total': 750,
+            'date_order': fields.Datetime.to_string(fields.Datetime.now()),
+            'fiscal_position_id': False,
+            'lines': [[0, 0, {
+                'discount': 0,
+                'pack_lot_ids': [],
+                'price_unit': 750.0,
+                'product_id': self.product3.id,
+                'price_subtotal': 750.0,
+                'price_subtotal_incl': 750.0,
+                'tax_ids': [[6, False, []]],
+                'qty': 1,
+            }]],
+            'name': 'Order 12345-123-1234',
+            'partner_id': child_partner.id,
+            'session_id': current_session.id,
+            'sequence_number': 2,
+            'payment_ids': [[0, 0, {
+                'amount': 750,
+                'name': fields.Datetime.now(),
+                'payment_method_id': self.bank_payment_method.id
+            }]],
+            'uuid': '12345-123-1234',
+            'user_id': self.env.uid,
+            'to_invoice': False}
+
+        self.PosOrder.sync_from_ui([product_order])
+        current_session.close_session_from_ui()
+        order_balance = current_session.move_id.line_ids.filtered(
+            lambda l: l.account_id.account_type == "asset_receivable"
+            and l.partner_id == self.partner1
+        ).balance
+        payment_balance = current_session.bank_payment_ids.move_id.line_ids.filtered(
+            lambda l: l.account_id.account_type == "asset_receivable"
+            and l.partner_id == self.partner1
+        ).balance
+        self.assertEqual(order_balance + payment_balance, 0)

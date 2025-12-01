@@ -10,6 +10,9 @@
                     <div class="o_setting_right_pane border-0">
                         <div invisible="account_peppol_proxy_state not in ('sender', 'receiver', 'smp_registration')">
                             Your Peppol ID <field name="account_peppol_edi_identification" class="oe_inline o_form_label" readonly="1"/> <field name="account_peppol_proxy_state" class="oe_inline o_form_label text-lowercase" readonly="1"/> invoices and credit notes.
+                            <span class="ps-2" invisible="account_peppol_edi_mode == 'prod'">
+                                (<field class="oe_inline o_form_label text-uppercase" name="account_peppol_edi_mode" />)
+                            </span>
                         </div>
                         <div invisible="account_peppol_proxy_state != 'rejected'">
                             You registration has been rejected, the reason has been sent to you via email.
@@ -40,14 +43,6 @@
                             </div>
                         </div>
 
-                        <!-- Optional: field related to registering as a receiver -->
-                        <div invisible="account_peppol_proxy_state != 'sender'" groups="base.group_no_one">
-                            <p colspan="2" class="mt-4 mb-2">
-                                I want to migrate my existing Peppol connection to Odoo (optional):
-                            </p>
-                            <field name="account_peppol_migration_key"/>
-                        </div>
-
                         <div class="mt-4"
                              invisible="account_peppol_proxy_state != 'receiver'"
                              groups="base.group_no_one">
@@ -62,11 +57,15 @@
 
                         <!-- All action buttons -->
                         <div invisible="account_peppol_proxy_state != 'receiver' or account_peppol_edi_mode == 'demo'">
+                            <!-- Note: Deprecated; the button is permanently invisible. -->
+                            <!-- Disabling services can lead to complicance issues and is not necessary -->
+                            <!-- since all existing services should just work. -->
                             <button string="Configure Peppol Services"
                                     name="button_account_peppol_configure_services"
                                     type="object"
                                     class="btn-link mt-3 mb-3"
-                                    icon="oi-arrow-right"/>
+                                    icon="oi-arrow-right"
+                                    invisible="1"/>
                         </div>
 
                         <div class="d-flex gap-1 action_buttons" colspan="3">

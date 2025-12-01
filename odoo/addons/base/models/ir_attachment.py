@@ -347,7 +347,10 @@ class IrAttachment(models.Model):
                     nw, nh = map(int, max_resolution.split('x'))
                     if w > nw or h > nh:
                         img = img.resize(nw, nh)
-                        quality = int(ICP('base.image_autoresize_quality', 80))
+                        if _subtype == 'jpeg':  # Do not affect PNGs color palette
+                            quality = int(ICP('base.image_autoresize_quality', 80))
+                        else:
+                            quality = 0
                         image_data = img.image_quality(quality=quality)
                         if is_raw:
                             values['raw'] = image_data
@@ -836,3 +839,9 @@ class IrAttachment(models.Model):
     def _is_remote_source(self):
         self.ensure_one()
         return self.url and not self.file_size and self.url.startswith(('http://', 'https://', 'ftp://'))
+
+    def _migrate_remote_to_local(self):
+        if self.type == 'binary':
+            return
+        if self.type == 'url':
+            raise ValidationError(_("URL attachment (%s) shouldn't be migrated to local.", self.id))

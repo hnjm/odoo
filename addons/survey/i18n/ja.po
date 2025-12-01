@@ -7,13 +7,15 @@
 # Wil Odoo, 2025
 # Junko Augias, 2025
 # "Junko Augias (juau)" <juau@odoo.com>, 2025.
+# Ryoko Tsuda <ryoko@quartile.co>, 2025.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-11 02:16+0000\n"
-"PO-Revision-Date: 2025-10-21 22:20+0000\n"
-"Last-Translator: \"Junko Augias (juau)\" <juau@odoo.com>\n"
+"PO-Revision-Date: 2025-11-21 06:37+0000\n"
+"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Japanese <https://translate.odoo.com/projects/odoo-18/survey/"
 "ja/>\n"
 "Language: ja\n"
@@ -915,7 +917,7 @@ msgstr "活動"
 #: model:ir.model.fields,field_description:survey.field_survey_survey__activity_exception_decoration
 #: model:ir.model.fields,field_description:survey.field_survey_user_input__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr "例外活動文字装飾"
+msgstr "例外の活動を示す装飾"
 
 #. module: survey
 #: model:ir.model.fields,field_description:survey.field_survey_survey__activity_state
@@ -2167,7 +2169,7 @@ msgstr "従業員と顧客からのフィードバックを集める"
 #. module: survey
 #: model:ir.model.fields,field_description:survey.field_survey_question__survey_session_speed_rating_time_limit
 msgid "General Time limit (seconds)"
-msgstr ""
+msgstr "全体の制限時間(秒)"
 
 #. module: survey
 #: model:survey.question,title:survey.survey_demo_burger_quiz_p2
@@ -2425,9 +2427,8 @@ msgstr "識別トークン"
 msgid ""
 "If Number is selected, it will display the number of questions answered on "
 "the total number of question to answer."
-msgstr ""
-"番号が選択されている場合、それは答えへの質問の総数に答えた質問の数が表示され"
-"ます。"
+msgstr "数が選択されている場合、それは答えへの質問の総数に答えた質問の数が表示されま"
+"す。"
 
 #. module: survey
 #: model:survey.question,title:survey.vendor_certification_page_3_question_3
@@ -3293,7 +3294,7 @@ msgstr "このショートカットを使ってアンケートに戻りましょ
 #: model:ir.model.fields.selection,name:survey.selection__survey_user_input_line__answer_type__numerical_box
 #: model:ir.model.fields.selection,name:survey.selection__survey_user_input_line__answer_type__scale
 msgid "Number"
-msgstr "番号"
+msgstr "数"
 
 #. module: survey
 #: model:ir.model.fields,field_description:survey.field_survey_survey__message_needaction_counter
@@ -3772,7 +3773,7 @@ msgstr "結果を印刷"
 #. module: survey
 #: model:ir.actions.server,name:survey.action_survey_print
 msgid "Print Survey"
-msgstr "アンケート調査を員策"
+msgstr "アンケート調査を印刷"
 
 #. module: survey
 #: model:survey.question,title:survey.vendor_certification_page_1
@@ -4633,7 +4634,7 @@ msgstr "アンケートURL"
 #. module: survey
 #: model:ir.model,name:survey.model_survey_user_input
 msgid "Survey User Input"
-msgstr "ユーザーの入力を調査する"
+msgstr "アンケート回答データ"
 
 #. module: survey
 #: model:ir.model,name:survey.model_survey_user_input_line
@@ -4826,9 +4827,8 @@ msgstr "次のメールアドレスはすでに招待を受けています"
 msgid ""
 "The following recipients have no user account: %s. You should create user "
 "accounts for them or allow external signup in configuration."
-msgstr ""
-"以下の宛先:%sは、ユーザアカウントを持っていません。それらのユーザにアカウント"
-"を作成するか、外部連携でのサインアップを可能にする必要があります。"
+msgstr "以下の宛先:%sは、ユーザアカウントを持っていません。それらのユーザにアカウント"
+"を作成するか、外部連携での登録を可能にする必要があります。"
 
 #. module: survey
 #: model:survey.question.answer,value:survey.survey_feedback_p2_q2_row1
@@ -5313,7 +5313,7 @@ msgstr "ユーザーが戻れます"
 #: model:ir.model.fields,field_description:survey.field_survey_invite__survey_users_can_signup
 #: model:ir.model.fields,field_description:survey.field_survey_survey__users_can_signup
 msgid "Users can signup"
-msgstr "ユーザーがサインアップできます"
+msgstr "ユーザーが登録できます"
 
 #. module: survey
 #: model:ir.model.fields,field_description:survey.field_survey_question__validation_required

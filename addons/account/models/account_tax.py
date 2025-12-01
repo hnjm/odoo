@@ -67,32 +67,6 @@ class AccountTaxGroup(models.Model):
         for group in self:
             group.country_id = group.company_id.account_fiscal_country_id or group.company_id.country_id
 
-    @api.constrains('tax_payable_account_id', 'tax_receivable_account_id')
-    def _check_accounts_configuration(self):
-        account_fields = self.env['account.account']._fields
-        account_type_selection_values = dict(account_fields['account_type']._description_selection(self.env))
-        reconcile_field_name = account_fields['reconcile'].get_description(self.env)['string']
-        non_trade_field_name = account_fields['non_trade'].get_description(self.env)['string']
-
-        for group in self:
-            for field_name in ('tax_payable_account_id', 'tax_receivable_account_id'):
-                if group[field_name] and not (
-                    group[field_name].account_type in ('asset_receivable', 'liability_payable')
-                    and group[field_name].reconcile
-                    and group[field_name].non_trade
-                ):
-                    raise ValidationError(
-                        self.env._(
-                            '%(tax_account)s (%(account_name)s) should be an account of type "%(receivable)s" or "%(payable)s" with both options "%(allow_reconciliation)s" and "%(non_trade)s" enabled.',
-                            tax_account=self._fields[field_name].get_description(self.env)['string'],
-                            account_name=group[field_name].display_name,
-                            receivable=account_type_selection_values['asset_receivable'],
-                            payable=account_type_selection_values['liability_payable'],
-                            allow_reconciliation=reconcile_field_name,
-                            non_trade=non_trade_field_name,
-                        ),
-                    )
-
     @api.model
     def _check_misconfigured_tax_groups(self, company, countries):
         """ Searches the tax groups used on the taxes from company in countries that don't have
@@ -556,7 +530,7 @@ class AccountTax(models.Model):
 
             tax_reps = invoice_repartition_line_ids.filtered(lambda tax_rep: tax_rep.repartition_type == 'tax')
             total_pos_factor = sum(tax_reps.filtered(lambda tax_rep: tax_rep.factor > 0.0).mapped('factor'))
-            if float_compare(total_pos_factor, 1.0, precision_digits=2):
+            if total_pos_factor and float_compare(total_pos_factor, 1.0, precision_digits=2):
                 raise ValidationError(_("Invoice and credit note distribution should have a total factor (+) equals to 100."))
             total_neg_factor = sum(tax_reps.filtered(lambda tax_rep: tax_rep.factor < 0.0).mapped('factor'))
             if total_neg_factor and float_compare(total_neg_factor, -1.0, precision_digits=2):
@@ -762,6 +736,88 @@ class AccountTax(models.Model):
         return self._eval_taxes_computation_prepare_product_values(
             default_product_values=default_product_values,
             product=product,
+        )
+
+    def _eval_taxes_computation_prepare_product_uom_fields(self):
+        """ Get the fields to create the evaluation context from the product uom for the taxes computation.
+
+        This method is not there in the javascript code.
+        Anybody wanted to use the product during the taxes computation js-side needs to preload the product uom fields
+        using this method.
+
+        [!] Only added python-side.
+
+        :return: A set of fields to be extracted from the product to evaluate the taxes computation.
+        """
+        return set()
+
+    @api.model
+    def _eval_taxes_computation_prepare_product_uom_default_values(self, field_names):
+        """ Prepare the default values for the product uom according the fields passed as parameter.
+        The dictionary contains the default values to be considered if there is no product uom at all.
+
+        This method is not there in the javascript code.
+        Anybody wanted to use the product uom during the taxes computation js-side needs to preload the default
+        product uom fields using this method.
+
+        [!] Only added python-side.
+
+        :param field_names: A set of fields returned by '_eval_taxes_computation_get_product_uom_fields'.
+        :return: A mapping <field_name> => <field_info> where field_info is a dict containing:
+            * type: the type of the field.
+            * default_value: the default value in case there is no product.
+        """
+        default_value_map = {
+            'integer': 0,
+            'float': 0.0,
+            'monetary': 0.0,
+        }
+        product_uom_fields_values = {}
+        for field_name in field_names:
+            field = self.env['uom.uom']._fields[field_name]
+            product_uom_fields_values[field_name] = {
+                'type': field.type,
+                'default_value': default_value_map[field.type],
+            }
+        return product_uom_fields_values
+
+    @api.model
+    def _eval_taxes_computation_prepare_product_uom_values(self, default_product_uom_values, product_uom=None):
+        """ Convert the product uom passed as parameter to a dictionary to be passed to '_eval_taxes_computation_prepare_context'.
+
+        Note: In javascript, this method takes an additional parameter being the results of the
+        '_eval_taxes_computation_prepare_product_uom_default_values' method because this method is not callable in javascript but must
+        be passed to the client instead.
+
+        [!] Only added python-side.
+
+        :param default_product_uom_values:  The default product values generated by '_eval_taxes_computation_prepare_product_uom_default_values'.
+        :param product_uom:                 An optional product.uom record.
+        :return:                            The values representing the product uom.
+        """
+        product_uom = product_uom and product_uom.sudo()  # tax computation may depend on restricted fields
+        product_uom_values = {}
+        for field_name, field_info in default_product_uom_values.items():
+            product_uom_values[field_name] = product_uom and product_uom[field_name] or field_info['default_value']
+        return product_uom_values
+
+    def _eval_taxes_computation_turn_to_product_uom_values(self, product_uom=None):
+        """ Helper purely in Python to call:
+            '_eval_taxes_computation_prepare_product_uom_fields'
+            '_eval_taxes_computation_prepare_product_uom_default_values'
+            '_eval_taxes_computation_prepare_product_uom_values'
+        all at once.
+
+        [!] Only added python-side.
+
+        :param product_uom: An optional product.uom record.
+        :return:            The values representing the product uom.
+        """
+        product_uom_fields = self._eval_taxes_computation_prepare_product_uom_fields()
+        default_product_uom_values = self._eval_taxes_computation_prepare_product_uom_default_values(product_uom_fields)
+        return self._eval_taxes_computation_prepare_product_uom_values(
+            default_product_uom_values=default_product_uom_values,
+            product_uom=product_uom,
         )
 
     def _flatten_taxes_and_sort_them(self):
@@ -1013,6 +1069,7 @@ class AccountTax(models.Model):
         precision_rounding=0.01,
         rounding_method='round_per_line',
         product=None,
+        product_uom=None,
         special_mode=False,
         manual_tax_amounts=None,
         filter_tax_function=None,
@@ -1027,6 +1084,7 @@ class AccountTax(models.Model):
         :param precision_rounding:  The rounding precision for the 'round_per_line' method.
         :param rounding_method:     'round_per_line' or 'round_globally'.
         :param product:             The product of the line.
+        :param product_uom:         The product uom of the line.
         :param special_mode:        Indicate a special mode for the taxes computation.
                             * total_excluded: The initial base of computation excludes all price-included taxes.
                             Suppose a tax of 21% price included. Giving 100 with special_mode = 'total_excluded'
@@ -1111,6 +1169,7 @@ class AccountTax(models.Model):
 
         evaluation_context = {
             'product': sorted_taxes._eval_taxes_computation_turn_to_product_values(product=product),
+            'uom': sorted_taxes._eval_taxes_computation_turn_to_product_uom_values(product_uom=product_uom),
             'price_unit': price_unit,
             'quantity': quantity,
             'raw_base': raw_base,
@@ -1203,7 +1262,7 @@ class AccountTax(models.Model):
     # -------------------------------------------------------------------------
 
     @api.model
-    def _adapt_price_unit_to_another_taxes(self, price_unit, product, original_taxes, new_taxes):
+    def _adapt_price_unit_to_another_taxes(self, price_unit, product, original_taxes, new_taxes, product_uom=None):
         """ From the price unit and taxes given as parameter, compute a new price unit corresponding to the
         new taxes.
 
@@ -1223,6 +1282,7 @@ class AccountTax(models.Model):
         :param product:         The product.
         :param original_taxes:  A recordset of taxes from where you come from.
         :param new_taxes:       A recordset of the taxes you are mapping the price unit to.
+        :param product_uom:     The product uom.
         :return:                The price_unit after mapping of taxes.
         """
         if original_taxes == new_taxes or False in original_taxes.mapped('price_include'):
@@ -1234,6 +1294,7 @@ class AccountTax(models.Model):
             1.0,
             rounding_method='round_globally',
             product=product,
+            product_uom=product_uom,
         )
         price_unit = taxes_computation['total_excluded']
 
@@ -1243,6 +1304,7 @@ class AccountTax(models.Model):
             1.0,
             rounding_method='round_globally',
             product=product,
+            product_uom=product_uom,
             special_mode='total_excluded',
         )
         delta = sum(x['tax_amount'] for x in taxes_computation['taxes_data'] if x['tax'].price_include)
@@ -1448,6 +1510,7 @@ class AccountTax(models.Model):
             precision_rounding=base_line['currency_id'].rounding,
             rounding_method=rounding_method,
             product=base_line['product_id'],
+            product_uom=base_line['product_uom_id'],
             special_mode=base_line['special_mode'],
             manual_tax_amounts=base_line['manual_tax_amounts'],
             filter_tax_function=base_line['filter_tax_function'],
@@ -2472,8 +2535,8 @@ class AccountTax(models.Model):
 
             # Compute the display base amounts.
             if set(involved_taxes.mapped('amount_type')) == {'fixed'}:
-                display_base_amount = None
-                display_base_amount_currency = None
+                display_base_amount = False
+                display_base_amount_currency = False
             elif set(involved_taxes.mapped('amount_type')) == {'division'} and all(involved_taxes.mapped('price_include')):
                 display_base_amount = 0.0
                 display_base_amount_currency = 0.0
@@ -2494,7 +2557,7 @@ class AccountTax(models.Model):
                 display_base_amount = values['base_amount']
                 display_base_amount_currency = values['base_amount_currency']
 
-            if display_base_amount_currency is not None:
+            if display_base_amount_currency is not False:
                 encountered_base_amounts.add(float_repr(display_base_amount_currency, currency.decimal_places))
 
             # Order of the subtotals.

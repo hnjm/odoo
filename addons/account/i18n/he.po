@@ -39,13 +39,14 @@
 # or balmas, 2025
 # Yoram Lavi, 2025
 # or balmas <or@laylinetech.com>, 2025.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-16 18:37+0000\n"
-"PO-Revision-Date: 2025-09-14 22:20+0000\n"
-"Last-Translator: or balmas <or@laylinetech.com>\n"
+"POT-Creation-Date: 2025-11-28 18:36+0000\n"
+"PO-Revision-Date: 2025-11-21 06:39+0000\n"
+"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Hebrew <https://translate.odoo.com/projects/odoo-18/account/"
 "he/>\n"
 "Language: he\n"
@@ -170,6 +171,8 @@ msgid ""
 "%(attachment_name)s (detached by %(user)s on %(date)s)%"
 "(attachment_extension)s"
 msgstr ""
+"%(attachment_name)s (נותק ע\"י  %(user)s בתאריך %(date)s)%"
+"(attachment_extension)s"
 
 #. module: account
 #. odoo-python
@@ -229,18 +232,6 @@ msgstr "%(ref)s(%(currency_amount)s)"
 #: code:addons/account/models/account_account_tag.py:0
 msgid "%(tag)s (%(country_code)s)"
 msgstr "%(tag)s (%(country_code)s)"
-
-#. module: account
-#. odoo-python
-#: code:addons/account/models/account_tax.py:0
-msgid ""
-"%(tax_account)s (%(account_name)s) should be an account of type \"%"
-"(receivable)s\" or \"%(payable)s\" with both options \"%"
-"(allow_reconciliation)s\" and \"%(non_trade)s\" enabled."
-msgstr ""
-"%(tax_account)s(%(account_name)s) צריך להיות מסוג חשבון\"%(receivable)s\" או "
-"\"%(payable)s\" עם שתי האופציות \"%(allow_reconciliation)s\" \"%"
-"(non_trade)s\" מופעלות."
 
 #. module: account
 #. odoo-python
@@ -2271,11 +2262,9 @@ msgstr "תנועות צבירה"
 #. odoo-python
 #: code:addons/account/wizard/accrued_orders.py:0
 msgid ""
-"Accrual entry created on %(date)s: %(accrual_entry)s.                    And "
-"its reverse entry: %(reverse_entry)s."
+"Accrual entry created on %(date)s: %(accrual_entry)s.                And its "
+"reverse entry: %(reverse_entry)s."
 msgstr ""
-"ערך צבירה נוצר ב %(date)s: %(accrual_entry)s.                    והפעולה "
-"הנגדית: %(reverse_entry)s."
 
 #. module: account
 #. odoo-python
@@ -3735,6 +3724,22 @@ msgstr "רצף תשלומי אצווה "
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
 msgid "Batch Payments"
 msgstr "תשלומי אצווה"
+
+#. module: account
+#. odoo-python
+#: code:addons/account/wizard/account_move_send_batch_wizard.py:0
+msgid ""
+"Batch invoice sending is unavailable. Please, activate the cron to enable "
+"batch sending of invoices."
+msgstr ""
+
+#. module: account
+#. odoo-python
+#: code:addons/account/wizard/account_move_send_batch_wizard.py:0
+msgid ""
+"Batch invoice sending is unavailable. Please, contact your system "
+"administrator to activate the cron to enable batch sending of invoices."
+msgstr ""
 
 #. module: account
 #. odoo-javascript
@@ -7778,6 +7783,12 @@ msgstr "קבל אזהרות בעת חיוב של לקוחות מסוימים"
 #: model:ir.model.fields.selection,name:account.selection__account_lock_exception__lock_date_field__fiscalyear_lock_date
 msgid "Global Lock Date"
 msgstr "תאריך נעילה עולמי "
+
+#. module: account
+#. odoo-python
+#: code:addons/account/wizard/account_move_send_batch_wizard.py:0
+msgid "Go to cron configuration"
+msgstr ""
 
 #. module: account
 #: model_terms:ir.actions.act_window,help:account.action_account_audit_trail_report
@@ -15236,7 +15247,7 @@ msgstr "המדינה המוגדרת לצורך להפקת דוחות מסים ע
 #. odoo-python
 #: code:addons/account/models/account_move.py:0
 msgid "The currency rate must be strictly positive."
-msgstr ""
+msgstr "שער המטבע חייב להיות חיובי לחלוטין."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_journal__currency_id
@@ -16408,8 +16419,8 @@ msgstr "הפרסום האוטומטי החוזר הזה יפורסם עד וכו
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
-msgid "This setting cannot be changed after an invoice is created."
-msgstr "הגדרה זו אינה ניתנת לשינוי לאחר שחשבונית נוצרה."
+msgid "This setting locks once a journal entry is created."
+msgstr ""
 
 #. module: account
 #. odoo-python
@@ -18925,7 +18936,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.autopost_bills_wizard
 msgid "without making any corrections."
-msgstr ""
+msgstr "ללא ביצוע תיקונים."
 
 #. module: account
 #. odoo-python
@@ -18959,6 +18970,25 @@ msgid ""
 "{{ object.company_id.name }} Payment Receipt (Ref {{ object.name or 'n/a' }})"
 msgstr ""
 "{{ object.company_id.name }} קבלה על תשלום (Ref {{ object.name or 'n/a' }})"
+
+#~ msgid "This setting cannot be changed after an invoice is created."
+#~ msgstr "הגדרה זו אינה ניתנת לשינוי לאחר שחשבונית נוצרה."
+
+#~ msgid ""
+#~ "%(tax_account)s (%(account_name)s) should be an account of type \"%"
+#~ "(receivable)s\" or \"%(payable)s\" with both options \"%"
+#~ "(allow_reconciliation)s\" and \"%(non_trade)s\" enabled."
+#~ msgstr ""
+#~ "%(tax_account)s(%(account_name)s) צריך להיות מסוג חשבון\"%(receivable)s\" "
+#~ "או \"%(payable)s\" עם שתי האופציות \"%(allow_reconciliation)s\" \"%"
+#~ "(non_trade)s\" מופעלות."
+
+#~ msgid ""
+#~ "Accrual entry created on %(date)s: %(accrual_entry)s.                    "
+#~ "And its reverse entry: %(reverse_entry)s."
+#~ msgstr ""
+#~ "ערך צבירה נוצר ב %(date)s: %(accrual_entry)s.                    והפעולה "
+#~ "הנגדית: %(reverse_entry)s."
 
 #~ msgid ""
 #~ "<small class=\"form-text text-muted\">\n"

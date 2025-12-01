@@ -107,7 +107,7 @@
                 xmlns:qdt="urn:un:unece:uncefact:data:standard:QualifiedDataType:100"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 <!-- Contact. -->
-                <ram:Name t-out="partner.display_name"/>
+                <ram:Name t-out="partner.display_name if partner.name else partner.commercial_partner_id.display_name"/>
                 <ram:SpecifiedLegalOrganization t-if="specified_legal_organization_val">
                     <ram:ID t-att-schemeID="str('0002')"
                             t-out="specified_legal_organization_val"/>
@@ -195,7 +195,11 @@
                             </t>
 
                             <!-- VAT. -->
-                            <ram:SpecifiedTaxRegistration t-if="record.company_id.vat">
+                            <ram:SpecifiedTaxRegistration t-if="record.fiscal_position_id.foreign_vat">
+                                <ram:ID schemeID="VA" t-out="record.fiscal_position_id.foreign_vat"/>
+                            </ram:SpecifiedTaxRegistration>
+
+                            <ram:SpecifiedTaxRegistration t-elif="record.company_id.vat">
                                 <ram:ID schemeID="VA" t-out="record.company_id.vat"/>
                             </ram:SpecifiedTaxRegistration>
                         </ram:SellerTradeParty>

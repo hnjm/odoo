@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import fields, Command
-from odoo.tests import Form, HttpCase, new_test_user
+from odoo.models import BaseModel
+from odoo.tests import Form, HttpCase, new_test_user, save_test_file
+from odoo.tools import config, file_path, file_open
 from odoo.tools.float_utils import float_round
 
 from odoo.addons.product.tests.common import ProductCommon
@@ -9,6 +11,8 @@ from odoo.addons.product.tests.common import ProductCommon
 import json
 import base64
 import logging
+import re
+
 from contextlib import contextmanager
 from functools import wraps
 from lxml import etree
@@ -22,6 +26,7 @@ class AccountTestInvoicingCommon(ProductCommon):
     # to override by the helper methods setup_country and setup_chart_template to adapt to a localization
     chart_template = False
     country_code = False
+    extra_tags = ('-standard', 'external') if 'EXTERNAL_MODE' in (config['test_tags'] or {}) else ()
 
     @classmethod
     def safe_copy(cls, record):
@@ -261,9 +266,7 @@ class AccountTestInvoicingCommon(ProductCommon):
     def _use_chart_template(cls, company, chart_template_ref=None):
         chart_template_ref = chart_template_ref or cls.env['account.chart.template']._guess_chart_template(company.country_id)
         template_vals = cls.env['account.chart.template']._get_chart_template_mapping()[chart_template_ref]
-        template_module = cls.env['ir.module.module']._get(template_vals['module'])
-        if template_module.state != 'installed':
-            raise SkipTest(f"Module required for the test is not installed ({template_module.name})")
+        cls.ensure_installed(template_vals['module'])
 
         # Install the chart template
         cls.env['account.chart.template'].try_loading(chart_template_ref, company=company, install_demo=False)
@@ -352,6 +355,15 @@ class AccountTestInvoicingCommon(ProductCommon):
             else:
                 return account.copy(default={'code': new_code, 'name': account.name, **(default or {})})
 
+    @classmethod
+    def ensure_installed(cls, module_name: str):
+        if cls.env['ir.module.module']._get(module_name).state != 'installed':
+            raise SkipTest(f"Module required for the test is not installed ({module_name})")
+
+    # -------------------------------------------------------------------------
+    # Helper: Generation of Tax / Invoice / Sale Order / etc.
+    # -------------------------------------------------------------------------
+
     def group_of_taxes(self, taxes, **kwargs):
         self.tax_number += 1
         return self.env['account.tax'].create({
@@ -389,10 +401,7 @@ class AccountTestInvoicingCommon(ProductCommon):
         })
 
     def python_tax(self, formula, **kwargs):
-        account_tax_python = self.env['ir.module.module']._get('account_tax_python')
-        if account_tax_python.state != 'installed':
-            raise SkipTest("Module 'account_tax_python' is not installed!")
-
+        self.ensure_installed('account_tax_python')
         self.tax_number += 1
         return self.env['account.tax'].create({
             **kwargs,
@@ -486,6 +495,7 @@ class AccountTestInvoicingCommon(ProductCommon):
 
     @classmethod
     def init_invoice(cls, move_type, partner=None, invoice_date=None, post=False, products=None, amounts=None, taxes=None, company=False, currency=None, journal=None):
+        """ This method is deprecated. Please call ``_create_invoice`` instead. """
         products = [] if products is None else products
         amounts = [] if amounts is None else amounts
         move_form = Form(cls.env['account.move'] \
@@ -578,6 +588,258 @@ class AccountTestInvoicingCommon(ProductCommon):
         }])
 
         return line
+
+    @classmethod
+    def _prepare_record_kwargs(cls, model_name: str, kwargs: dict):
+        for key, value in kwargs.items():
+            if isinstance(value, BaseModel):
+                if cls.env[model_name]._fields[key].type in ('one2many', 'many2many'):
+                    kwargs[key] = [Command.set(value.ids)]
+                else:
+                    kwargs[key] = value.id
+
+        none_keys = [key for key, val in kwargs.items() if val is None]
+        for key in none_keys:
+            del kwargs[key]
+
+    @classmethod
+    def _prepare_invoice_line(cls, price_unit=None, product_id=None, quantity=1.0, tax_ids=None, **line_args):
+        assert price_unit is not None or product_id is not None, "Either `price_unit` or `product_id` must be filled!"
+        invoice_line_args = {
+            'price_unit': price_unit,
+            'product_id': product_id,
+            'tax_ids': tax_ids,
+            'quantity': quantity,
+            **line_args,
+        }
+        cls._prepare_record_kwargs('account.move.line', invoice_line_args)
+        return Command.create(invoice_line_args)
+
+    @classmethod
+    def _prepare_order_line(cls, price_unit=None, product_id=None, product_uom_qty=1.0, tax_ids=None, **line_args):
+        assert price_unit is not None or product_id is not None, "Either `price_unit` or `product_id` must be filled!"
+        cls.ensure_installed('sale')
+        order_line_args = {
+            'price_unit': price_unit,
+            'product_id': product_id,
+            'tax_ids': tax_ids,
+            'product_uom_qty': product_uom_qty,
+            **line_args,
+        }
+        cls._prepare_record_kwargs('sale.order.line', order_line_args)
+        return Command.create(order_line_args)
+
+    @classmethod
+    def _create_invoice(cls, move_type='out_invoice', invoice_date=None, date=None, post=False, **invoice_args):
+        """
+        This method quickly generates an ``account.move`` record with some quality of life helpers.
+        These quality of life helpers are:
+
+        - if `invoice_date`/`date` is filled but not the other, autofill the other date fields
+        - if no `date` or `invoice_date` is passed, set the `invoice_date` to today by default
+        - allow passing record immediately instead of getting the id / creating [Command.set(...)] everytime for one2many/many2many fields
+        - allow passing None value in `invoice_args`, they will be filtered out before calling the move `create` method
+
+        :param post: if True, the invoice will be posted
+        :param invoice_args: additional overrides on the `account.move` `create` call
+        :return: the created ``account.move`` record
+        """
+        # QoL: if `invoice_date`/`date` is filled but not the other, autofill the other date fields
+        if move_type in cls.env['account.move'].get_invoice_types():
+            if invoice_date and not date:
+                date = invoice_date
+            elif date and not invoice_date:
+                invoice_date = date
+            elif not date and not invoice_date:
+                invoice_date = fields.Date.today()
+
+        invoice_args |= {'date': date, 'invoice_date': invoice_date}
+
+        # QoL: allow passing record immediately instead of getting the id / creating [Command.set(...)] everytime
+        # QoL: delete all keys with None value from invoice_args
+        cls._prepare_record_kwargs('account.move', invoice_args)
+
+        invoice = cls.env['account.move'].create([{
+            'move_type': move_type,
+            'partner_id': cls.partner_a.id,
+            'invoice_line_ids': [  # default invoice_line_ids
+                cls._prepare_invoice_line(product_id=cls.product_a),
+                cls._prepare_invoice_line(product_id=cls.product_b),
+            ],
+            **invoice_args,
+        }])
+
+        if post:
+            invoice.action_post()
+
+        cls.env.flush_all()
+        return invoice
+
+    @classmethod
+    def _create_invoice_one_line(cls, price_unit=None, product_id=None, name=None, quantity=1.0, tax_ids=None, discount=None, account_id=None, move_name=None, **invoice_args):
+        return cls._create_invoice(
+            invoice_line_ids=[
+                cls._prepare_invoice_line(
+                    price_unit=price_unit,
+                    product_id=product_id,
+                    name=name,
+                    quantity=quantity,
+                    tax_ids=tax_ids,
+                    discount=discount,
+                    account_id=account_id,
+                )
+            ],
+            name=move_name,
+            **invoice_args,
+        )
+
+    @classmethod
+    def _reverse_invoice(cls, invoice, post=False, **reversal_args):
+        reverse_action_values = (
+            cls.env['account.move.reversal']
+            .with_context(active_model='account.move', active_ids=invoice.ids)
+            .create({
+                'journal_id': invoice.journal_id.id,
+                **reversal_args,
+            })
+            .reverse_moves()
+        )
+        credit_note = cls.env['account.move'].browse(reverse_action_values['res_id'])
+
+        if post:
+            credit_note.action_post()
+
+        return credit_note
+
+    @classmethod
+    def _register_payment(cls, record, **kwargs):
+        return (
+            cls.env['account.payment.register']
+            .with_context(
+                active_model='account.move',
+                active_ids=record.ids,
+            )
+            .create({
+                'group_payment': True,
+                **kwargs,
+            })
+            ._create_payments()
+        )
+
+    @classmethod
+    def _create_sale_order(cls, confirm=True, **values):
+        cls.ensure_installed('sale')
+
+        sale_order = cls.env['sale.order'].create([{
+            'partner_id': cls.partner_a.id,
+            'order_line': [
+                Command.create({'product_id': cls.product_a.id}),
+                Command.create({'product_id': cls.product_b.id}),
+            ],
+            **values,
+        }])
+
+        if confirm:
+            sale_order.action_confirm()
+
+        return sale_order
+
+    @classmethod
+    def _create_sale_order_one_line(cls, price_unit=None, product_id=None, tax_ids=None, discount=None, name=None, product_uom_qty=1.0, **values):
+        assert price_unit is not None or product_id is not None
+        return cls._create_sale_order(
+            order_line=[
+                cls._prepare_order_line(
+                    name=name,
+                    price_unit=price_unit,
+                    product_id=product_id,
+                    tax_ids=tax_ids,
+                    discount=discount,
+                    product_uom_qty=product_uom_qty,
+                ),
+            ],
+            **values,
+        )
+
+    @classmethod
+    def _create_down_payment_invoice(cls, sale_order, amount_type: str, amount: float, post=False):
+        """
+        :param sale_order:      The SO as a sale.order record.
+        :param amount_type:     The type of the global discount: ('percent'/'percentage'), 'fixed', or 'delivered'.
+        :param amount:          The amount to consider.
+                                For 'percent', it should be a percentage [0-100].
+                                For 'fixed', any amount.
+                                For 'delivered', this value is not used.
+        """
+        cls.ensure_installed('sale')
+
+        if amount_type in ('percent', 'percentage'):
+            create_values = {
+                'advance_payment_method': 'percentage',
+                'amount': amount,
+            }
+        elif amount_type == 'fixed':
+            create_values = {
+                'advance_payment_method': 'fixed',
+                'fixed_amount': amount,
+            }
+        else:  # amount_type == 'delivered'
+            create_values = {
+                'advance_payment_method': 'delivered',
+            }
+
+        down_payment_wizard = (
+            cls.env['sale.advance.payment.inv']
+            .with_context({'active_model': sale_order._name, 'active_ids': sale_order.ids})
+            .create(create_values)
+        )
+        action_values = down_payment_wizard.create_invoices()
+        dp_invoice = cls.env['account.move'].browse(action_values['res_id'])
+
+        if post:
+            dp_invoice.action_post()
+
+        return dp_invoice
+
+    @classmethod
+    def _create_final_invoice(cls, sale_order, post=False):
+        return cls._create_down_payment_invoice(sale_order, 'delivered', 0, post=post)
+
+    @classmethod
+    def _apply_sale_order_discount(cls, sale_order, amount_type: str, amount: float):
+        """
+        :param sale_order:      The SO as a sale.order record.
+        :param amount_type:     The type of the global discount: 'percent', 'all' (also percentage), or 'fixed'.
+        :param amount:          The amount to consider.
+                                For 'percent' and 'all', it should be a percentage [0-100].
+                                For 'fixed', any amount.
+        """
+        cls.ensure_installed('sale')
+
+        if amount_type in ('percent', 'all'):
+            discount_type = 'so_discount' if amount_type == 'percent' else 'sol_discount'
+            discount_percentage = amount / 100.0
+            discount_amount = None
+        else:  # amount_type == 'fixed'
+            discount_type = 'amount'
+            discount_percentage = None
+            discount_amount = amount
+
+        discount_wizard = (
+            cls.env['sale.order.discount']
+            .with_context({'active_model': sale_order._name, 'active_id': sale_order.id})
+            .create({
+                'discount_type': discount_type,
+                'discount_percentage': discount_percentage,
+                'discount_amount': discount_amount,
+            })
+        )
+        discount_wizard.action_apply_discount()
+        return discount_wizard
+
+    # -------------------------------------------------------------------------
+    # Assertions
+    # -------------------------------------------------------------------------
 
     def assertInvoiceValues(self, move, expected_lines_values, expected_move_values):
         def sort_lines(lines):
@@ -682,7 +944,288 @@ class AccountTestInvoicingCommon(ProductCommon):
     # Xml Comparison
     ####################################################
 
-    def _turn_node_as_dict_hierarchy(self, node, path=''):
+    @classmethod
+    def _get_xml_ignore_schema(cls, subfolder: str) -> etree._Element | None:
+        """
+        Recursively look for the closest `ignore_schema.xml` from the given `subfolder`, and
+        return its content as an XML element object if found.
+
+        For example, if the given `subfolder` parameter is `foo/bar/egg`, this method will search for
+        an `ignore_schema.xml` file from these paths, in order:
+
+        - /tests/test_files/foo/bar/egg/ignore_schema.xml
+        - /tests/test_files/foo/bar/ignore_schema.xml
+        - /tests/test_files/foo/ignore_schema.xml
+        - /tests/test_files/ignore_schema.xml
+
+        :param subfolder: the subfolder of the path of XML file to save/assert. (e.g. "folder_1", "folder_outer/folder_inner")
+        :return: _Element object if an `ignore_schema.xml` file is found, otherwise nothing will be returned.
+        """
+        subfolders = subfolder.split('/')
+        ignore_schema_paths = []
+        while subfolders:
+            ignore_schema_paths.append(f"{cls.test_module}/tests/test_files/{'/'.join(subfolders)}/ignore_schema.xml")
+            subfolders.pop()
+        ignore_schema_paths.append(f"{cls.test_module}/tests/test_files/ignore_schema.xml")
+
+        for ignore_schema_path in ignore_schema_paths:
+            try:
+                with file_open(ignore_schema_path, 'rb') as f:
+                    return etree.fromstring(f.read())
+            except FileNotFoundError:
+                pass
+
+    @classmethod
+    def _clear_xml_content(cls, xml_element: etree._Element, clean_namespaces=True):
+        """
+        Clears an _Element object by removing all its children and deleting all of their attributes and namespaces.
+        """
+        for child in xml_element:
+            xml_element.remove(child)
+
+        for attrib_key in xml_element.attrib:
+            del xml_element.attrib[attrib_key]
+
+        if clean_namespaces:
+            etree.cleanup_namespaces(xml_element)
+
+    @classmethod
+    def _merge_two_xml(
+            cls,
+            primary_xml: etree._Element,
+            secondary_xml: etree._Element,
+            overwrite_on_conflict=True,
+            add_on_absent=True,
+    ):
+        """
+        This method takes two _Element objects, and merge the content of the second _Element to the first one recursively.
+        Here, we go through every text, and attribute of the secondary_xml and its children; and apply the following operation:
+
+        - Search for a matching child element / attribute on the `primary_xml`
+        - If a match is found, overwrite the matching `primary_xml` attribute/child/text if `overwrite_on_conflict` is True
+        - If a match is not found, add on `primary_xml` if `add_on_absent` is True
+
+        Warning: The `tag` of the two `_Element` object must be the same.
+
+        For example:
+        Before calling this method,
+        primary_xml
+        <a attr_1="old_attr_1">
+            <b>old b text</b>
+        </a>
+
+        secondary_xml
+        <a attr_1="new_attr_1" attr_2="new_attr_2>
+            <b attr_b="new_attr_b">new text</b>
+            <c>new element</c>
+        </a>
+
+        [#1] Resulting primary_xml post call with default optional parameters (overwrite_on_conflict True, add_on_absent True)
+        <a attr_1="new_attr_1" attr_2="new_attr_2>
+            <b attr_b="new_attr_b">new text</b>
+            <c>new element</c>
+        </a>
+
+        [#2] Resulting primary_xml post call with (overwrite_on_conflict True, add_on_absent False)
+        <a attr_1="new_attr_1">
+            <b>new text</b>
+        </a>
+
+        [#3] Resulting primary_xml post call with (overwrite_on_conflict False, add_on_absent True)
+        <a attr_1="old_attr_1" attr_2="new_attr_2>
+            <b attr_b="new_attr_b">old b text</b>
+            <c>new element</c>
+        </a>
+
+        [#4] Resulting primary_xml post call with (overwrite_on_conflict False, add_on_absent False)
+        No change will be made with these configuration.
+
+        :param primary_xml: The primary _Element object to be written on to.
+        :param secondary_xml: The second _Element object in which content is used as reference.
+        :param overwrite_on_conflict: If True and matching attribute/child element is found, the original content is overwritten.
+        :param add_on_absent: If True and matching attribute/child element is not found, it will be added on the primary_xml.
+        :return:
+        """
+        if primary_xml.tag != secondary_xml.tag:
+            return
+
+        for new_attrib_key, new_attrib_val in secondary_xml.items():
+            if (new_attrib_key not in primary_xml.attrib and add_on_absent) or (new_attrib_key in primary_xml.attrib and overwrite_on_conflict):
+                primary_xml.attrib[new_attrib_key] = new_attrib_val
+
+        if secondary_xml.text and ((not primary_xml.text and overwrite_on_conflict) or (primary_xml.text and overwrite_on_conflict)):
+            primary_xml.text = secondary_xml.text
+
+        for new_child in secondary_xml.getchildren():
+            found_match = False
+            for current_child in primary_xml.getchildren():
+                if current_child.tag == new_child.tag:
+                    cls._merge_two_xml(
+                        current_child,
+                        new_child,
+                        overwrite_on_conflict=overwrite_on_conflict,
+                        add_on_absent=add_on_absent,
+                    )
+                    found_match = True
+
+            if not found_match and add_on_absent:
+                primary_xml.append(new_child)
+
+    @classmethod
+    def _prepare_xml_ignore_schema(cls, xml_schema: etree._Element):
+        """
+        Hook method called on a found ignore schema XML element before we apply them to the main XML element to save.
+        Here, we preprocess the `___inherit___` attribute of the main schema XML and process them,
+        so that the final `xml_schema` contains the schema of the parent schema(s) too.
+
+        This method can optionally be extended to modify the schema manually python-side.
+        """
+        # TO EXTEND
+        if '___inherit___' in xml_schema.attrib:
+            # Merge current XML schema with the parent(s)
+            next_inherit = xml_schema.attrib['___inherit___']
+
+            while next_inherit:
+                with file_open(next_inherit, 'rb') as f:
+                    xml_main_schema = etree.fromstring(f.read())
+                next_inherit = xml_main_schema.attrib.get('___inherit___')
+
+                cls._merge_two_xml(xml_main_schema, xml_schema)
+                cls._clear_xml_content(xml_schema)
+                cls._merge_two_xml(xml_schema, xml_main_schema)
+
+    @classmethod
+    def _rebuild_xml_with_sorted_namespaces(cls, root: etree._Element) -> etree._Element:
+        # Collect all namespaces and prefixes
+        all_nsmap = {
+            prefix: uri
+            for elem in root.iter()
+            for prefix, uri in elem.nsmap.items()
+        }
+
+        # Sort all namespaces
+        nsmap_str_keys = [key for key in all_nsmap if isinstance(key, str)]
+        sorted_nsmap_keys = [
+            *((None,) if None in all_nsmap else ()),
+            *sorted(nsmap_str_keys),
+        ]
+        sorted_nsmap = {
+            nsmap_key: all_nsmap[nsmap_key]
+            for nsmap_key in sorted_nsmap_keys
+        }
+
+        # Build a new root element with the sorted namespaces and all original root attrib & children
+        new_root = etree.Element(root.tag, nsmap=sorted_nsmap)
+        new_root.text = root.text
+        for attrib_key, attrib_val in root.attrib.items():
+            new_root.attrib[attrib_key] = attrib_val
+        for child in root.getchildren():
+            new_root.append(child)
+
+        return new_root
+
+    def _get_test_file_path(self, file_name: str, subfolder=''):
+        optional_subfolder = f"{subfolder}/" if subfolder else ''
+        return file_path(f"{self.test_module}/tests/test_files/{optional_subfolder}{file_name}")
+
+    def assert_json(self, content_to_assert: dict, test_name: str, subfolder=''):
+        """
+        Helper to save/assert a dictionary to a JSON file located in the corresponding module `test_files`.
+        By default, this method will assert the dictionary with the JSON content.
+        To switch to save mode, add a `SAVE_JSON` tag when calling the test;
+        the `content_to_assert` dictionary will then be written in to the test file.
+
+        Before asserting, the dictionary will first be serialized to ensure it is in the same format of the saved JSON.
+        This means that for example: all tuples within the dictionary will be converted to list, etc.
+
+        :param content_to_assert: dictionary to save or assert to the corresponding test file
+        :param test_name: the test file name
+        :param subfolder: the test file subfolder(s), separated by `/` if there is more than one
+        """
+        json_path = self._get_test_file_path(f"{test_name}.json", subfolder=subfolder)
+
+        if 'SAVE_JSON' in config['test_tags']:
+            with file_open(json_path, 'w') as f:
+                json.dump(content_to_assert, f, indent=4)
+        else:
+            with file_open(json_path, 'rb') as f:
+                expected_content = json.loads(f.read())
+
+            content_to_assert = json.loads(json.dumps(content_to_assert))
+            self.assertDictEqual(content_to_assert, expected_content)
+
+    def assert_xml(
+            self,
+            xml_element: str | bytes | etree._Element,
+            test_name: str,
+            subfolder='',
+    ):
+        """
+        Helper to save/assert an XML element/string/bytes to an XML file.
+        By default, this method will assert the passed XML content to the test XML file.
+        To switch to save mode, add a `SAVE_XML` tag when calling the test;
+        This mode will instead do the following:
+
+        - Reindent the XML element by `\t`
+        - Save the XML element to a temporary folder for potential external testing
+        - Patch the XML element with `___ignore___` values, following the corresponding schema on the closest `ignore_schema.xml`
+        - Canonicalize the XML element to ensure consistency in their namespaces & attributes order
+        - Save the XML element content to the test file
+
+        :param xml_element: the _Element/str/bytes content to be saved or asserted
+        :param test_name: the test file name
+        :param subfolder: the test file subfolder(s), separated by `/` if there is more than one
+        :return:
+        """
+        file_name = f"{test_name}.xml"
+        test_file_path = self._get_test_file_path(file_name, subfolder=subfolder)
+        if isinstance(xml_element, str):
+            xml_element = xml_element.encode()
+        if isinstance(xml_element, bytes):
+            xml_element = etree.fromstring(xml_element)
+
+        if 'SAVE_XML' in config['test_tags']:
+            # Save the XML to tmp folder before modifying some elements with `___ignore___`
+            etree.indent(xml_element, space='\t')
+            with patch.object(re, 'fullmatch', lambda _arg1, _arg2: True):
+                save_test_file(
+                    test_name=test_name,
+                    content=etree.tostring(xml_element, pretty_print=True, encoding='UTF-8'),
+                    prefix=f"{self.test_module}",
+                    extension='xml',
+                    document_type='Invoice XML',
+                    date_format='',
+                )
+            # Search for closest `ignore_schema.xml` from the file path and apply the change to xml_element
+            xml_ignore_schema = self._get_xml_ignore_schema(subfolder)
+            if xml_ignore_schema is not None:
+                self._prepare_xml_ignore_schema(xml_ignore_schema)
+                self._merge_two_xml(
+                    xml_element,
+                    xml_ignore_schema,
+                    overwrite_on_conflict=True,
+                    add_on_absent=False,
+                )
+                etree.indent(xml_element, space='\t')
+
+            # Canonicalize & re-sort the namespaces
+            canonicalized_xml_str = etree.canonicalize(xml_element)
+            xml_element = etree.fromstring(canonicalized_xml_str)
+            xml_element = self._rebuild_xml_with_sorted_namespaces(xml_element)
+
+            # Save the xml_element content
+            with file_open(test_file_path, 'wb') as f:
+                f.write(etree.tostring(xml_element, pretty_print=True, encoding='UTF-8'))
+                _logger.info("Saved the generated xml content to %s", file_name)
+        else:
+            with file_open(test_file_path, 'rb') as f:
+                expected_xml_str = f.read()
+
+            expected_xml_tree = etree.fromstring(expected_xml_str)
+            self.assertXmlTreeEqual(xml_element, expected_xml_tree)
+
+    @classmethod
+    def _turn_node_as_dict_hierarchy(cls, node, path=''):
         ''' Turn the node as a python dictionary to be compared later with another one.
         :param node:    A node inside an xml tree.
         :param path:    The optional path of tags for recursive call.
@@ -699,7 +1242,7 @@ class AccountTestInvoicingCommon(ProductCommon):
             'text': (node.text or '').strip(),
             'attrib': dict(node.attrib.items()),
             'children': [
-                self._turn_node_as_dict_hierarchy(child_node, path=full_path)
+                cls._turn_node_as_dict_hierarchy(child_node, path=full_path)
                 for child_node in node.getchildren()
             ],
         }
@@ -764,23 +1307,26 @@ class AccountTestInvoicingCommon(ProductCommon):
             self._turn_node_as_dict_hierarchy(expected_xml_tree),
         )
 
-    def with_applied_xpath(self, xml_tree, xpath):
+    @classmethod
+    def with_applied_xpath(cls, xml_tree, xpath):
         ''' Applies the xpath to the xml_tree passed as parameter.
         :param xml_tree:    An instance of etree.
         :param xpath:       The xpath to apply as a string.
         :return:            The resulting etree after applying the xpaths.
         '''
         diff_xml_tree = etree.fromstring('<data>%s</data>' % xpath)
-        return self.env['ir.ui.view'].apply_inheritance_specs(xml_tree, diff_xml_tree)
+        return cls.env['ir.ui.view'].apply_inheritance_specs(xml_tree, diff_xml_tree)
 
-    def get_xml_tree_from_attachment(self, attachment):
+    @classmethod
+    def get_xml_tree_from_attachment(cls, attachment):
         ''' Extract an instance of etree from an ir.attachment.
         :param attachment:  An ir.attachment.
         :return:            An instance of etree.
         '''
         return etree.fromstring(base64.b64decode(attachment.with_context(bin_size=False).datas))
 
-    def get_xml_tree_from_string(self, xml_tree_str):
+    @classmethod
+    def get_xml_tree_from_string(cls, xml_tree_str):
         ''' Convert the string passed as parameter to an instance of etree.
         :param xml_tree_str:    A string representing an xml.
         :return:                An instance of etree.
@@ -887,8 +1433,11 @@ class TestTaxCommon(AccountTestInvoicingHttpCommon):
             return {}
         return taxes._eval_taxes_computation_turn_to_product_values(product=product)
 
-    def _jsonify_product_uom(self, uom):
+    def _jsonify_product_uom(self, uom, taxes):
+        if not uom:
+            return {}
         return {
+            **taxes._eval_taxes_computation_turn_to_product_uom_values(product_uom=uom),
             'id': uom.id,
             'name': uom.name,
         }
@@ -946,7 +1495,7 @@ class TestTaxCommon(AccountTestInvoicingHttpCommon):
             'currency_id': self._jsonify_currency(line.get('currency_id') or document['currency']),
             'rate': line['rate'] if 'rate' in line else document['rate'],
             'product_id': self._jsonify_product(line['product_id'], line['tax_ids']),
-            'product_uom_id': self._jsonify_product_uom(line['product_uom_id']),
+            'product_uom_id': self._jsonify_product_uom(line['product_uom_id'], line['tax_ids']),
             'tax_ids': [self._jsonify_tax(tax) for tax in line['tax_ids']],
             'price_unit': line['price_unit'],
             'quantity': line['quantity'],
@@ -1126,9 +1675,10 @@ class TestTaxCommon(AccountTestInvoicingHttpCommon):
                     float_round(results['price_unit'], precision_rounding=rounding),
                 )
 
-    def _create_py_sub_test_taxes_computation(self, taxes, price_unit, quantity, product, precision_rounding, rounding_method, excluded_tax_ids):
+    def _create_py_sub_test_taxes_computation(self, taxes, price_unit, quantity, product, product_uom, precision_rounding, rounding_method, excluded_tax_ids):
         kwargs = {
             'product': product,
+            'product_uom': product_uom,
             'precision_rounding': precision_rounding,
             'rounding_method': rounding_method,
             'filter_tax_function': (lambda tax: tax.id not in excluded_tax_ids) if excluded_tax_ids else None,
@@ -1149,13 +1699,14 @@ class TestTaxCommon(AccountTestInvoicingHttpCommon):
             )
         return results
 
-    def _create_js_sub_test_taxes_computation(self, taxes, price_unit, quantity, product, precision_rounding, rounding_method, excluded_tax_ids):
+    def _create_js_sub_test_taxes_computation(self, taxes, price_unit, quantity, product, product_uom, precision_rounding, rounding_method, excluded_tax_ids):
         return {
             'test': 'taxes_computation',
             'taxes': [self._jsonify_tax(tax) for tax in taxes],
             'price_unit': price_unit,
             'quantity': quantity,
             'product': self._jsonify_product(product, taxes),
+            'product_uom': self._jsonify_product_uom(product_uom, taxes),
             'precision_rounding': precision_rounding,
             'rounding_method': rounding_method,
             'excluded_tax_ids': excluded_tax_ids,
@@ -1168,6 +1719,7 @@ class TestTaxCommon(AccountTestInvoicingHttpCommon):
         expected_values,
         quantity=1,
         product=None,
+        product_uom=None,
         precision_rounding=0.01,
         rounding_method='round_per_line',
         excluded_special_modes=None,
@@ -1188,6 +1740,7 @@ class TestTaxCommon(AccountTestInvoicingHttpCommon):
             price_unit,
             quantity,
             product,
+            product_uom,
             precision_rounding,
             rounding_method,
             excluded_tax_ids,
@@ -1201,19 +1754,20 @@ class TestTaxCommon(AccountTestInvoicingHttpCommon):
     def _assert_sub_test_adapt_price_unit_to_another_taxes(self, results, expected_price_unit):
         self.assertEqual(results['price_unit'], expected_price_unit)
 
-    def _create_py_sub_test_adapt_price_unit_to_another_taxes(self, price_unit, original_taxes, new_taxes, product):
-        return {'price_unit': self.env['account.tax']._adapt_price_unit_to_another_taxes(price_unit, product, original_taxes, new_taxes)}
+    def _create_py_sub_test_adapt_price_unit_to_another_taxes(self, price_unit, original_taxes, new_taxes, product, product_uom):
+        return {'price_unit': self.env['account.tax']._adapt_price_unit_to_another_taxes(price_unit, product, original_taxes, new_taxes, product_uom=product_uom)}
 
-    def _create_js_sub_test_adapt_price_unit_to_another_taxes(self, price_unit, original_taxes, new_taxes, product):
+    def _create_js_sub_test_adapt_price_unit_to_another_taxes(self, price_unit, original_taxes, new_taxes, product, product_uom):
         return {
             'test': 'adapt_price_unit_to_another_taxes',
             'price_unit': price_unit,
             'product': self._jsonify_product(product, original_taxes + new_taxes),
+            'product_uom': self._jsonify_product_uom(product_uom, original_taxes + new_taxes),
             'original_taxes': [self._jsonify_tax(tax) for tax in original_taxes],
             'new_taxes': [self._jsonify_tax(tax) for tax in new_taxes],
         }
 
-    def assert_adapt_price_unit_to_another_taxes(self, price_unit, original_taxes, new_taxes, expected_price_unit, product=None):
+    def assert_adapt_price_unit_to_another_taxes(self, price_unit, original_taxes, new_taxes, expected_price_unit, product=None, product_uom=None):
         self._create_assert_test(
             expected_price_unit,
             self._create_py_sub_test_adapt_price_unit_to_another_taxes,
@@ -1223,6 +1777,7 @@ class TestTaxCommon(AccountTestInvoicingHttpCommon):
             original_taxes,
             new_taxes,
             product,
+            product_uom,
         )
 
     # -------------------------------------------------------------------------
@@ -1316,14 +1871,20 @@ class TestTaxCommon(AccountTestInvoicingHttpCommon):
     # invoice tax_totals_summary
     # -------------------------------------------------------------------------
 
+    def assert_invoice_totals(self, invoice, expected_values):
+        cash_rounding_base_amount_currency = invoice.tax_totals.get('cash_rounding_base_amount_currency', 0.0)
+        expected_amounts = {}
+        if 'base_amount_currency' in expected_values:
+            expected_amounts['amount_untaxed'] = expected_values['base_amount_currency'] + cash_rounding_base_amount_currency
+        if 'tax_amount_currency' in expected_values:
+            expected_amounts['amount_tax'] = expected_values['tax_amount_currency']
+        if 'total_amount_currency' in expected_values:
+            expected_amounts['amount_total'] = expected_values['total_amount_currency']
+        self.assertRecordValues(invoice, [expected_amounts])
+
     def assert_invoice_tax_totals_summary(self, invoice, expected_values, soft_checking=False):
         self._assert_tax_totals_summary(invoice.tax_totals, expected_values, soft_checking=soft_checking)
-        cash_rounding_base_amount_currency = invoice.tax_totals.get('cash_rounding_base_amount_currency', 0.0)
-        self.assertRecordValues(invoice, [{
-            'amount_untaxed': expected_values['base_amount_currency'] + cash_rounding_base_amount_currency,
-            'amount_tax': expected_values['tax_amount_currency'],
-            'amount_total': expected_values['total_amount_currency'],
-        }])
+        self.assert_invoice_totals(invoice, expected_values)
 
 
 class TestAccountMergeCommon(AccountTestInvoicingCommon):

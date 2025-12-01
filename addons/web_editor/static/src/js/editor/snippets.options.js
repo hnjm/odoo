@@ -564,7 +564,11 @@ const UserValueWidget = publicWidget.Widget.extend({
                 this._triggerWidgetsValues.push(...dataValue.split(/\s*,\s*/g));
             } else if (validMethodNames.includes(key)) {
                 this._methodsNames.push(key);
-                this._methodsParams.optionsPossibleValues[key] = dataValue.split(/\s*\|\s*/g);
+                if (this._methodsParams.noSplit) {
+                    this._methodsParams.optionsPossibleValues[key] = [dataValue];
+                } else {
+                    this._methodsParams.optionsPossibleValues[key] = dataValue.split(/\s*\|\s*/g);
+                }
             } else {
                 this._methodsParams[key] = dataValue;
             }
@@ -1847,6 +1851,7 @@ const ColorpickerUserValueWidget = SelectUserValueWidget.extend({
         if (wysiwyg) {
             options.document = this.$target[0].ownerDocument;
             options.getTemplate = wysiwyg.getColorpickerTemplate.bind(wysiwyg);
+            options.getEditableCustomColors = wysiwyg.colorPalettesProps?.background?.getEditableCustomColors;
         }
         this.colorPaletteWrapper?.destroy();
         const sidebarDocument = this.colorPaletteEl.ownerDocument;

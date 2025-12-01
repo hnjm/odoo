@@ -1153,7 +1153,7 @@ class PosSession(models.Model):
 
         account_payment = self.env['account.payment'].create({
             'amount': abs(amounts['amount']),
-            'partner_id': payment.partner_id.id,
+            'partner_id': accounting_partner.id,
             'journal_id': payment_method.journal_id.id,
             'force_outstanding_account_id': outstanding_account.id,
             'destination_account_id': destination_account.id,
@@ -1672,9 +1672,11 @@ class PosSession(models.Model):
             return {}
         return self.config_id.open_ui()
 
-    def set_opening_control(self, cashbox_value: int, notes: str):
-        if self.state != 'opening_control':
-            return
+    def _set_opening_control_data(self, cashbox_value: int, notes: str):
+        """
+        Internal logic for opening the session.
+        Inherit this method to add custom logic before the sequence is assigned.
+        """
         self.state = 'opened'
         self.start_at = fields.Datetime.now()
 
@@ -1688,6 +1690,18 @@ class PosSession(models.Model):
             message = _('Opening control message: ')
             message += notes
             self.message_post(body=plaintext2html(message))
+
+    def set_opening_control(self, cashbox_value: int, notes: str):
+        """
+        Public method to open the session.
+        This calls the internal logic and, if successful, assigns the sequence name.
+
+        DO NOT INHERIT THIS METHOD. Inherit _set_opening_control_data instead.
+        """
+        if self.state != 'opening_control':
+            return
+
+        self._set_opening_control_data(cashbox_value, notes)
 
         if not self.rescue:
             self.name = self.env['ir.sequence'].with_context(company_id=self.config_id.company_id.id).next_by_code('pos.session')
@@ -1910,6 +1924,19 @@ class PosSession(models.Model):
         session_info['nomenclature_id'] = self.company_id.nomenclature_id.id
         session_info['fallback_nomenclature_id'] = self._get_pos_fallback_nomenclature_id()
         return session_info
+
+    def _get_gc_sequence_prefix(self):
+        return ['pos.session.login_number']
+
+    @api.autovacuum
+    def _gc_session_sequences(self):
+        for prefix in self._get_gc_sequence_prefix():
+            sequences = self.env['ir.sequence'].search([('code', 'ilike', prefix)])
+            session_ids = [int(seq.code.split(prefix)[-1]) for seq in sequences if seq.code.split(prefix)[-1].isdigit()]
+            session_ids = self.env['pos.session'].search([('id', 'in', session_ids), ('state', '=', 'closed')]).ids
+            sequence_to_unlink_ids = sequences.filtered(lambda seq: seq.code in [f'{prefix}{session}' for session in session_ids])
+            if sequence_to_unlink_ids:
+                sequence_to_unlink_ids.sudo().unlink()
 
 
 class ProcurementGroup(models.Model):

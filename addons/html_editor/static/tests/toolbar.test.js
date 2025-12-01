@@ -76,6 +76,19 @@ test("toolbar is also visible when selection is collapsed in mobile", async () =
     await expectElementCount(".o-we-toolbar", 1);
 });
 
+test.tags("mobile");
+test("should show bold button highlighted after applying format when selection is collapsed", async () => {
+    const { el } = await setupEditor("<p>te[]st</p>");
+
+    await expectElementCount(".o-we-toolbar", 1);
+
+    // Click on toggle bold
+    await contains(".btn[name='bold']").click();
+
+    expect(".btn[name='bold']").toHaveClass("active");
+    expect(getContent(el)).toBe(`<p>te${strong("[]\u200B", "first")}st</p>`);
+});
+
 test("toolbar closes when selection leaves editor", async () => {
     const { el } = await setupEditor("<p>test</p>");
     setContent(el, "<p>[test]</p>");
@@ -345,6 +358,22 @@ test("should focus the editable area after selecting a font size item", async ()
     expect(getActiveElement()).toBe(editor.editable);
     expect(getActiveElement()).not.toBe(inputEl);
     expect(getContent(el)).toBe(`<p><span class="h2-fs">[test]</span></p>`);
+});
+
+test("should not create empty extra nodes while changing format of link", async () => {
+    const { el } = await setupEditor(
+        `<p>[\ufeff<a href="http://test.com">\ufefftest.com\ufeff</a>\ufeff]</p>`
+    );
+    await expectElementCount(".o-we-toolbar", 1);
+    const iframeEl = queryOne(".o-we-toolbar [name='font-size'] iframe");
+    const inputEl = iframeEl.contentWindow.document?.querySelector("input");
+    await contains(".o-we-toolbar [name='font-size'] .dropdown-toggle").click();
+    expect(getActiveElement()).toBe(inputEl);
+    await waitFor(".o_font_size_selector_menu .dropdown-item:contains('80')");
+    await contains(".o_font_size_selector_menu .dropdown-item:contains('80')").click();
+    expect(getContent(el)).toBe(
+        `<p><span class="display-1-fs">\ufeff<a href="http://test.com" class="o_link_in_selection">\ufeff[test.com]\ufeff</a>\ufeff</span></p>`
+    );
 });
 
 test.tags("desktop");

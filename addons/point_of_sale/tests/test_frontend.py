@@ -537,6 +537,24 @@ class TestPointOfSaleHttpCommon(AccountTestInvoicingHttpCommon):
         })
 
         # Set customers
+        # Unlink some data partners that makes the test crash
+        for xmlid in [
+            "l10n_us_hr_payroll.res_partner_taxation_va",
+            "l10n_us_hr_payroll.res_partner_revenue_dc",
+            "l10n_us_hr_payroll.res_partner_pfl_dc",
+            "l10n_us_hr_payroll.res_partner_revenue_or",
+            "l10n_us_hr_payroll.res_partner_dcbs_or",
+            "l10n_us_hr_payroll.res_partner_employment_or",
+            "l10n_us_hr_payroll.res_partner_revenue_nc",
+            "l10n_us_hr_payroll.res_partner_state_tax_commission_id",
+            "l10n_us_hr_payroll.res_partner_department_taxes_vt",
+            "l10n_us_hr_payroll.res_partner_department_revenue_il",
+            "l10n_us_hr_payroll.res_partner_department_revenue_az",
+        ]:
+            partner = cls.env.ref(xmlid, raise_if_not_found=False)
+            if partner:
+                partner.unlink()
+
         partners = cls.env['res.partner'].create([
             {'name': 'Partner Test 1'},
             {'name': 'Partner Test 2'},
@@ -2171,6 +2189,55 @@ class TestUi(TestPointOfSaleHttpCommon):
         with patch.object(pos_order, "sync_from_ui", sync_from_ui_patch):
             self.start_pos_tour("test_sync_from_ui_one_by_one", login="pos_user")
             self.assertEqual(sync_counter['count'], 6)
+
+    def test_product_ref_displayed(self):
+        self.env['product.product'].create({
+            'name': 'Test name',
+            'available_in_pos': True,
+            'default_code': 'Test ref',
+            'list_price': 10,
+        })
+        # Need to log as admin to be able to edit the product info
+        self.start_tour("/pos/ui?config_id=%d" % self.main_pos_config.id, 'test_product_ref_displayed', login="pos_admin")
+
+    def test_dynamic_product_price(self):
+        """ Test that dynamic product price is correctly handled in the POS frontend. """
+        product_attribute = self.env['product.attribute'].create({
+            'name': "Dynamic Attribute",
+            'create_variant': 'dynamic',
+            'value_ids': [
+                Command.create({'name': "Dynamic Value 1"}),
+                Command.create({'name': "Dynamic Value 2"}),
+            ]
+        })
+
+        product_template = self.env['product.template'].create({
+            'name': 'Dynamic Product',
+            'list_price': 0,
+            'taxes_id': False,
+            'available_in_pos': True,
+            'attribute_line_ids': [
+                Command.create({
+                    'attribute_id': product_attribute.id,
+                    'value_ids': [Command.set(product_attribute.value_ids.ids)]
+                })
+            ]
+        })
+
+        # Set the price extra for each attribute value
+        product_template_attribute_values = self.env['product.template.attribute.value'].search([
+            ('product_tmpl_id', '=', product_template.id),
+        ])
+
+        for ptav in product_template_attribute_values:
+            if ptav.name == "Dynamic Value 1":
+                ptav.price_extra = 10
+            else:
+                ptav.price_extra = 20
+
+        product_template._create_product_variant(product_template_attribute_values[0])
+        product_template._create_product_variant(product_template_attribute_values[1])
+        self.start_tour("/pos/ui?config_id=%d" % self.main_pos_config.id, 'test_dynamic_product_price', login="pos_user")
 
 
 # This class just runs the same tests as above but with mobile emulation

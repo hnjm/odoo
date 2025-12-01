@@ -143,6 +143,13 @@ class TestAccountMoveOutInvoiceOnchanges(AccountTestInvoicingCommon):
             self.term_line_vals_1,
         ], self.move_vals)
 
+    def test_basic_tax_lock(self):
+        tax_tag = self.env['account.account.tag'].create({'name': 'HiddenFromIRS', 'applicability': 'taxes'})
+        inv = self.init_invoice('out_invoice', amounts=[10], post=True)
+        inv.company_id.tax_lock_date = inv.date
+        with self.assertRaisesRegex(UserError, 'lock date'):
+            inv.line_ids.tax_tag_ids = tax_tag.ids
+
     @freeze_time('2020-01-15')
     def test_out_invoice_onchange_invoice_date(self):
         for tax_date, invoice_date, accounting_date in [
@@ -1530,6 +1537,8 @@ class TestAccountMoveOutInvoiceOnchanges(AccountTestInvoicingCommon):
         })
 
     def test_out_invoice_line_onchange_currency_1(self):
+        self.other_currency.rounding = 0.001
+
         move_form = Form(self.invoice)
         move_form.currency_id = self.other_currency
         move_form.save()
@@ -4890,3 +4899,52 @@ class TestAccountMoveOutInvoiceOnchanges(AccountTestInvoicingCommon):
 
         res = self.env['account.move'].search([('partner_id', '=', partner.id), ('move_sent_values', '=', 'not_sent')])
         self.assertEqual(invoice_not_sent, res)
+
+    def test_invoice_currency_rate_round_globally(self):
+        """Ensure that when the tax rounding method is set to 'global', changing the currency rate directly
+         on the invoice results in journal entries that are rounded globally, not per line. """
+
+        self.env.company.tax_calculation_rounding_method = 'round_globally'
+        eur = self.setup_other_currency('EUR')
+        invoice = self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'partner_id': self.partner_a.id,
+            'currency_id': eur.id,
+            'invoice_line_ids': [
+                Command.create({
+                    'name': 'test line',
+                    'quantity': 0.80,
+                    'price_unit': 894.34,
+                }),
+            ],
+        })
+        invoice.invoice_currency_rate = 1 / 1189.5
+
+        self.assertRecordValues(invoice.line_ids, [
+            {'balance': -851053.94},
+            {'balance': 851053.94},
+        ])
+
+    def test_tax_recomputed_when_changing_base_lines(self):
+        percent_tax = self.company_data['default_tax_sale']
+
+        invoice = self.init_invoice('out_invoice', self.partner_a, '2019-01-01', amounts=[500.0, 900.0], taxes=[percent_tax])
+
+        invoice.invoice_line_ids = [
+            Command.unlink(invoice.line_ids[1].id),
+            Command.create({
+                'name': 'line3',
+                'debit': 100.0,
+                'credit': 0.0,
+                'account_id': self.company_data['default_account_revenue'].id,
+            }),
+        ]
+
+        tax_line = invoice.line_ids.filtered('tax_repartition_line_id')
+        self.assertRecordValues(tax_line, [
+            {
+                'balance': -75.0,
+                'tax_base_amount': 500,
+                'tax_line_id': percent_tax.id,
+            }
+        ])

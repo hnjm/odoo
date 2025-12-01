@@ -24,9 +24,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-01 07:25+0000\n"
-"PO-Revision-Date: 2025-08-21 14:30+0000\n"
-"Last-Translator: \"Jessica Tuulia Sade Jäkärä (jtsj)\" <jtsj@odoo.com>\n"
+"POT-Creation-Date: 2025-10-24 18:36+0000\n"
+"PO-Revision-Date: 2025-11-21 07:48+0000\n"
+"Last-Translator: Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>\n"
 "Language-Team: Finnish <https://translate.odoo.com/projects/odoo-18/"
 "stock_account/fi/>\n"
 "Language: fi\n"
@@ -783,6 +783,12 @@ msgstr "Palauta poimintalinja"
 
 #. module: stock_account
 #. odoo-python
+#: code:addons/stock_account/models/product.py:0
+msgid "Revaluation of %(name)s (negative inventory)"
+msgstr ""
+
+#. module: stock_account
+#. odoo-python
 #: code:addons/stock_account/wizard/stock_valuation_layer_revaluation.py:0
 msgid "Revaluation of %s"
 msgstr "Uudelleenarvotus kohteelle %s"
@@ -1050,8 +1056,8 @@ msgid ""
 "This product is valuated by lot: an explicit Lot/Serial number is required "
 "when adding quantity"
 msgstr ""
-"Tämä tuote hinnoitellaan eräkohtaisesti: määrää valittaessa on ilmoitettava "
-"erä- tai sarjanumero"
+"Tämä tuote arvotetaan erän perusteella: sarja- tai eränumero tarvitaan, kun "
+"tuotteen määrää lisätään"
 
 #. module: stock_account
 #: model_terms:ir.ui.view,arch_db:stock_account.stock_valuation_layer_tree

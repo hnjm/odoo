@@ -10,13 +10,14 @@
 # Wil Odoo, 2025
 # Junko Augias, 2025
 # "Junko Augias (juau)" <juau@odoo.com>, 2025.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-16 18:37+0000\n"
-"PO-Revision-Date: 2025-10-21 22:20+0000\n"
-"Last-Translator: \"Junko Augias (juau)\" <juau@odoo.com>\n"
+"POT-Creation-Date: 2025-11-28 18:36+0000\n"
+"PO-Revision-Date: 2025-11-29 18:00+0000\n"
+"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Japanese <https://translate.odoo.com/projects/odoo-18/account/"
 "ja/>\n"
 "Language: ja\n"
@@ -24,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_journal__type
@@ -202,18 +203,6 @@ msgstr "%(ref)s (%(currency_amount)s)"
 #: code:addons/account/models/account_account_tag.py:0
 msgid "%(tag)s (%(country_code)s)"
 msgstr "%(tag)s (%(country_code)s)"
-
-#. module: account
-#. odoo-python
-#: code:addons/account/models/account_tax.py:0
-msgid ""
-"%(tax_account)s (%(account_name)s) should be an account of type \"%"
-"(receivable)s\" or \"%(payable)s\" with both options \"%"
-"(allow_reconciliation)s\" and \"%(non_trade)s\" enabled."
-msgstr ""
-"%(tax_account)s (%(account_name)s) は勘定科目タイプ \"%(receivable)s\" また"
-"は \"%(payable)s\" 両方のオプション \"%(allow_reconciliation)s\" および \"%"
-"(non_trade)s\" が有効化されている必要があります。"
 
 #. module: account
 #. odoo-python
@@ -990,6 +979,9 @@ msgid ""
 "invoices, and with which electronic format.\n"
 "                    </small>"
 msgstr ""
+"<small class=\"form-text text-muted\">\n"
+"                        請求書の送付方法と電子フォーマットを選択できます。\n"
+"                    </small>"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.portal_my_invoices
@@ -2381,11 +2373,11 @@ msgstr "経過勘定仕訳"
 #. odoo-python
 #: code:addons/account/wizard/accrued_orders.py:0
 msgid ""
-"Accrual entry created on %(date)s: %(accrual_entry)s.                    And "
-"its reverse entry: %(reverse_entry)s."
+"Accrual entry created on %(date)s: %(accrual_entry)s.                And its "
+"reverse entry: %(reverse_entry)s."
 msgstr ""
-" %(date)s: %(accrual_entry)sに作成された未収計上。                  また、そ"
-"の逆仕訳：%(reverse_entry)s"
+"%(date)s: %(accrual_entry)sに作成された未収計上。                およびその逆"
+"仕訳: %(reverse_entry)s。"
 
 #. module: account
 #. odoo-python
@@ -2495,7 +2487,7 @@ msgstr "活動"
 #: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__activity_exception_decoration
 #: model:ir.model.fields,field_description:account.field_res_partner_bank__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr "例外活動文字装飾"
+msgstr "例外の活動を示す装飾"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__activity_state
@@ -3850,6 +3842,25 @@ msgstr "一括支払付番"
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
 msgid "Batch Payments"
 msgstr "一括支払"
+
+#. module: account
+#. odoo-python
+#: code:addons/account/wizard/account_move_send_batch_wizard.py:0
+msgid ""
+"Batch invoice sending is unavailable. Please, activate the cron to enable "
+"batch sending of invoices."
+msgstr ""
+"請求書の一括送信は現在利用できません。一括送信を有効にするには、スケジュール"
+"済みアクション（cron）を有効化してください。"
+
+#. module: account
+#. odoo-python
+#: code:addons/account/wizard/account_move_send_batch_wizard.py:0
+msgid ""
+"Batch invoice sending is unavailable. Please, contact your system "
+"administrator to activate the cron to enable batch sending of invoices."
+msgstr "一括請求書送信は利用できません。請求書の一括送信を有効にするには、システム管"
+"理者に cron を有効化するよう依頼してください。"
 
 #. module: account
 #. odoo-javascript
@@ -6129,7 +6140,7 @@ msgstr "プロダクト販売時に適用されるデフォルト税。"
 #. odoo-python
 #: code:addons/account/models/account_move.py:0
 msgid "Default value for 'company_id' for %(record)s is not an integer"
-msgstr ""
+msgstr "'%(record)s' に対する 'company_id' のデフォルト値が整数ではありません"
 
 #. module: account
 #: model:account.account,name:account.1_deferred_revenue
@@ -6570,7 +6581,7 @@ msgstr "表示タイプ"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__placeholder_code
 msgid "Display code"
-msgstr "コードを表示"
+msgstr "表示コード"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_config_settings__preview_ready
@@ -7932,6 +7943,12 @@ msgid "Global Lock Date"
 msgstr "全体ロック日"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/wizard/account_move_send_batch_wizard.py:0
+msgid "Go to cron configuration"
+msgstr ""
+
+#. module: account
 #: model_terms:ir.actions.act_window,help:account.action_account_audit_trail_report
 msgid "Go to the accounting settings"
 msgstr "会計設定に移動します"
@@ -8013,6 +8030,8 @@ msgid ""
 "Groupby feature isn't supported by '%(engine)s' engine. Please remove the "
 "groupby value on '%(report_line)s'"
 msgstr ""
+"'%(engine)s' エンジンでは groupby 機能はサポートされていません。'%"
+"(report_line)s' の groupby 値を削除してください"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_merge_wizard_line__grouping_key
@@ -9718,7 +9737,7 @@ msgstr "6月"
 #. module: account
 #: model:ir.model,name:account.model_kpi_provider
 msgid "KPI Provider"
-msgstr ""
+msgstr "KPIプロバイダー"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_journal__kanban_dashboard
@@ -12278,7 +12297,7 @@ msgstr "銀行口座が指定されていない取引先に関する支払いは
 #: model:ir.model.fields,help:account.field_account_bank_statement_line__reconciled_payment_ids
 #: model:ir.model.fields,help:account.field_account_move__reconciled_payment_ids
 msgid "Payments that have been reconciled with this invoice."
-msgstr ""
+msgstr "この請求書と消込済みの支払取引。"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_payment_term_line__value__percent
@@ -12949,7 +12968,7 @@ msgstr "消込済請求書タイプ"
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__reconciled_payment_ids
 #: model:ir.model.fields,field_description:account.field_account_move__reconciled_payment_ids
 msgid "Reconciled Payments"
-msgstr ""
+msgstr "消込済の支払い"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment__reconciled_statement_line_ids
@@ -13500,7 +13519,7 @@ msgstr "SO123"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_default_terms_and_conditions
 msgid "STANDARD TERMS AND CONDITIONS OF SALE"
-msgstr "標準的な販売条件"
+msgstr "販売に関する標準取引条件"
 
 #. module: account
 #: model:account.account,name:account.1_expense_salary
@@ -14721,7 +14740,7 @@ msgstr "現金基準税仕訳帳"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_tax_repartition_line__use_in_tax_closing
 msgid "Tax Closing Entry"
-msgstr "税務決算仕訳"
+msgstr "税の締め仕訳"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_tax__amount_type
@@ -14912,7 +14931,7 @@ msgid ""
 "Tax current account used as a counterpart to the Tax Closing Entry when in "
 "favor of the authorities."
 msgstr ""
-"税務当局に有利な場合に、税務決算仕訳と対をなすものとして使用される現行の税金"
+"税務当局に有利な場合に、税の締め仕訳と対をなすものとして使用される現行の税金"
 "の勘定科目"
 
 #. module: account
@@ -14921,7 +14940,7 @@ msgid ""
 "Tax current account used as a counterpart to the Tax Closing Entry when in "
 "favor of the company."
 msgstr ""
-"会社に有利な場合に、税務決算仕訳と対をなすものとして使用される現行の税金の勘"
+"会社に有利な場合に、税の締め仕訳と対をなすものとして使用される現行の税金の勘"
 "定科目"
 
 #. module: account
@@ -15476,7 +15495,7 @@ msgstr "この会社の税レポートの課税国"
 #. odoo-python
 #: code:addons/account/models/account_move.py:0
 msgid "The currency rate must be strictly positive."
-msgstr ""
+msgstr "為替レートは正の数でなければなりません。"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_journal__currency_id
@@ -16710,8 +16729,8 @@ msgstr "この定期的な仕訳は当日を含めこの日付まで記帳され
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
-msgid "This setting cannot be changed after an invoice is created."
-msgstr "顧客請求書作成後は、この設定を変更することはできません。"
+msgid "This setting locks once a journal entry is created."
+msgstr ""
 
 #. module: account
 #. odoo-python
@@ -18364,8 +18383,8 @@ msgid ""
 "You cannot create a move already in the posted state. Please create a draft "
 "move and post it after."
 msgstr ""
-"すでに投稿された状態のムーブを作成することはできません。ドラフトを作成して、"
-"後で投稿してください。"
+"すでに投稿されたステータスの移動を作成することはできません。ドラフトを作成し"
+"て、後で投稿してください。"
 
 #. module: account
 #. odoo-python
@@ -19363,6 +19382,25 @@ msgid ""
 "{{ object.company_id.name }} Payment Receipt (Ref {{ object.name or 'n/a' }})"
 msgstr ""
 "{{ object.company_id.name }} 支払受領書 (Ref {{ object.name or 'n/a' }})"
+
+#~ msgid "This setting cannot be changed after an invoice is created."
+#~ msgstr "顧客請求書作成後は、この設定を変更することはできません。"
+
+#~ msgid ""
+#~ "%(tax_account)s (%(account_name)s) should be an account of type \"%"
+#~ "(receivable)s\" or \"%(payable)s\" with both options \"%"
+#~ "(allow_reconciliation)s\" and \"%(non_trade)s\" enabled."
+#~ msgstr ""
+#~ "%(tax_account)s (%(account_name)s) は勘定科目タイプ \"%(receivable)s\" ま"
+#~ "たは \"%(payable)s\" 両方のオプション \"%(allow_reconciliation)s\" および "
+#~ "\"%(non_trade)s\" が有効化されている必要があります。"
+
+#~ msgid ""
+#~ "Accrual entry created on %(date)s: %(accrual_entry)s.                    "
+#~ "And its reverse entry: %(reverse_entry)s."
+#~ msgstr ""
+#~ " %(date)s: %(accrual_entry)sに作成された未収計上。                  また、"
+#~ "その逆仕訳：%(reverse_entry)s"
 
 #~ msgid ""
 #~ "<small class=\"form-text text-muted\">\n"

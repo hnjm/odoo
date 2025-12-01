@@ -11,6 +11,7 @@ from odoo import http
 from odoo.addons.base.tests.common import HttpCaseWithUserDemo
 from odoo.addons.web_editor.controllers.main import Web_Editor
 from odoo.fields import Command
+from odoo.tools import mute_logger
 
 
 @odoo.tests.tagged('-at_install', 'post_install')
@@ -250,6 +251,7 @@ class TestUiTranslate(odoo.tests.HttpCase):
             'code': 'pa_GB',
             'iso_code': 'pa_GB',
             'url_code': 'pa_GB',
+            'direction': 'rtl',
         }, {
             'name': 'Fake User Lang',
             'code': 'fu_GB',
@@ -277,6 +279,7 @@ class TestUiTranslate(odoo.tests.HttpCase):
 
         self.start_tour(f"/website/force/{website.id}", 'snippet_translation', login='admin')
         self.start_tour(f"/website/force/{website_2.id}", 'snippet_translation_changing_lang', login='admin')
+        self.start_tour(f"/website/force/{website.id}", 'snippet_dialog_rtl', login='admin')
 
 
 @odoo.tests.common.tagged('post_install', '-at_install')
@@ -759,3 +762,16 @@ class TestUi(odoo.tests.HttpCase):
 
     def test_hiding_sidebar_header(self):
         self.start_tour("/", "hide_sidebar_header", login="admin")
+
+    def test_header_color_and_undo_redo_issue(self):
+        self.start_tour("/", "undo_redo_header_oriented_issue", login="admin")
+
+    def test_website_edit_megamenu_visibility(self):
+        self.start_tour("/", 'edit_megamenu_visibility', login='admin')
+
+    @mute_logger("odoo.http")
+    def test_website_replace_remove_image(self):
+        self.start_tour("/", "website_replace_remove_image", login="admin")
+
+    def test_website_custom_colors_picking(self):
+        self.start_tour('/', 'website_custom_colors_picking', login='admin')
