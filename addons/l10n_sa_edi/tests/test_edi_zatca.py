@@ -38,6 +38,31 @@ class TestEdiZatca(TestSaEdiCommon):
         if 'sale' not in self.env["ir.module.module"]._installed():
             self.skipTest("Sale module is not installed")
 
+        def test_generated_file(move, test_file, xpath_to_apply):
+            move.write({
+                'invoice_date': '2022-09-05',
+                'invoice_date_due': '2022-09-22',
+                'state': 'posted',
+                'l10n_sa_confirmation_datetime': datetime.now(),
+            })
+            move._l10n_sa_generate_unsigned_data()
+            generated_file = self.env['account.edi.format']._l10n_sa_generate_zatca_template(move)
+            current_tree = self.get_xml_tree_from_string(generated_file)
+            current_tree = self.with_applied_xpath(current_tree, self.remove_ubl_extensions_xpath)
+
+            expected_file = misc.file_open(f'l10n_sa_edi/tests/test_files/{test_file}.xml', 'rb').read()
+            expected_tree = self.get_xml_tree_from_string(expected_file)
+            expected_tree = self.with_applied_xpath(expected_tree, xpath_to_apply)
+
+            self.assertXmlTreeEqual(current_tree, expected_tree)
+
+        retention_tax = self.env['account.tax'].create({
+            'l10n_sa_is_retention': True,
+            'name': 'Retention Tax',
+            'amount_type': 'percent',
+            'amount': -5.0,
+        })
+
         with freeze_time(datetime(year=2022, month=9, day=5, hour=8, minute=20, second=2, tzinfo=timezone('Etc/GMT-3'))):
             self.partner_us.vat = 'US12345677'
 
@@ -50,7 +75,7 @@ class TestEdiZatca(TestSaEdiCommon):
                         'product_id': self.product_a.id,
                         'price_unit': 1000,
                         'product_uom_qty': 1,
-                        'tax_id': [Command.set(self.tax_15.ids)],
+                        'tax_id': [Command.set((self.tax_15 + retention_tax).ids)],
                     })
                 ]
             })
@@ -74,23 +99,26 @@ class TestEdiZatca(TestSaEdiCommon):
                 (downpayment, "downpayment_invoice"),
                 (final, "final_invoice")
             ):
-                move.write({
-                    'invoice_date': '2022-09-05',
-                    'invoice_date_due': '2022-09-22',
-                    'state': 'posted',
-                    'l10n_sa_confirmation_datetime': datetime.now(),
-                })
-                move._l10n_sa_generate_unsigned_data()
+                with self.subTest(move=move, test_file=test_file):
+                    test_generated_file(move, test_file, self.invoice_applied_xpath)
 
-                generated_file = self.env['account.edi.format']._l10n_sa_generate_zatca_template(move)
-                current_tree = self.get_xml_tree_from_string(generated_file)
-                current_tree = self.with_applied_xpath(current_tree, self.remove_ubl_extensions_xpath)
-
-                expected_file = misc.file_open(f'l10n_sa_edi/tests/test_files/{test_file}.xml', 'rb').read()
-                expected_tree = self.get_xml_tree_from_string(expected_file)
-                expected_tree = self.with_applied_xpath(expected_tree, self.invoice_applied_xpath)
-
-                self.assertXmlTreeEqual(current_tree, expected_tree)
+            for move, test_file in (
+                (downpayment, "downpayment_credit_note"),
+                (final, "final_credit_note")
+            ):
+                with self.subTest(move=move, test_file=test_file):
+                    wiz_context = {
+                        'active_model': 'account.move',
+                        'active_ids': [move.id],
+                        'default_journal_id': move.journal_id.id,
+                    }
+                    refund_invoice_wiz = self.env['account.move.reversal'].with_context(wiz_context).create({
+                        'reason': 'please reverse :c',
+                        'refund_method': 'refund',
+                        'date': '2022-09-05',
+                    })
+                    refund_invoice = self.env['account.move'].browse(refund_invoice_wiz.reverse_moves()['res_id'])
+                    test_generated_file(refund_invoice, test_file, self.credit_note_applied_xpath)
 
     def testCreditNoteStandard(self):
 
@@ -215,44 +243,3 @@ class TestEdiZatca(TestSaEdiCommon):
         errors = self.edi_format.with_user(self.user_saudi.id)._check_move_configuration(move)
         msg = '- Please, make sure the invoice date is set to either the same as or before Today.'
         self.assertTrue(msg in errors)
-        
-    def test_invoice_type_code(self):
-        move_us_company = self._create_invoice(
-            name='INV/2024/00014',
-            date='2024-02-20',
-            date_due='2024-02-28',
-            partner_id=self.partner_us,
-            product_id=self.product_a,
-            price=320.0,
-            user=self.user_saudi,
-        )
-        
-        invoice_type_code = self.env['account.edi.xml.ubl_21.zatca']._l10n_sa_get_invoice_transaction_code(move_us_company)
-        # Not a simplified invoice since the partner is not from saudi arabia and a company
-        self.assertEqual(invoice_type_code, "0100100")
-
-        move_sa = self._create_invoice(
-            name='INV/2024/00015',
-            date='2024-02-20',
-            date_due='2024-02-28',
-            partner_id=self.partner_sa,
-            product_id=self.product_a,
-            price=320.0,
-            user=self.user_saudi,
-        )
-        invoice_type_code = self.env['account.edi.xml.ubl_21.zatca']._l10n_sa_get_invoice_transaction_code(move_sa)
-        # Not a simplified invoice since the partner is from saudi arabia but a company
-        self.assertEqual(invoice_type_code, "0100000")
-
-        move_sa_simplified = self._create_invoice(
-            name='INV/2024/00016',
-            date='2024-02-20',
-            date_due='2024-02-28',
-            partner_id=self.partner_sa_simplified,
-            product_id=self.product_a,
-            price=320.0,
-            user=self.user_saudi,
-        )
-        invoice_type_code = self.env['account.edi.xml.ubl_21.zatca']._l10n_sa_get_invoice_transaction_code(move_sa_simplified)
-        # Simplified invoice since the partner is from saudi arabia and an individual
-        self.assertEqual(invoice_type_code, "0200000")

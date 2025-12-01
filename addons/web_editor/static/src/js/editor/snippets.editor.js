@@ -1616,6 +1616,14 @@ var SnippetEditor = Widget.extend({
             return;
         }
         ev.data.show = this._toggleVisibilityStatus(ev.data.show);
+        // Toggle the value of ev.data.show so that when trigger_up is called,
+        // it passes the value `true` to its parent. Additionally, in this
+        // block, we are calling `trigger_up` with `activate_snippet` to false,
+        // which disables options for that specific block.
+        if (this.$target[0] === ev.target.$target[0] && !ev.data.show) {
+            this.trigger_up("activate_snippet", { $snippet: false });
+            ev.data.show = true;
+        }
     },
     /**
      * @private
@@ -4014,17 +4022,23 @@ var SnippetsMenu = Widget.extend({
         var self = this;
         var $snippet = $(ev.currentTarget).closest('[data-module-id]');
         var moduleID = $snippet.data('moduleId');
-        var name = $snippet.attr('name');
+        var moduleDisplayName = $snippet[0].dataset.moduleDisplayName;
         new Dialog(this, {
-            title: _.str.sprintf(_t("Install %s"), name),
+            title: _.str.sprintf(_t("Install %s"), `"${moduleDisplayName}"`),
             size: 'medium',
-            $content: $('<div/>', {text: _.str.sprintf(_t("Do you want to install the %s App?"), name)}).append(
+            $content: $('<div/>', {text: _.str.sprintf(_t("Do you want to install the %s App?"), `"${moduleDisplayName}"`)}).append(
                 $('<a/>', {
                     target: '_blank',
                     href: '/web#id=' + encodeURIComponent(moduleID) + '&view_type=form&model=ir.module.module&action=base.open_module_tree',
                     text: _t("More info about this app."),
                     class: 'ml4',
-                })
+                }).prepend(
+                    $('<i/>', {
+                        class: 'fa fa-arrow-right me-1'
+                    })
+                ).prepend(
+                    $('<br/>')
+                )
             ),
             buttons: [{
                 text: _t("Save and Install"),
@@ -4044,7 +4058,7 @@ var SnippetsMenu = Widget.extend({
                     }).guardedCatch(reason => {
                         reason.event.preventDefault();
                         this.close();
-                        const message = sprintf(Markup(_t("Could not install module <strong>%s</strong>")), name);
+                        const message = sprintf(Markup(_t("Could not install module <strong>%s</strong>")), moduleDisplayName);
                         self.displayNotification({
                             message: message,
                             type: 'danger',

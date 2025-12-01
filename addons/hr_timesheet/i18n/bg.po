@@ -17,6 +17,8 @@
 # Elena Varbanova, 2024
 # Milena Georgieva, 2024
 # Emil Krastev, 2024
+# Martin Dinovski, 2025
+# margarita.katzeva, 2025
 # Veselina Slavkova, 2025
 # 
 msgid ""
@@ -479,7 +481,7 @@ msgstr "Групиране по"
 #. module: hr_timesheet
 #: model:ir.model,name:hr_timesheet.model_ir_http
 msgid "HTTP Routing"
-msgstr ""
+msgstr "HTTP Маршрутизиране"
 
 #. module: hr_timesheet
 #. odoo-python
@@ -635,7 +637,7 @@ msgstr "Меню"
 #. module: hr_timesheet
 #: model_terms:ir.ui.view,arch_db:hr_timesheet.view_project_project_filter_inherit_timesheet
 msgid "My Department"
-msgstr ""
+msgstr "Моят отдел"
 
 #. module: hr_timesheet
 #: model_terms:ir.ui.view,arch_db:hr_timesheet.report_project_task_user_view_search
@@ -861,14 +863,14 @@ msgstr "Отчитане"
 #: code:addons/hr_timesheet/controllers/portal.py:0
 #, python-format
 msgid "Search in All"
-msgstr ""
+msgstr "Търсене в Всички"
 
 #. module: hr_timesheet
 #. odoo-python
 #: code:addons/hr_timesheet/controllers/portal.py:0
 #, python-format
 msgid "Search in Description"
-msgstr ""
+msgstr "Търсете в Описанието "
 
 #. module: hr_timesheet
 #. odoo-python

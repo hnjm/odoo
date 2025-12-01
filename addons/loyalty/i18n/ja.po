@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-06 13:31+0000\n"
+"POT-Creation-Date: 2025-05-22 18:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:53+0000\n"
 "Last-Translator: Junko Augias, 2025\n"
 "Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
@@ -1036,7 +1036,7 @@ msgstr "フォロワー (取引先)"
 #. module: loyalty
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_generate_wizard__mode
 msgid "For"
-msgstr "以下用:"
+msgstr "対象:"
 
 #. module: loyalty
 #. odoo-python
@@ -1679,6 +1679,7 @@ msgstr ""
 
 #. module: loyalty
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_program__reward_ids
+#: model_terms:ir.ui.view,arch_db:loyalty.loyalty_program_view_form
 msgid "Rewards"
 msgstr "リワード"
 
@@ -1789,6 +1790,13 @@ msgid "The required points for a reward must be strictly positive."
 msgstr "リワードに必要なポイントは必ず正の値にして下さい。"
 
 #. module: loyalty
+#. odoo-python
+#: code:addons/loyalty/models/loyalty_reward.py:0
+#, python-format
+msgid "The reward description field cannot be empty."
+msgstr "報酬の説明フィールドを空にすることはできません。"
+
+#. module: loyalty
 #: model:ir.model.constraint,message:loyalty.constraint_loyalty_reward_product_qty_positive
 msgid "The reward product quantity must be strictly positive."
 msgstr "リワードプロダクト数量は必ず正の値にして下さい。"
@@ -1832,6 +1840,13 @@ msgstr "合計オーダ数"
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_program__trigger
 msgid "Trigger"
 msgstr "トリガー"
+
+#. module: loyalty
+#. odoo-python
+#: code:addons/loyalty/models/loyalty_reward.py:0
+#, python-format
+msgid "Unsupported search operator"
+msgstr "サポートされていない検索オペレータ"
 
 #. module: loyalty
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_card__use_count
@@ -1923,13 +1938,6 @@ msgstr "プロモーションコードで"
 #, python-format
 msgid "You can not delete a program in an active state"
 msgstr "アクティブなステータスのプログラムを削除することはできません。"
-
-#. module: loyalty
-#. odoo-python
-#: code:addons/loyalty/models/loyalty_reward.py:0
-#, python-format
-msgid "The reward description field cannot be empty."
-msgstr "報酬の説明フィールドを空にすることはできません。"
 
 #. module: loyalty
 #. odoo-python

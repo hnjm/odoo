@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-06 13:31+0000\n"
+"POT-Creation-Date: 2025-05-22 18:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:53+0000\n"
 "Last-Translator: Thi Huong Nguyen, 2025\n"
 "Language-Team: Vietnamese (https://app.transifex.com/odoo/teams/41243/vi/)\n"
@@ -1104,9 +1104,9 @@ msgid ""
 "constraints on its usage through conditional rule."
 msgstr ""
 "Tạo &amp; chia sẻ mã phiếu giảm giá theo cách thủ công. Nó có thể được sử "
-"dụng trong Thương mại điện tử, Điểm bán hàng hoặc các đơn đặt hàng thông "
-"thường để nhận Phần thưởng. Bạn có thể xác định các ràng buộc đối với việc "
-"sử dụng nó thông qua quy tắc có điều kiện."
+"dụng trong Thương mại điện tử, POS hoặc các đơn đặt hàng thông thường để "
+"nhận Phần thưởng. Bạn có thể xác định các ràng buộc đối với việc sử dụng nó "
+"thông qua quy tắc có điều kiện."
 
 #. module: loyalty
 #: model:ir.model,name:loyalty.model_loyalty_generate_wizard
@@ -1698,6 +1698,7 @@ msgstr ""
 
 #. module: loyalty
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_program__reward_ids
+#: model_terms:ir.ui.view,arch_db:loyalty.loyalty_program_view_form
 msgid "Rewards"
 msgstr "Phần thưởng"
 
@@ -1812,6 +1813,13 @@ msgid "The required points for a reward must be strictly positive."
 msgstr "Điểm cần thiết để nhận phần thưởng phải là số dương."
 
 #. module: loyalty
+#. odoo-python
+#: code:addons/loyalty/models/loyalty_reward.py:0
+#, python-format
+msgid "The reward description field cannot be empty."
+msgstr "Không được để trống trường mô tả phần thưởng."
+
+#. module: loyalty
 #: model:ir.model.constraint,message:loyalty.constraint_loyalty_reward_product_qty_positive
 msgid "The reward product quantity must be strictly positive."
 msgstr "Số lượng sản phẩm phần thưởng phải là số dương."
@@ -1859,6 +1867,13 @@ msgstr "Tổng số đơn hàng"
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_program__trigger
 msgid "Trigger"
 msgstr "Bộ khởi động"
+
+#. module: loyalty
+#. odoo-python
+#: code:addons/loyalty/models/loyalty_reward.py:0
+#, python-format
+msgid "Unsupported search operator"
+msgstr ""
 
 #. module: loyalty
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_card__use_count
@@ -1957,13 +1972,6 @@ msgstr "Với một mã khuyến mãi"
 #, python-format
 msgid "You can not delete a program in an active state"
 msgstr "Bạn không thể xóa một chương trình ở trạng thái hoạt động"
-
-#. module: loyalty
-#. odoo-python
-#: code:addons/loyalty/models/loyalty_reward.py:0
-#, python-format
-msgid "The reward description field cannot be empty."
-msgstr "Không được để trống trường mô tả phần thưởng."
 
 #. module: loyalty
 #. odoo-python

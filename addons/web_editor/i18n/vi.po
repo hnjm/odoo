@@ -7,13 +7,14 @@
 # Thin Tran <trvathin@gmail.com>, 2022
 # Duy BQ <duybq86@gmail.com>, 2022
 # Martin Trigaux, 2023
+# Wil Odoo, 2025
 # Thi Huong Nguyen, 2025
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-06 13:32+0000\n"
+"POT-Creation-Date: 2025-05-08 20:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:55+0000\n"
 "Last-Translator: Thi Huong Nguyen, 2025\n"
 "Language-Team: Vietnamese (https://app.transifex.com/odoo/teams/41243/vi/)\n"
@@ -63,8 +64,8 @@ msgstr ""
 #, python-format
 msgid "'Title tag' is shown as a tooltip when you hover the picture."
 msgstr ""
-"'Tiêu đề Thẻ' được hiển thị dưới dạng chú giải công cụ khi bạn di chuột qua "
-"ảnh."
+"'Thẻ tiêu đề' được hiển thị dưới dạng chú thích công cụ khi bạn di chuột qua"
+" ảnh."
 
 #. module: web_editor
 #. odoo-javascript
@@ -541,7 +542,7 @@ msgstr ""
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
 msgid "Blobs"
-msgstr "Đốm màu"
+msgstr "Hình tự do"
 
 #. module: web_editor
 #. odoo-javascript
@@ -645,7 +646,7 @@ msgstr "Trung tâm"
 #: code:addons/web_editor/static/src/js/wysiwyg/widgets/alt_dialog.js:0
 #, python-format
 msgid "Change media description and tooltip"
-msgstr "Thay đổi mô tả và tooltip của media"
+msgstr "Thay đổi mô tả và chú thích của media"
 
 #. module: web_editor
 #. odoo-javascript
@@ -785,10 +786,13 @@ msgstr "Không thể cài đặt module <strong>%s</strong>"
 
 #. module: web_editor
 #. odoo-javascript
-#. module: web_editor
 #: code:addons/web_editor/static/src/components/upload_progress_toast/upload_service.js:0
-#: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
 #, python-format
+msgid "Could not load the file \"%s\"."
+msgstr "Không thể tải tệp\"%s\"."
+
+#. module: web_editor
+#: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
 msgid "Cover"
 msgstr "Ảnh bìa"
 
@@ -957,6 +961,13 @@ msgstr "Tên hiển thị"
 #, python-format
 msgid "Do you want to install the %s App?"
 msgstr "Bạn có muốn cài đặt Ứng dụng %s không?"
+
+#. module: web_editor
+#. odoo-javascript
+#: code:addons/web_editor/static/src/components/media_dialog/media_dialog.js:0
+#, python-format
+msgid "Documents"
+msgstr "Tài liệu"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1366,13 +1377,6 @@ msgstr "Ẩn biểu tượng Dailymotion"
 #. odoo-javascript
 #: code:addons/web_editor/static/src/components/media_dialog/video_selector.js:0
 #, python-format
-msgid "Hide Youtube logo"
-msgstr "Ẩn biểu tượng Youtube"
-
-#. module: web_editor
-#. odoo-javascript
-#: code:addons/web_editor/static/src/components/media_dialog/video_selector.js:0
-#, python-format
 msgid "Hide fullscreen button"
 msgstr "Ẩn nút Đầy màn hình"
 
@@ -1454,6 +1458,13 @@ msgstr "Kích thước biểu tượng 5x"
 
 #. module: web_editor
 #. odoo-javascript
+#: code:addons/web_editor/static/src/components/media_dialog/media_dialog.js:0
+#, python-format
+msgid "Icons"
+msgstr "Icon"
+
+#. module: web_editor
+#. odoo-javascript
 #: code:addons/web_editor/static/src/js/wysiwyg/wysiwyg.js:0
 #, python-format
 msgid ""
@@ -1518,6 +1529,13 @@ msgstr "Chiều rộng ảnh"
 #, python-format
 msgid "Image padding"
 msgstr "Padding hình ảnh"
+
+#. module: web_editor
+#. odoo-javascript
+#: code:addons/web_editor/static/src/components/media_dialog/media_dialog.js:0
+#, python-format
+msgid "Images"
+msgstr "Hình ảnh"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
@@ -1590,6 +1608,7 @@ msgstr "Chèn bên dưới"
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
+#: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Insert left"
 msgstr "Chèn bên trái"
@@ -1617,6 +1636,7 @@ msgstr "Chèn nội dung riêng"
 
 #. module: web_editor
 #. odoo-javascript
+#: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Insert right"
@@ -1847,12 +1867,14 @@ msgstr "Chuyển xuống"
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
+#: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Move left"
 msgstr "Move left"
 
 #. module: web_editor
 #. odoo-javascript
+#: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Move right"
@@ -2862,7 +2884,7 @@ msgstr ""
 #: code:addons/web_editor/static/src/xml/snippets.xml:0
 #, python-format
 msgid "Theme"
-msgstr "Chủ đề"
+msgstr "Giao diện"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2989,7 +3011,7 @@ msgstr "Chuyển đổi in đậm"
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Toggle checklist"
-msgstr "Toggle checklist"
+msgstr "Bật/tắt danh sách"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3010,7 +3032,7 @@ msgstr "Toggle italic"
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Toggle ordered list"
-msgstr "Toggle ordered list"
+msgstr "Bật/tắt danh sách có thứ tự"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3031,7 +3053,7 @@ msgstr "Toggle underline"
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Toggle unordered list"
-msgstr "Toggle unordered list"
+msgstr "Bật/tắt danh sách không có thứ tự"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3039,7 +3061,7 @@ msgstr "Toggle unordered list"
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 #, python-format
 msgid "Tooltip"
-msgstr "Tooltip"
+msgstr "Chú thích"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3175,6 +3197,13 @@ msgstr "Định dạng video"
 #, python-format
 msgid "Video code"
 msgstr "Video code"
+
+#. module: web_editor
+#. odoo-javascript
+#: code:addons/web_editor/static/src/components/media_dialog/media_dialog.js:0
+#, python-format
+msgid "Videos"
+msgstr "Video"
 
 #. module: web_editor
 #. odoo-javascript

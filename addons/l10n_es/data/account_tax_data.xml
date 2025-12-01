@@ -2430,11 +2430,11 @@
         <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
             (0,0, {
                 'repartition_type': 'base',
-                'tag_ids': [ref('mod_303_16')],
+                'tag_ids': [ref('mod_303_168')],
             }),
             (0,0, {
                 'repartition_type': 'tax',
-                'tag_ids': [ref('mod_303_18')],
+                'tag_ids': [ref('mod_303_170')],
                 'account_id': ref('l10n_es.account_common_477'),
             }),
          ]"/>
@@ -4859,7 +4859,7 @@
     <record id="account_tax_template_p_irpf19cs" model="account.tax.template">
         <field name="description"/> <!-- for resetting the value on existing DBs -->
         <field name="type_tax_use">purchase</field>
-        <field name="name">Retenciones IRPF 19% (Compra consejero de sociedad)</field>
+        <field name="name">Retenciones IRPF 19% (Compra consejero de sociedad y Resto de rentas)</field>
         <field name="chart_template_id" ref="l10n_es.account_chart_template_common"/>
         <field name="amount" eval="-19"/>
         <field name="amount_type">percent</field>
@@ -5221,5 +5221,23 @@
             }),
         ]"
         />
+    </record>
+    <record id="account_tax_template_s_gd0" model="account.tax.template">
+        <field name="description">Gastos deducibles</field>
+        <field name="type_tax_use">none</field>
+        <field name="name">Gastos deducibles</field>
+        <field name="active">True</field>
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common"/>
+        <field name="amount" eval="0"/>
+        <field name="amount_type">percent</field>
+        <field name="tax_group_id" ref="tax_group_seguridad_social"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+            (0,0, {'repartition_type': 'base'}),
+            (0,0, {'repartition_type': 'tax'}),
+        ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+            (0,0, {'repartition_type': 'base'}),
+            (0,0, {'repartition_type': 'tax'}),
+        ]"/>
     </record>
 </odoo>
