@@ -122,11 +122,13 @@ export class CartPage extends Component {
     getPrice(line) {
         const childLines = line.combo_line_ids;
         if (childLines.length == 0) {
-            return line.get_display_price();
+            const qty = this.getLineChangeQty(line) || line.qty;
+            return line.getDisplayPriceWithQty(qty);
         } else {
             let price = 0;
             for (const child of childLines) {
-                price += child.get_display_price();
+                const qty = this.getLineChangeQty(child) || child.qty;
+                price += child.getDisplayPriceWithQty(qty);
             }
             return price;
         }
@@ -192,7 +194,7 @@ export class CartPage extends Component {
         const order = this.selfOrder.currentOrder;
         this.selfOrder.editedLine = line;
 
-        if (order.state === "draft" && !order.lastChangesSent[line.uuid]) {
+        if (order.state === "draft" && !order.uiState.lineChanges[line.uuid]) {
             this.selfOrder.selectedOrderUuid = order.uuid;
 
             if (line.combo_line_ids.length > 0) {

@@ -12,13 +12,15 @@
 # Wil Odoo, 2025
 # Marta Wacławek, 2025
 # Dawid Gacek <dawid.gacek@adapt-it.pl>, 2025.
+# "Marta (wacm)" <wacm@odoo.com>, 2026.
+# Weblate <noreply-mt-weblate@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-16 18:39+0000\n"
-"PO-Revision-Date: 2025-09-17 08:39+0000\n"
-"Last-Translator: Dawid Gacek <dawid.gacek@adapt-it.pl>\n"
+"POT-Creation-Date: 2026-02-05 18:38+0000\n"
+"PO-Revision-Date: 2026-03-29 12:14+0000\n"
+"Last-Translator: \"Marta (wacm)\" <wacm@odoo.com>\n"
 "Language-Team: Polish <https://translate.odoo.com/projects/odoo-18/"
 "spreadsheet/pl/>\n"
 "Language: pl\n"
@@ -28,7 +30,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && "
 "(n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
 "n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -621,6 +623,12 @@ msgstr "Wartość bezwzględna"
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "Absolute value of a number."
 msgstr "Wartość bezwzględna liczby."
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/actions/spreadsheet_download_action.js:0
+msgid "Access Error"
+msgstr "Błąd dostępu"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -2018,7 +2026,7 @@ msgstr "Porównuje dwie wartości liczbowe, zwracając 1, jeśli są równe."
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 msgid "Compute from totals"
-msgstr ""
+msgstr "Oblicz z sum"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -3146,8 +3154,6 @@ msgid "Doughnut"
 msgstr "Pączek"
 
 #. module: spreadsheet
-#. odoo-javascript
-#: code:addons/spreadsheet/static/src/public_readonly_app/public_readonly.js:0
 #: model_terms:ir.ui.view,arch_db:spreadsheet.public_spreadsheet_layout
 msgid "Download"
 msgstr "Pobierz"
@@ -3719,6 +3725,8 @@ msgstr ""
 msgid ""
 "Function [[FUNCTION_NAME]] expects number values for %s, but got a boolean."
 msgstr ""
+"Funkcja [[FUNCTION_NAME]] oczekuje wartości liczbowych dla %s, ale otrzymała "
+"wartość logiczną."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -3726,6 +3734,8 @@ msgstr ""
 msgid ""
 "Function [[FUNCTION_NAME]] expects number values for %s, but got a string."
 msgstr ""
+"Funkcja [[FUNCTION_NAME]] oczekuje wartości liczbowych dla %s, ale otrzymała "
+"ciąg znaków."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -3734,6 +3744,8 @@ msgid ""
 "Function [[FUNCTION_NAME]] expects number values for %s, but got an empty "
 "value."
 msgstr ""
+"Funkcja [[FUNCTION_NAME]] oczekuje wartości liczbowych dla %s, ale otrzymała "
+"pustą wartość."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -6525,7 +6537,7 @@ msgstr "Wrzesień"
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 msgid "Serie type"
-msgstr "Typ seri"
+msgstr "Typ serii"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -8017,6 +8029,7 @@ msgid ""
 "The first and second arguments of [[FUNCTION_NAME]] must be non-empty "
 "matrices."
 msgstr ""
+"Pierwszy i drugi argument [[FUNCTION_NAME]] muszą być macierzami niepustymi."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -8309,7 +8322,7 @@ msgstr "Wartość future_value (%s) musi być ściśle dodatnia."
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "The header row of a table can't be moved."
-msgstr ""
+msgstr "Wiersza nagłówkowego tabeli nie można przesuwać."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -11123,7 +11136,7 @@ msgstr "Zmiana wartości z wartości klucza"
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "Value for parameter %s is missing in [[FUNCTION_NAME]]."
-msgstr ""
+msgstr "W [[FUNCTION_NAME]] brakuje wartości parametru %s."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -11689,6 +11702,14 @@ msgstr "Nie możesz tworzyć nakładających się na siebie tabeli."
 
 #. module: spreadsheet
 #. odoo-javascript
+#: code:addons/spreadsheet/static/src/actions/spreadsheet_download_action.js:0
+msgid ""
+"You don't have the rights to export data. Please contact an Administrator."
+msgstr ""
+"Nie masz uprawnień do eksportowania danych. Skontaktuj się z administratorem."
+
+#. module: spreadsheet
+#. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "[[FUNCTION_NAME]] evaluates to an out of bounds range."
 msgstr "[[FUNCTION_NAME]] oblicza wartość poza zakresem."
@@ -11718,6 +11739,8 @@ msgid ""
 "[[FUNCTION_NAME]] expects the provided values of %(argName)s to be a non-"
 "empty matrix."
 msgstr ""
+"[[FUNCTION_NAME]] oczekuje, że podane wartości %(argName)s będą niepustą "
+"macierzą."
 
 #. module: spreadsheet
 #. odoo-javascript

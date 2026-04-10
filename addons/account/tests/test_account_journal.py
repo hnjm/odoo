@@ -45,7 +45,7 @@ class TestAccountJournal(AccountTestInvoicingCommon):
         with self.assertRaisesRegex(UserError, "entries linked to it"), self.cr.savepoint():
             self.company_data['default_journal_sale'].company_id = self.company_data_2['company']
 
-    def test_account_control_create_journal_entry(self):
+    def test_account_control_post_journal_entry(self):
         move_vals = {
             'line_ids': [
                 (0, 0, {
@@ -66,11 +66,11 @@ class TestAccountJournal(AccountTestInvoicingCommon):
         # Should fail because 'default_account_expense' is not allowed.
         self.company_data['default_journal_misc'].account_control_ids |= self.company_data['default_account_revenue']
         with self.assertRaises(UserError), self.cr.savepoint():
-            self.env['account.move'].create(move_vals)
+            self.env['account.move'].create(move_vals).action_post()
 
         # Should be allowed because both accounts are accepted.
         self.company_data['default_journal_misc'].account_control_ids |= self.company_data['default_account_expense']
-        self.env['account.move'].create(move_vals)
+        self.env['account.move'].create(move_vals).action_post()
 
     def test_account_control_existing_journal_entry(self):
         self.env['account.move'].create({
@@ -454,7 +454,7 @@ class TestAccountJournalAlias(AccountTestInvoicingCommon, MailCommon):
         outbound_method_lines = bank_journal.outbound_payment_method_line_ids
         outbound_method_lines_names = outbound_method_lines.mapped('name')
         outbound_method_lines[0].payment_account_id = outstanding_payment_account
-        new_outbound_payment_line = outbound_method_lines[0].copy({'payment_account_id': outstanding_payment_account.id})
+        new_outbound_payment_line = outbound_method_lines[0].copy({'payment_account_id': self.company_data['default_account_deferred_expense'].id})
         bank_journal.outbound_payment_method_line_ids = [Command.link(new_outbound_payment_line.id)]
 
         # Set currency_id to trigger the compute of {in,out}bound_payment_method_line_ids

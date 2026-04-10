@@ -11,7 +11,7 @@ class SaleOrder(models.Model):
     l10n_tw_edi_carrier_type = fields.Selection(
         string="Carrier Type",
         selection=[
-            ("1", "ECpay e-invoice carrier"),
+            ("1", "Member Account"),
             ("2", "Citizen Digital Certificate"),
             ("3", "Mobile Barcode"),
             ("4", "EasyCard"),
@@ -23,7 +23,7 @@ class SaleOrder(models.Model):
 
     def _prepare_invoice(self):
         res = super()._prepare_invoice()
-        if self.company_id.country_id.code == 'TW' and self.company_id._is_ecpay_enabled():
+        if self.company_id.account_fiscal_country_id.code == 'TW' and self.company_id._is_ecpay_enabled():
             res.update(
                 {
                     "l10n_tw_edi_is_print": self.l10n_tw_edi_is_print,

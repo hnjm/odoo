@@ -8,16 +8,16 @@
 # Wil Odoo, 2025
 # Junko Augias, 2025
 # Ryoko Tsuda <ryoko@quartile.co>, 2025
-# "Junko Augias (juau)" <juau@odoo.com>, 2025.
+# "Junko Augias (juau)" <juau@odoo.com>, 2025, 2026.
 # Yoshi Tashiro <tashiro@quartile.co>, 2025.
 # Weblate <noreply-mt-weblate@weblate.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-24 18:36+0000\n"
-"PO-Revision-Date: 2025-11-21 06:39+0000\n"
-"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
+"POT-Creation-Date: 2026-04-03 18:39+0000\n"
+"PO-Revision-Date: 2026-03-29 12:14+0000\n"
+"Last-Translator: \"Junko Augias (juau)\" <juau@odoo.com>\n"
 "Language-Team: Japanese <https://translate.odoo.com/projects/odoo-18/website/"
 "ja/>\n"
 "Language: ja\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #. module: website
 #. odoo-javascript
@@ -2432,6 +2432,12 @@ msgid "A new visit is considered if last connection was more than 8 hours ago."
 msgstr "最後の接続が8時間以上前の場合は新規訪問と判断されます。"
 
 #. module: website
+#. odoo-python
+#: code:addons/website/models/website_controller_page.py:0
+msgid "A page must be set to display a concrete model."
+msgstr ""
+
+#. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 msgid "A second item"
 msgstr "第2項目"
@@ -2606,7 +2612,7 @@ msgstr " %sを有効化ています。"
 #: model_terms:ir.ui.view,arch_db:website.color_combinations_debug_view
 #: model_terms:ir.ui.view,arch_db:website.website_visitor_view_kanban
 msgid "Active"
-msgstr "アクティブ"
+msgstr "有効"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_three_columns
@@ -3392,7 +3398,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.theme_view_search
 msgid "Author"
-msgstr "著作者"
+msgstr "作成者"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_blockquote_options
@@ -3671,7 +3677,7 @@ msgstr "ぼかし"
 #. odoo-javascript
 #: code:addons/website/static/src/xml/website.editor.xml:0
 msgid "Bold"
-msgstr "ボールド"
+msgstr "太字"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_call_to_action_menu
@@ -4176,7 +4182,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.s_chart_options
 #: model_terms:ir.ui.view,arch_db:website.snippets
 msgid "Chart"
-msgstr "チャート"
+msgstr "グラフ"
 
 #. module: website
 #: model:website.configurator.feature,description:website.feature_module_live_chat
@@ -4298,7 +4304,7 @@ msgstr "シナモンロール"
 #: model_terms:ir.ui.view,arch_db:website.s_countdown_options
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 msgid "Circle"
-msgstr "サークル"
+msgstr "円形"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_image_gallery_options
@@ -5231,7 +5237,7 @@ msgstr "Danielは日々の業務の効率化とプロセス最適化を担当し
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_badge_options
 msgid "Dark"
-msgstr "暗い"
+msgstr "ダーク"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options_border_line_widgets
@@ -5351,7 +5357,7 @@ msgstr "デフォルトメインメニュー"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_masonry_block_options
 msgid "Default Reversed"
-msgstr "デフォルト反転"
+msgstr "デフォルトで逆順"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_res_config_settings__social_default_image
@@ -7469,6 +7475,7 @@ msgstr "Google Analyticsキー"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
+#: model_terms:ir.ui.view,arch_db:website.snippets
 msgid "Google Map"
 msgstr "Googleマップ"
 
@@ -8336,7 +8343,7 @@ msgstr "画像壁"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 msgid "In"
-msgstr ":"
+msgstr "イン"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.website_pages_kanban_view
@@ -8831,22 +8838,22 @@ msgstr "接続済みですか？"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_website_form_options
 msgid "Is equal to"
-msgstr "次と等しい:"
+msgstr "等しい"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_website_form_options
 msgid "Is greater than"
-msgstr "次より大きい:"
+msgstr "より大きい"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_website_form_options
 msgid "Is greater than or equal to"
-msgstr "次以上:"
+msgstr "以上"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_website_form_options
 msgid "Is less than"
-msgstr "次より小さい:"
+msgstr "より小さい"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_website_form_options
@@ -8861,7 +8868,7 @@ msgstr "次の範囲外(除外): "
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_website_form_options
 msgid "Is not equal to"
-msgstr "次と等しくない:"
+msgstr "等しくない"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_website_form_options
@@ -8907,7 +8914,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 #: model_terms:ir.ui.view,arch_db:website.snippets
 msgid "Items"
-msgstr "件"
+msgstr "項目"
 
 #. module: website
 #. odoo-javascript
@@ -9124,7 +9131,7 @@ msgstr "ラザニア・アル・フォルノ"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.website_visitor_view_search
 msgid "Last 7 Days"
-msgstr "過去7日"
+msgstr "直近７日"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.website_visitor_view_kanban
@@ -13094,7 +13101,7 @@ msgstr "メッセージを表示し、カウントダウンを保留"
 #. odoo-javascript
 #: code:addons/website/static/src/js/backend/view_hierarchy/hierarchy_navbar.xml:0
 msgid "Show inactive views"
-msgstr "非アクティブビューを表示"
+msgstr "無効ビューを表示"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_popup_options
@@ -13346,7 +13353,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options_border_line_widgets
 msgid "Solid"
-msgstr "ソリッド"
+msgstr "実線"
 
 #. module: website
 #. odoo-javascript
@@ -14022,8 +14029,8 @@ msgid ""
 "Model: %(model)s\n"
 "View: %(view)s"
 msgstr ""
-"フィールド '%(field)s' "
-"はウェブサイトビューで参照されているため、削除できません。\n"
+"フィールド '%(field)s' はウェブサイトビューで参照されているため、削除できませ"
+"ん。\n"
 "モデル%(model)s\n"
 "ビュー：%(view)s"
 
@@ -14633,7 +14640,7 @@ msgstr "件名 - 画像"
 #: model_terms:ir.ui.view,arch_db:website.s_rating_options
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 msgid "Title Position"
-msgstr "件名位置"
+msgstr "タイトル位置"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_three_columns
@@ -16113,7 +16120,7 @@ msgstr "サイト訪問者 #%s"
 #. module: website
 #: model:ir.actions.server,name:website.website_visitor_cron_ir_actions_server
 msgid "Website Visitor : clean inactive visitors"
-msgstr "サイト訪問者: 非アクティブ訪問者をクリア"
+msgstr "サイト訪問者: 無効訪問者をクリア"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.menu_tree
@@ -17803,7 +17810,7 @@ msgstr "zip, ttf, woff, woff2, otf"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_rating_options
 msgid "⌙ Active"
-msgstr "⌙ アクティブ"
+msgstr "⌙ 有効"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_popup_options
@@ -17813,7 +17820,7 @@ msgstr "⌙ 猶予"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_rating_options
 msgid "⌙ Inactive"
-msgstr "⌙ 非アクティブ"
+msgstr "⌙ 無効"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_google_map_options

@@ -9,13 +9,13 @@
 # Manav Shah, 2025
 # Ujjawal Pathak, 2025
 #
-# Weblate <noreply-mt-weblate@weblate.org>, 2025.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-27 13:05+0000\n"
-"PO-Revision-Date: 2025-11-21 06:37+0000\n"
+"POT-Creation-Date: 2026-01-29 18:37+0000\n"
+"PO-Revision-Date: 2026-01-27 23:15+0000\n"
 "Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Hindi <https://translate.odoo.com/projects/odoo-18/"
 "website_event_exhibitor/hi/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #. module: website_event_exhibitor
 #. odoo-javascript
@@ -72,8 +72,8 @@ msgstr ""
 #. module: website_event_exhibitor
 #: model_terms:ir.ui.view,arch_db:website_event_exhibitor.exhibitor_main
 msgid ""
-"<span>Oops! This room is full</span><br/>Come back later to have a chat with"
-" us!"
+"<span>Oops! This room is full</span><br/>Come back later to have a chat with "
+"us!"
 msgstr ""
 
 #. module: website_event_exhibitor
@@ -81,14 +81,39 @@ msgstr ""
 #: model_terms:event.sponsor,website_description:website_event_exhibitor.event_sponsor_2
 msgid ""
 "A non-profit international educational and scientific\n"
-"                    organisation, hosting three departments (aeronautics and\n"
-"                    aerospace, environmental and applied fluid dynamics, and\n"
+"                    organisation, hosting three departments (aeronautics "
+"and\n"
+"                    aerospace, environmental and applied fluid dynamics, "
+"and\n"
 "                    turbomachinery and propulsion)."
 msgstr ""
 
 #. module: website_event_exhibitor
 #: model_terms:ir.ui.view,arch_db:website_event_exhibitor.exhibitor_main
 msgid "About"
+msgstr "बारे में"
+
+#. module: website_event_exhibitor
+#: model_terms:event.sponsor,website_description:website_event_exhibitor.event_7_sponsor_1
+#: model_terms:event.sponsor,website_description:website_event_exhibitor.event_7_sponsor_3
+#: model_terms:event.sponsor,website_description:website_event_exhibitor.event_sponsor_0
+#: model_terms:event.sponsor,website_description:website_event_exhibitor.event_sponsor_3
+msgid ""
+"Acme Corporation designs, develops, integrates and supports HR and Supply\n"
+"                Chain processes in order to make our customers more "
+"productive,\n"
+"                responsive and profitable."
+msgstr ""
+
+#. module: website_event_exhibitor
+#: model_terms:event.sponsor,website_description:website_event_exhibitor.event_7_sponsor_1
+#: model_terms:event.sponsor,website_description:website_event_exhibitor.event_7_sponsor_3
+#: model_terms:event.sponsor,website_description:website_event_exhibitor.event_sponsor_0
+#: model_terms:event.sponsor,website_description:website_event_exhibitor.event_sponsor_3
+msgid ""
+"Acme Corporation integrates ERP for Global Companies and supports PME\n"
+"                with Open Sources software to manage their businesses. Our\n"
+"                consultants are experts in the following areas:"
 msgstr ""
 
 #. module: website_event_exhibitor
@@ -152,7 +177,7 @@ msgstr "संग्रहीत किया गया"
 #: model_terms:event.sponsor,website_description:website_event_exhibitor.event_7_sponsor_9
 #: model_terms:event.sponsor,website_description:website_event_exhibitor.event_sponsor_1
 msgid "As a team, we are happy to contribute to this event."
-msgstr ""
+msgstr "एक टीम के तौर पर, हमें इस इवेंट में योगदान देकर खुशी हो रही है।"
 
 #. module: website_event_exhibitor
 #: model:ir.model.fields,field_description:website_event_exhibitor.field_event_sponsor__message_attachment_count
@@ -221,7 +246,7 @@ msgstr ""
 #: model_terms:event.sponsor,website_description:website_event_exhibitor.event_7_sponsor_9
 #: model_terms:event.sponsor,website_description:website_event_exhibitor.event_sponsor_1
 msgid "Come see us live, we hope to meet you!"
-msgstr ""
+msgstr "हमें लाइव देखें, हम आपसे मिलने की उम्मीद करते हैं!"
 
 #. module: website_event_exhibitor
 #: model_terms:ir.ui.view,arch_db:website_event_exhibitor.exhibitor_card
@@ -272,28 +297,6 @@ msgstr "इस तारीख को बनाया गया"
 #: model_terms:event.sponsor,website_description:website_event_exhibitor.event_sponsor_0
 #: model_terms:event.sponsor,website_description:website_event_exhibitor.event_sponsor_3
 msgid "Customer Relationship Management"
-msgstr ""
-
-#. module: website_event_exhibitor
-#: model_terms:event.sponsor,website_description:website_event_exhibitor.event_7_sponsor_1
-#: model_terms:event.sponsor,website_description:website_event_exhibitor.event_7_sponsor_3
-#: model_terms:event.sponsor,website_description:website_event_exhibitor.event_sponsor_0
-#: model_terms:event.sponsor,website_description:website_event_exhibitor.event_sponsor_3
-msgid ""
-"Deco Addict designs, develops, integrates and supports HR and Supply\n"
-"                Chain processes in order to make our customers more productive,\n"
-"                responsive and profitable."
-msgstr ""
-
-#. module: website_event_exhibitor
-#: model_terms:event.sponsor,website_description:website_event_exhibitor.event_7_sponsor_1
-#: model_terms:event.sponsor,website_description:website_event_exhibitor.event_7_sponsor_3
-#: model_terms:event.sponsor,website_description:website_event_exhibitor.event_sponsor_0
-#: model_terms:event.sponsor,website_description:website_event_exhibitor.event_sponsor_3
-msgid ""
-"Deco Addict integrates ERP for Global Companies and supports PME\n"
-"                with Open Sources software to manage their businesses. Our\n"
-"                consultants are experts in the following areas:"
 msgstr ""
 
 #. module: website_event_exhibitor
@@ -383,7 +386,7 @@ msgstr ""
 #. module: website_event_exhibitor
 #: model:ir.model,name:website_event_exhibitor.model_event_type
 msgid "Event Template"
-msgstr ""
+msgstr "इवेंट टेम्प्लेट"
 
 #. module: website_event_exhibitor
 #: model:ir.model.fields.selection,name:website_event_exhibitor.selection__event_sponsor__exhibitor_type__exhibitor
@@ -455,7 +458,7 @@ msgstr "इन्होंने ग्रुप किया"
 #: model_terms:event.sponsor,website_description:website_event_exhibitor.event_7_sponsor_9
 #: model_terms:event.sponsor,website_description:website_event_exhibitor.event_sponsor_1
 msgid "Happy to be Sponsor"
-msgstr ""
+msgstr "स्पॉन्सर बनकर खुशी हुई"
 
 #. module: website_event_exhibitor
 #: model:ir.model.fields,field_description:website_event_exhibitor.field_event_sponsor__has_message
@@ -509,7 +512,7 @@ msgstr ""
 msgid ""
 "Indicates the timezone in which the event dates/times will be displayed on "
 "the website."
-msgstr ""
+msgstr "वह समय क्षेत्र बताता है जिसमें इवेंट की तारीख/समय वेबसाइट पर दिखेंगे।"
 
 #. module: website_event_exhibitor
 #: model_terms:event.sponsor,website_description:website_event_exhibitor.event_7_sponsor_1
@@ -535,7 +538,8 @@ msgstr "पब्लिश है"
 msgid ""
 "It provides post-graduate education in fluid dynamics\n"
 "                    (research master in fluid dynamics, former \"Diploma\n"
-"                    Course\", doctoral program, stagiaire program and lecture\n"
+"                    Course\", doctoral program, stagiaire program and "
+"lecture\n"
 "                    series) and encourages \"training in research through\n"
 "                    research\"."
 msgstr ""
@@ -545,13 +549,19 @@ msgstr ""
 #: model_terms:event.sponsor,website_description:website_event_exhibitor.event_sponsor_2
 msgid ""
 "It undertakes and promotes research in the field of fluid\n"
-"                    dynamics. It possesses about fifty different wind tunnels,\n"
-"                    turbomachinery and other specialized test facilities, some\n"
-"                    of which are unique or the largest in the world. Extensive\n"
+"                    dynamics. It possesses about fifty different wind "
+"tunnels,\n"
+"                    turbomachinery and other specialized test facilities, "
+"some\n"
+"                    of which are unique or the largest in the world. "
+"Extensive\n"
 "                    research on experimental, computational and theoretical\n"
-"                    aspects of gas and liquid flows is carried out under the\n"
-"                    direction of the faculty and research engineers, sponsored\n"
-"                    mainly by governmental and international agencies as well\n"
+"                    aspects of gas and liquid flows is carried out under "
+"the\n"
+"                    direction of the faculty and research engineers, "
+"sponsored\n"
+"                    mainly by governmental and international agencies as "
+"well\n"
 "                    as industries."
 msgstr ""
 
@@ -747,7 +757,8 @@ msgstr ""
 msgid ""
 "Our experts invent, imagine and develop solutions which meet\n"
 "                your business requirements. They build a new technical\n"
-"                environment for your company, but they always take the already\n"
+"                environment for your company, but they always take the "
+"already\n"
 "                installed IT software into account. That is why Idealis\n"
 "                Consulting delivers excellence in HR and SC Management."
 msgstr ""
@@ -939,7 +950,8 @@ msgstr ""
 #: model_terms:ir.actions.act_window,help:website_event_exhibitor.event_sponsor_action_from_event
 msgid ""
 "Sponsors are advertised on your event pages.<br>\n"
-"    Exhibitors have a dedicated page a with chat room for people to connect with them."
+"    Exhibitors have a dedicated page a with chat room for people to connect "
+"with them."
 msgstr ""
 
 #. module: website_event_exhibitor

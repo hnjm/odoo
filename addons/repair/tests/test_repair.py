@@ -967,6 +967,33 @@ class TestRepair(common.TransactionCase):
         copied_with_access = product_templ.copy().with_user(mitchell_user)
         self.assertTrue(copied_with_access.create_repair)
 
+    def test_sale_order_line_discount_on_repair_order(self):
+        """
+        Test that the discount on the sale order line created from a repair order is correctly set.
+        """
+        repair_order = self.repair0
+        repair_order.action_create_sale_order()
+        sale_line = repair_order.move_ids.sale_line_id
+        sale_line.discount = 15
+        repair_order.action_validate()
+        repair_order.action_repair_start()
+        repair_order.action_repair_end()
+        self.assertEqual(sale_line.discount, 15)
+
+    def test_delete_repair_resets_outgoing_stock_moves(self):
+        """
+        Test that deleting draft repair order clears its outgoing stock quantities and
+        related moves are unlinked
+        """
+        repair = self._create_simple_repair_order()
+        self._create_simple_part_move(repair.id, 1.0)
+        moves = repair.move_ids
+        self.assertEqual(repair.state, 'draft')
+        self.assertEqual(moves.state, 'draft')
+        repair.unlink()
+        self.assertFalse(repair.exists())
+        self.assertFalse(moves.exists())
+
 
 @tagged('post_install', '-at_install')
 class TestRepairHttp(HttpCase):

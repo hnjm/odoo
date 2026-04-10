@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import certifi
 import configparser
 import contextlib
 import datetime
@@ -131,12 +132,46 @@ def check_certificate():
         return {"status": CertificateStatus.OK, "message": message}
 
 
+def check_version_upgrades(local_branch, db_branch):
+    """
+    Check if the iot is < 19.1 and upgrading to >= saas-19.1
+    If so and current python version is less than 3.12, run the scripts
+    located in upgrade_scripts/ to upgrade the python version
+    :param local_branch: The local git branch (Ex: "19.0" / "17.0-hw-drivers-compatibility-with-trixie-yaso")
+    :param db_branch: The git branch of the connected Odoo database (Ex: "saas-19.1" / "master" etc.)
+    """
+    if platform.system() != 'Linux':
+        _logger.debug("Ignoring version upgrade check on non-Linux system")
+        return
+
+    try:
+        # 1. Check if the upgrade script needs to be ran
+        # Needed if local branch is < 19.1 and db branch is >= 19.1 + python version < 3.12
+        _logger.info("Checking for version upgrades for local branch %s / db_branch %s", local_branch, db_branch)
+        version_db = db_branch[-4:] if db_branch != 'master' else db_branch  # master is currently always >= 19.1
+        version_local = local_branch[-4:] if local_branch != 'master' else local_branch
+        local_python_version = tuple(int(x) for x in platform.python_version_tuple()[:2])
+        if version_local >= '19.1' or version_db < '19.1' or local_python_version >= (3, 12):
+            _logger.info("Ignoring unnecessary upgrade for local branch %s / db_branch %s with python version %s", local_branch, db_branch, local_python_version)
+            return
+        with writable():
+            _logger.warning("Updating to Debian Trixie for >= 19.1")
+            subprocess.run(
+                ['/home/pi/odoo/addons/hw_drivers/tools/upgrade_scripts/upgrade_trixie/upgrade_trixie.sh'], check=True,
+            )
+    except subprocess.CalledProcessError:
+        _logger.exception("Failed to upgrade to debian Trixie. Check /home/pi/upgrade.log file for more details")
+
+
 def check_git_branch():
     """
     Check if the local branch is the same than the connected Odoo DB and
     checkout to match it if needed.
     """
     server = get_odoo_server_url()
+    if not server or platform.system() == 'Windows':
+        _logger.debug('Ignoring git branch check')
+        return
     urllib3.disable_warnings()
     http = urllib3.PoolManager(cert_reqs='CERT_NONE')
     try:
@@ -153,7 +188,6 @@ def check_git_branch():
             db_branch = json.loads(response.data)['result']['server_serie'].replace('~', '-')
             if not subprocess.check_output(git + ['ls-remote', 'origin', db_branch]):
                 db_branch = 'master'
-
             local_branch = (
                 subprocess.check_output(git + ['symbolic-ref', '-q', '--short', 'HEAD']).decode('utf-8').rstrip()
             )
@@ -165,6 +199,8 @@ def check_git_branch():
 
             if db_branch != local_branch:
                 try:
+                    check_version_upgrades(local_branch, db_branch)
+
                     with writable():
                         subprocess.run(git + ['branch', '-m', db_branch], check=True)
                         subprocess.run(git + ['remote', 'set-branches', 'origin', db_branch], check=True)
@@ -173,6 +209,9 @@ def check_git_branch():
                             ['/home/pi/odoo/addons/point_of_sale/tools/posbox/configuration/posbox_update.sh'], check=True
                         )
                 except subprocess.CalledProcessError:
+                    # reset local branch name if update failed, to allow new attempt on next restart
+                    with writable():
+                        subprocess.run(git + ['branch', '-m', local_branch], check=False)
                     _logger.exception("Failed to update the code with git.")
                 finally:
                     odoo_restart()
@@ -262,15 +301,31 @@ def get_img_name():
 
 
 def get_ip():
+    """Get the local IP address of the IoT Box by creating
+    a dummy connection to the gateway or Google DNS.
+    """
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
-        s.connect(('8.8.8.8', 1))  # Google DNS
+        s.connect((get_gateway() or '8.8.8.8', 1))  # Google DNS
         return s.getsockname()[0]
     except OSError as e:
         _logger.warning("Could not get local IP address: %s", e)
         return None
     finally:
         s.close()
+
+
+def get_gateway():
+    """Get the router IP address (default gateway)
+
+    :return: The IP address of the default gateway or None if it can't be determined
+    """
+    gws = netifaces.gateways()
+    default = gws.get("default", {})
+    gw = default.get(netifaces.AF_INET)
+    if gw:
+        return gw[0]
+    return None
 
 
 def get_mac_address():
@@ -449,7 +504,7 @@ def download_iot_handlers(auto=True):
     server = get_odoo_server_url()
     if server:
         urllib3.disable_warnings()
-        pm = urllib3.PoolManager()
+        pm = urllib3.PoolManager(cert_reqs='CERT_REQUIRED', ca_certs=certifi.where())
         server = server + '/iot/get_handlers'
         try:
             resp = pm.request('POST', server, fields={'mac': get_mac_address(), 'auto': auto}, timeout=8)

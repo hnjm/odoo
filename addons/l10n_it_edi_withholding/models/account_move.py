@@ -7,7 +7,7 @@ from markupsafe import Markup
 
 from odoo import _, api, fields, models
 from odoo.addons.l10n_it_edi.models.account_move import get_float
-from odoo.tools import float_compare, html2plaintext
+from odoo.tools import float_compare, float_round, html2plaintext
 
 _logger = logging.getLogger(__name__)
 
@@ -79,7 +79,7 @@ class AccountMove(models.Model):
                 return None
             tax = tax_data['tax']
             return {
-                'tax_amount_field': -23.0 if tax.amount == -11.5 else tax.amount,
+                'tax_amount_field': -23.0 if tax.amount in (-11.5, -4.6) else tax.amount,
                 'l10n_it_withholding_type': tax.l10n_it_withholding_type,
                 'l10n_it_withholding_reason': tax.l10n_it_withholding_reason,
                 'skip': not tax._l10n_it_filter_kind('withholding'),
@@ -111,8 +111,8 @@ class AccountMove(models.Model):
             vat_tax = flatten_taxes.filtered(lambda t: t._l10n_it_filter_kind('vat') and t.amount >= 0)[:1]
             withholding_tax = flatten_taxes.filtered(lambda t: t._l10n_it_filter_kind('withholding') and t.sequence > tax.sequence)[:1]
             return {
-                'tax_amount_field': -23.0 if tax.amount == -11.5 else tax.amount,
-                'vat_tax_amount_field': -23.0 if vat_tax.amount == -11.5 else vat_tax.amount,
+                'tax_amount_field': -23.0 if tax.amount in (-11.5, -4.6) else tax.amount,
+                'vat_tax_amount_field': -23.0 if vat_tax.amount in (-11.5, -4.6) else vat_tax.amount,
                 'has_withholding': bool(withholding_tax),
                 'l10n_it_pension_fund_type': tax.l10n_it_pension_fund_type,
                 'l10n_it_exempt_reason': vat_tax.l10n_it_exempt_reason,
@@ -213,20 +213,42 @@ class AccountMove(models.Model):
             withholding_type = tipo_ritenuta.text if tipo_ritenuta is not None else "RT02"
             withholding_reason = reason.text if reason is not None else "A"
             withholding_percentage = -float(percentage.text if percentage is not None else "0.0")
-            withholding_tax = self._l10n_it_edi_search_tax_for_import(
-                company,
-                withholding_percentage,
-                ([('l10n_it_withholding_type', '=', withholding_type),
-                  ('l10n_it_withholding_reason', '=', withholding_reason)]
-                 + type_tax_use_domain),
-                vat_only=False)
-            if withholding_tax:
-                withholding_taxes.append(withholding_tax)
+
+            if withholding_percentage == -23.0:
+                prezzo_totale = 0.0
+                for line in body_tree.xpath('.//DettaglioLinee'):
+                    prezzo_totale += get_float(line, './/PrezzoTotale')
+                importo_ritenuta = get_float(withholding, './/ImportoRitenuta')
+                withholding_percentage = -float_round((importo_ritenuta / prezzo_totale) * 100, 1)
+
+            # Some bills involving ENASARCO come in with a wrong withholding_reason
+            # so we defend ourselves by searching with exact type and reason first,
+            # then with just the type
+            for extra_domain, message in ([(
+                [
+                    ('l10n_it_withholding_type', '=', withholding_type),
+                    ('l10n_it_withholding_reason', '=', withholding_reason),
+                    *type_tax_use_domain
+                ],
+                None
+            ), (
+                [
+                    ('l10n_it_withholding_type', '=', withholding_type),
+                    *type_tax_use_domain
+                ],
+                _("ENASARCO tax (type %(wtype)s) has wrong reason %(reason)s",
+                  wtype=withholding_type, reason=withholding_reason))
+            ]):
+                if withholding_tax := self._l10n_it_edi_search_tax_for_import(
+                    company, withholding_percentage, extra_domain, vat_only=False
+                ):
+                    withholding_taxes.append(withholding_tax)
+                    break
             else:
-                message_to_log.append(Markup("%s<br/>%s") % (
-                    _("Withholding tax not found"),
-                    self.env['account.move']._compose_info_message(body_tree, '.'),
-                ))
+                message = _("Withholding tax not found")
+            if message:
+                message_to_log.append(Markup("%s<br/>%s") % (message, self._compose_info_message(body_tree, '.')))
+
         extra_info["withholding_taxes"] = withholding_taxes
 
         pension_fund_elements = body_tree.xpath('.//DatiGeneraliDocumento/DatiCassaPrevidenziale')

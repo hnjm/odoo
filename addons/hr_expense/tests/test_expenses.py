@@ -166,7 +166,7 @@ class TestExpenses(TestExpenseCommon):
             {'balance':   208.70, 'account_id': tax_account_id,             'name': '15%',                                'date': date(2021, 10, 31),           'invoice_date': date(2021, 10, 10)},
             {'balance':    18.46, 'account_id': tax_account_id,             'name': '15%',                                'date': date(2021, 10, 31),           'invoice_date': date(2021, 10, 10)},
             {'balance':    18.46, 'account_id': tax_account_id,             'name': '15% (Copy)',                         'date': date(2021, 10, 31),           'invoice_date': date(2021, 10, 10)},
-            {'balance': -1760.00, 'account_id': default_account_payable_id, 'name': False,                                   'date': date(2021, 10, 31),           'invoice_date': date(2021, 10, 10)},
+            {'balance': -1760.00, 'account_id': default_account_payable_id, 'name': 'Expense for John Smith',                                   'date': date(2021, 10, 31),           'invoice_date': date(2021, 10, 10)},
 
             # company_account expense 2 move
             {'balance':  123.08, 'account_id': product_b_account_id,        'name': 'expense_employee: PB 160 + 2*15% 2', 'date': date(2021, 10, 12),           'invoice_date': False},
@@ -947,6 +947,33 @@ class TestExpenses(TestExpenseCommon):
             'res_model': 'account.move',
             'res_id': expense_2_move.id
         }])
+
+    def test_multiple_attachments_in_move_from_company_expense(self):
+        """ Checks that all attachments from expense are copied to their journal entries. """
+
+        attachments = self.env['ir.attachment'].create([{
+            'raw': b"R0lGODdhAQABAIAAAP///////ywAAAAAAQABAAACAkQBADs=",
+            'name': f'expense1_file{i}.png',
+            'res_model': 'hr.expense',
+        } for i in range(1, 3)])
+
+        expense_sheet = self.env['hr.expense.sheet'].create({
+            'name': 'Expenses paid by company',
+            'employee_id': self.expense_employee.id,
+            'expense_line_ids': [Command.create({
+                'name': 'Company expense 1',
+                'date': '2022-11-16',
+                'payment_mode': 'company_account',
+                'total_amount_currency': 1000.00,
+                'employee_id': self.expense_employee.id,
+                'attachment_ids': [Command.set(attachments.ids)],
+            })]
+        })
+        expense_sheet.action_submit_sheet()
+        expense_sheet.action_approve_expense_sheets()
+        expense_sheet.action_sheet_move_post()
+
+        self.assertEqual(len(expense_sheet.account_move_ids.attachment_ids), 2)
 
     def test_expense_payment_method(self):
         default_payment_method_line = self.company_data['default_journal_bank'].outbound_payment_method_line_ids[0]
@@ -1859,4 +1886,102 @@ class TestExpenses(TestExpenseCommon):
             expense_sheet.journal_id,
             expense_sheet.employee_journal_id,
             "The journal_id should be set back to the employee journal when using the 'Own Account' payment method",
+        )
+
+    def test_expense_paid_company_no_autobalancing_line(self):
+        """
+        Test that when creating the move associated with an expense paid by company, no autobalancing line
+        appears when an analytic is added to a move line.
+        """
+        expense_sheet = self.create_expense_report({
+            'name': 'Expense for John Smith',
+            'expense_line_ids': [Command.create({
+                'name': 'Test expense line',
+                'employee_id': self.expense_employee.id,
+                'total_amount_currency': 100.0,
+                'product_id': self.product_c.id,
+                'payment_mode': 'company_account',
+                'company_id': self.company_data['company'].id,
+                'tax_ids': [self.tax_sale_a.id],
+            })],
+        })
+
+        expense_sheet.action_submit_sheet()
+        expense_sheet.action_approve_expense_sheets()
+        expense_sheet.account_move_ids.line_ids[0].analytic_distribution = {'1': 100.0}
+
+        # Check that there is no fourth autobalancing line on the account move
+        self.assertEqual(expense_sheet.account_move_ids.line_ids.mapped('balance'), [86.96, -100.0, 13.04])
+
+    def test_expense_sheet_branch_company(self):
+        """
+        Test that when an expense is created in a branch company, the company of the sheet and the move
+        associated to the expense is in the branch company.
+        """
+        branch_company = self.setup_other_company(name='Branch', parent_id=self.company_data['company'].id)['company']
+        employee = self.env['hr.employee'].create({
+            'name': 'Employee XYZ',
+            'company_id': branch_company.id,
+        })
+        allowed_companies = branch_company + self.company_data['company']
+        # Create an expense paid by company
+        expense_paid_by_company = self.env['hr.expense'].with_context(allowed_company_ids=allowed_companies.ids).create({
+            'employee_id': employee.id,
+            'name': 'Company expense',
+            'date': self.frozen_today,
+            'payment_mode': 'company_account',
+            'account_id': self.company_data['default_account_expense'].id,
+            'product_id': self.product_c.id,
+            'total_amount_currency': 1000.00,
+            'currency_id': self.company_data['currency'].id,
+            'company_id': branch_company.id,
+        })
+        expense_sheet_company_paid = expense_paid_by_company._create_sheets_from_expense()
+        self.assertEqual(
+            expense_sheet_company_paid.company_id,
+            branch_company,
+            "The expense sheet should be in the Branch company",
+        )
+        expense_sheet_company_paid.action_submit_sheet()
+        expense_sheet_company_paid.action_approve_expense_sheets()
+        expense_sheet_company_paid.action_sheet_move_post()
+
+        payment_move_company = expense_sheet_company_paid.account_move_ids
+        self.assertEqual(
+            payment_move_company.company_id,
+            branch_company,
+            "The journal entry linked to the payment should be in the Branch company",
+        )
+        self.assertEqual(
+            payment_move_company.origin_payment_id.company_id,
+            branch_company,
+            "The payment should also be in the Branch company",
+        )
+        # Create an expense paid by employee
+        expense_paid_by_employee = self.env['hr.expense'].with_context(allowed_company_ids=allowed_companies.ids).create({
+            'employee_id': employee.id,
+            'name': 'Employee expense',
+            'date': self.frozen_today,
+            'payment_mode': 'own_account',
+            'account_id': self.company_data['default_account_expense'].id,
+            'product_id': self.product_c.id,
+            'total_amount_currency': 2000.00,
+            'currency_id': self.company_data['currency'].id,
+            'company_id': branch_company.id,
+        })
+        expense_sheet_employee_paid = expense_paid_by_employee._create_sheets_from_expense()
+        self.assertEqual(
+            expense_sheet_employee_paid.company_id,
+            branch_company,
+            "The expense sheet should be in the Branch company",
+        )
+        expense_sheet_employee_paid.action_submit_sheet()
+        expense_sheet_employee_paid.action_approve_expense_sheets()
+        expense_sheet_employee_paid.action_sheet_move_post()
+
+        bill = expense_sheet_employee_paid.account_move_ids
+        self.assertEqual(
+            bill.company_id,
+            branch_company,
+            "The bill generated by the expense should be in the Branch company",
         )

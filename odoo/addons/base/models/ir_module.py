@@ -20,6 +20,7 @@ from docutils import nodes
 from docutils.core import publish_string
 from docutils.transforms import Transform, writer_aux
 from docutils.writers.html4css1 import Writer
+from markupsafe import Markup
 import lxml.html
 import psycopg2
 
@@ -28,6 +29,7 @@ from odoo import api, fields, models, modules, tools, _
 from odoo.addons.base.models.ir_model import MODULE_UNINSTALL_FLAG
 from odoo.exceptions import AccessDenied, UserError, ValidationError
 from odoo.osv import expression
+from odoo.tools import config
 from odoo.tools.parse_version import parse_version
 from odoo.tools.misc import topological_sort, get_flag
 from odoo.tools.translate import TranslationImporter, get_po_paths
@@ -125,7 +127,7 @@ class MyFilterMessages(Transform):
             nodes_iter = self.document.traverse(nodes.system_message)
 
         for node in nodes_iter:
-            _logger.warning("docutils' system message present: %s", str(node))
+            _logger.debug("docutils' system message present: %s", str(node))
             node.parent.remove(node)
 
 
@@ -215,7 +217,14 @@ class Module(models.Model):
                     'xml_declaration': False,
                     'file_insertion_enabled': False,
                 }
-                output = publish_string(source=module.description if not module.application and module.description else '', settings_overrides=overrides, writer=MyWriter())
+                raw_description = module.description or ''
+
+                try:
+                    output = publish_string(source=raw_description, settings_overrides=overrides, writer=MyWriter())
+                except Exception as e:  # noqa: BLE001
+                    _logger.warning("Failed to render module description for %s: %s. Falling back to raw description.", module.name, e)
+                    output = Markup('<pre><code>%s</code></pre>') % raw_description
+
                 module.description_html = _apply_description_images(output)
 
     @api.depends('name')
@@ -425,7 +434,11 @@ class Module(models.Model):
             modules._state_update('to install', ['uninstalled'])
 
             # Determine which auto-installable modules must be installed.
-            modules = self.search(auto_domain).filtered(must_install)
+
+            if config.get('skip_auto_install'):
+                modules = None
+            else:
+                modules = self.search(auto_domain).filtered(must_install)
 
         # the modules that are installed/to install/to upgrade
         install_mods = self.search([('state', 'in', list(install_states))])

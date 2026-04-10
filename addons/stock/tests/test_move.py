@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from dateutil.relativedelta import relativedelta
+from freezegun import freeze_time
 
 from odoo import Command, fields
 from odoo.exceptions import UserError
@@ -6916,6 +6917,7 @@ class StockMove(TransactionCase):
         line2.quant_id = quant
         self.assertEqual(move.move_line_ids[1].quantity, 1.0)
 
+    @freeze_time("2025-10-10")
     def test_free_reservation(self):
         """ Checks that the free_reservation uses the latest move line when the picking or date are equal.
         """
@@ -7143,7 +7145,10 @@ class StockMove(TransactionCase):
                 'location_dest_id': self.supplier_location.id,
             })]
         })
+        self.assertEqual(picking.move_ids.forecast_availability, -10)
         self.env['stock.quant']._update_available_quantity(self.product, self.stock_location, 10)
+        self.env.invalidate_all()
+        self.assertEqual(picking.move_ids.forecast_availability, 10)
         picking.action_confirm()
         self.assertEqual(picking.move_ids.state, 'assigned')
         picking.move_ids.quantity = 4
@@ -7156,3 +7161,49 @@ class StockMove(TransactionCase):
         self.assertEqual(backorder.move_ids.product_uom_qty, 6)
         self.assertEqual(backorder.move_ids.quantity, 6)
         self.assertEqual(backorder.move_ids.state, 'assigned')
+
+    def test_adding_tracked_product_in_ready_picking(self):
+        """ Ensure that when adding a serial-tracked product to a picking already
+        in the 'ready' state, the explicitly assigned serial number is preserved
+        and not recomputed or replaced.
+        """
+        sn_1 = self.env['stock.lot'].create({
+            'name': 'sn1',
+            'product_id': self.product_serial.id,
+        })
+        sn_2 = self.env['stock.lot'].create({
+            'name': 'sn2',
+            'product_id': self.product_serial.id,
+        })
+        self.env['stock.quant']._update_available_quantity(self.product_serial, self.stock_location, 1, lot_id=sn_1)
+        self.env['stock.quant']._update_available_quantity(self.product_serial, self.stock_location, 1, lot_id=sn_2)
+        self.env['stock.quant']._update_available_quantity(self.product, self.stock_location, 1)
+        picking = self.env['stock.picking'].create({
+            'picking_type_id': self.env.ref('stock.picking_type_out').id,
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.customer_location.id,
+            'move_ids': [Command.create({
+                'name': self.product.name,
+                'product_id': self.product.id,
+                'product_uom_qty': 1.0,
+                'product_uom': self.product.uom_id.id,
+                'location_id': self.stock_location.id,
+                'location_dest_id': self.customer_location.id,
+            })],
+        })
+        picking.action_confirm()
+        self.assertEqual(picking.state, 'assigned')
+        picking.move_ids = [Command.create({
+            'name': self.product_serial.name,
+            'product_id': self.product_serial.id,
+            'lot_ids': [Command.set([sn_2.id])],
+            'product_uom_qty': 1.00,
+            'quantity': 2.00,
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.customer_location.id,
+            'additional': True,
+        })]
+        self.assertEqual(picking.state, 'assigned')
+        tracked_move = picking.move_ids.filtered(lambda m: m.product_id == self.product_serial)
+        self.assertEqual(tracked_move.lot_ids, sn_2)
+        self.assertEqual(tracked_move.quantity, 1.00)

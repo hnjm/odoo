@@ -6,15 +6,16 @@
 # Ryoko Tsuda <ryoko@quartile.co>, 2024, 2025.
 # Wil Odoo, 2025
 # Junko Augias, 2025
-# "Junko Augias (juau)" <juau@odoo.com>, 2025.
-# Weblate <noreply-mt-weblate@weblate.org>, 2025.
+# "Junko Augias (juau)" <juau@odoo.com>, 2025, 2026.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025, 2026.
+# Yoshi Tashiro <tashiro@quartile.co>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-14 18:37+0000\n"
-"PO-Revision-Date: 2025-11-21 07:48+0000\n"
-"Last-Translator: \"Junko Augias (juau)\" <juau@odoo.com>\n"
+"POT-Creation-Date: 2026-02-20 18:37+0000\n"
+"PO-Revision-Date: 2026-02-21 10:14+0000\n"
+"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Japanese <https://translate.odoo.com/projects/odoo-18/"
 "website_sale/ja/>\n"
 "Language: ja\n"
@@ -22,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.products
@@ -346,15 +347,6 @@ msgstr ""
 "<span class=\"d-md-none fa fa-shopping-cart\"/>\n"
 "                            <span class=\"d-none d-md-inline\">カートに追加</"
 "span>"
-
-#. module: website_sale
-#: model_terms:ir.ui.view,arch_db:website_sale.res_config_settings_view_form
-msgid ""
-"<span class=\"fa fa-lg fa-globe\" title=\"Values set here are website-"
-"specific.\" groups=\"website.group_multi_website\"/>"
-msgstr ""
-"<span class=\"fa fa-lg fa-globe\" title=\"Values set here are website-"
-"specific.\" groups=\"website.group_multi_website\"/>"
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.s_dynamic_snippet_products_preview_data
@@ -1096,7 +1088,7 @@ msgstr "請求"
 #: model_terms:ir.ui.view,arch_db:website_sale.address
 #: model_terms:ir.ui.view,arch_db:website_sale.billing_address_row
 msgid "Billing address"
-msgstr "請求先住所"
+msgstr "請求先"
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.address_on_payment
@@ -1518,8 +1510,8 @@ msgid ""
 "strong>"
 msgstr ""
 "DHLで配送費用を計算し発送します<br/>\n"
-"                            "
-"<strong>（ホーム&gt;アプリからインストールしてください)</strong>"
+"                            <strong>（ホーム&gt;アプリからインストールしてく"
+"ださい)</strong>"
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.res_config_settings_view_form
@@ -1529,8 +1521,8 @@ msgid ""
 "strong>"
 msgstr ""
 "FedExで配送費用を計算し発送します<br/>\n"
-"                            "
-"<strong>(ホーム&gt;アプリからインストールしてください)</strong>"
+"                            <strong>(ホーム&gt;アプリからインストールしてくだ"
+"さい)</strong>"
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.res_config_settings_view_form
@@ -1540,8 +1532,8 @@ msgid ""
 "strong>"
 msgstr ""
 "UPSで配送費用を計算し発送します<br/>\n"
-"                            "
-"<strong>(ホーム&gt;アプリからインストールしてください)</strong>"
+"                            <strong>(ホーム&gt;アプリからインストールしてくだ"
+"さい)</strong>"
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.res_config_settings_view_form
@@ -1551,8 +1543,8 @@ msgid ""
 "strong>"
 msgstr ""
 "USPSで配送費用を計算し発送します<br/>\n"
-"                            "
-"<strong>(ホーム&gt;アプリからインストールしてください)</strong>"
+"                            <strong>(ホーム&gt;アプリからインストールしてくだ"
+"さい)</strong>"
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.res_config_settings_view_form
@@ -1912,7 +1904,7 @@ msgstr "配送方法"
 #: model_terms:ir.ui.view,arch_db:website_sale.address
 #: model_terms:ir.ui.view,arch_db:website_sale.delivery_address_row
 msgid "Delivery address"
-msgstr "配送先住所"
+msgstr "配送先"
 
 #. module: website_sale
 #: model:product.public.category,name:website_sale.public_category_services_delivery_and_installation
@@ -2654,8 +2646,7 @@ msgstr ""
 msgid ""
 "It seems that there is already a transaction for your order; you can't "
 "change the delivery method anymore."
-msgstr ""
-"配送オーダはすでに取引されているようで、配送方法を変更することはできません。"
+msgstr "ご注文にはすでに取引が存在するため、配送方法はこれ以上変更できません。"
 
 #. module: website_sale
 #. odoo-javascript
@@ -2763,7 +2754,7 @@ msgstr "左"
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.res_config_settings_view_form
 msgid "Let the customer enter a delivery address"
-msgstr "顧客が配送先住所を入力できるようにします"
+msgstr "顧客が配送先を入力できるようにします"
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.res_config_settings_view_form
@@ -3080,7 +3071,7 @@ msgid ""
 "No shipping method is available for your current order and shipping address. "
 "Please contact us for more information."
 msgstr ""
-"現在の注文と配送先住所には配送方法がありません。 詳細はお問い合わせください。"
+"現在の注文と配送先には配送方法がありません。 詳細はお問い合わせください。"
 
 #. module: website_sale
 #. odoo-python
@@ -3456,7 +3447,7 @@ msgstr "価格表"
 #. module: website_sale
 #: model:ir.model,name:website_sale.model_product_pricelist_item
 msgid "Pricelist Rule"
-msgstr "価格表規則"
+msgstr "価格表ルール"
 
 #. module: website_sale
 #: model:ir.ui.menu,name:website_sale.menu_catalog_pricelists
@@ -4026,7 +4017,7 @@ msgstr "販売担当者"
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.billing_address_row
 msgid "Same as delivery address"
-msgstr "配送先住所と同じ"
+msgstr "配送先と同じ"
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.dynamic_filter_template_product_product_add_to_cart
@@ -4477,6 +4468,12 @@ msgstr ""
 "(company)s)と違っています。"
 
 #. module: website_sale
+#. odoo-python
+#: code:addons/website_sale/models/sale_order.py:0
+msgid "The delivery method is not compatible with your delivery address."
+msgstr "配送方法はお客様の配送先に対応していません。"
+
+#. module: website_sale
 #: model:ir.model.fields,help:website_sale.field_delivery_carrier__website_url
 #: model:ir.model.fields,help:website_sale.field_product_product__website_url
 #: model:ir.model.fields,help:website_sale.field_product_template__website_url
@@ -4765,6 +4762,11 @@ msgstr "Google Places APIで、訪問者が入力した住所を検証します"
 #: code:addons/website_sale/controllers/main.py:0
 msgid "VAT"
 msgstr "VAT（Value Added Tax）"
+
+#. module: website_sale
+#: model_terms:ir.ui.view,arch_db:website_sale.res_config_settings_view_form
+msgid "Values set here are website-specific."
+msgstr ""
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.s_add_to_cart_options
@@ -5077,7 +5079,7 @@ msgid ""
 msgstr ""
 "<b>配送および請求先</b> 住所を\n"
 "                                        同時に編集しています!<br/>\n"
-"                                        請求先住所のみ変更したい場合は、"
+"                                        請求先のみ変更したい場合は、"
 
 #. module: website_sale
 #. odoo-python
@@ -5284,6 +5286,13 @@ msgstr "利用規約"
 #: model_terms:ir.ui.view,arch_db:website_sale.confirmation
 msgid "to follow your order."
 msgstr "してオーダを追跡。"
+
+#~ msgid ""
+#~ "<span class=\"fa fa-lg fa-globe\" title=\"Values set here are website-"
+#~ "specific.\" groups=\"website.group_multi_website\"/>"
+#~ msgstr ""
+#~ "<span class=\"fa fa-lg fa-globe\" title=\"Values set here are website-"
+#~ "specific.\" groups=\"website.group_multi_website\"/>"
 
 #~ msgid ""
 #~ "Your Dynamic Snippet will be displayed here...\n"

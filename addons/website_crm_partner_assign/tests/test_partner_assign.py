@@ -155,7 +155,8 @@ class TestPartnerAssign(TransactionCase):
             pass
 
 
-class TestPartnerLeadPortal(TestCrmCommon):
+@tagged('lead_portal')
+class TestPartnerLeadPortal(TestCrmCommon, HttpCase):
 
     def setUp(self):
         super(TestPartnerLeadPortal, self).setUp()
@@ -249,6 +250,18 @@ class TestPartnerLeadPortal(TestCrmCommon):
             'partner_id': test_partner.id,
         })
 
+        update_values = {
+            'expected_revenue': 9999.0,
+            'probability': 50.0,
+            'priority': '2',
+            'date_deadline': False,
+            'activity_date_deadline': False,
+            'activity_type_id': False,
+            'activity_summary': False,
+        }
+        opportunity.with_user(self.user_portal).update_lead_portal(update_values)
+        self.assertEqual(opportunity.expected_revenue, 9999.0, "Portal user should be able to update revenue or other details via portal method")
+
         email_2 = 'test_partner_updated@test.com'
         opportunity.with_user(self.user_portal).update_contact_details_from_portal({
             'email_from': email_2,
@@ -266,6 +279,28 @@ class TestPartnerLeadPortal(TestCrmCommon):
         record_action = self.lead_portal._get_access_action(access_uid=self.user_portal.id)
         self.assertEqual(record_action['url'], '/my/opportunity/%s' % self.lead_portal.id)
         self.assertEqual(record_action['type'], 'ir.actions.act_url')
+
+    def test_portal_post(self):
+        self.authenticate(self.user_portal.login, self.user_portal.login)
+        self.make_jsonrpc_request(
+            route="/mail/message/post",
+            params={
+                'thread_model': self.lead_portal._name,
+                'thread_id': self.lead_portal.id,
+                'pid': self.user_portal.partner_id.id,
+                'post_data': {
+                    'body': "Test",
+                },
+            },
+        )
+        message = self.lead_portal.message_ids[0]
+        self.assertMessageFields(
+            message, {
+                'author_id': self.user_portal.partner_id,
+                'body': '<p>Test</p>',
+                'message_type': 'comment',
+            }
+        )
 
     def test_route_portal_my_opportunities_as_portal(self):
         """Test that the portal user can access its own opportunities even if

@@ -6,6 +6,7 @@ import { isNode } from "@web/../lib/hoot-dom/helpers/dom";
 import {
     isInstanceOf,
     isIterable,
+    isPromise,
     parseRegExp,
     R_WHITE_SPACE,
     toSelector,
@@ -190,11 +191,7 @@ function makeObjectCache() {
  * @returns {T}
  */
 function resolve(value) {
-    if (typeof value === "function") {
-        return value();
-    } else {
-        return value;
-    }
+    return typeof value === "function" ? value() : value;
 }
 
 /**
@@ -1671,7 +1668,7 @@ export class Callbacks {
      * @param {boolean} [once]
      */
     add(type, callback, once) {
-        if (isInstanceOf(callback, Promise)) {
+        if (isPromise(callback)) {
             const promiseValue = callback;
             callback = function waitForPromise() {
                 return Promise.resolve(promiseValue).then(resolve);
@@ -2076,8 +2073,10 @@ export const INCLUDE_LEVEL = {
 export const MIME_TYPE = {
     formData: "multipart/form-data",
     blob: "application/octet-stream",
+    html: "text/html",
     json: "application/json",
     text: "text/plain",
+    xml: "text/xml",
 };
 
 export const STORAGE = {

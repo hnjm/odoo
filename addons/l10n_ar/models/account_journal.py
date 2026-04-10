@@ -57,7 +57,7 @@ class AccountJournal(models.Model):
         letters_data = {
             'issued': {
                 '1': ['A', 'B', 'E', 'M'],
-                '4': ['C'],
+                '4': ['C', 'E'],
                 '5': [],
                 '6': ['C', 'E'],
                 '7': ['B', 'C', 'I'],
@@ -107,7 +107,7 @@ class AccountJournal(models.Model):
         receipt_m_code = ['54']
         receipt_codes = ['4', '9', '15']
         expo_codes = ['19', '20', '21']
-        zeta_codes = ['80', '83']
+        zeta_codes = ['80', '83', '110']
         lsg_codes = ['331']
         no_pos_docs = [
             '23', '24', '25', '26', '27', '28', '33', '43', '45', '46', '48', '58', '60', '61', '150', '151', '157',

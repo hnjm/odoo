@@ -72,6 +72,47 @@ export async function insertText(editor, text) {
     }
 }
 
+/**
+ * @param {Editor} editor
+ */
+export async function insertSpace(editor) {
+    const keydownEvent = await manuallyDispatchProgrammaticEvent(editor.editable, "keydown", {
+        key: " ",
+    });
+    if (keydownEvent.defaultPrevented) {
+        return;
+    }
+    // InputEvent is required to simulate the insert text.
+    const [beforeinputEvent] = await manuallyDispatchProgrammaticEvent(
+        editor.editable,
+        "beforeinput",
+        {
+            inputType: "insertText",
+            data: " ",
+        }
+    );
+    if (beforeinputEvent.defaultPrevented) {
+        return;
+    }
+    const range = editor.document.getSelection().getRangeAt(0);
+    if (!range.collapsed) {
+        throw new Error("need to implement something... maybe");
+    }
+
+    // mimic the behavior of the browser when inserting a &nbsp
+    document.execCommand("insertText", false, " ");
+
+    const [inputEvent] = await manuallyDispatchProgrammaticEvent(editor.editable, "input", {
+        inputType: "insertText",
+        data: " ",
+    });
+    if (inputEvent.defaultPrevented) {
+        return;
+    }
+    // KeyUpEvent is not required but is triggered like the browser would.
+    await manuallyDispatchProgrammaticEvent(editor.editable, "keyup", { key: " " });
+}
+
 /** @param {Editor} editor */
 export function deleteForward(editor) {
     execCommand(editor, "deleteForward");
@@ -167,8 +208,12 @@ export function splitBlock(editor) {
 }
 
 export async function simulateArrowKeyPress(editor, keys) {
-    await press(keys);
+    const events = await press(keys);
     const keysArray = Array.isArray(keys) ? keys : [keys];
+    if (events.some((event) => event.defaultPrevented)) {
+        // Selection change was already handled.
+        return;
+    }
     const alter = keysArray.includes("Shift") ? "extend" : "move";
     const direction =
         keysArray.includes("ArrowLeft") || keysArray.includes("ArrowUp") ? "left" : "right";

@@ -9,14 +9,15 @@
 # Martin Trigaux, 2024
 # Thi Huong Nguyen, 2025
 # Wil Odoo, 2025
-# Weblate <noreply-mt-weblate@weblate.org>, 2025.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025, 2026.
+# "Thi Huong Nguyen (thng)" <thng@odoo.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-16 18:39+0000\n"
-"PO-Revision-Date: 2025-11-10 09:43+0000\n"
-"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
+"POT-Creation-Date: 2026-02-05 18:38+0000\n"
+"PO-Revision-Date: 2026-03-21 09:27+0000\n"
+"Last-Translator: \"Thi Huong Nguyen (thng)\" <thng@odoo.com>\n"
 "Language-Team: Vietnamese <https://translate.odoo.com/projects/odoo-18/"
 "spreadsheet/vi/>\n"
 "Language: vi\n"
@@ -24,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -601,6 +602,12 @@ msgstr "Giá trị tuyệt đối của một số."
 
 #. module: spreadsheet
 #. odoo-javascript
+#: code:addons/spreadsheet/static/src/actions/spreadsheet_download_action.js:0
+msgid "Access Error"
+msgstr "Lỗi Truy Cập"
+
+#. module: spreadsheet
+#. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid ""
 "Access to the clipboard denied by the browser. Please enable clipboard "
@@ -877,7 +884,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "All the ranges must have the same dimensions."
-msgstr "Tất cả phạm vi phải có cùng danh mục."
+msgstr "Tất cả phạm vi phải có cùng kích thước."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -986,8 +993,7 @@ msgid ""
 "An integer specifying the dimension size of the unit matrix. It must be "
 "positive."
 msgstr ""
-"Một số nguyên xác định kích thước danh mục của ma trận đơn vị. Đây phải là "
-"số dương."
+"Một số nguyên xác định kích thước của ma trận đơn vị. Đây phải là số dương."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -1267,7 +1273,7 @@ msgstr "Tăng dần (A ⟶ Z)"
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "At least one measure and/or dimension is not correct."
-msgstr "Có ít nhất một chỉ số và/hoặc danh mục không chính xác."
+msgstr "Có ít nhất một chỉ số và/hoặc chiều dữ liệu không chính xác."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -2869,19 +2875,19 @@ msgstr "Hiệu của hai số."
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "Dimension %s does not exist"
-msgstr "Danh mục %s không tồn tại"
+msgstr "Chiều dữ liệu %s không tồn tại"
 
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/pivot/pivot_model.js:0
 msgid "Dimension %s is not a group by"
-msgstr "Danh mục %s không phải là nhóm theo"
+msgstr "Chiều dữ liệu %s không phải là nhóm theo"
 
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "Dimensions don't match the pivot definition"
-msgstr "Danh mục không khớp với định nghĩa pivot"
+msgstr "Chiều dữ liệu không khớp với định nghĩa pivot"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -3107,8 +3113,6 @@ msgid "Doughnut"
 msgstr "Bánh vòng"
 
 #. module: spreadsheet
-#. odoo-javascript
-#: code:addons/spreadsheet/static/src/public_readonly_app/public_readonly.js:0
 #: model_terms:ir.ui.view,arch_db:spreadsheet.public_spreadsheet_layout
 msgid "Download"
 msgstr "Tải xuống"
@@ -3262,7 +3266,7 @@ msgstr "Mở rộng nhóm hàng"
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "Expands or pads an array to specified row and column dimensions."
-msgstr "Mở rộng hoặc đệm một mảng theo danh mục hàng và cột xác định."
+msgstr "Mở rộng hoặc đệm một mảng theo kích thước hàng và cột xác định."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -3656,7 +3660,7 @@ msgstr "Hàm [[FUNCTION_NAME]] cần criteria_range và tiêu chí đi theo cặ
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid ""
 "Function [[FUNCTION_NAME]] expects criteria_range to have the same dimension"
-msgstr "Hàm [[FUNCTION_NAME]] cần criteria_range có cùng danh mục."
+msgstr "Hàm [[FUNCTION_NAME]] yêu cầu criteria_range phải có cùng kích thước"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -3887,8 +3891,7 @@ msgstr "Hàng header"
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "Height value is %(_height)s. It should be greater than or equal to 1."
-msgstr ""
-"Giá trị chiều cao là %(_height)s. Giá trị này phải lớn hơn hoặc hoặc bằng 1."
+msgstr "Giá trị chiều cao là %(_height)s. Giá trị này phải lớn hơn hoặc bằng 1."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -5273,7 +5276,7 @@ msgstr "Không có màu"
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 msgid "No active dimension in the pivot"
-msgstr "Không có danh mục hoạt động trong pivot"
+msgstr "Không có chiều dữ liệu hoạt động trong pivot"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -6120,7 +6123,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "Returns a n x n unit matrix, where n is the input dimension."
-msgstr "Trả về ma trận đơn vị n x n, trong đó n là danh mục đầu vào."
+msgstr "Trả về ma trận đơn vị n x n, trong đó n là số chiều đầu vào."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -7170,7 +7173,7 @@ msgstr "Đối số %s không phải là chỉ số hợp lệ. Dưới đây l�
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "The argument dimension must be positive"
-msgstr "Danh mục của đối số phải là số dương"
+msgstr "Thứ nguyên của đối số phải là số dương"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -7202,7 +7205,7 @@ msgstr "Điều kiện đối số phải là một cột hoặc một hàng."
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "The arguments conditions must have the same dimensions."
-msgstr "Điều kiện đối số phải có cùng danh mục."
+msgstr "Điều kiện đối số phải có cùng kích thước."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -7371,7 +7374,7 @@ msgstr "Giá trị đường cơ sở không hợp lệ."
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid ""
 "The cashflow_amounts and cashflow_dates ranges must have the same dimensions."
-msgstr "Phạm vi cashflow_amounts và cashflow_dates phải có cùng danh mục."
+msgstr "Phạm vi cashflow_amounts và cashflow_dates phải có cùng kích thước."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -7878,7 +7881,7 @@ msgstr "Đối số extract_length (%s) phải là số dương hoặc không c�
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "The factor (%s) must be positive when the value (%s) is positive."
-msgstr "Thừa số (%s) phải là số dương khi giá trị (%s) là số dương."
+msgstr "Hệ số (%s) phải là số dương khi giá trị (%s) là số dương."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -8218,7 +8221,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "The high (%s) must be greater than or equal to the low (%s)."
-msgstr "Giá trị cao (%s) phải lớn hơn hoặc hoặc bằng giá trị thấp (%s)."
+msgstr "Giá trị cao (%s) phải lớn hơn hoặc bằng giá trị thấp (%s)."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -8437,8 +8440,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "The maximum (%s) must be greater than or equal to the minimum (%s)."
-msgstr ""
-"Giá trị tối đa (%s) phải lớn hơn hoặc hoặc bằng giá trị tối thiểu (%s)."
+msgstr "Giá trị tối đa (%s) phải lớn hơn hoặc bằng giá trị tối thiểu (%s)."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -8936,7 +8938,7 @@ msgstr "Số lần xuất hiện (%s) phải là số dương hoặc không có.
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "The one-dimensional array to be searched."
-msgstr "Mảng một danh mục cần tìm."
+msgstr "Mảng một chiều cần được tìm kiếm."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -9074,7 +9076,7 @@ msgstr "Không thể tạo pivot vì thiếu tập dữ liệu."
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "The position (%s) must be greater than or equal to 1."
-msgstr "Vị trí (%s) phải lớn hơn hoặc hoặc bằng 1."
+msgstr "Vị trí (%s) phải lớn hơn hoặc bằng 1."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -9160,7 +9162,7 @@ msgstr "Phạm vi chứa tập dữ liệu cần xem xét."
 msgid ""
 "The range containing the return value. Should have the same dimensions as "
 "lookup_range."
-msgstr "Phạm vi chứa giá trị trả về. Phải có cùng danh mục với lookup_range."
+msgstr "Phạm vi chứa giá trị trả về. Phải có cùng kích thước với lookup_range."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -9581,7 +9583,7 @@ msgstr "Giá trị thứ hai."
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "The settlement (%s) must be greater than or equal to the issue (%s)."
-msgstr "Ngày thanh toán (%s) phải lớn hơn hoặc hoặc bằng ngày phát hành (%s)."
+msgstr "Ngày thanh toán (%s) phải lớn hơn hoặc bằng ngày phát hành (%s)."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -9693,7 +9695,7 @@ msgstr "Đơn vị bắt đầu, đơn vị hiện được gán cho giá trị"
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "The starting_at (%s) must be greater than or equal to 1."
-msgstr "starting_at (%s) phải lớn hơn hoặc hoặc bằng 1."
+msgstr "starting_at (%s) phải lớn hơn hoặc bằng 1."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -9950,7 +9952,7 @@ msgstr "Giá trị (%s) phải nằm trong khoảng tính từ -1 đến cả 1.
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "The value (%s) must be greater than or equal to 1."
-msgstr "Giá trị (%s) phải lớn hơn hoặc hoặc bằng 1."
+msgstr "Giá trị (%s) phải lớn hơn hoặc bằng 1."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -11417,8 +11419,7 @@ msgstr "Giá trị tứ phân nào, không bao gồm 0 và 4, cần trả về."
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "Width value is %(_width)s. It should be greater than or equal to 1."
-msgstr ""
-"Giá trị chiều rộng là %(_width)s. Giá trị này phải lớn hơn hoặc hoặc bằng 1."
+msgstr "Giá trị chiều rộng là %(_width)s. Giá trị này phải lớn hơn hoặc bằng 1."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -11520,6 +11521,13 @@ msgstr "Bạn không thể tạo bảng chồng chéo."
 
 #. module: spreadsheet
 #. odoo-javascript
+#: code:addons/spreadsheet/static/src/actions/spreadsheet_download_action.js:0
+msgid ""
+"You don't have the rights to export data. Please contact an Administrator."
+msgstr "Bạn không có quyền xuất dữ liệu. Vui lòng liên hệ với Quản trị viên."
+
+#. module: spreadsheet
+#. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "[[FUNCTION_NAME]] evaluates to an out of bounds range."
 msgstr "[[FUNCTION_NAME]] xác định giá trị nằm ngoài phạm vi giới hạn."
@@ -11566,7 +11574,7 @@ msgstr "[[FUNCTION_NAME]] có số đối số không khớp %s với %s."
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "[[FUNCTION_NAME]] has mismatched dimensions for argument %s (%s vs %s)."
-msgstr "[[FUNCTION_NAME]] có danh mục không khớp cho đối số %s (%s vs %s)."
+msgstr "[[FUNCTION_NAME]] có kích thước không khớp cho đối số %s (%s vs %s)."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -11734,7 +11742,7 @@ msgstr "có thể lặp lại"
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "return_range should have the same dimensions as lookup_range."
-msgstr "return_range phải có cùng danh mục với lookup_range."
+msgstr "return_range phải có cùng kích thước với lookup_range."
 
 #. module: spreadsheet
 #. odoo-javascript

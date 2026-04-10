@@ -720,6 +720,11 @@ export function areSimilarElements(node, node2) {
     }
     const nodeStyle = getComputedStyle(node);
     const node2Style = getComputedStyle(node2);
+    if (node.matches("code.o_inline_code")) {
+        if (nodeStyle.padding === node2Style.padding && nodeStyle.margin === node2Style.margin) {
+            return true;
+        }
+    }
     return (
         !+nodeStyle.padding.replace(NOT_A_NUMBER, "") &&
         !+node2Style.padding.replace(NOT_A_NUMBER, "") &&
@@ -824,3 +829,6 @@ export function isRedundantElement(node) {
 
     return true;
 }
+
+// Selector for QWeb-specific attributes
+export const PROTECTED_QWEB_SELECTOR = "[t-esc], [t-raw], [t-out], [t-field]";

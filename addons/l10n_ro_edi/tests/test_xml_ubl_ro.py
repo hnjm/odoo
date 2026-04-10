@@ -9,6 +9,7 @@ class TestUBLROCommon(TestUBLCommon):
     @TestUBLCommon.setup_country('ro')
     def setUpClass(cls):
         super().setUpClass()
+        cls.other_currency = cls.setup_other_currency('EUR')
         cls.env['ir.config_parameter'].set_param('account_edi_ubl_cii.use_new_dict_to_xml_helpers', 'False')
         cls.company_data['company'].write({
             'country_id': cls.env.ref('base.ro').id,  # needed to compute peppol_endpoint based on VAT
@@ -35,6 +36,7 @@ class TestUBLROCommon(TestUBLCommon):
             'partner_id': cls.company_data['company'].partner_id.id,
             'acc_number': 'RO98RNCB1234567890123456',
             'bank_id': cls.bank.id,
+            'allow_out_payment': True,
         })
 
         cls.partner_a = cls.env['res.partner'].create({
@@ -46,7 +48,7 @@ class TestUBLROCommon(TestUBLCommon):
             'vat': 'RO1234567897',
             'phone': '+40 123 456 780',
             'street': "Rolling Roast, 88",
-            'bank_ids': [(0, 0, {'acc_number': 'RO98RNCB1234567890123456'})],
+            'bank_ids': [(0, 0, {'acc_number': 'RO98RNCB1234567890123456', 'allow_out_payment': True})],
             'ref': 'ref_partner_a',
             'invoice_edi_format': 'ciusro',
         })
@@ -86,6 +88,11 @@ class TestUBLROCommon(TestUBLCommon):
             **kwargs
         )
 
+    def get_attachment(self, move):
+        self.assertTrue(move.ubl_cii_xml_id)
+        self.assertEqual(move.ubl_cii_xml_id.name[-11:], "cius_ro.xml")
+        return move.ubl_cii_xml_id
+
 
 @tagged('post_install_l10n', 'post_install', '-at_install')
 class TestUBLRO(TestUBLROCommon):
@@ -93,11 +100,6 @@ class TestUBLRO(TestUBLROCommon):
     ####################################################
     # Test export - import
     ####################################################
-
-    def get_attachment(self, move):
-        self.assertTrue(move.ubl_cii_xml_id)
-        self.assertEqual(move.ubl_cii_xml_id.name[-11:], "cius_ro.xml")
-        return move.ubl_cii_xml_id
 
     def test_export_invoice(self):
         invoice = self.create_move("out_invoice", currency_id=self.company.currency_id.id)
@@ -164,17 +166,6 @@ class TestUBLRO(TestUBLROCommon):
         self.env['ir.config_parameter'].set_param('account_edi_ubl_cii.use_new_dict_to_xml_helpers', 'True')
         self.test_export_invoice_different_currency()
 
-    def test_export_invoice_without_country_code_prefix_in_vat(self):
-        self.company_data['company'].write({'vat': '1234567897'})
-        self.partner_a.write({'vat': False})
-        invoice = self.create_move("out_invoice", currency_id=self.company.currency_id.id)
-        attachment = self.get_attachment(invoice)
-        self._assert_invoice_attachment(attachment, xpaths=None, expected_file_path='from_odoo/ciusro_out_invoice_no_prefix_vat.xml')
-
-    def test_export_invoice_without_country_code_prefix_in_vat_new(self):
-        self.env['ir.config_parameter'].set_param('account_edi_ubl_cii.use_new_dict_to_xml_helpers', 'True')
-        self.test_export_invoice_without_country_code_prefix_in_vat()
-
     def test_export_no_vat_but_have_company_registry(self):
         self.company_data['company'].write({'vat': False, 'company_registry': 'RO1234567897'})
         invoice = self.create_move("out_invoice", currency_id=self.company.currency_id.id)
@@ -187,7 +178,7 @@ class TestUBLRO(TestUBLROCommon):
 
     def test_export_no_vat_but_have_company_registry_without_prefix(self):
         self.company_data['company'].write({'vat': False, 'company_registry': '1234567897'})
-        self.partner_a.write({'vat': False})
+        self.partner_a.write({'vat': False, 'peppol_eas': False, 'peppol_endpoint': False})
         invoice = self.create_move("out_invoice", currency_id=self.company.currency_id.id)
         attachment = self.get_attachment(invoice)
         self._assert_invoice_attachment(attachment, xpaths=None, expected_file_path='from_odoo/ciusro_out_invoice_no_prefix_vat.xml')
@@ -195,6 +186,17 @@ class TestUBLRO(TestUBLROCommon):
     def test_export_no_vat_but_have_company_registry_without_prefix_new(self):
         self.env['ir.config_parameter'].set_param('account_edi_ubl_cii.use_new_dict_to_xml_helpers', 'True')
         self.test_export_no_vat_but_have_company_registry_without_prefix()
+
+    def test_export_invoice_no_vat_prefix(self):
+        self.company_data['company'].vat = self.company_data['company'].vat[2:]
+        no_vat_partner = self.partner_a.copy({'name': 'Roasted Romanian Roller', 'vat': False, 'invoice_edi_format': 'ciusro'})
+        invoice = self.create_move("out_invoice", partner_id=no_vat_partner.id, currency_id=self.company.currency_id.id)
+        attachment = self.get_attachment(invoice)
+        self._assert_invoice_attachment(attachment, xpaths=None, expected_file_path='from_odoo/ciusro_out_invoice_defaults.xml')
+
+    def test_export_invoice_defaults_new(self):
+        self.env['ir.config_parameter'].set_param('account_edi_ubl_cii.use_new_dict_to_xml_helpers', 'True')
+        self.test_export_invoice_no_vat_prefix()
 
     def test_export_no_vat_and_no_company_registry_raises_error(self):
         self.company_data['company'].write({'vat': False, 'company_registry': False})
@@ -207,12 +209,12 @@ class TestUBLRO(TestUBLROCommon):
         self.test_export_no_vat_and_no_company_registry_raises_error()
 
     def test_export_constraints(self):
-        self.company_data['company'].company_registry = False
         for required_field in ('city', 'street', 'state_id', 'vat'):
             prev_val = self.company_data["company"][required_field]
             self.company_data["company"][required_field] = False
             invoice = self.create_move("out_invoice", send=False)
             with self.assertRaisesRegex(UserError, "required"):
+                self.company_data['company'].company_registry = False
                 invoice._generate_and_send(allow_fallback_pdf=False, mail_template_id=self.move_template.id)
             self.company_data["company"][required_field] = prev_val
 

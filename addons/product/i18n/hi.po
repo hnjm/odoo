@@ -11,22 +11,22 @@
 # Ronald Kung, 2025
 # Manav Shah, 2025
 # Ujjawal Pathak, 2025
-# Weblate <noreply-mt-weblate@weblate.org>, 2025.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-11 02:17+0000\n"
-"PO-Revision-Date: 2025-11-21 02:34+0000\n"
+"POT-Creation-Date: 2025-12-29 18:37+0000\n"
+"PO-Revision-Date: 2026-03-21 09:23+0000\n"
 "Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
-"Language-Team: Hindi <https://translate.odoo.com/projects/odoo-18/product/hi/"
-">\n"
+"Language-Team: Hindi <https://translate.odoo.com/projects/odoo-18/product/"
+"hi/>\n"
 "Language: hi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #. module: product
 #. odoo-python
@@ -458,7 +458,7 @@ msgstr "जोड़ना"
 #. odoo-javascript
 #: code:addons/product/static/src/js/pricelist_report/product_pricelist_report.xml:0
 msgid "Add Products"
-msgstr ""
+msgstr "प्रॉडक्ट जोड़ें"
 
 #. module: product
 #. odoo-javascript
@@ -523,7 +523,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:product.selection__product_pricelist_item__applied_on__3_global
 #: model_terms:ir.ui.view,arch_db:product.product_tag_form_view
 msgid "All Products"
-msgstr ""
+msgstr "सभी प्रॉडक्ट"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_item_form_view
@@ -581,7 +581,7 @@ msgstr ""
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_view
 msgid "Apply on"
-msgstr ""
+msgstr "से लागू करें"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_attribute_view_form
@@ -630,7 +630,7 @@ msgstr "अटैचमेंट काउंट"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_document__local_url
 msgid "Attachment URL"
-msgstr ""
+msgstr "अटैचमेंट का यूआरएल"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_attribute__name
@@ -666,7 +666,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:product.product_attribute_value_list
 #: model_terms:ir.ui.view,arch_db:product.product_attribute_view_form
 msgid "Attribute Values"
-msgstr ""
+msgstr "एट्रिब्यूट वैल्यू"
 
 #. module: product
 #: model:ir.actions.act_window,name:product.attribute_action
@@ -799,7 +799,7 @@ msgstr ""
 #. module: product
 #: model:ir.actions.act_window,name:product.action_open_label_layout
 msgid "Choose Labels Layout"
-msgstr ""
+msgstr "लेबल लेआउट चुनें"
 
 #. module: product
 #: model:ir.model,name:product.model_product_label_layout
@@ -814,7 +814,7 @@ msgstr ""
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_variant_easy_edit_view
 msgid "Codes"
-msgstr ""
+msgstr "कोड"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_attribute_value__html_color
@@ -1090,7 +1090,7 @@ msgstr "इस तारीख को बनाया गया"
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_document_form
 msgid "Creation"
-msgstr ""
+msgstr "क्रिएशन"
 
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__res_config_settings__product_volume_volume_in_cubic_feet__1
@@ -1166,7 +1166,7 @@ msgstr ""
 #: model:ir.model.fields,help:product.field_product_product__uom_id
 #: model:ir.model.fields,help:product.field_product_template__uom_id
 msgid "Default unit of measure used for all stock operations."
-msgstr ""
+msgstr "स्टॉक से जुड़े सभी कामों के लिए इस्तेमाल होने वाली बेसिक यूनिट।"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_product__uom_po_id
@@ -1337,12 +1337,12 @@ msgstr ""
 #. module: product
 #: model:product.template,name:product.product_product_27_product_template
 msgid "Drawer"
-msgstr ""
+msgstr "ड्रॉअर"
 
 #. module: product
 #: model:product.template,name:product.product_product_16_product_template
 msgid "Drawer Black"
-msgstr ""
+msgstr "ड्रॉअर ब्लैक"
 
 #. module: product
 #: model_terms:product.template,description:product.product_product_27_product_template
@@ -1530,7 +1530,7 @@ msgstr ""
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_label_layout__print_format
 msgid "Format"
-msgstr ""
+msgstr "फ़ॉर्मैट"
 
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__product_pricelist_item__compute_price__formula
@@ -1566,7 +1566,7 @@ msgstr "फ्यूचर ऐक्टिविटी"
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_template_form_view
 msgid "General Information"
-msgstr ""
+msgstr "सामान्य जानकारी"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.res_config_settings_view_form
@@ -1762,22 +1762,22 @@ msgstr "इमेज 512"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_document__image_height
 msgid "Image Height"
-msgstr ""
+msgstr "इमेज की ऊंचाई"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_document__image_src
 msgid "Image Src"
-msgstr ""
+msgstr "इमेज सोर्स"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_document__image_width
 msgid "Image Width"
-msgstr ""
+msgstr "इमेज की चौड़ाई"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_document_kanban
 msgid "Image is a link"
-msgstr ""
+msgstr "इमेज लिंक है"
 
 #. module: product
 #. odoo-python
@@ -1832,7 +1832,7 @@ msgstr "इंटरनल रेफ़रंस"
 #. module: product
 #: model:ir.model.fields,help:product.field_product_product__barcode
 msgid "International Article Number used for product identification."
-msgstr ""
+msgstr "प्रॉडक्ट की पहचान के लिए इस्तेमाल होने वाला इंटरनेशनल आर्टिकल नंबर।"
 
 #. module: product
 #. odoo-javascript
@@ -2190,12 +2190,12 @@ msgstr "नहीं, इसे रहने दें"
 #: code:addons/product/models/product_product.py:0
 #: code:addons/product/models/product_template.py:0
 msgid "Note:"
-msgstr ""
+msgstr "नोट:"
 
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__product_template__service_tracking__no
 msgid "Nothing"
-msgstr ""
+msgstr "कुछ नहीं"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_attribute__number_related_products
@@ -2290,7 +2290,7 @@ msgstr ""
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_document__original_id
 msgid "Original (unoptimized, unresized) attachment"
-msgstr ""
+msgstr "ओरिजिनल (अनऑप्टिमाइज़्ड, अनरीसाइज़्ड) अटैचमेंट"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_combo_item__lst_price
@@ -2536,7 +2536,7 @@ msgstr "प्रिंट"
 #: model_terms:ir.ui.view,arch_db:product.product_template_tree_view
 #: model_terms:ir.ui.view,arch_db:product.product_variant_easy_edit_view
 msgid "Print Labels"
-msgstr ""
+msgstr "लेबल प्रिंट करें"
 
 #. module: product
 #. odoo-python
@@ -2632,7 +2632,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:product.field_product_combo__combo_item_count
 #: model:ir.model.fields,field_description:product.field_update_product_attribute_value__product_count
 msgid "Product Count"
-msgstr ""
+msgstr "प्रॉडक्ट की संख्या"
 
 #. module: product
 #: model:res.groups,name:product.group_product_manager
@@ -2642,7 +2642,7 @@ msgstr ""
 #. module: product
 #: model:ir.model,name:product.model_product_document
 msgid "Product Document"
-msgstr ""
+msgstr "प्रॉडक्ट डॉक्यूमेंट"
 
 #. module: product
 #: model:ir.actions.report,name:product.report_product_template_label_dymo
@@ -2736,7 +2736,7 @@ msgstr ""
 #: model:ir.model,name:product.model_product_tag
 #: model_terms:ir.ui.view,arch_db:product.product_tag_form_view
 msgid "Product Tag"
-msgstr ""
+msgstr "प्रॉडक्ट टैग"
 
 #. module: product
 #: model:ir.actions.act_window,name:product.product_tag_action
@@ -2981,7 +2981,7 @@ msgstr ""
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_document__ir_attachment_id
 msgid "Related attachment"
-msgstr ""
+msgstr "संबंधित अटैचमेंट"
 
 #. module: product
 #. odoo-javascript
@@ -3035,7 +3035,7 @@ msgstr ""
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_label_layout__rows
 msgid "Rows"
-msgstr ""
+msgstr "लाइन"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_pricelist_item__rule_tip
@@ -3222,7 +3222,7 @@ msgstr ""
 #. module: product
 #: model:ir.model,name:product.model_product_supplierinfo
 msgid "Supplier Pricelist"
-msgstr ""
+msgstr "सप्लायर प्राइसलिस्ट"
 
 #. module: product
 #: model:ir.model.constraint,message:product.constraint_product_tag_name_uniq
@@ -3323,6 +3323,9 @@ msgid ""
 "combo product. This heuristic ensures that whatever product the user chooses "
 "in a combo, it will always be the same price."
 msgstr ""
+"इस कॉम्बो में प्रॉडक्ट का न्यूनतम मूल्य. इस मान का उपयोग कॉम्बो प्रॉडक्ट के अन्य कॉम्बो के संबंध में इस कॉम्बो के"
+" मूल्य को प्रोरैट करने के लिए किया जाएगा. यह नियम सुनिश्चित करता है कि उपयोगकर्ता कॉम्बो में जो भी प्रॉडक्ट चुने"
+", उसका मूल्य हमेशा बराबर रहेगा।"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_category__product_count
@@ -3340,6 +3343,9 @@ msgid ""
 "the sales order. To do so, open the form view of attributes and change the "
 "mode of *Create Variants*."
 msgstr ""
+"सिस्टम में वेरिएंट्स बनाने की एक तय सीमा है और आपका डेटा उस लिमिट को पार कर रहा है. इसे ठीक करने के लिए "
+"आपको हर संभावित कॉम्बिनेशन को ऑटोमैटिक बनाने के बजाय 'ऑन डिमांड' (जब ज़रूरत हो तब) का विकल्प चुनना होगा. "
+"यह बदलाव आप एट्रिब्यूट सेटिंग्स में जाकर \"वैरिएंट बनाएं\" विकल्प को अपडेट करके कर सकते हैं।"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_supplierinfo__price
@@ -3538,7 +3544,7 @@ msgstr ""
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.report_packagingbarcode
 msgid "Units"
-msgstr ""
+msgstr "यूनिट"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_res_config_settings__group_uom
@@ -3619,13 +3625,13 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/product/static/src/js/pricelist_report/product_pricelist_report.xml:0
 msgid "Username"
-msgstr ""
+msgstr "यूज़रनेम"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__valid_product_template_attribute_line_ids
 #: model:ir.model.fields,field_description:product.field_product_template__valid_product_template_attribute_line_ids
 msgid "Valid Product Attribute Lines"
-msgstr ""
+msgstr "मान्य प्रॉडक्ट की विशेषता लाइनें"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_supplierinfo_form_view
@@ -3671,7 +3677,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:product.product_document_kanban
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_item_view_search
 msgid "Variant"
-msgstr ""
+msgstr "वैरिएंट"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_supplierinfo__product_variant_count
@@ -3807,7 +3813,7 @@ msgstr "सभी को दिखेगा"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_document__voice_ids
 msgid "Voice"
-msgstr ""
+msgstr "वॉइस"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__volume
@@ -3833,7 +3839,7 @@ msgstr "वॉल्यूम की माप यूनिट का लेब�
 #: code:addons/product/models/decimal_precision.py:0
 #: code:addons/product/models/uom_uom.py:0
 msgid "Warning!"
-msgstr ""
+msgstr "चेतावनी!"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_template_search_view

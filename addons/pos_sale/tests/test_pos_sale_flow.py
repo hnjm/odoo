@@ -3,7 +3,9 @@
 import odoo
 from uuid import uuid4
 
+from odoo.addons.payment.tests.common import PaymentCommon
 from odoo.addons.point_of_sale.tests.test_frontend import TestPointOfSaleHttpCommon
+from odoo.addons.point_of_sale.tests.common import TestPoSCommon
 from odoo.tests import Form
 from odoo import fields, Command
 from odoo.tools import format_date
@@ -160,6 +162,7 @@ class TestPoSSale(TestPointOfSaleHttpCommon):
         self.assertEqual(sale_order.order_line[1].qty_delivered, 0)
 
         self.main_pos_config.open_ui()
+        self.main_pos_config.current_session_id.update_stock_at_closing = True
         self.start_pos_tour('PosSettleOrder2', login="accountman")
 
         sale_order = self.env['sale.order'].browse(sale_order.id)
@@ -924,7 +927,7 @@ class TestPoSSale(TestPointOfSaleHttpCommon):
             'country_id': self.env.ref('base.nl').id,
             'zip': '1105AA',
             'state_id': False,
-            'email': 'deco.addict82@example.com',
+            'email': 'acme.corp82@example.com',
             'phone': '(603)-996-3829',
         })
 
@@ -1655,25 +1658,34 @@ class TestPoSSale(TestPointOfSaleHttpCommon):
             'location_id': self.warehouse.lot_stock_id.id,
         })
 
+        lot_1001, lot_1002 = self.env['stock.lot'].create([{
+                'name': '1001',
+                'product_id': self.product.id,
+                'location_id': self.shelf_1.id,
+            },
+            {
+                'name': '1002',
+                'product_id': self.product.id,
+                'location_id': self.shelf_2.id,
+            },
+            ])
         quants = self.env['stock.quant'].with_context(inventory_mode=True).create({
             'product_id': self.product.id,
             'inventory_quantity': 1,
             'location_id': self.shelf_1.id,
-            'lot_id': self.env['stock.lot'].create({
-                'name': '1001',
-                'product_id': self.product.id,
-                'location_id': self.shelf_1.id,
-            }).id,
+            'lot_id': lot_1001.id,
         })
         quants |= self.env['stock.quant'].with_context(inventory_mode=True).create({
             'product_id': self.product.id,
             'inventory_quantity': 2,
             'location_id': self.shelf_2.id,
-            'lot_id': self.env['stock.lot'].create({
-                'name': '1002',
-                'product_id': self.product.id,
-                'location_id': self.shelf_2.id,
-            }).id,
+            'lot_id': lot_1002.id
+        })
+        quants |= self.env['stock.quant'].with_context(inventory_mode=True).create({
+            'product_id': self.product.id,
+            'inventory_quantity': 3,
+            'location_id': self.shelf_2.id,
+            'lot_id': lot_1001.id,
         })
         quants.action_apply_inventory()
 
@@ -1684,7 +1696,7 @@ class TestPoSSale(TestPointOfSaleHttpCommon):
             'order_line': [(0, 0, {
                 'product_id': self.product.id,
                 'name': self.product.name,
-                'product_uom_qty': 3,
+                'product_uom_qty': 6,
                 'product_uom': self.product.uom_id.id,
                 'price_unit': self.product.lst_price,
             })],
@@ -1696,12 +1708,13 @@ class TestPoSSale(TestPointOfSaleHttpCommon):
         self.start_tour("/pos/ui?config_id=%d" % self.main_pos_config.id, 'test_multiple_lots_sale_order_3', login="accountman")
         self.main_pos_config.current_session_id.action_pos_session_close()
         picking = sale_order.pos_order_line_ids.order_id.picking_ids
-        self.assertEqual(picking.move_ids.quantity, 3)
-        self.assertEqual(len(picking.move_ids.move_line_ids), 2)
-        self.assertEqual(picking.move_ids.move_line_ids[0].lot_id.name, '1001')
-        self.assertEqual(picking.move_ids.move_line_ids[0].quantity, 1)
-        self.assertEqual(picking.move_ids.move_line_ids[1].lot_id.name, '1002')
-        self.assertEqual(picking.move_ids.move_line_ids[1].quantity, 2)
+        self.assertEqual(picking.move_ids.quantity, 6)
+        self.assertEqual(len(picking.move_ids.move_line_ids), 3)
+        self.assertRecordValues(picking.move_ids.move_line_ids, [
+            {'lot_id': lot_1001.id, 'quantity': 3, 'location_id': self.shelf_2.id},
+            {'lot_id': lot_1001.id, 'quantity': 1, 'location_id': self.shelf_1.id},
+            {'lot_id': lot_1002.id, 'quantity': 2, 'location_id': self.shelf_2.id},
+        ])
 
     def test_selected_partner_quotation_loading(self):
         """
@@ -1886,3 +1899,449 @@ class TestPoSSale(TestPointOfSaleHttpCommon):
             "The amount_unpaid for the SO should not be 0 if there are no transactions."
         )
         self.start_tour("/pos/ui?config_id=%d" % self.main_pos_config.id, 'test_ecommerce_unpaid_order_is_shown_in_pos', login="accountman")
+
+    def test_downpayment_displayed_multiple_sync(self):
+        """
+        Tests that the downpayment is displayed only once on the SO
+        when syncing multiple times (like in the Preparation Display)
+        """
+        if not self.env["ir.module.module"].search([("name", "=", "pos_preparation_display"), ("state", "=", "installed")]):
+            self.skipTest("pos_preparation_display module is required for this test")
+        # set preparation display
+        category = self.env['pos.category'].create({
+            'name': 'Test Category',
+        })
+        self.env['pos_preparation_display.display'].create({
+            'name': 'Preparation Display',
+            'pos_config_ids': [Command.link(self.main_pos_config.id)],
+            'category_ids': [Command.link(category.id)],
+        })
+        product_a = self.env['product.product'].create({
+            'name': 'Product A',
+            'available_in_pos': True,
+            'lst_price': 100,
+            'taxes_id': [],
+            'pos_categ_ids': [Command.link(category.id)],
+        })
+
+        partner_test = self.env['res.partner'].create({'name': 'Test Partner'})
+
+        # create a sale order
+        sale_order = self.env['sale.order'].create({
+            'partner_id': partner_test.id,
+            'order_line': [Command.create({
+                'product_id': product_a.id,
+                'name': product_a.name,
+                'product_uom_qty': 1,
+                'price_unit': product_a.lst_price,
+                'product_uom': product_a.uom_id.id
+            })],
+        })
+        sale_order.action_confirm()
+
+        # set downpayment product in pos config
+        self.downpayment_product = self.env['product.product'].create({
+            'name': 'Down Payment',
+            'available_in_pos': True,
+            'type': 'service',
+        })
+        self.main_pos_config.write({
+            'down_payment_product_id': self.downpayment_product.id,
+        })
+        self.main_pos_config.open_ui()
+        current_session = self.main_pos_config.current_session_id
+
+        pos_order = {
+           'amount_paid': 20,
+           'amount_return': 0,
+           'amount_tax': 0,
+           'amount_total': 20,
+           'company_id': self.env.company.id,
+           'date_order': fields.Datetime.to_string(fields.Datetime.now()),
+           'fiscal_position_id': False,
+           'to_invoice': True,
+           'partner_id': partner_test.id,
+           'pricelist_id': self.main_pos_config.available_pricelist_ids[0].id,
+           'lines': [[0,
+             0,
+             {'discount': 0,
+              'pack_lot_ids': [],
+              'price_unit': 20,
+              'product_id': self.downpayment_product.id,
+              'price_subtotal': 20,
+              'price_subtotal_incl': 20,
+              'sale_order_line_id': sale_order.order_line[0].id,
+              'sale_order_origin_id': sale_order.id,
+              'qty': 1,
+              'tax_ids': []}]],
+           'name': 'Order 00044-003-0014',
+           'session_id': current_session.id,
+           'sequence_number': self.main_pos_config.journal_id.id,
+           'payment_ids': [[0,
+             0,
+             {'amount': 20,
+              'name': fields.Datetime.now(),
+              'payment_method_id': self.main_pos_config.payment_method_ids[0].id}]],
+           'user_id': self.env.uid,
+           'uuid': str(uuid4()),
+            }
+
+        context = {
+            'active_model': 'sale.order',
+            'active_ids': [sale_order.id],
+            'active_id': sale_order.id,
+            'default_journal_id': self.company_data['default_journal_sale'].id,
+        }
+
+        payment = self.env['sale.advance.payment.inv'].with_context(context).create({
+            'advance_payment_method': 'fixed',
+            'fixed_amount': 100,
+        })
+        payment.create_invoices()
+
+        downpayment_line = sale_order.order_line.filtered(lambda l: l.is_downpayment and not l.display_type)
+        downpayment_invoice = downpayment_line.order_id.order_line.invoice_lines.move_id
+        downpayment_invoice.action_post()
+        self.env['pos.order'].sync_from_ui([pos_order])
+        self.env['pos.order'].sync_from_ui([pos_order])
+        self.assertEqual(len(sale_order.order_line), 3)
+        self.assertEqual(sale_order.order_line[2].qty_invoiced, 1)
+
+    def test_refund_ship_later_qty_delivered(self):
+        warehouse = self.env['stock.warehouse'].search([('company_id', '=', self.env.company.id)], limit=1)
+        warehouse.delivery_steps = 'pick_pack_ship'
+
+        sale_order = self.env['sale.order'].create({
+            'partner_id': self.partner_a.id,
+            'order_line': [Command.create({
+                'product_id': self.product_a.id,
+                'name': self.product_a.name,
+                'product_uom_qty': 5,
+                'price_unit': self.product_a.lst_price,
+                'product_uom': self.product_a.uom_id.id
+            })],
+        })
+        sale_order.action_confirm()
+
+        self.main_pos_config.ship_later = True
+        self.main_pos_config.open_ui()
+        current_session = self.main_pos_config.current_session_id
+
+        pos_order = {
+           'amount_paid': self.product_a.lst_price * 5,
+           'amount_return': 0,
+           'amount_tax': 0,
+           'amount_total': self.product_a.lst_price * 5,
+           'company_id': self.env.company.id,
+           'date_order': fields.Datetime.to_string(fields.Datetime.now()),
+           'fiscal_position_id': False,
+           'to_invoice': True,
+           'partner_id': self.partner_a.id,
+           'pricelist_id': self.main_pos_config.available_pricelist_ids[0].id,
+           'lines': [[0,
+             0,
+             {'discount': 0,
+              'pack_lot_ids': [],
+              'price_unit': self.product_a.lst_price,
+              'product_id': self.product_a.id,
+              'price_subtotal': self.product_a.lst_price * 5,
+              'price_subtotal_incl': self.product_a.lst_price * 5,
+              'sale_order_line_id': sale_order.order_line[0].id,
+              'sale_order_origin_id': sale_order.id,
+              'qty': 5,
+              'tax_ids': []}]],
+           'name': 'Order 00044-003-0014',
+           'session_id': current_session.id,
+           'sequence_number': self.main_pos_config.journal_id.id,
+           'payment_ids': [[0,
+             0,
+             {'amount': self.product_a.lst_price * 5,
+              'name': fields.Datetime.now(),
+              'payment_method_id': self.main_pos_config.payment_method_ids[0].id}]],
+           'user_id': self.env.uid,
+           'uuid': str(uuid4()),
+        }
+
+        data = self.env['pos.order'].sync_from_ui([pos_order])
+        pos_order_id = data['pos.order'][0]['id']
+        pos_order_record = self.env['pos.order'].browse(pos_order_id)
+
+        pos_order_refund = {
+           'amount_paid': -self.product_a.lst_price * 3,
+           'amount_return': 0,
+           'amount_tax': 0,
+           'amount_total': -self.product_a.lst_price * 3,
+           'company_id': self.env.company.id,
+           'date_order': fields.Datetime.to_string(fields.Datetime.now()),
+           'fiscal_position_id': False,
+           'to_invoice': True,
+           'partner_id': self.partner_a.id,
+           'pricelist_id': self.main_pos_config.available_pricelist_ids[0].id,
+           'lines': [[0,
+             0,
+             {'discount': 0,
+              'pack_lot_ids': [],
+              'price_unit': self.product_a.lst_price,
+              'product_id': self.product_a.id,
+              'price_subtotal': -self.product_a.lst_price * 3,
+              'price_subtotal_incl': -self.product_a.lst_price * 3,
+              'refund_orderline_ids': [],
+              'refunded_orderline_id': pos_order_record.lines[0].id,
+              'qty': -3,
+              'tax_ids': []}]],
+           'name': 'Order 00044-003-0014',
+           'session_id': current_session.id,
+           'sequence_number': self.main_pos_config.journal_id.id,
+           'payment_ids': [[0,
+             0,
+             {'amount': -self.product_a.lst_price * 3,
+              'name': fields.Datetime.now(),
+              'payment_method_id': self.main_pos_config.payment_method_ids[0].id}]],
+           'user_id': self.env.uid,
+           'uuid': str(uuid4()),
+           'shipping_date': fields.Date.today(),
+        }
+        data = self.env['pos.order'].sync_from_ui([pos_order_refund])
+        pos_order_refund_id = data['pos.order'][0]['id']
+        pos_order_refund_record = self.env['pos.order'].browse(pos_order_refund_id)
+        self.assertEqual(sale_order.order_line.qty_delivered, 5)
+        for picking in pos_order_refund_record.picking_ids:
+            picking.button_validate()
+        self.assertEqual(sale_order.order_line.qty_delivered, 2)
+
+    def test_settle_groupable_lot_total_amount(self):
+        uom_category = self.env['uom.category'].create({
+            'name': 'Non groupable',
+            'is_pos_groupable': True,
+        })
+
+        groupable_uom_unit = self.env['uom.uom'].create({
+            'name': 'Groupable Unit',
+            'category_id': uom_category.id,
+            'uom_type': 'reference',
+        })
+
+        groupable_uom_dozens = self.env['uom.uom'].create({
+            'name': 'Groupable Dozens',
+            'category_id': uom_category.id,
+            'factor_inv': 12,
+            'uom_type': 'bigger',
+        })
+
+        self.product = self.env['product.product'].create({
+            'name': 'Product',
+            'available_in_pos': True,
+            'is_storable': True,
+            'lst_price': 1.0,
+            'taxes_id': False,
+            'categ_id': self.product_category.id,
+            'tracking': 'lot',
+            'uom_id': groupable_uom_unit.id,
+            'uom_po_id': groupable_uom_unit.id,
+        })
+
+        self.warehouse = self.env['stock.warehouse'].search([('company_id', '=', self.env.company.id)], limit=1)
+
+        self.shelf = self.env['stock.location'].create({
+            'name': 'Shelf 1',
+            'usage': 'internal',
+            'location_id': self.warehouse.lot_stock_id.id,
+        })
+
+        quants = self.env['stock.quant'].with_context(inventory_mode=True).create({
+            'product_id': self.product.id,
+            'inventory_quantity': 10_000,
+            'location_id': self.shelf.id,
+            'lot_id': self.env['stock.lot'].create({
+                'name': '1001',
+                'product_id': self.product.id,
+                'location_id': self.shelf.id,
+            }).id,
+        })
+
+        quants.action_apply_inventory()
+
+        sale_order = self.env['sale.order'].create({
+            'partner_id': self.env['res.partner'].create({'name': 'Test Partner'}).id,
+            'order_line': [(0, 0, {
+                'product_id': self.product.id,
+                'name': self.product.name,
+                'product_uom_qty': 1,
+                'product_uom': groupable_uom_dozens.id,
+                'price_unit': 12.0,
+            })],
+        })
+
+        sale_order.action_confirm()
+        self.main_pos_config.open_ui()
+        self.start_tour("/pos/ui?config_id=%d" % self.main_pos_config.id, 'test_settle_groupable_lot_total_amount', login="accountman")
+
+    def test_amount_unpaid_with_downpayment_and_credit_note(self):
+        """ Test that amount_unpaid is well calculated when a downpayment is not made in the PoS """
+        sale_order = self.env['sale.order'].create({
+            'partner_id': self.partner_a.id,
+            'order_line': [Command.create({
+                'product_id': self.product_a.id,
+                'name': self.product_a.name,
+                'product_uom_qty': 1,
+                'price_unit': 500,
+                'tax_id': False,
+            })],
+        })
+        sale_order.action_confirm()
+
+        context = {
+            'active_model': 'sale.order',
+            'active_ids': [sale_order.id],
+            'active_id': sale_order.id,
+            'default_journal_id': self.company_data['default_journal_sale'].id,
+        }
+
+        payment = self.env['sale.advance.payment.inv'].with_context(context).create({
+            'advance_payment_method': 'fixed',
+            'fixed_amount': 300,
+        })
+        res = payment.create_invoices()
+        invoice = self.env['account.move'].browse(res['res_id'])
+        invoice.action_post()
+
+        self.assertEqual(sale_order.amount_unpaid, 200.0)
+
+        credit_note = invoice._reverse_moves()
+        credit_note.action_post()
+
+        self.assertEqual(sale_order.amount_unpaid, 500.0)
+
+        payment = self.env['sale.advance.payment.inv'].with_context(context).create({
+            'advance_payment_method': 'delivered',
+        })
+        res = payment.create_invoices()
+        invoice = self.env['account.move'].browse(res['res_id'])
+        invoice.action_post()
+
+        self.assertEqual(sale_order.amount_unpaid, 0.0)
+
+
+@odoo.tests.tagged('post_install', '-at_install')
+class TestPosSaleAccount(TestPoSCommon):
+    def test_repair_cogs(self):
+        if not self.env['ir.module.module'].search([('name', '=', 'repair'), ('state', '=', 'installed')], limit=1):
+            self.skipTest("Only tested with repair module installed")
+
+        self.config = self.basic_config
+        self.product1 = self.create_product('Product Fifo', self.categ_anglo, 10.0, 7.0)
+
+        # start inventory with 10 items for each product
+        self.adjust_inventory([self.product1], [2])
+
+        # change cost(standard_price) of anglo products
+        # then set inventory from 7 -> 10
+        self.product1.write({'standard_price': 10.0})
+        self.adjust_inventory([self.product1], [3])
+
+        self.output_account = self.categ_anglo.property_stock_account_output_categ_id
+        self.expense_account = self.categ_anglo.property_account_expense_categ_id
+        self.valuation_account = self.categ_anglo.property_stock_valuation_account_id
+
+        repair_type = self.env['stock.warehouse'].search([], limit=1).repair_type_id
+        repair = self.env['repair.order'].create({
+            'partner_id': self.partner.id,
+            'picking_type_id': repair_type.id,
+            'move_ids': [
+                (0, 0, {
+                    'repair_line_type': 'add',
+                    'product_id': self.product1.id,
+                    'product_uom_qty': 1,
+                })
+            ],
+        })
+        repair.action_repair_start()
+        repair.action_repair_end()
+        sale_order = self.env['sale.order'].browse(repair.action_create_sale_order()['res_id'])
+
+        self.basic_config.open_ui()
+        current_session = self.basic_config.current_session_id
+
+        pos_order = {
+            'amount_paid': 20,
+            'amount_return': 0,
+            'amount_tax': 0,
+            'amount_total': 20,
+            'company_id': self.env.company.id,
+            'date_order': fields.Datetime.to_string(fields.Datetime.now()),
+            'fiscal_position_id': False,
+            'to_invoice': True,
+            'partner_id': self.partner.id,
+            'pricelist_id': False,
+            'lines': [[0,
+                       0,
+                       {'discount': 0,
+                        'pack_lot_ids': [],
+                        'price_unit': 20,
+                        'product_id': self.product1.id,
+                        'price_subtotal': 20,
+                        'price_subtotal_incl': 20,
+                        'sale_order_line_id': sale_order.order_line[0].id,
+                        'sale_order_origin_id': sale_order.id,
+                        'qty': 1,
+                        'tax_ids': []}]],
+            'name': 'Order 00044-003-0014',
+            'session_id': current_session.id,
+            'sequence_number': self.basic_config.journal_id.id,
+            'payment_ids': [[0,
+                             0,
+                             {'amount': 20,
+                              'name': fields.Datetime.now(),
+                              'payment_method_id': self.basic_config.payment_method_ids[0].id}]],
+            'user_id': self.env.uid,
+            'uuid': str(uuid4()),
+        }
+        self.env['pos.order'].sync_from_ui([pos_order])
+        invoice = sale_order.order_line.pos_order_line_ids.order_id.account_move
+        cogs = invoice.line_ids.filtered(lambda line: line.display_type == 'cogs')
+        self.assertEqual(len(cogs), 2)
+        self.assertEqual(cogs.filtered(lambda l: l.account_id == self.output_account).credit, 7.0)
+
+
+@odoo.tests.tagged('post_install', '-at_install')
+class TestPoSSalePayment(TestPointOfSaleHttpCommon, PaymentCommon):
+
+    def test_pos_settle_so_with_downpayment(self):
+        """Ensure that the POS correctly handles Sale Orders where a down payment was processed
+        via a payment transaction with the automatic invoicing setting enabled.
+        """
+        self.product_a.available_in_pos = True
+        self.env['ir.config_parameter'].sudo().set_param('sale.automatic_invoice', 'True')
+        self.partner_a.email = "test.customer@example.com"
+        sale_order = self.env['sale.order'].create({
+            'partner_id': self.partner_a.id,
+            'order_line': [(0, 0, {
+                'product_id': self.product_a.id,
+                'product_uom_qty': 1,
+                'price_unit': self.product_a.lst_price,
+            })],
+            'require_payment': True,
+            'prepayment_percent': 0.3,
+        })
+        # Manual downpayment invoice
+        down_payment = self.env['sale.advance.payment.inv'].create({
+            'advance_payment_method': 'fixed',
+            'fixed_amount': 50,
+            'sale_order_ids': sale_order.ids,
+        })
+        down_payment.create_invoices()
+        down_payment_invoices = sale_order.invoice_ids
+        down_payment_invoices.action_post()
+        # Online payment transaction for 30% downpayment
+        tx = self._create_transaction(
+                flow='direct',
+                amount=sale_order.amount_total * sale_order.prepayment_percent,
+                sale_order_ids=[sale_order.id],
+                state='done',
+                reference='Test Transaction',
+            )
+        tx._set_done()
+        tx._post_process()
+        self.main_pos_config.down_payment_product_id = self.env.ref("pos_sale.default_downpayment_product")
+        self.main_pos_config.open_ui()
+        self.start_pos_tour('test_pos_settle_so_with_downpayment', login="accountman")

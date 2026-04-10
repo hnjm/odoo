@@ -246,7 +246,10 @@
                                                     t-options="{'widget': 'monetary', 'display_currency': sale_order.currency_id}"
                                                     class="fw-bold"
                                                 />
-                                                (<b t-esc="sale_order.prepayment_percent * 100"/>%),
+                                                (<b
+                                                    t-esc="sale_order.prepayment_percent * 100"
+                                                    t-options="{'widget': 'float'}"
+                                                />%),
                                             </span>
                                             <span id="o_sale_portal_use_amount_total">
                                                 By paying,
@@ -413,6 +416,10 @@
                                 <th t-if="sale_order.state in ['sale', 'cancel']" class="ps-0 pb-0">Order Date:</th>
                                 <th t-else="" class="ps-0 pb-0">Date:</th>
                                 <td class="w-100 pb-0 text-wrap"><span t-field="sale_order.date_order" t-options='{"widget": "date"}'/></td>
+                            </tr>
+                            <tr t-if="sale_order.commitment_date and sale_order.state in ['sent', 'sale']">
+                                <th class="ps-0 pb-0">Delivery Date:</th>
+                                <td class="w-100 pb-0 text-wrap"><span t-field="sale_order.commitment_date" t-options='{"widget": "date"}'/></td>
                             </tr>
                             <tr t-if="sale_order.validity_date and sale_order.state in ['draft', 'sent']">
                                 <th class="ps-0 pb-0">Expiration Date:</th>

@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-25 08:40+0000\n"
-"PO-Revision-Date: 2025-11-21 02:24+0000\n"
+"POT-Creation-Date: 2026-03-20 18:37+0000\n"
+"PO-Revision-Date: 2025-12-20 18:01+0000\n"
 "Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Lithuanian <https://translate.odoo.com/projects/odoo-18/"
 "auth_totp_portal/lt/>\n"
@@ -21,21 +21,20 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
-"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 :"
-" n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 5.12.2\n"
+"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
+"1 : n % 1 != 0 ? 2: 3);\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #. module: auth_totp_portal
 #. odoo-javascript
 #: code:addons/auth_totp_portal/static/src/js/totp_frontend.js:0
 msgid " Copy"
-msgstr ""
+msgstr " Kopijuoti"
 
 #. module: auth_totp_portal
 #: model_terms:ir.ui.view,arch_db:auth_totp_portal.totp_portal_hook
 msgid "(Disable two-factor authentication)"
-msgstr ""
-"(Išjungti dviejų veiksnių autentifikavimą (two-factor authentication))"
+msgstr "(Išjungti dviejų veiksnių autentifikavimą (two-factor authentication))"
 
 #. module: auth_totp_portal
 #: model_terms:ir.ui.view,arch_db:auth_totp_portal.totp_portal_hook
@@ -44,11 +43,13 @@ msgid ""
 "                        Two-factor authentication not enabled"
 msgstr ""
 "<i class=\"fa fa-warning\"/>\n"
-"                        Dviejų veiksnių autentifikavimas (two-factor authentication) nėra įjungtas"
+"                        Dviejų veiksnių autentifikavimas (two-factor "
+"authentication) nėra įjungtas"
 
 #. module: auth_totp_portal
 #: model_terms:ir.ui.view,arch_db:auth_totp_portal.totp_portal_hook
-msgid "<i title=\"Documentation\" class=\"fa fa-fw o_button_icon fa-info-circle\"/>"
+msgid ""
+"<i title=\"Documentation\" class=\"fa fa-fw o_button_icon fa-info-circle\"/>"
 msgstr ""
 
 #. module: auth_totp_portal
@@ -61,7 +62,8 @@ msgid ""
 msgstr ""
 "<span class=\"text-success\">\n"
 "                        <i class=\"fa fa-check-circle\"/>\n"
-"                        Dviejų veiksnių autentifikavimas (two-factor authentication) įjungtas\n"
+"                        Dviejų veiksnių autentifikavimas (two-factor "
+"authentication) įjungtas\n"
 "                    </span>"
 
 #. module: auth_totp_portal
@@ -82,7 +84,7 @@ msgstr "Aktyvuoti"
 
 #. module: auth_totp_portal
 #. odoo-javascript
-#: code:addons/auth_totp_portal/static/src/js/totp_frontend.js:0
+#: code:addons/auth_totp_portal/static/src/components/totp_confirmation_dialog.js:0
 msgid "Copied!"
 msgstr "Kopijuota!"
 

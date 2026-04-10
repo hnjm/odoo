@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* certificate
-# 
+#
 # Translators:
 # Konsta Aavaranta, 2024
 # Jussi Lehto <jussi@gulfeo.com>, 2024
@@ -13,19 +13,19 @@
 # Kari Lindgren <kari.lindgren@emsystems.fi>, 2024
 # Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2025
 # Jessica Jakara, 2025
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-16 13:39+0000\n"
+"POT-Creation-Date: 2026-04-03 18:39+0000\n"
 "PO-Revision-Date: 2024-09-29 00:00+0000\n"
 "Last-Translator: Jessica Jakara, 2025\n"
 "Language-Team: Finnish (https://app.transifex.com/odoo/teams/41243/fi/)\n"
+"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: fi\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: certificate
@@ -408,6 +408,19 @@ msgstr ""
 #. module: certificate
 #. odoo-python
 #: code:addons/certificate/models/certificate.py:0
+#, fuzzy
+#| msgid ""
+#| "This certificate could not be loaded. Either the content or the password "
+#| "is erroneous."
+msgid ""
+"This certificate could not be loaded. Please provide the certificate "
+"password."
+msgstr ""
+"Tätä varmentetta ei voitu ladata. Joko sisältö tai salasana on virheellinen."
+
+#. module: certificate
+#. odoo-python
+#: code:addons/certificate/models/certificate.py:0
 msgid "This certificate is not valid, its validity has expired."
 msgstr "Tämä varmenne ei ole voimassa, sen voimassaolo on päättynyt."
 
@@ -444,8 +457,8 @@ msgstr ""
 #. odoo-python
 #: code:addons/certificate/models/key.py:0
 msgid ""
-"Unsupported asymmetric cryptography algorithm '%s'. Currently supported: EC,"
-" RSA."
+"Unsupported asymmetric cryptography algorithm '%s'. Currently supported: EC, "
+"RSA."
 msgstr ""
 "Ei tuettu epäsymmetrinen salausalgoritmi \"%s\". Tällä hetkellä tuettu: EC, "
 "RSA."
@@ -453,12 +466,16 @@ msgstr ""
 #. module: certificate
 #: model:ir.model.fields,help:certificate.field_certificate_certificate__public_key_id
 msgid ""
-"Used to set a public key in case the one self-contained in the certificate is erroneus.\n"
-"                When a public key is set this way, it will be used instead of the one in the certificate.\n"
+"Used to set a public key in case the one self-contained in the certificate "
+"is erroneus.\n"
+"                When a public key is set this way, it will be used instead "
+"of the one in the certificate.\n"
 "             "
 msgstr ""
-"Käytetään julkisen avaimen asettamiseen siltä varalta, että varmenteen sisältämä avain on virheellinen.\n"
-"                Kun julkinen avain asetetaan tällä tavalla, sitä käytetään varmenteessa olevan avaimen sijasta.\n"
+"Käytetään julkisen avaimen asettamiseen siltä varalta, että varmenteen "
+"sisältämä avain on virheellinen.\n"
+"                Kun julkinen avain asetetaan tällä tavalla, sitä käytetään "
+"varmenteessa olevan avaimen sijasta.\n"
 "             "
 
 #. module: certificate

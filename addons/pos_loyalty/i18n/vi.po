@@ -7,13 +7,13 @@
 # Thi Huong Nguyen, 2025
 # Thang Nguyen, 2025
 #
-# Weblate <noreply-mt-weblate@weblate.org>, 2025.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-07 20:36+0000\n"
-"PO-Revision-Date: 2025-11-15 18:11+0000\n"
+"POT-Creation-Date: 2026-03-20 18:37+0000\n"
+"PO-Revision-Date: 2026-03-21 18:01+0000\n"
 "Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Vietnamese <https://translate.odoo.com/projects/odoo-18/"
 "pos_loyalty/vi/>\n"
@@ -22,17 +22,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_pos_order_line__reward_identifier_code
 msgid ""
 "\n"
-"        Technical field used to link multiple reward lines from the same reward together.\n"
+"        Technical field used to link multiple reward lines from the same "
+"reward together.\n"
 "    "
 msgstr ""
 "\n"
-"        Trường kỹ thuật dùng để liên kết nhiều dòng phần thưởng từ cùng một phần thưởng với nhau.\n"
+"        Trường kỹ thuật dùng để liên kết nhiều dòng phần thưởng từ cùng một "
+"phần thưởng với nhau.\n"
 "    "
 
 #. module: pos_loyalty
@@ -266,8 +268,8 @@ msgstr "Cần bao nhiêu điểm trên phiếu giảm giá để đổi phần t
 #: code:addons/pos_loyalty/models/pos_config.py:0
 msgid "Invalid gift card program reward. Use 1 currency per point discount."
 msgstr ""
-"Phần thưởng chương trình thẻ quà tặng không hợp lệ. Sử dụng 1 đơn vị tiền tệ"
-" cho mỗi điểm giảm giá."
+"Phần thưởng chương trình thẻ quà tặng không hợp lệ. Sử dụng 1 đơn vị tiền tệ "
+"cho mỗi điểm giảm giá."
 
 #. module: pos_loyalty
 #. odoo-python
@@ -293,6 +295,11 @@ msgstr "Chương trình thẻ quà tặng không hợp lệ. Vượt quá một 
 #: model:ir.model.fields,field_description:pos_loyalty.field_pos_order_line__is_reward_line
 msgid "Is Reward Line"
 msgstr "Là dòng phần thưởng"
+
+#. module: pos_loyalty
+#: model:ir.model,name:pos_loyalty.model_account_move_line
+msgid "Journal Item"
+msgstr "Hạng mục bút toán"
 
 #. module: pos_loyalty
 #: model:ir.model,name:pos_loyalty.model_loyalty_mail
@@ -448,8 +455,8 @@ msgid ""
 "Refunding a top up or reward product for an eWallet or gift card program is "
 "not allowed."
 msgstr ""
-"Không được phép hoàn tiền sản phẩm thưởng hoặc nạp tiền cho chương trình thẻ"
-" quà tặng hoặc ví điện tử."
+"Không được phép hoàn tiền sản phẩm thưởng hoặc nạp tiền cho chương trình thẻ "
+"quà tặng hoặc ví điện tử."
 
 #. module: pos_loyalty
 #. odoo-javascript
@@ -557,7 +564,8 @@ msgstr "Phiếu giảm giá được sử dụng để đổi phần thưởng �
 #. odoo-python
 #: code:addons/pos_loyalty/models/pos_order.py:0
 msgid ""
-"The following codes already exist in the database, perhaps they were already sold?\n"
+"The following codes already exist in the database, perhaps they were already "
+"sold?\n"
 "%s"
 msgstr ""
 "Các mã sau đã tồn tại trong cơ sở dữ liệu, có thể chúng đã được bán?\n"
@@ -673,8 +681,8 @@ msgid ""
 "This gift card is not linked to any order. Do you really want to apply its "
 "reward?"
 msgstr ""
-"Thẻ quà tặng này không được liên kết với bất kỳ đơn hàng nào. Bạn có thực sự"
-" muốn áp dụng phần thưởng của thẻ?"
+"Thẻ quà tặng này không được liên kết với bất kỳ đơn hàng nào. Bạn có thực sự "
+"muốn áp dụng phần thưởng của thẻ?"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_program__pos_report_print_id

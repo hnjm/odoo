@@ -6,11 +6,28 @@ import { markup } from "@odoo/owl";
 
 patch(PaymentScreen.prototype, {
     //@Override
+    shouldDownloadInvoice() {
+        // For SA companies the PDF is deferred (generated on demand). Skip the
+        // automatic post-checkout download so the cashier is never presented
+        // with a proforma instead of the real invoice.
+        if (this.currentOrder?.isSACompany) {
+            return false;
+        }
+        return super.shouldDownloadInvoice();
+    },
+    //@Override
     async _finalizeValidation() {
         await super._finalizeValidation(...arguments);
         const order = this.currentOrder;
         // note: isSACompany guarantees order.is_to_invoice()
-        if (order.isSACompany && order.finalized && order.l10n_sa_invoice_edi_state !== "sent") {
+        // note: Skips entirely if journal is not onboarded or electronic invoicing is not selected
+        // Also skip if invoice is not mandatory(Ex: settlement)
+        if (
+            order.isSACompany &&
+            order.finalized &&
+            !order.l10n_sa_invoice_qr_code_str &&
+            order.isInvoiceMandatoryForSA
+        ) {
             const orderError = _t("%s by going to Backend > Orders > Invoice", order.pos_reference);
             const href = `/odoo/customer-invoices/${this.currentOrder?.raw?.account_move}`;
             const link = markup(

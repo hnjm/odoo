@@ -6,6 +6,7 @@ import {
 } from "../utils/dom_info";
 import { Plugin } from "../plugin";
 import { closestBlock, isBlock } from "../utils/blocks";
+import { fillClipboardData } from "../utils/clipboard";
 import {
     unwrapContents,
     wrapInlinesInBlocks,
@@ -228,14 +229,7 @@ export class ClipboardPlugin extends Plugin {
                 }
             }
         }
-        const dataHtmlElement = this.document.createElement("data");
-        dataHtmlElement.append(clonedContents);
-        prependOriginToImages(dataHtmlElement, window.location.origin);
-        const odooHtml = dataHtmlElement.innerHTML;
-        const odooText = selection.textContent();
-        ev.clipboardData.setData("text/plain", odooText);
-        ev.clipboardData.setData("text/html", odooHtml);
-        ev.clipboardData.setData("application/vnd.odoo.odoo-editor", odooHtml);
+        fillClipboardData(ev, selection.textContent(), clonedContents);
         if (commonAncestor && commonAncestor.nodeType === Node.ELEMENT_NODE) {
             this.dispatchTo("normalize_handlers", commonAncestor);
         }
@@ -256,11 +250,12 @@ export class ClipboardPlugin extends Plugin {
         this.dispatchTo("before_paste_handlers", selection);
         // refresh selection after potential changes from `before_paste` handlers
         selection = this.dependencies.selection.getEditableSelection();
-
-        this.handlePasteUnsupportedHtml(selection, ev.clipboardData) ||
-            this.handlePasteOdooEditorHtml(ev.clipboardData) ||
-            this.handlePasteHtml(selection, ev.clipboardData) ||
-            this.handlePasteText(selection, ev.clipboardData);
+        if (!this.delegateTo("paste_overrides", selection, ev.clipboardData)) {
+            this.handlePasteUnsupportedHtml(selection, ev.clipboardData) ||
+                this.handlePasteOdooEditorHtml(ev.clipboardData) ||
+                this.handlePasteHtml(selection, ev.clipboardData) ||
+                this.handlePasteText(selection, ev.clipboardData);
+        }
 
         this.dispatchTo("after_paste_handlers", selection);
         this.dependencies.history.addStep();
@@ -804,17 +799,4 @@ export function isHtmlContentSupported(node) {
         node,
         '[data-oe-model]:not([data-oe-field="arch"]):not([data-oe-type="html"]),[data-oe-translation-id]'
     );
-}
-
-/**
- * Add origin to relative img src.
- * @param {string} origin
- */
-function prependOriginToImages(doc, origin) {
-    doc.querySelectorAll("img").forEach((img) => {
-        const src = img.getAttribute("src");
-        if (src && !/^(http|\/\/|data:)/.test(src)) {
-            img.src = origin + (src.startsWith("/") ? src : "/" + src);
-        }
-    });
 }

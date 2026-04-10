@@ -1,11 +1,12 @@
 import uuid
+from json import JSONDecodeError
 import requests
 
 from odoo import _, api, fields, models
 from requests.exceptions import Timeout, ConnectionError, HTTPError
 
 DEMO_EFAKTURA_URL = 'https://demoefaktura.mfin.gov.rs/api/publicApi/sales-invoice/ubl'
-EFAKTURA_URL = 'https://efakturadev.mfin.gov.rs/api/publicApi/sales-invoice/ubl'
+EFAKTURA_URL = 'https://efaktura.mfin.gov.rs/api/publicApi/sales-invoice/ubl'
 
 
 class AccountMove(models.Model):
@@ -139,7 +140,7 @@ class AccountMove(models.Model):
         dict_response = {}
         try:
             dict_response = response.json()
-        except requests.exceptions.JSONDecodeError as e:
+        except JSONDecodeError as e:
             error_message = _("Invalid response from eFaktura: %s", str(e))
         self.l10n_rs_edi_state = 'sending_failed' if error_message else 'sent'
         self.l10n_rs_edi_error = error_message

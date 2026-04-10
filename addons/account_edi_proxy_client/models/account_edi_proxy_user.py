@@ -58,24 +58,19 @@ class AccountEdiProxyClientUser(models.Model):
 
     _sql_constraints = [
         ('unique_id_client', 'unique(id_client)', 'This id_client is already used on another user.'),
-        ('unique_active_edi_identification', '', 'This edi identification is already assigned to an active user'),
         ('unique_active_company_proxy', '', 'This company has an active user already created for this EDI type'),
     ]
 
     def _auto_init(self):
         super()._auto_init()
-        if not index_exists(self.env.cr, 'account_edi_proxy_client_user_unique_active_edi_identification'):
-            self.env.cr.execute("""
-                CREATE UNIQUE INDEX account_edi_proxy_client_user_unique_active_edi_identification
-                                 ON account_edi_proxy_client_user(edi_identification, proxy_type, edi_mode)
-                              WHERE (active = True)
-            """)
         if not index_exists(self.env.cr, 'account_edi_proxy_client_user_unique_active_company_proxy'):
             self.env.cr.execute("""
                 CREATE UNIQUE INDEX account_edi_proxy_client_user_unique_active_company_proxy
                                  ON account_edi_proxy_client_user(company_id, proxy_type, edi_mode)
                               WHERE (active = True)
             """)
+
+        self.env.cr.execute("DROP INDEX IF EXISTS account_edi_proxy_client_user_unique_active_edi_identification")
 
     def _get_proxy_urls(self):
         # To extend
@@ -116,20 +111,29 @@ class AccountEdiProxyClientUser(models.Model):
             raise AccountEdiProxyError("block_demo_mode", "Can't access the proxy in demo mode")
 
         try:
-            response = requests.post(
+            res = requests.post(
                 url,
                 json=payload,
                 timeout=TIMEOUT,
                 headers={'content-type': 'application/json'},
-                auth=OdooEdiProxyAuth(user=self)).json()
-        except (ValueError, requests.exceptions.ConnectionError, requests.exceptions.MissingSchema, requests.exceptions.Timeout, requests.exceptions.HTTPError):
+                auth=OdooEdiProxyAuth(user=self))
+            res.raise_for_status()
+            response = res.json()
+        except (ValueError, requests.exceptions.ConnectionError, requests.exceptions.MissingSchema, requests.exceptions.Timeout, requests.exceptions.HTTPError) as e:
+            _logger.warning('Connection error <%(url)s>: %(error)s', {'url': url, 'error': e})
             raise AccountEdiProxyError('connection_error',
                 _('The url that this service requested returned an error. The url it tried to contact was %s', url))
 
         if 'error' in response:
-            message = _('The url that this service requested returned an error. The url it tried to contact was %(url)s. %(error_message)s', url=url, error_message=response['error']['message'])
             if response['error']['code'] == 404:
                 message = _('The url that this service tried to contact does not exist. The url was “%s”', url)
+            else:
+                error_message = response['error'].get('data', {}).get('message') or response['error']['message']
+                message = _(
+                    "The url that this service requested returned an error. The url it tried to contact was %(url)s. %(error_message)s",
+                    url=url,
+                    error_message=error_message,
+                )
             raise AccountEdiProxyError('connection_error', message)
 
         proxy_error = response['result'].pop('proxy_error', False)

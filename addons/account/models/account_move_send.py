@@ -65,9 +65,18 @@ class AccountMoveSend(models.AbstractModel):
             'author_partner_id': get_setting('author_partner_id', from_cron=from_cron) or self.env.user.partner_id.id,
         }
         vals['invoice_edi_format'] = get_setting('invoice_edi_format', default_value=self._get_default_invoice_edi_format(move, sending_methods=vals['sending_methods']))
+        mail_template = get_setting('mail_template') or self._get_default_mail_template_id(move)
         if 'email' in vals['sending_methods']:
-            mail_template = get_setting('mail_template') or self._get_default_mail_template_id(move)
             mail_lang = get_setting('mail_lang') or self._get_default_mail_lang(move, mail_template)
+            vals.update({
+                'mail_template': mail_template,
+                'mail_lang': mail_lang,
+                'mail_body': get_setting('mail_body', default_value=self._get_default_mail_body(move, mail_template, mail_lang)),
+                'mail_subject': get_setting('mail_subject', default_value=self._get_default_mail_subject(move, mail_template, mail_lang)),
+                'mail_partner_ids': get_setting('mail_partner_ids', default_value=self._get_default_mail_partner_ids(move, mail_template, mail_lang).ids),
+            })
+        # Add mail attachments if sending methods support them
+        if self._display_attachments_widget(vals['invoice_edi_format'], vals['sending_methods']):
             mail_attachments_widget = self._get_default_mail_attachments_widget(
                 move,
                 mail_template,
@@ -75,14 +84,7 @@ class AccountMoveSend(models.AbstractModel):
                 extra_edis=vals['extra_edis'],
                 pdf_report=vals['pdf_report'],
             )
-            vals.update({
-                'mail_template': mail_template,
-                'mail_lang': mail_lang,
-                'mail_body': get_setting('mail_body', default_value=self._get_default_mail_body(move, mail_template, mail_lang)),
-                'mail_subject': get_setting('mail_subject', default_value=self._get_default_mail_subject(move, mail_template, mail_lang)),
-                'mail_partner_ids': get_setting('mail_partner_ids', default_value=self._get_default_mail_partner_ids(move, mail_template, mail_lang).ids),
-                'mail_attachments_widget': get_setting('mail_attachments_widget', default_value=mail_attachments_widget),
-            })
+            vals['mail_attachments_widget'] = get_setting('mail_attachments_widget', default_value=mail_attachments_widget)
         return vals
 
     # -------------------------------------------------------------------------
@@ -100,6 +102,17 @@ class AccountMoveSend(models.AbstractModel):
         - action the action to run when the link is clicked
         """
         alerts = {}
+        send_cron = self.env.ref('account.ir_cron_account_move_send', raise_if_not_found=False)
+        if len(moves) > 1 and send_cron and not send_cron.sudo().active:
+            has_cron_access = send_cron.has_access('write')
+            has_access_message = _("The scheduled action 'Send Invoices automatically' is archived. You won't be able to send invoices in batch.")
+            no_access_addendum = _("\nPlease contact your administrator.")
+            alerts['account_send_cron_archived'] = {
+                'level': 'warning',
+                'message': has_access_message if has_cron_access else has_access_message + no_access_addendum,
+                'action_text': _("Check") if has_cron_access else None,
+                'action': send_cron._get_records_action() if has_cron_access else None,
+            }
         if len(moves) > 1 and (partners_without_mail := moves.filtered(
                 lambda m: 'email' in moves_data[m]['sending_methods'] and not m.partner_id.email).partner_id
         ):
@@ -271,10 +284,18 @@ class AccountMoveSend(models.AbstractModel):
 
     @api.model
     def _check_move_constrains(self, moves):
-        if any(move.state != 'posted' for move in moves):
-            raise UserError(_("You can't generate invoices that are not posted."))
-        if any(not move.is_sale_document(include_receipts=True) for move in moves):
-            raise UserError(_("You can only generate sales documents."))
+        for move in moves:
+            if move_constraints := self._get_move_constraints(move):
+                raise UserError(next(iter(move_constraints.values()), None))
+
+    @api.model
+    def _get_move_constraints(self, move):
+        constraints = {}
+        if move.state != 'posted':
+            constraints['not_posted'] = _("You can't generate invoices that are not posted.")
+        if not move.is_sale_document(include_receipts=True):
+            constraints['not_sale_document'] = _("You can only generate sales documents.")
+        return constraints
 
     @api.model
     def _check_invoice_report(self, moves, **custom_settings):
@@ -313,6 +334,10 @@ class AccountMoveSend(models.AbstractModel):
             return Markup("%s<ul>%s</ul>") % (error['error_title'], errors)
         else:
             return error
+
+    @api.model
+    def _display_attachments_widget(self, edi_format, sending_methods):
+        return 'email' in sending_methods
 
     # -------------------------------------------------------------------------
     # SENDING METHODS

@@ -3,13 +3,14 @@
 # * l10n_pe
 #
 # Weblate <noreply-mt-weblate@weblate.org>, 2025.
+# "Fernanda Alvarez (mfar)" <mfar@odoo.com>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-03 15:45+0000\n"
-"PO-Revision-Date: 2025-11-08 09:22+0000\n"
-"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
+"POT-Creation-Date: 2025-12-29 19:03+0000\n"
+"PO-Revision-Date: 2026-02-21 10:02+0000\n"
+"Last-Translator: \"Fernanda Alvarez (mfar)\" <mfar@odoo.com>\n"
 "Language-Team: Spanish (Latin America) <https://translate.odoo.com/projects/"
 "odoo-18-l10n/l10n_pe/es_419/>\n"
 "Language: es_419\n"
@@ -17,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #. module: l10n_pe
 #: model:l10n_pe.res.city.district,name:l10n_pe.district_pe_030101
@@ -732,6 +733,8 @@ msgstr "Banco"
 #: model:ir.model.fields,help:l10n_pe.field_res_bank__l10n_pe_edi_code
 msgid "Bank code assigned by the SUNAT to identify banking institutions."
 msgstr ""
+"Código bancario asignado por la SUNAT para identificar a las instituciones "
+"bancarias."
 
 #. module: l10n_pe
 #: model:l10n_pe.res.city.district,name:l10n_pe.district_pe_150201
@@ -2213,7 +2216,7 @@ msgstr "Código"
 #. module: l10n_pe
 #: model:ir.model.fields,field_description:l10n_pe.field_res_bank__l10n_pe_edi_code
 msgid "Code (PE)"
-msgstr ""
+msgstr "Código (PE)"
 
 #. module: l10n_pe
 #: model:l10n_pe.res.city.district,name:l10n_pe.district_pe_100902
@@ -2832,7 +2835,7 @@ msgstr "Distrito"
 #: model:ir.model.fields,field_description:l10n_pe.field_res_partner__l10n_pe_district_name
 #: model:ir.model.fields,field_description:l10n_pe.field_res_users__l10n_pe_district_name
 msgid "District name"
-msgstr ""
+msgstr "Nombre del distrito"
 
 #. module: l10n_pe
 #: model_terms:ir.ui.view,arch_db:l10n_pe.pe_partner_address_form
@@ -2996,7 +2999,7 @@ msgstr "Dos de mayo"
 #. module: l10n_pe
 #: model:ir.model,name:l10n_pe.model_account_tax
 msgid "ETA tax codes mixin"
-msgstr ""
+msgstr "Mixin de códigos fiscales ETA"
 
 #. module: l10n_pe
 #: model:ir.model.fields.selection,name:l10n_pe.selection__account_tax__l10n_pe_edi_tax_code__9997
@@ -3973,7 +3976,7 @@ msgstr "Huánuco"
 #. module: l10n_pe
 #: model:ir.model.fields.selection,name:l10n_pe.selection__account_tax__l10n_pe_edi_tax_code__7152
 msgid "ICBPER - Plastic bag tax"
-msgstr "ICBPER - Impuesto a la bolsa plastica"
+msgstr "ICBPER - Impuesto al consumo de las bolsas de plástico"
 
 #. module: l10n_pe
 #: model:ir.model.fields,field_description:l10n_pe.field_l10n_pe_res_city_district__id
@@ -4044,7 +4047,7 @@ msgstr "Número de identificación"
 #. module: l10n_pe
 #: model:ir.model,name:l10n_pe.model_l10n_latam_identification_type
 msgid "Identification Types"
-msgstr "Tipos de Identificación"
+msgstr "Tipos de identificación"
 
 #. module: l10n_pe
 #: model:l10n_latam.identification.type,name:l10n_pe.it_IDCR
@@ -6591,6 +6594,9 @@ msgid ""
 "Commission for Europe for more information http://www.unece.org/trade/untdid/"
 "d08a/tred/tred5305.html"
 msgstr ""
+"Revisa la norma UN/ECE 5305 de la Comisión Económica de las Naciones Unidas "
+"para Europa para obtener más información: http://www.unece.org/trade/untdid/"
+"d08a/tred/tred5305.html"
 
 #. module: l10n_pe
 #: model:ir.model.fields,help:l10n_pe.field_account_tax__l10n_pe_edi_tax_code
@@ -7040,7 +7046,7 @@ msgstr "Puyusca"
 #. module: l10n_pe
 #: model:l10n_pe.res.city.district,name:l10n_pe.district_pe_100509
 msgid "Puños"
-msgstr ""
+msgstr "Puños"
 
 #. module: l10n_pe
 #: model:l10n_latam.document.type,name:l10n_pe.document_type11
@@ -9593,7 +9599,7 @@ msgid ""
 "the ISC."
 msgstr ""
 "Se utiliza en el Impuesto Selectivo al Consumo para indicar el tipo de "
-"cálculo de el ISC."
+"cálculo del ISC."
 
 #. module: l10n_pe
 #: model:l10n_pe.res.city.district,name:l10n_pe.district_pe_210310

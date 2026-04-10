@@ -12,22 +12,23 @@
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2025
 # "Manon Rondou (ronm)" <ronm@odoo.com>, 2025.
 # Camille Dantinne <cmd@odoo.com>, 2025.
-# Weblate <noreply-mt-weblate@weblate.org>, 2025.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025, 2026.
+# Bren Driesen <brdri@odoo.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-28 18:36+0000\n"
-"PO-Revision-Date: 2025-11-21 06:39+0000\n"
+"POT-Creation-Date: 2026-03-20 18:36+0000\n"
+"PO-Revision-Date: 2026-03-21 18:07+0000\n"
 "Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
-"Language-Team: Dutch <https://translate.odoo.com/projects/odoo-18/account/nl/"
-">\n"
+"Language-Team: Dutch <https://translate.odoo.com/projects/odoo-18/account/"
+"nl/>\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_journal__type
@@ -73,6 +74,16 @@ msgstr ""
 "        Bijv. 180 / (1 - 10%) = 200 (exclusief btw)\n"
 "        Bijv. 200 * (1 - 10%) = 180 (inclusief btw)\n"
 "        "
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move_send.py:0
+msgid ""
+"\n"
+"Please contact your administrator."
+msgstr ""
+"\n"
+"Neem contact op met je beheerder."
 
 #. module: account
 #. odoo-python
@@ -1930,6 +1941,16 @@ msgid "Account Chart Template"
 msgstr "Sjabloon grootboekschema"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_code_mapping.py:0
+msgid ""
+"Account Code Mapping cannot be accessed directly. It is designed to be used "
+"only through the Chart of Accounts."
+msgstr ""
+"'Rekeningcodes koppelen' is niet rechtstreeks toegankelijk. Het is ontworpen "
+"om alleen via het grootboekschema te worden gebruikt."
+
+#. module: account
 #: model:ir.model.fields,field_description:account.field_account_report_line__account_codes_formula
 msgid "Account Codes Formula Shortcut"
 msgstr "Sneltoets formules voor rekeningen"
@@ -2020,7 +2041,7 @@ msgstr "Vervangingstabel grootboekrekeningen"
 #. module: account
 #: model:ir.model,name:account.model_account_move_reversal
 msgid "Account Move Reversal"
-msgstr "Tegenboeking rekening"
+msgstr "Tegenboeking"
 
 #. module: account
 #: model:ir.model,name:account.model_account_move_send
@@ -2030,12 +2051,12 @@ msgstr "Boeking verzenden"
 #. module: account
 #: model:ir.model,name:account.model_account_move_send_batch_wizard
 msgid "Account Move Send Batch Wizard"
-msgstr "Rekening verplaatsen verzend wizard"
+msgstr "Wizard voor Boeking in batch verzenden"
 
 #. module: account
 #: model:ir.model,name:account.model_account_move_send_wizard
 msgid "Account Move Send Wizard"
-msgstr "Wizard rekening verplaatsen verzenden"
+msgstr "Wizard voor Boeking verzenden"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__name
@@ -2424,7 +2445,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/account/wizard/accrued_orders.py:0
 msgid "Accrued %(entry_type)s entry as of %(date)s"
-msgstr "Toegenomen %(entry_type)s boekingen vanaf %(date)s"
+msgstr "Overlopende %(entry_type)s boekingen vanaf %(date)s"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_automatic_entry_wizard_form
@@ -2434,7 +2455,7 @@ msgstr "Overlopende rekening"
 #. module: account
 #: model:ir.model,name:account.model_account_accrued_orders_wizard
 msgid "Accrued Orders Wizard"
-msgstr "Wizard overgelopen orders"
+msgstr "Wizard overlopende orders"
 
 #. module: account
 #. odoo-python
@@ -3377,6 +3398,11 @@ msgid "Attachments"
 msgstr "Bijlagen"
 
 #. module: account
+#: model:ir.model.fields,field_description:account.field_account_move_send_wizard__attachments_not_supported
+msgid "Attachments Not Supported"
+msgstr "Bijlagen worden niet ondersteund"
+
+#. module: account
 #: model:ir.model.fields,field_description:account.field_mail_mail__account_audit_log_activated
 #: model:ir.model.fields,field_description:account.field_mail_message__account_audit_log_activated
 msgid "Audit Log Activated"
@@ -3799,6 +3825,12 @@ msgstr "Bank en kas"
 #: model_terms:ir.ui.view,arch_db:account.report_statement
 msgid "Bank of odoo"
 msgstr "Bank van Odoo"
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid "Bank settings"
+msgstr "Bankinstellingen"
 
 #. module: account
 #: model:ir.model,name:account.model_account_setup_bank_manual_config
@@ -4570,6 +4602,8 @@ msgid "Chart of accounts set!"
 msgstr "Grootboekschema ingesteld!"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move_send.py:0
 #: model_terms:ir.ui.view,arch_db:account.report_hash_integrity
 msgid "Check"
 msgstr "Controleren"
@@ -4957,7 +4991,7 @@ msgstr "Configureren"
 #: code:addons/account/models/onboarding_onboarding_step.py:0
 #: model:ir.actions.act_window,name:account.action_base_document_layout_configurator
 msgid "Configure your document layout"
-msgstr "Configureer je document lay-out"
+msgstr "Configureer de lay-out van je document"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_resequence_view
@@ -6558,6 +6592,11 @@ msgid "Display Amount"
 msgstr "Bedrag weergeven"
 
 #. module: account
+#: model:ir.model.fields,field_description:account.field_account_move_send_wizard__display_attachments_widget
+msgid "Display Attachments Widget"
+msgstr "Widget voor weergave van bijlagen"
+
+#. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment_term_line__display_days_next_month
 msgid "Display Days Next Month"
 msgstr "Toon dagen volgende maand"
@@ -6858,7 +6897,7 @@ msgstr "Concept betaling"
 #. odoo-python
 #: code:addons/account/models/account_move.py:0
 msgid "Draft Purchase Receipt"
-msgstr "Concept inkoopbewijs"
+msgstr "Concept kassabon"
 
 #. module: account
 #. odoo-python
@@ -7382,7 +7421,7 @@ msgstr "Kostenrekening"
 #: model:ir.model.fields,field_description:account.field_account_automatic_entry_wizard__expense_accrual_account
 #: model:ir.model.fields,field_description:account.field_res_company__expense_accrual_account_id
 msgid "Expense Accrual Account"
-msgstr "Grootboekrekening uitgestelde kosten"
+msgstr "Grootboekrekening overlopende kosten"
 
 #. module: account
 #: model:account.account,name:account.1_expense
@@ -7395,6 +7434,11 @@ msgstr "Kosten"
 #: model:ir.model.fields.selection,name:account.selection__account_lock_exception__state__expired
 msgid "Expired"
 msgstr "Vervallen"
+
+#. module: account
+#: model:ir.actions.server,name:account.action_move_export_zip
+msgid "Export ZIP"
+msgstr "ZIP exporteren"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_report_column__expression_label
@@ -7600,7 +7644,7 @@ msgstr "Eerste nieuwe reeks"
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__auto_post_origin_id
 #: model:ir.model.fields,field_description:account.field_account_move__auto_post_origin_id
 msgid "First recurring entry"
-msgstr "Eerste herhalende invoer"
+msgstr "Eerste terugkerende invoer"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_company__account_fiscal_country_id
@@ -7637,7 +7681,7 @@ msgstr "Fiscale lokalisatie"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
 msgid "Fiscal Periods"
-msgstr "Fiscale perioden"
+msgstr "Boekhoudperiodes"
 
 #. module: account
 #: model:ir.model,name:account.model_account_fiscal_position
@@ -7822,8 +7866,8 @@ msgid ""
 "Forces all journal items in this account to have a specific currency (i.e. "
 "bank journals). If no currency is set, entries can use any currency."
 msgstr ""
-"Dwingt alle boekinsgregels in deze rekening om een specifieke valuta te "
-"hebben (d.w.z. bankjournalen). Als er geen valuta is ingesteld, kunnen "
+"Dwingt alle boekingsregels in deze rekening om een specifieke valuta te "
+"hebben (d.w.z. bankdagboeken). Als er geen valuta is ingesteld, kunnen "
 "boekingen elke valuta gebruiken."
 
 #. module: account
@@ -8080,7 +8124,7 @@ msgstr "Goede betaler"
 #: model:ir.model.fields.selection,name:account.selection__account_tax__tax_scope__consu
 #: model_terms:ir.ui.view,arch_db:account.view_account_tax_search
 msgid "Goods"
-msgstr "Diverse goederen"
+msgstr "Goederen"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__group_id
@@ -8309,6 +8353,11 @@ msgstr "Horizontale splitsing"
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
 msgid "How total tax amount is computed in orders and invoices"
 msgstr "Hoe het btw-totaal berekend is in orders en facturen"
+
+#. module: account
+#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
+msgid "ICE:"
+msgstr "ICE:"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__id
@@ -9867,6 +9916,7 @@ msgstr "Dagboek:"
 #: model:ir.actions.act_window,name:account.action_account_journal_form
 #: model:ir.model.fields,field_description:account.field_account_report__filter_journals
 #: model:ir.ui.menu,name:account.menu_action_account_journal_form
+#: model_terms:ir.ui.view,arch_db:account.view_account_move_line_filter
 msgid "Journals"
 msgstr "Dagboeken"
 
@@ -11305,6 +11355,12 @@ msgid "Notes"
 msgstr "Notities"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid "Nothing to export."
+msgstr ""
+
+#. module: account
 #: model:ir.model.fields.selection,name:account.selection__res_company__fiscalyear_last_month__11
 msgid "November"
 msgstr "November"
@@ -11604,7 +11660,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/account/controllers/terms.py:0
 msgid "Oops"
-msgstr "Oep"
+msgstr "Oeps"
 
 #. module: account
 #. odoo-python
@@ -13004,7 +13060,7 @@ msgstr "QR codes"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_line__quantity
 msgid "Quantity"
-msgstr "Aantal"
+msgstr "Hoeveelheid"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
@@ -13079,7 +13135,7 @@ msgstr "Ontvangstvaluta"
 #: model:ir.ui.menu,name:account.menu_action_move_in_receipt_type
 #: model:ir.ui.menu,name:account.menu_action_move_out_receipt_type
 msgid "Receipts"
-msgstr "Ontvangsten"
+msgstr "Ontvangstbewijzen"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_account__account_type__asset_receivable
@@ -13494,7 +13550,7 @@ msgstr "Omzet"
 #: model:ir.model.fields,field_description:account.field_account_automatic_entry_wizard__revenue_accrual_account
 #: model:ir.model.fields,field_description:account.field_res_company__revenue_accrual_account_id
 msgid "Revenue Accrual Account"
-msgstr "Grootboekrekening uitgestelde omzet"
+msgstr "Grootboekrekening overlopende omzet"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_report__account_id
@@ -14209,11 +14265,12 @@ msgid ""
 "emails are compromised. Once verified, you can activate the ability to send "
 "money."
 msgstr ""
-"Het verzenden van valse facturen met een frauduleus rekeningnummer is een "
-"veel voorkomende phishingpraktijk. Om jezelf te beschermen moet je altijd "
-"nieuwe rekeningsnummers controleren, bij voorkeur door de leverancier te "
-"bellen, want phishing gebeurt meestal wanneer hun e-mails gecompromitteerd "
-"zijn. Eenmaal gecontroleerd, kan je de functie om geld te sturen inschakelen."
+"Het versturen van valse facturen met een frauduleus rekeningnummer is een "
+"veelvoorkomende manier van phising. Om jezelf te beschermen moet je nieuwe "
+"rekeningnummers altijd controleren, bij voorkeur door de leverancier te "
+"bellen, aangezien phishing meestal plaatsvindt wanneer hun e-mails zijn "
+"gehackt. Na de controle kun je de mogelijkheid om geld over te maken "
+"activeren."
 
 #. module: account
 #. odoo-python
@@ -14625,8 +14682,9 @@ msgid ""
 "Specify an arbitrary value that will be accrued on a         default account "
 "for the entire order, regardless of the products on the different lines."
 msgstr ""
-"Geef een willekeurige waarde op die wordt opgebouwd op een standaardrekening "
-"voor de hele order, ongeacht de producten op de verschillende regels."
+"Geef een willekeurige waarde op die als overlopende boeking wordt geboekt op "
+"een          standaardrekening voor de hele order, ongeacht welke producten "
+"er op de verschillende regels staan."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_bank_statement_line__auto_post
@@ -14636,7 +14694,7 @@ msgid ""
 "and any similar recurring invoices."
 msgstr ""
 "Geef op of deze boeking automatisch wordt geboekt op de boekhouddatum en "
-"eventuele soortgelijke herhalende facturen."
+"eventuele soortgelijke terugkerende facturen."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_cash_rounding__strategy
@@ -15632,6 +15690,16 @@ msgstr ""
 "(%s)."
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid ""
+"The bank account of your company is not trusted. Please ask an admin or "
+"someone with approval rights to check it."
+msgstr ""
+"De bankrekening van je bedrijf is niet vertrouwd. Vraag een beheerder of "
+"iemand met goedkeuringsrechten om dit te controleren."
+
+#. module: account
 #: model:ir.model.fields,help:account.field_account_move_line__statement_id
 msgid "The bank statement used for bank reconciliation"
 msgstr "Het rekeningafschrift dat wordt gebruikt voor bankaflettering"
@@ -15701,6 +15769,19 @@ msgstr ""
 msgid ""
 "The commercial partner has been updated for all related accounting entries."
 msgstr "De commerciële partner is bijgewerkt voor alle gerelateerde boekingen."
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid ""
+"The company bank account (%(account_number)s) linked to this invoice is not "
+"trusted. Go to the Bank Settings, double-check that it is yours or correct "
+"the number, and click on Send Money to trust it."
+msgstr ""
+"De bedrijfsbankrekening (%(account_number)s) die aan deze verkoopfactuur is "
+"gekoppeld is niet vertrouwd. Ga naar de bankinstellingen, controleer "
+"nogmaals of het jouw correcte nummer is en klik op 'Geld overmaken' om de "
+"rekening te vertrouwen."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_tax_repartition_line__company_id
@@ -15852,7 +15933,7 @@ msgstr ""
 #: model:ir.model.fields,help:account.field_account_bank_statement_line__invoice_origin
 #: model:ir.model.fields,help:account.field_account_move__invoice_origin
 msgid "The document(s) that generated the invoice."
-msgstr "De documenten die het factuur gegenereerd hebben."
+msgstr "De documenten die de factuur gegenereerd hebben."
 
 #. module: account
 #. odoo-python
@@ -15867,6 +15948,16 @@ msgid "The entry is secured with an inalterable hash."
 msgstr "De invoer is beveiligd met een onveranderlijke hash."
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid ""
+"The entry is using accounts (%(accounts_codes_names)s) from a different "
+"company."
+msgstr ""
+"De boeking maakt gebruik van rekeningen (%(accounts_codes_names)s) van een "
+"ander bedrijf."
+
+#. module: account
 #: model:ir.model.fields,help:account.field_product_category__property_account_expense_categ_id
 msgid ""
 "The expense is accounted for when a vendor bill is validated, except in "
@@ -15875,7 +15966,7 @@ msgid ""
 "validation."
 msgstr ""
 "De inkooprekening wordt gebruikt als een leveranciersfactuur wordt "
-"goedgekeurd, behalve bij Anglo-Saksisch boekhouden met permanente "
+"goedgekeurd, behalve bij Angelsaksisch boekhouden met permanente "
 "voorraadwaardering waarbij de inkooprekening (kostprijs van de omzet) wordt "
 "gebruikt bij het boeken van de klantfactuur."
 
@@ -15915,7 +16006,8 @@ msgstr ""
 msgid ""
 "The fiscal position determines the taxes/accounts used for this contact."
 msgstr ""
-"De fiscale positie bepaald de btw/rekeningen gebruikt voor dit contact."
+"De fiscale positie bepaalt de btw/rekeningen die worden gebruikt voor dit "
+"contact."
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_automatic_entry_wizard_form
@@ -16102,8 +16194,8 @@ msgid ""
 "The name of the email alias, e.g. 'jobs' if you want to catch emails for "
 "<jobs@example.odoo.com>"
 msgstr ""
-"De naam van de e-mailalias, bijvoorbeeld: 'vacature' als je alle e-mails van "
-"vacature@uwbedrijf.nl wilt afvangen"
+"De naam van de e-mailalias, bv. 'vacature' als je alle mails van "
+"<vacature@jouwbedrijf.com> wilt opvangen"
 
 #. module: account
 #. odoo-python
@@ -16350,6 +16442,16 @@ msgstr ""
 #: code:addons/account/models/account_bank_statement.py:0
 msgid "The running balance (%s) doesn't match the specified ending balance."
 msgstr "Het lopende saldo (%s) komt niet overeen met het opgegeven eindsaldo."
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move_send.py:0
+msgid ""
+"The scheduled action 'Send Invoices automatically' is archived. You won't be "
+"able to send invoices in batch."
+msgstr ""
+"De geplande actie 'Facturen automatisch verzenden' is gearchiveerd. Je kunt "
+"geen facturen in batch verzenden."
 
 #. module: account
 #. odoo-python
@@ -16723,18 +16825,6 @@ msgstr "Dit jaar"
 #. module: account
 #. odoo-python
 #: code:addons/account/models/account_account.py:0
-msgid ""
-"This account is configured in %(journal_names)s journal(s) (ids %"
-"(journal_ids)s) as payment debit or credit account. This means that this "
-"account's type should be reconcilable."
-msgstr ""
-"Deze rekening is in %(journal_names)s dagboek(en) (ids %(journal_ids)s) "
-"geconfigureerd als debet- of creditrekening voor betalingen. Dit betekent "
-"dat het type van deze rekening afletterbaar moet zijn."
-
-#. module: account
-#. odoo-python
-#: code:addons/account/models/account_account.py:0
 msgid "This account was split off from %(account_name)s (%(company_name)s)."
 msgstr "Dit account is afgesplitst van %(account_name)s (%(company_name)s)."
 
@@ -17036,7 +17126,7 @@ msgstr "Dit aflettermodel heeft tot dusver geen boeking opgeleverd"
 #. odoo-python
 #: code:addons/account/models/account_move.py:0
 msgid "This recurring entry originated from %s"
-msgstr "Deze herhalende boeking is afkomstig van %s"
+msgstr "Deze terugkerende boeking is afkomstig van %s"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_bank_statement_line__auto_post_until
@@ -17047,7 +17137,7 @@ msgstr "Deze terugkerende verplaatsing wordt tot en met deze datum geboekt."
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
 msgid "This setting locks once a journal entry is created."
-msgstr ""
+msgstr "Deze instelling wordt vergrendeld zodra een boeking is aangemaakt."
 
 #. module: account
 #. odoo-python
@@ -17532,7 +17622,7 @@ msgstr "Nog niet gedefinieerd"
 #: code:addons/account/models/company.py:0
 #: model:account.account,name:account.1_unaffected_earnings_account
 msgid "Undistributed Profits/Losses"
-msgstr "Uitgekeerde winsten/verliezen"
+msgstr "Niet-uitgekeerde winsten/verliezen"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_report__filter_unfold_all
@@ -18703,6 +18793,15 @@ msgstr ""
 
 #. module: account
 #. odoo-python
+#: code:addons/account/models/account_payment.py:0
+msgid ""
+"You cannot change the amount of a payment with multiple liquidity lines."
+msgstr ""
+"Je kunt het bedrag van een betaling met meerdere liquiditeitslijnen niet "
+"wijzigen."
+
+#. module: account
+#. odoo-python
 #: code:addons/account/models/company.py:0
 msgid ""
 "You cannot change the currency of the company since some journal items "
@@ -18989,6 +19088,13 @@ msgstr "Je kunt geen item in een gearchiveerd dagboek (%(journal)s) plaatsen"
 
 #. module: account
 #. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid "You cannot post an entry with an archived analytic account: %s"
+msgstr ""
+"Je kunt geen boeking maken met een gearchiveerde analytische rekening: %s"
+
+#. module: account
+#. odoo-python
 #: code:addons/account/models/res_currency.py:0
 msgid ""
 "You cannot reduce the number of decimal places of a currency which has "
@@ -19089,9 +19195,9 @@ msgstr ""
 #. module: account
 #. odoo-python
 #: code:addons/account/models/account_move.py:0
-msgid "You cannot switch the type of a document which has been posted once."
-msgstr ""
-"Je kunt het type van een document niet wijzigen nadat het eenmaal is gepost."
+msgid ""
+"You cannot switch the type of a document with an existing sequence number."
+msgstr "Je kunt het type document met een bestaand volgnummer niet wijzigen."
 
 #. module: account
 #. odoo-python
@@ -19211,6 +19317,16 @@ msgstr ""
 "Je moet de 'wisselkoers winst- of verliesrekening' instellen in de "
 "bedrijfsinstellingen, om automatisch de boekingen in verband met "
 "wisselkoersverschillen te kunnen maken."
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_journal_dashboard.py:0
+msgid ""
+"You may only use samples in demo mode, try uploading one of your invoices "
+"instead."
+msgstr ""
+"Je kunt samples alleen gebruiken in demomodus. Probeer het door een van je "
+"facturen te uploaden."
 
 #. module: account
 #. odoo-python
@@ -19402,6 +19518,12 @@ msgstr "sluiten"
 #: model_terms:ir.ui.view,arch_db:account.validate_account_move_view
 msgid "dates for"
 msgstr "datums voor"
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid "documents"
+msgstr "documenten"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_invoice_document
@@ -19787,6 +19909,20 @@ msgid ""
 "{{ object.company_id.name }} Payment Receipt (Ref {{ object.name or 'n/a' }})"
 msgstr ""
 "{{ object.company_id.name }} Betaalbewijs (Ref {{ object.name or 'nvt' }})"
+
+#~ msgid "You cannot switch the type of a document which has been posted once."
+#~ msgstr ""
+#~ "Je kunt het type van een document niet wijzigen nadat het eenmaal is "
+#~ "gepost."
+
+#~ msgid ""
+#~ "This account is configured in %(journal_names)s journal(s) (ids %"
+#~ "(journal_ids)s) as payment debit or credit account. This means that this "
+#~ "account's type should be reconcilable."
+#~ msgstr ""
+#~ "Deze rekening is in %(journal_names)s dagboek(en) (ids %(journal_ids)s) "
+#~ "geconfigureerd als debet- of creditrekening voor betalingen. Dit betekent "
+#~ "dat het type van deze rekening afletterbaar moet zijn."
 
 #~ msgid "This setting cannot be changed after an invoice is created."
 #~ msgstr ""

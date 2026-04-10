@@ -6,13 +6,13 @@
 # Wil Odoo, 2024
 # Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2025
 # Fernanda Alvarez, 2025
-# "Fernanda Alvarez (mfar)" <mfar@odoo.com>, 2025.
+# "Fernanda Alvarez (mfar)" <mfar@odoo.com>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-27 01:49+0000\n"
-"PO-Revision-Date: 2025-09-30 22:21+0000\n"
+"POT-Creation-Date: 2026-02-20 18:38+0000\n"
+"PO-Revision-Date: 2026-03-21 09:21+0000\n"
 "Last-Translator: \"Fernanda Alvarez (mfar)\" <mfar@odoo.com>\n"
 "Language-Team: Spanish (Latin America) <https://translate.odoo.com/projects/"
 "odoo-18/pos_self_order/es_419/>\n"
@@ -20,9 +20,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0)"
-" ? 1 : 2);\n"
-"X-Generator: Weblate 5.12.2\n"
+"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == "
+"0) ? 1 : 2);\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #. module: pos_self_order
 #: model:ir.actions.report,print_report_name:pos_self_order.report_self_order_qr_codes_page
@@ -1214,8 +1214,8 @@ msgstr "El valor \"Disponible después de\" debe estar entre 00:00 y 24:00"
 #: code:addons/pos_self_order/models/pos_category.py:0
 msgid "The Availability Until must be greater than Availability After."
 msgstr ""
-"El valor \"Disponible hasta\" debe ser mayor que el valor "
-"\"Disponible después de\"."
+"El valor \"Disponible hasta\" debe ser mayor que el valor \"Disponible "
+"después de\"."
 
 #. module: pos_self_order
 #. odoo-python
@@ -1315,6 +1315,16 @@ msgstr "Estamos preparando su orden"
 #: model_terms:ir.ui.view,arch_db:pos_self_order.qr_codes_page
 msgid "Yes"
 msgstr "Sí"
+
+#. module: pos_self_order
+#. odoo-python
+#: code:addons/pos_self_order/controllers/orders.py:0
+msgid ""
+"You are not authorized to create, update, or delete records of type '%"
+"(model)s'. Only the following models are allowed: %(allowed)s"
+msgstr ""
+"No tienes autorización para crear, actualizar ni eliminar registros de tipo "
+"\"%(model)s\". Solo los siguientes modelos están permitidos: %(allowed)s"
 
 #. module: pos_self_order
 #. odoo-python

@@ -7,13 +7,13 @@
 # Manav Shah, 2025
 # Ujjawal Pathak, 2025
 #
-# Weblate <noreply-mt-weblate@weblate.org>, 2025.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-23 18:40+0000\n"
-"PO-Revision-Date: 2025-11-25 09:48+0000\n"
+"POT-Creation-Date: 2025-12-29 18:38+0000\n"
+"PO-Revision-Date: 2026-02-07 10:36+0000\n"
 "Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Hindi <https://translate.odoo.com/projects/odoo-18/"
 "phone_validation/hi/>\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #. module: phone_validation
 #. odoo-python
@@ -83,7 +83,7 @@ msgstr "ब्लैकलिस्ट"
 #. module: phone_validation
 #: model_terms:ir.ui.view,arch_db:phone_validation.phone_blacklist_view_tree
 msgid "Blacklist Date"
-msgstr ""
+msgstr "ब्लैकलिस्ट की तारीख"
 
 #. module: phone_validation
 #: model:ir.model.fields,field_description:phone_validation.field_mail_thread_phone__mobile_blacklisted
@@ -93,13 +93,12 @@ msgstr ""
 #. module: phone_validation
 #: model:ir.actions.act_window,name:phone_validation.phone_blacklist_action
 msgid "Blacklisted Phone Numbers"
-msgstr ""
+msgstr "ब्लैकलिस्ट किए गए फ़ोन नंबर"
 
 #. module: phone_validation
 #: model:ir.model.fields,field_description:phone_validation.field_mail_thread_phone__phone_blacklisted
 msgid "Blacklisted Phone is Phone"
-msgstr ""
-"'ब्लैकलिस्टेड फ़ोन' फ़ील्ड में दर्ज किया गया मान वास्तव में एक फ़ोन नंबर है"
+msgstr "'ब्लैकलिस्टेड फ़ोन' फ़ील्ड में दर्ज किया गया मान वास्तव में एक फ़ोन नंबर है"
 
 #. module: phone_validation
 #: model_terms:ir.actions.act_window,help:phone_validation.phone_blacklist_action
@@ -113,6 +112,8 @@ msgid ""
 "Blocked by deletion of portal account %(portal_user_name)s by %(user_name)s "
 "(#%(user_id)s)"
 msgstr ""
+"%(user_name)s (#%(user_id)s) के ज़रिए पोर्टल अकाउंट %(portal_user_name)s मिटाने की वजह से"
+" ब्लॉक किया गया"
 
 #. module: phone_validation
 #: model:ir.model,name:phone_validation.model_res_partner
@@ -148,8 +149,8 @@ msgid ""
 "Field used to store sanitized phone number. Helps speeding up searches and "
 "comparisons."
 msgstr ""
-"साफ़ किए गए फ़ोन नंबर को सेव करने के लिए इस्तेमाल किया गया फ़ील्ड. यह खोज और तुलना को तेज़"
-" करने में मदद करता है।"
+"साफ़ किए गए फ़ोन नंबर को सेव करने के लिए इस्तेमाल किया गया फ़ील्ड. यह खोज और तुलना को "
+"तेज़ करने में मदद करता है।"
 
 #. module: phone_validation
 #: model:ir.model.fields,field_description:phone_validation.field_mail_thread_phone__message_follower_ids
@@ -190,8 +191,8 @@ msgstr "अगर बॉक्स पर टिक है, तो कुछ म�
 #. module: phone_validation
 #: model:ir.model.fields,help:phone_validation.field_mail_thread_phone__phone_sanitized_blacklisted
 msgid ""
-"If the sanitized phone number is on the blacklist, the contact won't receive"
-" mass mailing sms anymore, from any list"
+"If the sanitized phone number is on the blacklist, the contact won't receive "
+"mass mailing sms anymore, from any list"
 msgstr ""
 "अगर साफ़ किया गया फ़ोन नंबर ब्लैकलिस्ट में है, तो संपर्क को किसी भी सूची से अब सामूहिक "
 "एसएमएस नहीं मिलेगा"
@@ -235,9 +236,9 @@ msgid ""
 "distinguish which number is blacklisted             when there is both a "
 "mobile and phone field in a model."
 msgstr ""
-"यह दिखाता है कि क्या ब्लैकलिस्ट किया गया साफ़ फ़ोन नंबर, एक फ़ोन नंबर है. इससे यह अंतर करने"
-" में मदद मिलती है कि मॉडल में मोबाइल और फ़ोन फ़ील्ड दोनों होने पर कौन सा नंबर ब्लैकलिस्ट "
-"किया गया है।"
+"यह दिखाता है कि क्या ब्लैकलिस्ट किया गया साफ़ फ़ोन नंबर, एक फ़ोन नंबर है. इससे यह अंतर "
+"करने में मदद मिलती है कि मॉडल में मोबाइल और फ़ोन फ़ील्ड दोनों होने पर कौन सा नंबर "
+"ब्लैकलिस्ट किया गया है।"
 
 #. module: phone_validation
 #. odoo-python
@@ -389,13 +390,13 @@ msgstr ""
 #. module: phone_validation
 #: model_terms:ir.ui.view,arch_db:phone_validation.phone_blacklist_view_form
 msgid "Unblacklist"
-msgstr ""
+msgstr "अनब्लैकलिस्ट"
 
 #. module: phone_validation
 #. odoo-python
 #: code:addons/phone_validation/wizard/phone_blacklist_remove.py:0
 msgid "Unblock Reason: %(reason)s"
-msgstr ""
+msgstr "अनब्लॉक करने की वजह: %(reason)s"
 
 #. module: phone_validation
 #: model:ir.model,name:phone_validation.model_res_users
@@ -413,7 +414,7 @@ msgstr ""
 #. module: phone_validation
 #: model_terms:ir.ui.view,arch_db:phone_validation.phone_blacklist_remove_view_form
 msgid "e.g \"Asked to receive our next newsletters\""
-msgstr ""
+msgstr "जैसे \"हमारे अगले न्यूज़लेटर्स पाने करने के लिए कहा गया\""
 
 #. module: phone_validation
 #: model_terms:ir.ui.view,arch_db:phone_validation.phone_blacklist_remove_view_form

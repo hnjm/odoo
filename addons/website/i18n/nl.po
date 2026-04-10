@@ -10,14 +10,15 @@
 # Manon Rondou, 2025
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2025
 # "Manon Rondou (ronm)" <ronm@odoo.com>, 2025.
-# Weblate <noreply-mt-weblate@weblate.org>, 2025.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025, 2026.
+# Bren Driesen <brdri@odoo.com>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-24 18:36+0000\n"
-"PO-Revision-Date: 2025-11-11 17:26+0000\n"
-"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
+"POT-Creation-Date: 2026-04-03 18:39+0000\n"
+"PO-Revision-Date: 2026-03-29 12:15+0000\n"
+"Last-Translator: Bren Driesen <brdri@odoo.com>\n"
 "Language-Team: Dutch <https://translate.odoo.com/projects/odoo-18/website/nl/"
 ">\n"
 "Language: nl\n"
@@ -25,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #. module: website
 #. odoo-javascript
@@ -840,8 +841,8 @@ msgid ""
 "and<br/> achieve your goals, ensuring your journey is fully supported.<br/"
 "><br/>"
 msgstr ""
-"<br/>Op maat gemaakte, innovatieve hulpmiddelen bieden om je te helpen "
-"uitdagingen te overwinnen en<br/> je doelen te bereiken, zodat je reis "
+"<br/>Wij leveren op maat gemaakte, innovatieve tools om je te helpen "
+"uitdagingen te overwinnen en<br/> je doelen te bereiken, zodat je traject "
 "volledig wordt ondersteund.<br/><br/>"
 
 #. module: website
@@ -1161,7 +1162,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_rating_options
 msgid "<i class=\"fa fa-fw fa-refresh me-1\"/> Replace Icon"
-msgstr "<i class=\"fa fa-fw fa-refresh me-1\"/> Pictogram vervangen"
+msgstr "<i class=\"fa fa-fw fa-refresh me-1\"/> Icoon vervangen"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_rating_options
@@ -2460,6 +2461,13 @@ msgstr ""
 "uren geleden was."
 
 #. module: website
+#. odoo-python
+#: code:addons/website/models/website_controller_page.py:0
+msgid "A page must be set to display a concrete model."
+msgstr ""
+"Er moet een pagina worden ingesteld om een concreet model weer te geven."
+
+#. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 msgid "A second item"
 msgstr "Een tweede artikel"
@@ -2649,7 +2657,7 @@ msgid ""
 msgstr ""
 "Pas deze drie kolommen aan je ontwerpbehoefte aan. Om kolommen te "
 "dupliceren, verwijderen of verplaatsen, selecteert je de kolom en gebruik je "
-"de bovenste pictogrammen om je actie uit te voeren."
+"de bovenste iconen om je actie uit te voeren."
 
 #. module: website
 #. odoo-javascript
@@ -3210,7 +3218,7 @@ msgstr "Er is een fout opgetreden tijdens het renderen van de sjabloon"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 msgid "An example alert with an icon"
-msgstr "Een voorbeeldwaarschuwing met een pictogram"
+msgstr "Een voorbeeldwaarschuwing met een icoon"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
@@ -4542,8 +4550,8 @@ msgstr ""
 "Kleurblokken zijn een eenvoudige en effectieve manier om je <b>inhoud te "
 "presenteren en te markeren</b>. Kies een afbeelding of een kleur voor de "
 "achtergrond. Je kunt de blokken zelfs vergroten of verkleinen en dupliceren "
-"om je eigen lay-out te maken. Voeg afbeeldingen of pictogrammen toe om de "
-"blokken aan te passen."
+"om je eigen lay-out te maken. Voeg afbeeldingen of iconen toe om de blokken "
+"aan te passen."
 
 #. module: website
 #. odoo-javascript
@@ -7541,6 +7549,7 @@ msgstr "Google Analytics Sleutel"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
+#: model_terms:ir.ui.view,arch_db:website.snippets
 msgid "Google Map"
 msgstr "Google Maps"
 
@@ -7763,7 +7772,7 @@ msgstr "Positie hoofdtitel"
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_page__header_text_color
 msgid "Header Text Color"
-msgstr "Kleur koptekst"
+msgstr "Kleur headertekst"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_theme_website_page__header_visible
@@ -8064,7 +8073,7 @@ msgstr "Tint"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_company_team_detail
 msgid "Human Resources Manager"
-msgstr "Personeelsbeheer manager"
+msgstr "HR-manager"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_google_map_options
@@ -10075,7 +10084,7 @@ msgstr "Midden"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_timeline_list_options
 msgid "Milestones"
-msgstr "Milestones"
+msgstr "Mijlpalen"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_chart_options
@@ -12183,10 +12192,7 @@ msgstr "Keuzerondje"
 #. odoo-javascript
 #: code:addons/website/static/src/snippets/s_website_form/options.js:0
 msgid "Radio Button List"
-msgstr ""
-"Radioknoppenlijst\n"
-"\n"
-" "
+msgstr "Lijst met keuzerondjes"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_website_form_options
@@ -14157,6 +14163,10 @@ msgid ""
 "Model: %(model)s\n"
 "View: %(view)s"
 msgstr ""
+"Het veld '%(field)s' kan niet worden verwijderd omdat ernaar wordt verwezen "
+"in een websiteweergave.\n"
+"Model: %(model)s\n"
+"Weergave: %(view)s"
 
 #. module: website
 #. odoo-javascript
@@ -15788,9 +15798,9 @@ msgid ""
 "                            <br/><br/>Our products are designed for small to "
 "medium size companies willing to optimize their performance."
 msgstr ""
-"We zijn een team van gepassioneerde mensen wiens doel het is om ieders leven "
-"te verbeteren door middel van ontwrichtende producten. We bouwen geweldige "
-"producten om je zakelijke problemen op te lossen.\n"
+"We zijn een team van gepassioneerde mensen met als doel levens te verbeteren "
+"met vernieuwende producten. We ontwikkelen geweldige oplossingen voor al je "
+"zakelijke uitdagingen.\n"
 "<br/><br/>Onze producten zijn ontworpen voor kleine tot middelgrote "
 "bedrijven die hun prestaties willen optimaliseren."
 
@@ -15802,11 +15812,10 @@ msgid ""
 "problems. Our products are designed for small to medium size companies "
 "willing to optimize their performance."
 msgstr ""
-"We zijn een team van gepassioneerde mensen wiens doel het is om ieders leven "
-"te verbeteren door middel van ontwrichtende producten. We bouwen geweldige "
-"producten om je zakelijke problemen op te lossen. Onze producten zijn "
-"ontworpen voor kleine tot middelgrote bedrijven die hun prestaties willen "
-"optimaliseren."
+"We zijn een team van gepassioneerde mensen met als doel levens te verbeteren "
+"met vernieuwende producten. We ontwikkelen geweldige oplossingen voor al je "
+"zakelijke uitdagingen. Onze producten zijn ontworpen voor kleine tot "
+"middelgrote bedrijven die hun prestaties willen optimaliseren."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.template_footer_headline

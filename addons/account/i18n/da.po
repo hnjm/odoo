@@ -22,13 +22,13 @@
 # Kira Petersen, 2025
 # Wil Odoo, 2025
 # "Kira Petersen François (peti)" <peti@odoo.com>, 2025.
-# Weblate <noreply-mt-weblate@weblate.org>, 2025.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-28 18:36+0000\n"
-"PO-Revision-Date: 2025-11-21 06:39+0000\n"
+"POT-Creation-Date: 2026-03-20 18:36+0000\n"
+"PO-Revision-Date: 2026-03-29 12:15+0000\n"
 "Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Danish <https://translate.odoo.com/projects/odoo-18/account/"
 "da/>\n"
@@ -37,7 +37,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_journal__type
@@ -83,6 +83,16 @@ msgstr ""
 "        f.eks. 180 / (1 - 10%) = 200 (med moms)\n"
 "        f.eks. 200 * (1 - 10%) = 180 (uden moms)\n"
 "        "
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move_send.py:0
+msgid ""
+"\n"
+"Please contact your administrator."
+msgstr ""
+"\n"
+"Kontakt venligst din administrator."
 
 #. module: account
 #. odoo-python
@@ -1926,6 +1936,16 @@ msgid "Account Chart Template"
 msgstr "Kontoplansskabelon"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_code_mapping.py:0
+msgid ""
+"Account Code Mapping cannot be accessed directly. It is designed to be used "
+"only through the Chart of Accounts."
+msgstr ""
+"Der er ikke direkte adgang til kontotildelingen. Den kan kun anvendes via "
+"kontoplanen."
+
+#. module: account
 #: model:ir.model.fields,field_description:account.field_account_report_line__account_codes_formula
 msgid "Account Codes Formula Shortcut"
 msgstr "Konto kode formular genvej"
@@ -3368,6 +3388,11 @@ msgid "Attachments"
 msgstr "Vedhæftede filer"
 
 #. module: account
+#: model:ir.model.fields,field_description:account.field_account_move_send_wizard__attachments_not_supported
+msgid "Attachments Not Supported"
+msgstr "Vedhæftede filer understøttes ikke"
+
+#. module: account
 #: model:ir.model.fields,field_description:account.field_mail_mail__account_audit_log_activated
 #: model:ir.model.fields,field_description:account.field_mail_message__account_audit_log_activated
 msgid "Audit Log Activated"
@@ -3789,6 +3814,12 @@ msgstr "Bank og kasse"
 #: model_terms:ir.ui.view,arch_db:account.report_statement
 msgid "Bank of odoo"
 msgstr "Odoo bank"
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid "Bank settings"
+msgstr "Bankindstillinger"
 
 #. module: account
 #: model:ir.model,name:account.model_account_setup_bank_manual_config
@@ -4552,6 +4583,8 @@ msgid "Chart of accounts set!"
 msgstr "Kontoplan sat!"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move_send.py:0
 #: model_terms:ir.ui.view,arch_db:account.report_hash_integrity
 msgid "Check"
 msgstr "Tjek"
@@ -6535,6 +6568,11 @@ msgid "Display Amount"
 msgstr "Vis Mængde"
 
 #. module: account
+#: model:ir.model.fields,field_description:account.field_account_move_send_wizard__display_attachments_widget
+msgid "Display Attachments Widget"
+msgstr "Widget til visning af vedhæftede filer"
+
+#. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment_term_line__display_days_next_month
 msgid "Display Days Next Month"
 msgstr "Vis dage næste måned"
@@ -7372,6 +7410,11 @@ msgstr "Øvrige omkostninger"
 #: model:ir.model.fields.selection,name:account.selection__account_lock_exception__state__expired
 msgid "Expired"
 msgstr "Udløbet"
+
+#. module: account
+#: model:ir.actions.server,name:account.action_move_export_zip
+msgid "Export ZIP"
+msgstr "Eksportér ZIP"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_report_column__expression_label
@@ -8285,6 +8328,11 @@ msgstr "Horisontal deling side"
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
 msgid "How total tax amount is computed in orders and invoices"
 msgstr "Hvordan skal det totale momsbeløb beregnes på ordrer og fakturaer"
+
+#. module: account
+#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
+msgid "ICE:"
+msgstr "ICE:"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__id
@@ -9829,6 +9877,7 @@ msgstr "Journal:"
 #: model:ir.actions.act_window,name:account.action_account_journal_form
 #: model:ir.model.fields,field_description:account.field_account_report__filter_journals
 #: model:ir.ui.menu,name:account.menu_action_account_journal_form
+#: model_terms:ir.ui.view,arch_db:account.view_account_move_line_filter
 msgid "Journals"
 msgstr "Journaler"
 
@@ -11254,6 +11303,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_fiscal_position__note
 msgid "Notes"
 msgstr "Notater"
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid "Nothing to export."
+msgstr "Intet at eksportere."
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__res_company__fiscalyear_last_month__11
@@ -15557,6 +15612,16 @@ msgid ""
 msgstr "Bankkontoen for en bankjournal skal tilhøre den samme virksomhed (%s)."
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid ""
+"The bank account of your company is not trusted. Please ask an admin or "
+"someone with approval rights to check it."
+msgstr ""
+"Din virksomheds bankkonto er ikke godkendt. Bed en administrator eller en "
+"person med godkendelsesrettigheder om at kontrollere den."
+
+#. module: account
 #: model:ir.model.fields,help:account.field_account_move_line__statement_id
 msgid "The bank statement used for bank reconciliation"
 msgstr "Kontoudtoget anvendes til bankudlignin"
@@ -15625,6 +15690,19 @@ msgstr ""
 msgid ""
 "The commercial partner has been updated for all related accounting entries."
 msgstr "Forretningspartneren har opdateret alle tilhørende bogføringer."
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid ""
+"The company bank account (%(account_number)s) linked to this invoice is not "
+"trusted. Go to the Bank Settings, double-check that it is yours or correct "
+"the number, and click on Send Money to trust it."
+msgstr ""
+"Virksomhedens bankkonto (%(account_number)s), som er knyttet til denne "
+"faktura, er ikke godkendt. Gå til bankindstillingerne, kontrollér, at det er "
+"din konto, eller ret kontonummeret, og klik på \"Send penge\" for at "
+"godkende den."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_tax_repartition_line__company_id
@@ -15781,6 +15859,14 @@ msgstr "Posteringen %(name)s (id %(id)s) skal være i kladde."
 msgid "The entry is secured with an inalterable hash."
 msgstr ""
 "Posteringen er sikker med en hash, der ikke kan redigeres eller ændres."
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid ""
+"The entry is using accounts (%(accounts_codes_names)s) from a different "
+"company."
+msgstr "Posten bruger konti %(accounts_codes_names)s fra en anden virksomhed."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_product_category__property_account_expense_categ_id
@@ -16262,6 +16348,16 @@ msgstr "Den løbende balance (%s) stemmer ikke med den angivne slutbalance."
 
 #. module: account
 #. odoo-python
+#: code:addons/account/models/account_move_send.py:0
+msgid ""
+"The scheduled action 'Send Invoices automatically' is archived. You won't be "
+"able to send invoices in batch."
+msgstr ""
+"Den planlagte handling \"Send fakturaer automatisk\" er blevet arkiveret. Du "
+"kan ikke længere sende flere fakturaer på en gang."
+
+#. module: account
+#. odoo-python
 #: code:addons/account/models/account_report.py:0
 msgid "The sections defined on a report cannot have sections themselves."
 msgstr ""
@@ -16629,18 +16725,6 @@ msgstr "I år"
 #. module: account
 #. odoo-python
 #: code:addons/account/models/account_account.py:0
-msgid ""
-"This account is configured in %(journal_names)s journal(s) (ids %"
-"(journal_ids)s) as payment debit or credit account. This means that this "
-"account's type should be reconcilable."
-msgstr ""
-"Denne konto er konfigureret i %(journal_names)s journal(erne) (ID %"
-"(journal_ids)s) som betalings debet eller kredit konto. Dette betyder at "
-"denne kontos type bør kunne afstemmes."
-
-#. module: account
-#. odoo-python
-#: code:addons/account/models/account_account.py:0
 msgid "This account was split off from %(account_name)s (%(company_name)s)."
 msgstr "Denne konto blev delt af %(account_name)s (%(company_name)s)."
 
@@ -16951,7 +17035,7 @@ msgstr "Denne tilbagevendende postering bogføres til og med denne dato."
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
 msgid "This setting locks once a journal entry is created."
-msgstr ""
+msgstr "Denne indstilling låses, når en journalpostering er oprettet."
 
 #. module: account
 #. odoo-python
@@ -18593,6 +18677,14 @@ msgstr ""
 
 #. module: account
 #. odoo-python
+#: code:addons/account/models/account_payment.py:0
+msgid ""
+"You cannot change the amount of a payment with multiple liquidity lines."
+msgstr ""
+"Beløbet kan ikke ændres på en betaling, der har flere likviditetslinjer."
+
+#. module: account
+#. odoo-python
 #: code:addons/account/models/company.py:0
 msgid ""
 "You cannot change the currency of the company since some journal items "
@@ -18872,6 +18964,12 @@ msgstr "Du kan ikke postere en postering i en arkiveret journal (%(journal)s)"
 
 #. module: account
 #. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid "You cannot post an entry with an archived analytic account: %s"
+msgstr "Du kan ikke oprette en post med et arkiveret omkostningssted: %s"
+
+#. module: account
+#. odoo-python
 #: code:addons/account/models/res_currency.py:0
 msgid ""
 "You cannot reduce the number of decimal places of a currency which has "
@@ -18973,8 +19071,11 @@ msgstr ""
 #. module: account
 #. odoo-python
 #: code:addons/account/models/account_move.py:0
-msgid "You cannot switch the type of a document which has been posted once."
+msgid ""
+"You cannot switch the type of a document with an existing sequence number."
 msgstr ""
+"Du kan ikke ændre dokumenttypen på et dokument, der allerede har fået "
+"tildelt et sekvensnummer."
 
 #. module: account
 #. odoo-python
@@ -19091,6 +19192,16 @@ msgstr ""
 "Du skal konfigurere journalen for 'valutakursgevinster eller -tab' i "
 "virksomhedsindstillingerne for at kunne håndtere automatisk bogføring af "
 "posteringer ved valutakursforskelle."
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_journal_dashboard.py:0
+msgid ""
+"You may only use samples in demo mode, try uploading one of your invoices "
+"instead."
+msgstr ""
+"Eksempler kan kun bruges i demotilstand. Upload i stedet en af dine "
+"fakturaer."
 
 #. module: account
 #. odoo-python
@@ -19282,6 +19393,12 @@ msgstr "luk"
 #: model_terms:ir.ui.view,arch_db:account.validate_account_move_view
 msgid "dates for"
 msgstr "datoer for"
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid "documents"
+msgstr "dokumenter"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_invoice_document
@@ -19670,6 +19787,15 @@ msgid ""
 msgstr ""
 "{{ object.company_id.name }} Betalingskvittering (Reference {{ object.name "
 "or 'n/a' }})"
+
+#~ msgid ""
+#~ "This account is configured in %(journal_names)s journal(s) (ids %"
+#~ "(journal_ids)s) as payment debit or credit account. This means that this "
+#~ "account's type should be reconcilable."
+#~ msgstr ""
+#~ "Denne konto er konfigureret i %(journal_names)s journal(erne) (ID %"
+#~ "(journal_ids)s) som betalings debet eller kredit konto. Dette betyder at "
+#~ "denne kontos type bør kunne afstemmes."
 
 #~ msgid "This setting cannot be changed after an invoice is created."
 #~ msgstr "Denne indstilling kan ikke ændres, efter at en faktura er oprettet."

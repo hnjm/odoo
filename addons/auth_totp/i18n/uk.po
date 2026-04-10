@@ -5,13 +5,13 @@
 # Translators:
 # Wil Odoo, 2024
 #
-# Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2025.
+# Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-25 08:40+0000\n"
-"PO-Revision-Date: 2025-08-12 22:21+0000\n"
+"POT-Creation-Date: 2025-12-29 18:37+0000\n"
+"PO-Revision-Date: 2026-02-14 09:05+0000\n"
 "Last-Translator: Alina Lisnenko <alina.lisnenko@erp.co.ua>\n"
 "Language-Team: Ukrainian <https://translate.odoo.com/projects/odoo-18/"
 "auth_totp/uk/>\n"
@@ -20,10 +20,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 "
-"? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > "
-"14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % "
-"100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
-"X-Generator: Weblate 5.12.2\n"
+"? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && "
+"(n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && "
+"(n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 ))"
+" ? 2: 3);\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #. module: auth_totp
 #. odoo-python
@@ -46,19 +47,26 @@ msgstr "Двофакторну аутентифікацію тепер увім�
 #: model_terms:ir.ui.view,arch_db:auth_totp.view_totp_wizard
 msgid ""
 "<span class=\"d-md-none d-block\">Or install an authenticator app</span>\n"
-"                                        <span class=\"d-none d-md-block\">Install an authenticator app on your mobile device</span>"
+"                                        <span class=\"d-none d-md-"
+"block\">Install an authenticator app on your mobile device</span>"
 msgstr ""
-"<span class=\"d-md-none d-block\">Або встановіть модуль аутентифікатора</span>\n"
-"                                        <span class=\"d-none d-md-block\">Встановіть модуль аутентифікатора на ваш мобільний пристрій</span>"
+"<span class=\"d-md-none d-block\">Або встановіть модуль "
+"аутентифікатора</span>\n"
+"                                        <span class=\"d-none d-md-block\""
+">Встановіть модуль аутентифікатора на ваш мобільний пристрій</span>"
 
 #. module: auth_totp
 #: model_terms:ir.ui.view,arch_db:auth_totp.view_totp_wizard
 msgid ""
-"<span class=\"d-none d-md-block\">When requested to do so, scan the barcode below</span>\n"
-"                                    <span class=\"d-block d-md-none\">When requested to do so, copy the key below</span>"
+"<span class=\"d-none d-md-block\">When requested to do so, scan the barcode "
+"below</span>\n"
+"                                    <span class=\"d-block d-md-none\">When "
+"requested to do so, copy the key below</span>"
 msgstr ""
-"<span class=\"d-none d-md-block\">Коли виникає такий запит, відскануйте штрих-код нижче</span>\n"
-"                                    <span class=\"d-block d-md-none\">Коли виникає такий запит, скопіюйте ключ нижче</span>"
+"<span class=\"d-none d-md-block\">Коли виникає такий запит, відскануйте "
+"штрих-код нижче</span>\n"
+"                                    <span class=\"d-block d-md-none\">Коли "
+"виникає такий запит, скопіюйте ключ нижче</span>"
 
 #. module: auth_totp
 #: model_terms:ir.ui.view,arch_db:auth_totp.view_totp_wizard
@@ -101,8 +109,8 @@ msgstr "Додано на"
 #. module: auth_totp
 #: model_terms:ir.ui.view,arch_db:auth_totp.view_totp_form
 msgid ""
-"Are you sure? The user may be asked to enter two-factor codes again on those"
-" devices"
+"Are you sure? The user may be asked to enter two-factor codes again on those "
+"devices"
 msgstr ""
 "Ви впевнені? Користувача можуть попросити знову ввести двофакторні коди на "
 "цих пристроях"
@@ -296,10 +304,12 @@ msgstr "Код верифікації має містити лише цифри"
 #. module: auth_totp
 #: model_terms:ir.ui.view,arch_db:auth_totp.auth_totp_form
 msgid ""
-"To login, enter below the six-digit authentication code provided by your Authenticator app.\n"
+"To login, enter below the six-digit authentication code provided by your "
+"Authenticator app.\n"
 "                        <br/>"
 msgstr ""
-"Щоб увійти, введіть нижче шестизначний код аутентифікації, який надає ваш додаток Аутентифікатор.\n"
+"Щоб увійти, введіть нижче шестизначний код аутентифікації, який надає ваш "
+"додаток Аутентифікатор.\n"
 "                        <br/>"
 
 #. module: auth_totp
@@ -332,12 +342,17 @@ msgstr "Двофакторна аутентифікація"
 #: model_terms:ir.ui.view,arch_db:auth_totp.view_totp_form
 msgid ""
 "Two-factor Authentication (\"2FA\") is a system of double authentication.\n"
-"                        The first one is done with your password and the second one with a code you get from a dedicated mobile app.\n"
-"                        Popular ones include Authy, Google Authenticator or the Microsoft Authenticator."
+"                        The first one is done with your password and the "
+"second one with a code you get from a dedicated mobile app.\n"
+"                        Popular ones include Authy, Google Authenticator or "
+"the Microsoft Authenticator."
 msgstr ""
 "Двофакторна автентифікація («2FA») — це система подвійної автентифікації.\n"
-"                        Перший виконується за допомогою вашого пароля, а другий – за допомогою коду, який ви отримуєте зі спеціального мобільного додатка.\n"
-"                        До популярних належать Authy, Google Authenticator або Microsoft Authenticator."
+"                        Перший виконується за допомогою вашого пароля, а "
+"другий – за допомогою коду, який ви отримуєте зі спеціального мобільного "
+"додатка.\n"
+"                        До популярних належать Authy, Google Authenticator "
+"або Microsoft Authenticator."
 
 #. module: auth_totp
 #: model:ir.model.fields,field_description:auth_totp.field_res_users__totp_enabled

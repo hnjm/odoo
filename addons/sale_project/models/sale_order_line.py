@@ -135,12 +135,13 @@ class SaleOrderLine(models.Model):
 
     @api.depends('order_id.partner_id', 'product_id', 'order_id.project_id')
     def _compute_analytic_distribution(self):
-        super()._compute_analytic_distribution()
-        for line in self:
-            project = line.product_id.project_id or line.order_id.project_id
-            if line.display_type or not line.product_id or not project:
-                continue
+        ctx_project = self.env['project.project'].browse(self.env.context.get('project_id'))
+        project_lines = self.filtered(lambda l: not l.display_type and (ctx_project or l.product_id.project_id or l.order_id.project_id))
+        empty_project_lines = project_lines.filtered(lambda l: not l.analytic_distribution)
+        super(SaleOrderLine, (self - project_lines) + empty_project_lines)._compute_analytic_distribution()
 
+        for line in project_lines:
+            project = ctx_project or line.product_id.project_id or line.order_id.project_id
             if line.analytic_distribution:
                 applied_root_plans = self.env['account.analytic.account'].browse(
                     list({int(account_id) for ids in line.analytic_distribution for account_id in ids.split(",")})
@@ -278,24 +279,16 @@ class SaleOrderLine(models.Model):
         if self.product_id.service_type != 'milestones':
             allocated_hours = self._convert_qty_company_hours(self.company_id)
         sale_line_name_parts = self.name.split('\n')
-        products_inside_template_line_with_name = self.order_id.sale_order_template_id.sale_order_template_line_ids.filtered(
-            lambda line: line.product_id and line.name).product_id
-        if self.product_id in products_inside_template_line_with_name:
-            title = self.product_id.name
-            description = '<br/>'.join(sale_line_name_parts)
-        else:
-            default_name = self.with_context(
-                lang=self.order_id._get_lang(),
-            )._get_sale_order_line_multiline_description_sale()
-            if (
-                self.name != default_name
-                and len(sale_line_name_parts) > 1
-                and sale_line_name_parts[1]
-            ):
-                # if there's a custom line description, skip the product name part when possible
-                sale_line_name_parts.pop(0)
+
+        if sale_line_name_parts and sale_line_name_parts[0] == self.product_id.display_name:
+            sale_line_name_parts.pop(0)
+
+        if len(sale_line_name_parts) == 1 and sale_line_name_parts[0]:
             title = sale_line_name_parts[0]
-            description = '<br/>'.join(sale_line_name_parts[1:])
+            description = ''
+        else:
+            title = self.product_id.display_name
+            description = '<br/>'.join(sale_line_name_parts)
 
         return {
             'name': title if project.sale_line_id else '%s - %s' % (self.order_id.name or '', title),

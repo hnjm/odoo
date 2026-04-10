@@ -90,13 +90,13 @@ class PosOrder(models.Model):
         coupon_new_id_map = {k: k for k in coupon_data.keys() if k > 0}
 
         # Create the coupons that were awarded by the order.
-        coupons_to_create = {k: v for k, v in coupon_data.items() if k < 0 and not v.get('giftCardId')}
+        coupons_to_create = {k: v for k, v in coupon_data.items() if k < 0 and not v.get('giftCardId') and (v.get('points') or v.get('line_codes'))}
         for coupon in coupons_to_create.values():
             if "gift_code" in coupon:
                 coupon["code"] = coupon.get("gift_code")
         coupon_create_vals = [{
             'program_id': p['program_id'],
-            'partner_id': get_partner_id(p.get('partner_id', False)),
+            'partner_id': get_partner_id(p.get('partner_id', self.partner_id.id)),
             'code': p.get('code') or p.get('barcode') or self.env['loyalty.card']._generate_code(),
             'points': 0,
             'expiration_date': p.get('date_to', False),
@@ -150,15 +150,20 @@ class PosOrder(models.Model):
                 coupon_per_report[report.id].append(coupon.id)
 
         # Adding loyalty history lines
-        loyalty_points = [
-            {
+        loyalty_points = []
+        for coupon_id, coupon_vals in coupon_data.items():
+            if 'points_earned' in coupon_vals and 'points_spent' in coupon_vals:
+                won = coupon_vals['points_earned']
+                spent = coupon_vals['points_spent']
+            else:
+                won = coupon_vals['points'] if coupon_vals['points'] > 0 else 0
+                spent = -coupon_vals['points'] if coupon_vals['points'] < 0 else 0
+            loyalty_points.append({
                 'order_id': self.id,
                 'card_id': coupon_id,
-                'spent': -coupon_vals['points'] if coupon_vals['points'] < 0 else 0,
-                'won': coupon_vals['points'] if coupon_vals['points'] > 0 else 0,
-            }
-            for coupon_id, coupon_vals in coupon_data.items()
-        ]
+                'spent': spent,
+                'won': won,
+            })
         coupon_updates = [
             {
                 'id': coupon.id,

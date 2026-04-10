@@ -2946,7 +2946,9 @@ we-select.o_grid we-toggler {
             [data-snippet="s_carousel_intro"],
             [data-snippet="s_quotes_carousel_minimal"],
             [data-snippet="s_quotes_carousel"] {
-                height: 550px;
+                .carousel-inner, .carousel-inner > .carousel-item {
+                    height: fit-content;
+                }
             }
             [data-snippet="s_three_columns"] .figure-img[style*="height:50vh"] {
                 /* In Travel theme. */
@@ -3058,6 +3060,12 @@ we-select.o_grid we-toggler {
                     color: rgba(0, 0, 0, 0.8);
                  }
             }
+        }
+    }
+
+    &.o_add_snippets_preview--dark {
+        .o_snippets_preview_row .o_custom_snippet_wrap .o_custom_snippet_edit > * {
+            color: $white;
         }
     }
 }

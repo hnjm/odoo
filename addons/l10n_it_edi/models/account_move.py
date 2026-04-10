@@ -11,7 +11,8 @@ from odoo import _, api, Command, fields, models, modules
 from odoo.addons.base.models.ir_qweb_fields import Markup, nl2br, nl2br_enclose
 from odoo.addons.account_edi_proxy_client.models.account_edi_proxy_user import AccountEdiProxyError
 from odoo.exceptions import UserError
-from odoo.tools import float_compare, float_repr, cleanup_xml_node, float_is_zero
+from odoo.osv import expression
+from odoo.tools import float_compare, float_repr, float_round, cleanup_xml_node, float_is_zero
 
 _logger = logging.getLogger(__name__)
 
@@ -107,6 +108,9 @@ class AccountMove(models.Model):
         help="Public Investment Unique Identifier")
     # Technical field for showing the above fields or not
     l10n_it_partner_pa = fields.Boolean(compute='_compute_l10n_it_partner_pa')
+    l10n_it_partner_is_public_administration = fields.Boolean(compute='_compute_l10n_it_partner_is_public_administration',
+        help='Only partners that have a 6-chars long l10n_it_pa_index actually belong to the Public Administration'
+    )
 
     # -------------------------------------------------------------------------
     # Computes
@@ -117,6 +121,12 @@ class AccountMove(models.Model):
         for move in self:
             partner = move.commercial_partner_id
             move.l10n_it_partner_pa = partner and (partner._l10n_it_edi_is_public_administration() or len(partner.l10n_it_pa_index or '') == 7)
+
+    @api.depends('commercial_partner_id.l10n_it_pa_index', 'company_id')
+    def _compute_l10n_it_partner_is_public_administration(self):
+        for move in self:
+            partner = move.commercial_partner_id
+            move.l10n_it_partner_is_public_administration = partner and partner._l10n_it_edi_is_public_administration()
 
     @api.depends('move_type', 'line_ids.tax_tag_ids')
     def _compute_l10n_it_edi_is_self_invoice(self):
@@ -242,7 +252,13 @@ class AccountMove(models.Model):
 
     def action_check_l10n_it_edi(self):
         self.ensure_one()
-        if not self.l10n_it_edi_transaction and self.l10n_it_edi_state not in WAITING_STATES:
+        if (
+            not self.l10n_it_edi_transaction
+            and self.l10n_it_edi_state not in WAITING_STATES
+        ) or (
+            self.l10n_it_edi_state == 'forwarded'
+            and not self.l10n_it_partner_is_public_administration
+        ):
             raise UserError(_("This move is not waiting for updates from the SdI."))
         if self.l10n_it_edi_state == 'being_sent':
             return {'type': 'ir.actions.client', 'tag': 'reload'}
@@ -422,7 +438,7 @@ class AccountMove(models.Model):
             return None
         tax = tax_data['tax']
         return {
-            'tax_amount_field': -23.0 if tax.amount == -11.5 else tax.amount,
+            'tax_amount_field': -23.0 if tax.amount in (-11.5, -4.6) else tax.amount,
             'tax_amount_type_field': tax.amount_type,
             'skip': tax_data['is_reverse_charge'] or self._l10n_it_edi_is_neg_split_payment(tax_data),
         }
@@ -443,7 +459,7 @@ class AccountMove(models.Model):
             tax_exigibility_code = None
 
         return {
-            'tax_amount_field': -23.0 if tax.amount == -11.5 else tax.amount,
+            'tax_amount_field': -23.0 if tax.amount in (-11.5, -4.6) else tax.amount,
             'l10n_it_exempt_reason': tax.l10n_it_exempt_reason,
             'l10n_it_law_reference': tax.l10n_it_law_reference,
             'tax_exigibility_code': tax_exigibility_code,
@@ -474,6 +490,32 @@ class AccountMove(models.Model):
 
         return base_line
 
+    def _l10n_it_edi_get_oss_line_values(self, aml, base_line, vat_tax, n7_tax, n22_tax):
+        base_line['tax_ids'] = n7_tax
+        tax_amount = (base_line['price_unit'] * (1 - (base_line['discount'] / 100.0))) * (vat_tax.amount / 100.0)
+
+        oss_description = self.env._(
+            "VAT %(vat_code)s %(tax_amount)s collected via OSS",
+            vat_code=vat_tax.country_id.code,
+            tax_amount=vat_tax.amount
+        )
+
+        vat_line = base_line.copy()
+        vat_line.update({
+            'id': f"{base_line.get('id', aml.id)}_vat",
+            'name': oss_description,
+            'tax_ids': n22_tax,
+            'price_unit': tax_amount,
+            'quantity': base_line['quantity'],
+            'discount': 0.0,
+            'record': aml.new({
+                'name': oss_description,
+                'move_id': aml.move_id.id,
+            }),
+        })
+
+        return [base_line, vat_line]
+
     def _l10n_it_edi_get_values(self, pdf_values=None):
         self.ensure_one()
 
@@ -489,7 +531,18 @@ class AccountMove(models.Model):
 
         # Base lines.
         base_amls = self.line_ids.filtered(lambda x: x.display_type == 'product' or x.display_type == 'rounding')
-        base_lines = [self._prepare_product_base_line_for_taxes_computation(x) for x in base_amls]
+
+        n7_tax = self.env['account.chart.template'].ref('00ex7', raise_if_not_found=False)
+        n22_tax = self.env['account.chart.template'].ref('00ex', raise_if_not_found=False)
+        base_lines = []
+        for aml in base_amls:
+            base_line = self._prepare_product_base_line_for_taxes_computation(aml)
+            vat_tax = aml.tax_ids.flatten_taxes_hierarchy().filtered(lambda t: t._l10n_it_filter_kind('vat') and t.amount >= 0)[:1]
+            is_oss = vat_tax and 'OSS' in vat_tax.invoice_repartition_line_ids.tag_ids.mapped('name')
+            if is_oss and n7_tax and n22_tax:
+                base_lines += self._l10n_it_edi_get_oss_line_values(aml, base_line, vat_tax, n7_tax, n22_tax)
+            else:
+                base_lines.append(base_line)
         tax_amls = self.line_ids.filtered('tax_repartition_line_id')
         tax_lines = [self._prepare_tax_line_for_taxes_computation(x) for x in tax_amls]
 
@@ -518,8 +571,9 @@ class AccountMove(models.Model):
             base_line['discount_amount_before_dispatching'] = gross_price_subtotal_before_discount - price_subtotal
 
             # The tax "23% Ritenuta Agenti e Rappresentanti" is not supported because it's supposed to be a tax of 23% based on
-            # 50% of the base amount. It's currently implemented as a -11.5% tax. So on 1000, it gives an amount of -115.
-            # We need to fix the base amount from 1000 to 500.0.
+            # 50% or 20% of the base amount. It's currently implemented as a -11.5% or -4.6% tax respectively. So on 1000, it
+            # gives an amount of -115(for 50%) or -46(for 20%).
+            # We need to fix the base amount from 1000 to 500.0 or 200.0.
             for tax_data in tax_details['taxes_data']:
                 tax = tax_data['tax']
                 tax_data['_tax_amount'] = tax.amount
@@ -527,6 +581,10 @@ class AccountMove(models.Model):
                     tax_data['_tax_amount'] = -23.0
                     tax_data['raw_base_amount'] *= 0.5
                     tax_data['raw_base_amount_currency'] *= 0.5
+                elif tax.amount == -4.6:
+                    tax_data['_tax_amount'] = -23.0
+                    tax_data['raw_base_amount'] *= 0.2
+                    tax_data['raw_base_amount_currency'] *= 0.2
 
             if not is_downpayment:
                 # Negative lines linked to down payment should stay negative
@@ -559,8 +617,8 @@ class AccountMove(models.Model):
             grouping_key = values['grouping_key']
             if grouping_key is False:
                 continue
-            importo_totale_documento += values['base_amount_currency']
-            importo_totale_documento += values['tax_amount_currency']
+            importo_totale_documento += values['base_amount']
+            importo_totale_documento += values['tax_amount']
 
         company = self.company_id._l10n_it_get_edi_company()
         partner = self.commercial_partner_id
@@ -582,7 +640,7 @@ class AccountMove(models.Model):
         # Reference line for finding the conversion rate used in the document
         conversion_rate = float_repr(
             abs(self.amount_total / self.amount_total_signed), precision_digits=5,
-        ) if convert_to_euros and self.invoice_line_ids else None
+        ) if convert_to_euros and self.invoice_line_ids and not self.currency_id.is_zero(self.amount_total_signed) else None
 
         # Reduce downpayment views to a single recordset
         downpayment_moves = self.invoice_line_ids._get_downpayment_lines().move_id
@@ -664,9 +722,9 @@ class AccountMove(models.Model):
             Example: a consultant goes to the restaurant and wants the invoice instead of the receipt,
             to be able to deduct the expense from his Taxes. The Italian State allows the restaurant
             to issue a Simplified Invoice with the VAT number only, to speed up times, instead of
-            requiring the address and other informations about the buyer.
-            Only invoices under the threshold of 400 Euroes are allowed, to avoid this tool
-            be abused for bigger transactions, that would enable less transparency to tax institutions.
+            requiring the address and other information about the buyer.
+            The maximum threshold is 400 Euro, except for the forfettario tax regime (RF19), which can
+            issue simplified invoices without the amount limit.
         """
         self.ensure_one()
         template_reference = self.env.ref('l10n_it_edi.account_invoice_it_simplified_FatturaPA_export', raise_if_not_found=False)
@@ -678,7 +736,7 @@ class AccountMove(models.Model):
             and list(buyer._l10n_it_edi_export_check(checks).keys()) == ['l10n_it_edi_partner_address_missing']
             and (not buyer.country_id or buyer.country_id.code == 'IT')
             and (buyer.l10n_it_codice_fiscale or (buyer.vat and (buyer.vat[:2].upper() == 'IT' or buyer.vat[:2].isdecimal())))
-            and self.amount_total <= 400
+            and (self.company_id.l10n_it_tax_system == 'RF19' or self.amount_total <= 400)
         )
 
     def _l10n_it_edi_is_professional_fees(self):
@@ -853,7 +911,15 @@ class AccountMove(models.Model):
                 moves_to_check = self.search([
                     ('company_id', '=', proxy_user.company_id.id),
                     ('l10n_it_edi_transaction', '!=', False),
-                    ('l10n_it_edi_state', 'in', WAITING_STATES)
+                    *expression.OR(
+                        [[('l10n_it_edi_state', 'in', WAITING_STATES)],
+                        expression.AND(
+                            [
+                                [('l10n_it_edi_state', '=', 'forwarded')],
+                                [('commercial_partner_id.l10n_it_pa_index', '=ilike', '_' * 6)],
+                            ]
+                        )]
+                    )
                 ])
                 if moves_to_check:
                     moves_to_check._l10n_it_edi_update_send_state()
@@ -989,12 +1055,6 @@ class AccountMove(models.Model):
         """ Returns the VAT, Withholding or Pension Fund tax that suits the conditions given
             and matches the percentage found in the XML for the company. """
 
-        # The tax "23% Ritenuta Agenti e Rappresentanti" is not supported because it's supposed to be a tax of 23% based on
-        # 50% of the base amount. It's currently implemented as a -11.5% tax. So on 1000, it gives an amount of -115.
-        # We need to fix the base amount from 1000 to 500.0.
-        if percentage == -23.0:
-            percentage = -11.5
-
         domain = [
             *self.env['account.tax']._check_company_domain(company),
             ('amount_type', '=', 'percent'),
@@ -1102,9 +1162,9 @@ class AccountMove(models.Model):
                 ))
                 message_to_log.append(message)
 
-            # Numbering attributed by the transmitter
-            if progressive_id := get_text(tree, '//ProgressivoInvio'):
-                self.payment_reference = progressive_id
+            # Payment code
+            if payment_code := get_text(tree, './/DettaglioPagamento[1]/CodicePagamento'):
+                self.payment_reference = payment_code
 
             # Document Number
             if number := get_text(tree, './/DatiGeneraliDocumento//Numero'):
@@ -1245,23 +1305,27 @@ class AccountMove(models.Model):
         move_line.name = " ".join(get_text(element, './/Descrizione').split())
 
         # Product.
+        company_domain = self.env['res.company']._check_company_domain(company)
         if elements_code := element.xpath('.//CodiceArticolo'):
             for element_code in elements_code:
                 type_code = element_code.xpath('.//CodiceTipo')[0]
                 code = element_code.xpath('.//CodiceValore')[0]
-                product = self.env['product.product'].search([('barcode', '=', code.text)])
+                product = self.env['product.product'].search(expression.AND([company_domain, [('barcode', '=', code.text)]]))
                 if (product and type_code.text == 'EAN'):
                     move_line.product_id = product
                     break
                 if partner:
-                    product_supplier = self.env['product.supplierinfo'].search([('partner_id', '=', partner.id), ('product_code', '=', code.text)], limit=2)
+                    product_supplier = self.env['product.supplierinfo'].search(expression.AND([
+                        company_domain,
+                        [('partner_id', '=', partner.id), ('product_code', '=', code.text)]
+                    ]), limit=2)
                     if product_supplier and len(product_supplier) == 1 and product_supplier.product_id:
                         move_line.product_id = product_supplier.product_id
                         break
             if not move_line.product_id:
                 for element_code in elements_code:
                     code = element_code.xpath('.//CodiceValore')[0]
-                    product = self.env['product.product'].search([('default_code', '=', code.text)], limit=2)
+                    product = self.env['product.product'].search(expression.AND([company_domain, [('default_code', '=', code.text)]]), limit=2)
                     if product and len(product) == 1:
                         move_line.product_id = product
                         break
@@ -1287,8 +1351,20 @@ class AccountMove(models.Model):
         percentage = None
         if not extra_info['simplified']:
             percentage = get_float(element, './/AliquotaIVA')
-            if price_unit := get_float(element, './/PrezzoUnitario'):
-                move_line.price_unit = price_unit
+            move_line.price_unit = get_float(element, './/PrezzoUnitario')
+
+            # This tax is supposed to be 23% but applied to only a portion (50% or 20%) of the base amount
+            # It's implemented as -11.5% (for 50% base) or -4.6% (for 20% base) instead of -23%
+            # We need to calculate the actual effective percentage based on the ImponibileImporto/PrezzoTotale ratio
+            # Example:
+            # - If base is 50% of total: -23% * 0.5 = -11.5% (actual tax rate)
+            # - If base is 20% of total: -23% * 0.2 = -4.6% (actual tax rate)
+            if percentage == -23.0 and (prezzo_totale := get_float(element, './/PrezzoTotale')):
+                body_tree = element.xpath('//FatturaElettronicaBody')[0]
+                for riepilogo in body_tree.xpath('.//DatiRiepilogo'):
+                    if get_float(riepilogo, './/AliquotaIVA') == percentage and (imponibile := get_float(riepilogo, './/ImponibileImporto')):
+                        percentage = -float_round(23.0 * (imponibile / prezzo_totale), 1)
+                        break
         elif amount := get_float(element, './/Importo'):
             percentage = get_float(element, './/Aliquota')
             if not percentage and (tax_amount := get_float(element, './/Imposta')):
@@ -1721,7 +1797,8 @@ class AccountMove(models.Model):
             return {'sdi_state': sdi_state}
 
         decrypted_update_content = etree.fromstring(xml_content)
-        outcome = get_text(decrypted_update_content, './/Esito')
+        outcome = get_text(decrypted_update_content, './/EsitoCommittente/Esito')
+        outcome_description = get_text(decrypted_update_content, './/EsitoCommittente/Descrizione')
         date_arrival = get_datetime(decrypted_update_content, './/DataOraRicezione') or fields.Date.today()
         errors = [(
             get_text(error_element, '//Codice'),
@@ -1733,6 +1810,7 @@ class AccountMove(models.Model):
             'sdi_state': sdi_state,
             'errors': errors,
             'outcome': outcome,
+            'outcome_description': outcome_description,
             'date': date_arrival,
             'filename': filename,
         }
@@ -1848,8 +1926,9 @@ class AccountMove(models.Model):
                     "The e-invoice file %(file)s has been refused by %(partner)s (Public Administration).\n"
                     "You have 5 days from now to issue a full refund for this invoice, "
                     "then contact the PA partner to create a new one according to their "
-                    "requests and submit it.",
-                    file=filename, partner=partner_name)),
+                    "requests and submit it.\n%(outcome_description)s",
+                    file=filename, partner=partner_name,
+                    outcome_description=transformed_notification.get('outcome_description', ''))),
                 'accepted_by_pa_partner': _(
                     "The e-invoice file %(file)s has been accepted by %(partner)s (Public Administration), a payment will be issued soon",
                     file=filename, partner=partner_name),

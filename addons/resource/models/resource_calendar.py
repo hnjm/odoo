@@ -414,13 +414,24 @@ class ResourceCalendar(models.Model):
                         current_day = week_start
                         while current_day <= week_end:
                             if remaining_hours > 0:
-                                allocate_hours = min(max_hours_per_day, remaining_hours)
+                                day_start = tz.localize(datetime.combine(current_day, time.min))
+                                day_end = tz.localize(datetime.combine(current_day, time.max))
+                                day_period_start = max(start_datetime, day_start)
+                                day_period_end = min(end_datetime, day_end)
+                                allocate_hours = min(max_hours_per_day, remaining_hours, (day_period_end - day_period_start).total_seconds() / 3600)
                                 remaining_hours -= allocate_hours
 
-                                # Create interval centered at 12:00 PM
+                                # Create interval centered at 12:00 PM (or as close as possible)
                                 midpoint = tz.localize(datetime.combine(current_day, time(12, 0)))
                                 start_time = midpoint - timedelta(hours=allocate_hours / 2)
                                 end_time = midpoint + timedelta(hours=allocate_hours / 2)
+
+                                if start_time < day_period_start:
+                                    start_time = day_period_start
+                                    end_time = start_time + timedelta(hours=allocate_hours)
+                                elif end_time > day_period_end:
+                                    end_time = day_period_end
+                                    start_time = end_time - timedelta(hours=allocate_hours)
 
                                 dummy_attendance = self.env['resource.calendar.attendance'].new({
                                     'duration_hours': allocate_hours,
@@ -548,7 +559,10 @@ class ResourceCalendar(models.Model):
         resources_work_intervals = self._work_intervals_batch(start_dt, end_dt, resources, domain, tz)
         result = {}
         for resource in resources_list:
-            if resource and resource._is_fully_flexible():
+            if resource and resource._is_flexible():
+                leaves = self._leave_intervals_batch(start_dt, end_dt, resource, domain, tz=tz)
+                if res_leaves := leaves.get(resource.id, []):
+                    result[resource.id] = [(i[0], i[1]) for i in res_leaves]
                 continue
             work_intervals = [(start, stop) for start, stop, meta in resources_work_intervals[resource.id]]
             # start + flatten(intervals) + end

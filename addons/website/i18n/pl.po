@@ -10,23 +10,24 @@
 # Marta Wacławek, 2025
 # Dawid Gacek <dawid.gacek@adapt-it.pl>, 2025.
 # Weblate <noreply-mt-weblate@weblate.org>, 2025.
+# "Marta (wacm)" <wacm@odoo.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-24 18:36+0000\n"
-"PO-Revision-Date: 2025-11-11 17:26+0000\n"
-"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
+"POT-Creation-Date: 2026-04-03 18:39+0000\n"
+"PO-Revision-Date: 2026-03-29 12:15+0000\n"
+"Last-Translator: \"Marta (wacm)\" <wacm@odoo.com>\n"
 "Language-Team: Polish <https://translate.odoo.com/projects/odoo-18/website/"
 "pl/>\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && ("
-"n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && "
+"(n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
 "n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #. module: website
 #. odoo-javascript
@@ -2446,7 +2447,7 @@ msgstr "Mapa i lista Twoich sklepów"
 #. odoo-python
 #: code:addons/website/models/website_menu.py:0
 msgid "A mega menu cannot have a parent or child menu."
-msgstr ""
+msgstr "Mega menu nie może mieć menu nadrzędnego ani podrzędnego."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_product_catalog
@@ -2463,6 +2464,12 @@ msgid "A new visit is considered if last connection was more than 8 hours ago."
 msgstr ""
 "Nowa wizyta jest brana pod uwagę, jeśli ostatnie połączenie miało miejsce "
 "ponad 8 godzin temu."
+
+#. module: website
+#. odoo-python
+#: code:addons/website/models/website_controller_page.py:0
+msgid "A page must be set to display a concrete model."
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
@@ -4660,7 +4667,7 @@ msgstr "Warunkowo"
 #. module: website
 #: model:ir.model,name:website.model_res_config_settings
 msgid "Config Settings"
-msgstr "Ustawienia konfiguracji"
+msgstr "Konfiguracja ustawień"
 
 #. module: website
 #: model:ir.ui.menu,name:website.menu_website_global_configuration
@@ -6811,7 +6818,7 @@ msgstr "Błąd instalacji \"%s\""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_key_benefits
 msgid "Fair pricing"
-msgstr "Uczciwy cennik"
+msgstr "Uczciwe ceny"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_res_config_settings__favicon
@@ -7550,6 +7557,7 @@ msgstr "Przycisk Google Analytics"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
+#: model_terms:ir.ui.view,arch_db:website.snippets
 msgid "Google Map"
 msgstr "Mapy Google"
 
@@ -9994,13 +10002,13 @@ msgstr "Menu"
 #. odoo-python
 #: code:addons/website/models/website_menu.py:0
 msgid "Menus cannot have more than two levels of hierarchy."
-msgstr ""
+msgstr "Menu nie mogą mieć więcej niż dwa poziomy hierarchii."
 
 #. module: website
 #. odoo-python
 #: code:addons/website/models/website_menu.py:0
 msgid "Menus with child menus cannot be added as a submenu."
-msgstr ""
+msgstr "Menu z podmenu nie mogą być dodawane jako podmenu."
 
 #. module: website
 #: model:ir.model,name:website.model_base_partner_merge_automatic_wizard
@@ -10587,7 +10595,7 @@ msgstr "Brak wyników. Spróbuj innego wyszukiwania."
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_dynamic_snippet_options_template
 msgid "No title"
-msgstr "Brak tytułu"
+msgstr "Bez tytułu"
 
 #. module: website
 #. odoo-javascript
@@ -14155,6 +14163,10 @@ msgid ""
 "Model: %(model)s\n"
 "View: %(view)s"
 msgstr ""
+"Pola „%(field)s ” nie można usunąć, ponieważ jest ono odwołane w widoku "
+"strony internetowej.\n"
+"Model: %(model)s\n"
+"Widok: %(view)s"
 
 #. module: website
 #. odoo-javascript
@@ -14274,7 +14286,7 @@ msgstr "Nazwa strony używana w adresie URL"
 #. odoo-python
 #: code:addons/website/models/website.py:0
 msgid "The provided website domain is not a valid URL."
-msgstr ""
+msgstr "Podana domena strony internetowej nie jest prawidłowym adresem URL."
 
 #. module: website
 #. odoo-javascript
@@ -15716,7 +15728,7 @@ msgstr "Odwiedzający"
 #: model_terms:ir.ui.view,arch_db:website.website_visitor_view_form
 #: model_terms:ir.ui.view,arch_db:website.website_visitor_view_kanban
 msgid "Visits"
-msgstr "Odwiedzin"
+msgstr "Wizyty"
 
 #. module: website
 #: model_terms:ir.actions.act_window,help:website.website_visitor_view_action

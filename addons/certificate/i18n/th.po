@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-16 13:39+0000\n"
+"POT-Creation-Date: 2026-04-03 18:39+0000\n"
 "PO-Revision-Date: 2025-11-08 16:51+0000\n"
 "Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Thai <https://translate.odoo.com/projects/odoo-18/certificate/"
@@ -397,6 +397,18 @@ msgstr "ไม่สามารถโหลดใบรับรองนี้
 #. module: certificate
 #. odoo-python
 #: code:addons/certificate/models/certificate.py:0
+#, fuzzy
+#| msgid ""
+#| "This certificate could not be loaded. Either the content or the password "
+#| "is erroneous."
+msgid ""
+"This certificate could not be loaded. Please provide the certificate "
+"password."
+msgstr "ไม่สามารถโหลดใบรับรองนี้ได้ เนื้อหาหรือรหัสผ่านไม่ถูกต้อง"
+
+#. module: certificate
+#. odoo-python
+#: code:addons/certificate/models/certificate.py:0
 msgid "This certificate is not valid, its validity has expired."
 msgstr "ใบรับรองนี้ไม่ถูกต้อง หมดอายุแล้ว"
 
@@ -414,9 +426,7 @@ msgstr "ไม่สามารถโหลดคีย์นี้ได้ �
 msgid ""
 "Unsupported asymmetric cryptography algorithm '%s'. Currently supported for "
 "decryption: RSA."
-msgstr ""
-"อัลกอริทึมการเข้ารหัสแบบไม่สมมาตรที่ไม่รองรับ '%s' ปัจจุบันรองรับการถอดรหัส:"
-" RSA"
+msgstr "อัลกอริทึมการเข้ารหัสแบบไม่สมมาตรที่ไม่รองรับ '%s' ปัจจุบันรองรับการถอดรหัส: RSA"
 
 #. module: certificate
 #. odoo-python
@@ -424,24 +434,23 @@ msgstr ""
 msgid ""
 "Unsupported asymmetric cryptography algorithm '%s'. Currently supported for "
 "signature: EC and RSA."
-msgstr ""
-"อัลกอริทึมการเข้ารหัสแบบไม่สมมาตรที่ไม่รองรับ '%s' ปัจจุบันรองรับลายเซ็น: EC"
-" และ RSA"
+msgstr "อัลกอริทึมการเข้ารหัสแบบไม่สมมาตรที่ไม่รองรับ '%s' ปัจจุบันรองรับลายเซ็น: EC และ RSA"
 
 #. module: certificate
 #. odoo-python
 #: code:addons/certificate/models/key.py:0
 msgid ""
-"Unsupported asymmetric cryptography algorithm '%s'. Currently supported: EC,"
-" RSA."
-msgstr ""
-"อัลกอริทึมการเข้ารหัสแบบไม่สมมาตรที่ไม่รองรับ '%s' ปัจจุบันรองรับ: EC, RSA"
+"Unsupported asymmetric cryptography algorithm '%s'. Currently supported: EC, "
+"RSA."
+msgstr "อัลกอริทึมการเข้ารหัสแบบไม่สมมาตรที่ไม่รองรับ '%s' ปัจจุบันรองรับ: EC, RSA"
 
 #. module: certificate
 #: model:ir.model.fields,help:certificate.field_certificate_certificate__public_key_id
 msgid ""
-"Used to set a public key in case the one self-contained in the certificate is erroneus.\n"
-"                When a public key is set this way, it will be used instead of the one in the certificate.\n"
+"Used to set a public key in case the one self-contained in the certificate "
+"is erroneus.\n"
+"                When a public key is set this way, it will be used instead "
+"of the one in the certificate.\n"
 "             "
 msgstr ""
 "ใช้ในการตั้งค่าคีย์สาธารณะในกรณีที่คีย์ที่มีอยู่ในใบรับรองนั้นผิดพลาด\n"

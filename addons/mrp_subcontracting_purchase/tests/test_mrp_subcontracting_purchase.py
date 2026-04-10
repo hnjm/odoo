@@ -411,6 +411,72 @@ class MrpSubcontractingPurchaseTest(TestMrpSubcontractingCommon):
         price_diff_line = invoice.line_ids.filtered(lambda m: m.account_id == stock_price_diff_acc_id)
         self.assertEqual(price_diff_line.credit, 20)
 
+    def test_subcontracting_multi_currency_price_diff(self):
+        """ Ensure the price difference lines are computed correctly when the company
+            currency and invoice currency differ
+        """
+        currency_grp = self.env.ref('base.group_multi_currency')
+        self.env.user.write({'groups_id': [(4, currency_grp.id)]})
+
+        self.env.company.anglo_saxon_accounting = True
+        product_category_all = self.env.ref('product.product_category_all')
+        product_category_all.property_cost_method = 'standard'
+        product_category_all.property_valuation = 'real_time'
+        self._setup_category_stock_journals()
+
+        stock_price_diff_acc_id = self.env['account.account'].create({
+            'name': 'default_account_stock_price_diff',
+            'code': 'STOCKDIFF',
+            'reconcile': True,
+            'account_type': 'asset_current',
+        })
+        product_category_all.property_account_creditor_price_difference_categ = stock_price_diff_acc_id
+
+        self.comp1.standard_price = 10.0
+        self.comp2.standard_price = 20.0
+        self.finished.standard_price = 100
+
+        mock_currency = self.env['res.currency'].create({
+            'name': 'MOCK',
+            'symbol': 'MC',
+        })
+        self.env['res.currency.rate'].create({
+            'name': '2023-01-01',
+            'company_rate': 2.0,
+            'currency_id': mock_currency.id,
+            'company_id': self.env.company.id,
+        })
+
+        # Create a PO for 1 finished product.
+        po_form = Form(self.env['purchase.order'])
+        po_form.partner_id = self.subcontractor_partner1
+        po_form.currency_id = mock_currency
+        with po_form.order_line.new() as po_line:
+            po_line.product_id = self.finished
+            po_line.product_qty = 1
+            # Ideally, 100 - 10 - 20 = 70 USD
+            # We will create a price diff of 10 USD
+            # 60 USD * 2 = 120 MC
+            po_line.price_unit = 120
+        po = po_form.save()
+        po.button_confirm()
+
+        action = po.action_view_picking()
+        final_picking = self.env[action['res_model']].browse(action['res_id'])
+        final_picking.move_ids.quantity = 1
+        final_picking.move_ids.picked = True
+        final_picking.button_validate()
+
+        action = po.action_create_invoice()
+        invoice = self.env['account.move'].browse(action['res_id'])
+        invoice.invoice_date = Date.today()
+        invoice.invoice_line_ids.quantity = 1
+        invoice.action_post()
+
+        # price diff line should be 100 - 60 - 10 - 20
+        price_diff_line = invoice.line_ids.filtered(lambda m: m.account_id == stock_price_diff_acc_id)
+        self.assertEqual(price_diff_line.credit, 10)
+
     def test_subcontract_product_price_change(self):
         """ Create a PO for subcontracted product, receive the product (finish MO),
             create vendor bill and edit the product price, confirm the bill.
@@ -508,6 +574,58 @@ class MrpSubcontractingPurchaseTest(TestMrpSubcontractingCommon):
         # Total value of subcontracted product = 150 new price + components (10 + 10)
         self.assertEqual(self.finished.total_value, 170)
         self.assertEqual(self.finished.standard_price, 170)
+
+    def test_receipt_consumption_issues_due_to_subcontract_bom_modifications(self):
+        """
+        Buy 10 subcontracted serial and non-serial products. Modify the BOM quantities.
+        Then set move quantities to 2 for both product type and validate the receipt.
+        """
+        self.finished3 = self.env['product.product'].create({
+            'name': 'SuperProduct',
+            'is_storable': True,
+            'tracking': 'serial',
+        })
+        self.bom_finished3 = self.env['mrp.bom'].create({
+            'product_tmpl_id': self.finished3.product_tmpl_id.id,
+            'type': 'subcontract',
+            'subcontractor_ids': [Command.set(self.subcontractor_partner1.ids)],
+            'bom_line_ids': [Command.create({
+                'product_id': self.comp3.id,
+                'product_qty': 1,
+            })],
+        })
+        po = self.env['purchase.order'].create({
+            'partner_id': self.subcontractor_partner1.id,
+            'order_line': [
+                Command.create({
+                    'name': self.finished2.name,
+                    'product_id': self.finished2.id,
+                    'product_qty': 10,
+                    'product_uom': self.finished2.uom_id.id,
+                    'price_unit': 1,
+                }),
+                Command.create({
+                    'name': self.finished3.name,
+                    'product_id': self.finished3.id,
+                    'product_qty': 10,
+                    'product_uom': self.finished3.uom_id.id,
+                    'price_unit': 1,
+                }),
+            ],
+        })
+        po.button_confirm()
+
+        for p in [self.bom_finished2, self.bom_finished3]:
+            line = p.bom_line_ids[0]
+            line.product_qty = line.product_qty + 1
+
+        receipt = po.picking_ids
+        receipt.move_ids.quantity = 2
+        self.assertRecordValues(receipt.move_ids, [{'quantity': sum(ml.quantity for ml in move.move_line_ids)} for move in receipt.move_ids])
+
+        receipt.button_validate()
+        self.assertRecordValues(receipt.move_ids, [{'quantity': sum(ml.quantity for ml in move.move_line_ids)} for move in receipt.move_ids])
+        self.assertRecordValues(receipt.move_ids, [{'quantity': 2} for _ in receipt.move_ids])
 
     def test_return_and_decrease_pol_qty(self):
         """

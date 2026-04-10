@@ -7,24 +7,24 @@
 # Wil Odoo, 2025
 # Junko Augias, 2025
 #
-# "Junko Augias (juau)" <juau@odoo.com>, 2025.
+# "Junko Augias (juau)" <juau@odoo.com>, 2025, 2026.
 # Ryoko Tsuda <ryoko@quartile.co>, 2025.
-# Weblate <noreply-mt-weblate@weblate.org>, 2025.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-16 18:39+0000\n"
-"PO-Revision-Date: 2025-11-21 06:39+0000\n"
+"POT-Creation-Date: 2026-03-06 18:38+0000\n"
+"PO-Revision-Date: 2026-02-28 18:01+0000\n"
 "Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
-"Language-Team: Japanese <https://translate.odoo.com/projects/odoo-18/web/ja/>"
-"\n"
+"Language-Team: Japanese <https://translate.odoo.com/projects/odoo-18/web/ja/"
+">\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #. module: web
 #. odoo-javascript
@@ -534,8 +534,8 @@ msgstr "<span id=\"line_tax_ids\">15%</span>"
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
-msgid "<span itemprop=\"name\">Deco Addict</span>"
-msgstr "<span itemprop=\"name\">Deco Addict</span>"
+msgid "<span itemprop=\"name\">Acme Corporation</span>"
+msgstr "<span itemprop=\"name\">アクメ株式会社</span>"
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
@@ -2359,7 +2359,7 @@ msgstr "プロパティフィールドを削除する"
 #: code:addons/web/static/src/search/control_panel/control_panel.xml:0
 #: code:addons/web/static/src/search/search_bar_menu/search_bar_menu.xml:0
 msgid "Delete item"
-msgstr "項目を削除する"
+msgstr "項目を削除"
 
 #. module: web
 #. odoo-javascript
@@ -2800,7 +2800,7 @@ msgstr "展開"
 #. odoo-javascript
 #: code:addons/web/static/src/views/pivot/pivot_controller.xml:0
 msgid "Expand all"
-msgstr "全展開"
+msgstr "すべて展開"
 
 #. module: web
 #. odoo-javascript
@@ -4117,7 +4117,7 @@ msgstr "Many2many"
 #: code:addons/web/static/src/views/fields/many2one/many2one_field.js:0
 #: code:addons/web/static/src/views/fields/properties/property_definition.js:0
 msgid "Many2one"
-msgstr "Many2one"
+msgstr "多対1"
 
 #. module: web
 #. odoo-javascript
@@ -4222,6 +4222,12 @@ msgstr "天の川"
 #: code:addons/web/static/src/views/fields/datetime/datetime_field.js:0
 msgid "Minimal precision"
 msgstr "最小精度"
+
+#. module: web
+#. odoo-javascript
+#: code:addons/web/static/src/views/fields/float/float_field.js:0
+msgid "Minimum Digits"
+msgstr "最小桁数"
 
 #. module: web
 #. odoo-javascript
@@ -4344,7 +4350,7 @@ msgstr "月"
 #: code:addons/web/static/src/views/fields/statusbar/statusbar_field.js:0
 #: code:addons/web/static/src/views/form/button_box/button_box.xml:0
 msgid "More"
-msgstr "さらに"
+msgstr "その他"
 
 #. module: web
 #. odoo-javascript
@@ -4356,7 +4362,7 @@ msgstr "他のメニュー"
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/statusbar/statusbar_field.xml:0
 msgid "More..."
-msgstr "さらに"
+msgstr "さらに表示"
 
 #. module: web
 #. odoo-javascript
@@ -4624,6 +4630,12 @@ msgstr "データなし"
 #: code:addons/web/static/src/views/no_content_helpers.xml:0
 msgid "No data to display"
 msgstr "表示するデータがありません"
+
+#. module: web
+#. odoo-python
+#: code:addons/web/controllers/pivot.py:0
+msgid "No data to export"
+msgstr "エクスポートするデータがありません"
 
 #. module: web
 #. odoo-javascript
@@ -6259,7 +6271,7 @@ msgstr "スマイリー & 感情"
 #. odoo-javascript
 #: code:addons/web/static/src/model/relational_model/dynamic_list.js:0
 msgid "Some records could not be duplicated"
-msgstr "重複できないレコードがあります"
+msgstr "一部のレコードは複製できませんでした"
 
 #. module: web
 #. odoo-python
@@ -6628,6 +6640,12 @@ msgstr "処理が中断されました。処理に時間がかかりすぎてい
 
 #. module: web
 #. odoo-javascript
+#: code:addons/web/static/src/core/errors/error_dialogs.js:0
+msgid "The request sent to the server was too large"
+msgstr ""
+
+#. module: web
+#. odoo-javascript
 #: code:addons/web/static/src/core/utils/files.js:0
 msgid "The resizing of the image failed"
 msgstr "画像のサイズ変更に失敗しました"
@@ -6789,6 +6807,12 @@ msgstr "木曜日"
 #: code:addons/web/static/src/views/fields/float_time/float_time_field.js:0
 msgid "Time"
 msgstr "時間"
+
+#. module: web
+#. odoo-javascript
+#: code:addons/web/static/src/webclient/debug/profiling/profiling_item.xml:0
+msgid "Time Limit (seconds)"
+msgstr "時間制限(秒)"
 
 #. module: web
 #. odoo-javascript
@@ -9565,7 +9589,7 @@ msgstr "茶色い四角"
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "bubble"
-msgstr "泡"
+msgstr "バブル"
 
 #. module: web
 #. odoo-javascript
@@ -10081,7 +10105,7 @@ msgstr "チャーム"
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "chart"
-msgstr "チャート"
+msgstr "グラフ"
 
 #. module: web
 #. odoo-javascript
@@ -11473,7 +11497,7 @@ msgstr "だんご"
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "dark"
-msgstr "暗い"
+msgstr "ダーク"
 
 #. module: web
 #. odoo-javascript
@@ -17976,7 +18000,7 @@ msgstr "お月見"
 #. odoo-javascript
 #: code:addons/web/static/src/webclient/settings_form_view/widgets/res_config_invite_users.xml:0
 msgid "more"
-msgstr "さらに"
+msgstr "その他"
 
 #. module: web
 #. odoo-javascript
@@ -18607,7 +18631,7 @@ msgstr "装飾カバーがついたノート"
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "notes"
-msgstr "音符"
+msgstr "メモ"
 
 #. module: web
 #. odoo-javascript
@@ -20133,7 +20157,7 @@ msgstr "プラグ"
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "plumber"
-msgstr "技工"
+msgstr "配管工"
 
 #. module: web
 #. odoo-javascript
@@ -26569,7 +26593,7 @@ msgstr "“禁”"
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "“reserved”"
-msgstr "“指”"
+msgstr "“予約済”"
 
 #. module: web
 #. odoo-javascript
@@ -26594,3 +26618,6 @@ msgstr "“空”"
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "ココ"
 msgstr "ココ"
+
+#~ msgid "<span itemprop=\"name\">Deco Addict</span>"
+#~ msgstr "<span itemprop=\"name\">Deco Addict</span>"

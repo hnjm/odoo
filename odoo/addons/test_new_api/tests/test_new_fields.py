@@ -956,6 +956,34 @@ class TestFields(TransactionCaseWithUserDemo, TransactionExpressionCase):
         self.env.invalidate_all()
         self.assertEqual(record.created_id.value, 3)
 
+    def test_18_flush_precommit(self):
+        """ check that cr.flush() runs precommits as many times as needed. """
+        cr = self.env.cr
+        record = self.env['test_new_api.compute.created'].create({'name': 'foo'})
+        # The hook triggers a compute of the value (stored-computed) field
+        # which triggers the hook again, limited to 4 calls.
+        # Choosing a number < 10 (which is the max number of iterations).
+        count = 4
+
+        def hook():
+            nonlocal count
+            if count <= 0:
+                return
+            count -= 1
+            record.name = 'x'
+
+        def compute_value(self):
+            self.value = 10 + count
+            self.env.cr.precommit.add(hook)
+
+        self.patch(self.registry[record._name], '_compute_value', compute_value)
+
+        # run the pre-commit hook
+        hook()
+        cr.flush()
+        self.assertEqual(count, 0, "Precommit not ran enough times")
+        self.assertEqual(record.value, 10, "Flush not triggered correctly")
+
     def test_20_float(self):
         """ test rounding of float fields """
         record = self.env['test_new_api.mixed'].create({})
@@ -4240,6 +4268,7 @@ class TestSelectionOndelete(TransactionCase):
     MODEL_REQUIRED = 'test_new_api.model_selection_required'
     MODEL_NONSTORED = 'test_new_api.model_selection_non_stored'
     MODEL_WRITE_OVERRIDE = 'test_new_api.model_selection_required_for_write_override'
+    MODEL_COMPANY_DEPENDENT = 'test_new_api.model_selection_company_dependent'
 
     def setUp(self):
         super().setUp()
@@ -4388,6 +4417,39 @@ class TestSelectionOndelete(TransactionCase):
         self._unlink_option(self.MODEL_WRITE_OVERRIDE, 'divinity')
         self.assertEqual(rec.my_selection, 'foo')
 
+    def test_ondelete_company_dependent_null_implicit_with_multicompany(self):
+        Model = self.env[self.MODEL_COMPANY_DEPENDENT]
+        company_2 = self.env['res.company'].create({'name': 'Test Company'})
+
+        # create records with the extended selection option
+        records = r1, r2, r3 = Model.create([
+            {'my_selection': 'manual'},
+            {'my_selection': 'auto'},
+            {'my_selection': 'semi_auto'},
+        ])
+
+        # set different values for company_2
+        r1.with_company(company_2).write({'my_selection': 'semi_auto'})
+        r2.with_company(company_2).write({'my_selection': 'semi_auto'})
+        r3.with_company(company_2).write({'my_selection': 'manual'})
+
+        # sanity checks before unlink
+        self.assertEqual(records.mapped("my_selection"), ["manual", "auto", "semi_auto"])
+        self.assertEqual(
+            records.with_company(company_2).mapped("my_selection"),
+            ["semi_auto", "semi_auto", "manual"],
+        )
+
+        # simulates a module uninstall
+        self._unlink_option(self.MODEL_COMPANY_DEPENDENT, 'semi_auto')
+
+        # test that values are removed from all the companies
+        self.assertEqual(records.mapped("my_selection"), ["manual", "auto", False])
+        self.assertEqual(
+            records.with_company(company_2).mapped("my_selection"),
+            [False, False, "manual"],
+        )
+
 
 @tagged('selection_ondelete_advanced')
 class TestSelectionOndeleteAdvanced(TransactionCase):
@@ -4400,7 +4462,7 @@ class TestSelectionOndeleteAdvanced(TransactionCase):
         # necessary cleanup for resetting changes in the registry
         for model_name in (self.MODEL_BASE, self.MODEL_REQUIRED):
             Model = self.registry[model_name]
-            self.addCleanup(setattr, Model, '_BaseModel__base_classes', Model._BaseModel__base_classes)
+            self.patch(Model, '_BaseModel__base_classes', Model._BaseModel__base_classes)
 
     def test_ondelete_unexisting_policy(self):
         class Foo(models.Model):

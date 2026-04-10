@@ -46,6 +46,14 @@ class PosOrder(models.Model):
                 invoice_vals['partner_id'] = sale_orders[0].partner_invoice_id.id
         return invoice_vals
 
+    def action_pos_order_paid(self):
+        res = super().action_pos_order_paid()
+        if any(p.payment_method_id._is_online_payment() for p in self.payment_ids):
+            sale_orders = self.lines.mapped('sale_order_origin_id')
+            for so in sale_orders.filtered(lambda s: s.state in ('draft', 'sent')):
+                so.action_confirm()
+        return res
+
     @api.model
     def sync_from_ui(self, orders):
         data = super().sync_from_ui(orders)
@@ -57,28 +65,29 @@ class PosOrder(models.Model):
             for line in order.lines.filtered(lambda l: l.product_id == order.config_id.down_payment_product_id and l.qty != 0 and (l.sale_order_origin_id or l.refunded_orderline_id.sale_order_origin_id)):
                 sale_lines = line.sale_order_origin_id.order_line or line.refunded_orderline_id.sale_order_origin_id.order_line
                 sale_order_origin = line.sale_order_origin_id or line.refunded_orderline_id.sale_order_origin_id
-                if not any(line.display_type and line.is_downpayment for line in sale_lines):
-                    self.env['sale.order.line'].create(
-                        self.env['sale.advance.payment.inv']._prepare_down_payment_section_values(sale_order_origin)
-                    )
-                order_reference = line.name
+                if not line.sale_order_line_id:
+                    if not any(line.display_type and line.is_downpayment for line in sale_lines):
+                        self.env['sale.order.line'].create(
+                            self.env['sale.advance.payment.inv']._prepare_down_payment_section_values(sale_order_origin)
+                        )
+                    order_reference = line.name
 
-                if order.partner_id.lang and order.partner_id.lang != line.env.lang:
-                    line = line.with_context(lang=order.partner_id.lang)
+                    if order.partner_id.lang and order.partner_id.lang != line.env.lang:
+                        line = line.with_context(lang=order.partner_id.lang)
 
-                sale_order_line_description = _("Down payment (ref: %(order_reference)s on \n %(date)s)", order_reference=order_reference, date=format_date(line.env, line.order_id.date_order))
-                sale_line = self.env['sale.order.line'].create({
-                    'order_id': sale_order_origin.id,
-                    'product_id': line.product_id.id,
-                    'price_unit': line.price_unit,
-                    'product_uom_qty': 0,
-                    'tax_id': [(6, 0, line.tax_ids.ids)],
-                    'is_downpayment': True,
-                    'discount': line.discount,
-                    'sequence': sale_lines and sale_lines[-1].sequence + 2 or 10,
-                    'name': sale_order_line_description
-                })
-                line.sale_order_line_id = sale_line
+                    sale_order_line_description = _("Down payment (ref: %(order_reference)s on \n %(date)s)", order_reference=order_reference, date=format_date(line.env, line.order_id.date_order))
+                    sale_line = self.env['sale.order.line'].create({
+                        'order_id': sale_order_origin.id,
+                        'product_id': line.product_id.id,
+                        'price_unit': line.price_unit,
+                        'product_uom_qty': 0,
+                        'tax_id': [(6, 0, line.tax_ids.ids)],
+                        'is_downpayment': True,
+                        'discount': line.discount,
+                        'sequence': sale_lines and sale_lines[-1].sequence + 2 or 10,
+                        'name': sale_order_line_description
+                    })
+                    line.sale_order_line_id = sale_line
 
             so_lines = order.lines.mapped('sale_order_line_id')
 
@@ -165,6 +174,10 @@ class PosOrder(models.Model):
             }
         return order_line
 
+    def _get_stock_moves(self):
+        res = super()._get_stock_moves()
+        return res | self.lines.sale_order_line_id.move_ids
+
     def _get_invoice_lines_values(self, line_values, pos_line):
         inv_line_vals = super()._get_invoice_lines_values(line_values, pos_line)
 
@@ -179,6 +192,10 @@ class PosOrder(models.Model):
         if 'crm_team_id' in vals:
             vals['crm_team_id'] = vals['crm_team_id'] if vals.get('crm_team_id') else self.session_id.crm_team_id.id
         return super().write(vals)
+
+    def _force_create_picking_real_time(self):
+        result = super()._force_create_picking_real_time()
+        return result or any(self.lines.mapped('sale_order_origin_id'))
 
 
 class PosOrderLine(models.Model):

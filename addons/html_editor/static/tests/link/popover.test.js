@@ -17,7 +17,13 @@ import { contains, onRpc, patchWithCleanup } from "@web/../tests/web_test_helper
 import { setupEditor } from "../_helpers/editor";
 import { cleanLinkArtifacts } from "../_helpers/format";
 import { getContent, setContent, setSelection } from "../_helpers/selection";
-import { insertLineBreak, insertText, splitBlock, undo } from "../_helpers/user_actions";
+import {
+    insertLineBreak,
+    insertSpace,
+    insertText,
+    splitBlock,
+    undo,
+} from "../_helpers/user_actions";
 import { execCommand } from "../_helpers/userCommands";
 import { expectElementCount } from "../_helpers/ui_expectations";
 
@@ -249,7 +255,7 @@ describe("Link creation", () => {
         test("typing valid URL + space should convert to link", async () => {
             const { editor, el } = await setupEditor("<p>[]</p>");
             await insertText(editor, "http://google.co.in");
-            await insertText(editor, " ");
+            await insertSpace(editor);
             expect(cleanLinkArtifacts(getContent(el))).toBe(
                 '<p><a href="http://google.co.in">http://google.co.in</a>&nbsp;[]</p>'
             );
@@ -674,6 +680,14 @@ describe("shortcut", () => {
             '<p><a href="http://test.com">li[]nk</a></p>'
         );
     });
+    test("should not create a link via shortcut for partial selection inside contenteditable false", async () => {
+        const { el } = await setupEditor(`<p contenteditable="false">T[e]st</p>`);
+        await press(["ctrl", "k"]);
+        await animationFrame();
+        await click(".o_command_name:first");
+        expect(getContent(el)).toBe('<p contenteditable="false">T[e]st</p>');
+        expect(queryOne(`p[contenteditable="false"]`).childNodes.length).toBe(1);
+    });
 });
 
 describe("link preview", () => {
@@ -1089,4 +1103,21 @@ describe("upload file via link popover", () => {
             expect(".o_we_href_input_link").toHaveValue("http://test.com/");
         });
     });
+});
+
+test("Should properly show the preview if fetching metadata fails", async () => {
+    const id = Math.random().toString();
+    onRpc("/html_editor/link_preview_internal", () => Promise.reject(new Error(`No data ${id}`)));
+    onRpc("/contactus", () => ({}));
+    const originalConsoleWarn = console.warn.bind(console);
+    patchWithCleanup(console, {
+        warn: (msg, error, ...args) => {
+            if (!error?.message?.includes?.(id)) {
+                originalConsoleWarn(msg, error, ...args);
+            }
+        },
+    });
+    const { el } = await setupEditor('<p><a href="/contactus">a[]b</a></p>');
+    await waitFor(".o-we-linkpopover");
+    expect(cleanLinkArtifacts(getContent(el))).toBe('<p><a href="/contactus">a[]b</a></p>');
 });

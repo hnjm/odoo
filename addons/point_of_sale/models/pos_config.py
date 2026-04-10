@@ -19,6 +19,16 @@ class PosConfig(models.Model):
     _description = 'Point of Sale Configuration'
     _check_company_auto = True
 
+    @api.model
+    def _get_dynamic_models(self):
+        return [
+            'pos.order',
+            'pos.order.line',
+            'pos.payment',
+            'pos.pack.operation.lot',
+            'product.attribute.custom.value',
+        ]
+
     def _default_warehouse_id(self):
         warehouse = self.env['stock.warehouse'].search(self.env['stock.warehouse']._check_company_domain(self.env.company), limit=1).id
         if not warehouse:
@@ -841,7 +851,7 @@ class PosConfig(models.Model):
         id_to_index = {pid: index for index, pid in enumerate(product_ids)}
         products = products.sorted(key=lambda p: id_to_index[p.id])
         product_combo = products.filtered(lambda p: p['type'] == 'combo')
-        product_in_combo = product_combo.combo_ids.combo_item_ids.product_id
+        product_in_combo = product_combo.combo_ids.combo_item_ids.product_id.filtered(lambda p: p.active)
         products_available = products | product_in_combo
         return products_available.read(fields, load=False)
 

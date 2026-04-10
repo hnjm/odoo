@@ -76,7 +76,9 @@ _ref_vat = {
     'si': 'SI12345679',
     'sk': 'SK2022749619',
     'sm': 'SM24165',
-    'tr': _lt('17291716060 (NIN) or 1729171602 (VKN)'),
+    'th': '1234545678781',
+    'tr': _lt('11111111111 (NIN) or 2222222222 (VKN)'),
+    'ua': _lt('12345678 or UA12345678 (EDRPOU), 1234567890 (RNOPP) or 123456789012 (IPN)'),
     'uy': _lt("Example: '219999830019' (format: 12 digits, all numbers, valid check digit)"),
     've': 'V-12345678-1, V123456781, V-12.345.678-1',
     'xi': 'XI123456782',
@@ -220,14 +222,14 @@ class ResPartner(models.Model):
                 _logger.info('Calling VIES service to check VAT for validation: %s', partner.vies_vat_to_check)
                 vies_valid = check_vies(partner.vies_vat_to_check, timeout=10)
                 partner.vies_valid = vies_valid['valid']
-            except (OSError, InvalidComponent, zeep.exceptions.Fault) as e:
+            except (OSError, InvalidComponent, zeep.exceptions.Error) as e:
                 if partner._origin.id:
                     msg = ""
                     if isinstance(e, OSError):
                         msg = _("Connection with the VIES server failed. The VAT number %s could not be validated.", partner.vies_vat_to_check)
                     elif isinstance(e, InvalidComponent):
                         msg = _("The VAT number %s could not be interpreted by the VIES server.", partner.vies_vat_to_check)
-                    elif isinstance(e, zeep.exceptions.Fault):
+                    elif isinstance(e, zeep.exceptions.Error):
                         msg = _('The request for VAT validation was not processed. VIES service has responded with the following error: %s', e.message)
                     partner._origin.message_post(body=msg)
                 _logger.warning("The VAT number %s failed VIES check.", partner.vies_vat_to_check)
@@ -342,12 +344,14 @@ class ResPartner(models.Model):
             return True
         return stdnum.util.get_cc_module('gr', 'vat').is_valid(vat)
 
+    # Our EDI provider Infile has designated this range of testing VATs for our customers.
+    __check_vat_gt_testing_infile = re.compile(r'98[0-9]{10}K')
     def check_vat_gt(self, vat):
         """
         Allow some custom Guatemala NIT numbers to pass the test to be used for testing the Guatemalan EDI.
         """
         guatemalan_test_vats = ('11201220K', '11201350K')
-        if vat in guatemalan_test_vats:
+        if vat in guatemalan_test_vats or self.__check_vat_gt_testing_infile.match(vat):
             return True
         return stdnum.util.get_cc_module('gt', 'vat').is_valid(vat)
 
@@ -559,24 +563,7 @@ class ResPartner(models.Model):
         return self.__check_vat_sa_re.match(vat) or False
 
     def check_vat_ua(self, vat):
-        res = []
-        for partner in self:
-            if partner.commercial_partner_id.country_id.code == 'MX':
-                if len(vat) == 10:
-                    res.append(True)
-                else:
-                    res.append(False)
-            elif partner.commercial_partner_id.is_company:
-                if len(vat) == 12:
-                    res.append(True)
-                else:
-                    res.append(False)
-            else:
-                if len(vat) == 10 or len(vat) == 9:
-                    res.append(True)
-                else:
-                    res.append(False)
-        return all(res)
+        return len(vat[2:] if vat.startswith('UA') else vat) in {8, 10, 12}
 
     def check_vat_uy(self, vat):
         """ Taken from python-stdnum's master branch, as the release doesn't handle RUT numbers starting with 22.
@@ -664,6 +651,7 @@ class ResPartner(models.Model):
             all_gstin_re = [
                 r'[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9A-Za-z]{1}[Zz1-9A-Ja-j]{1}[0-9a-zA-Z]{1}', # Normal, Composite, Casual GSTIN
                 r'[0-9]{4}[A-Z]{3}[0-9]{5}[UO]{1}[N][A-Z0-9]{1}', #UN/ON Body GSTIN
+                r'[0-9]{4}[A-Z]{3}[0-9]{5}[A-Z]{3}',  # Revised NRI GSTIN
                 r'[0-9]{4}[a-zA-Z]{3}[0-9]{5}[N][R][0-9a-zA-Z]{1}', #NRI GSTIN
                 r'[0-9]{2}[a-zA-Z]{4}[a-zA-Z0-9]{1}[0-9]{4}[a-zA-Z]{1}[1-9A-Za-z]{1}[DK]{1}[0-9a-zA-Z]{1}', #TDS GSTIN
                 r'[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9A-Za-z]{1}[C]{1}[0-9a-zA-Z]{1}' #TCS GSTIN
@@ -720,6 +708,10 @@ class ResPartner(models.Model):
             return False
 
         return True
+
+    def check_vat_th(self, vat):
+        check_func = stdnum.util.get_cc_module('th', 'tin').is_valid
+        return check_func(vat)
 
     def check_vat_de(self, vat):
         is_valid_vat = stdnum.util.get_cc_module("de", "vat").is_valid

@@ -182,12 +182,19 @@ export class DomPlugin extends Plugin {
             !this.isEditionBoundary(selection.anchorNode);
 
         // Empty block must contain a br element to allow cursor placement.
+        const firstLeafNode = firstLeaf(container);
         if (
-            container.lastElementChild &&
-            isBlock(container.lastElementChild) &&
-            !container.lastElementChild.hasChildNodes()
+            isBlock(firstLeafNode) &&
+            !(closestElement(firstLeafNode, "[contenteditable]")?.contentEditable === "false")
         ) {
-            fillEmpty(container.lastElementChild);
+            fillEmpty(firstLeafNode);
+        }
+        const lastLeafNode = lastLeaf(container);
+        if (
+            isBlock(lastLeafNode) &&
+            !(closestElement(lastLeafNode, "[contenteditable]")?.contentEditable === "false")
+        ) {
+            fillEmpty(lastLeafNode);
         }
 
         // In case the html inserted is all contained in a single root <p> or <li>
@@ -399,15 +406,19 @@ export class DomPlugin extends Plugin {
                     (node) => {
                         // Don't remove the last BR in cases where the
                         // previous sibling is an unsplittable block
-                        // (i.e. a table, a non-editable div, ...)
-                        // to allow placing the cursor after that unsplittable
-                        // element. This can be removed when the cursor
-                        // is properly handled around these elements.
+                        // (i.e. a non-editable div, ...) to allow placing the
+                        // cursor after that unsplittable element.
+                        // Tables are exception because the cursor can be
+                        // places directly at the edge of the table, so the
+                        // trailing BR is not needed.
+                        // This can be removed when the cursor is properly
+                        // handled around these elements.
                         const previousSibling = node.previousSibling;
                         return (
                             previousSibling &&
                             isBlock(previousSibling) &&
-                            this.dependencies.split.isUnsplittable(previousSibling)
+                            this.dependencies.split.isUnsplittable(previousSibling) &&
+                            previousSibling.nodeName !== "TABLE"
                         );
                     },
                 ]);
@@ -434,18 +445,16 @@ export class DomPlugin extends Plugin {
                 candidateForRemoval.remove();
             }
         }
-        for (const insertedNode of allInsertedNodes.reverse()) {
-            if (insertedNode.isConnected) {
-                currentNode = insertedNode;
-                break;
-            }
+        const lastInsertedNode = allInsertedNodes.findLast((node) => node.isConnected);
+        if (!lastInsertedNode) {
+            return;
         }
         let lastPosition =
-            isParagraphRelatedElement(currentNode) ||
-            isListItemElement(currentNode) ||
-            isListElement(currentNode)
-                ? rightPos(lastLeaf(currentNode))
-                : rightPos(currentNode);
+            isParagraphRelatedElement(lastInsertedNode) ||
+            isListItemElement(lastInsertedNode) ||
+            isListElement(lastInsertedNode)
+                ? rightPos(lastLeaf(lastInsertedNode))
+                : rightPos(lastInsertedNode);
         lastPosition = normalizeCursorPosition(lastPosition[0], lastPosition[1], "right");
 
         if (!this.config.allowInlineAtRoot && this.isEditionBoundary(lastPosition[0])) {

@@ -1,7 +1,7 @@
 import { describe, expect, test } from "@odoo/hoot";
 import { click, press, waitFor, waitForNone } from "@odoo/hoot-dom";
 import { animationFrame, tick } from "@odoo/hoot-mock";
-import { contains, makeMockEnv, onRpc } from "@web/../tests/web_test_helpers";
+import { makeMockEnv, onRpc } from "@web/../tests/web_test_helpers";
 import { setupEditor } from "./_helpers/editor";
 import { getContent } from "./_helpers/selection";
 import { insertText } from "./_helpers/user_actions";
@@ -64,6 +64,30 @@ test("Replace an image with link by a document should remove the link", async ()
     expect("p a[href='http://test.com']").toHaveCount(0);
 });
 
+test("Replace an image by icon should remove invalid classes", async () => {
+    onRpc("ir.attachment", "search_read", () => []);
+    const env = await makeMockEnv();
+    await setupEditor(`<p><img class="img-fluid w-100" src="/web/static/img/logo.png"></p>`, {
+        env,
+    });
+    expect("img[src='/web/static/img/logo.png']").toHaveCount(1);
+    expect("img[src='/web/static/img/logo.png']").toHaveClass("img-fluid w-100");
+    await click("img");
+    await tick(); // selectionchange
+    await waitFor(".o-we-toolbar");
+    expect("button[name='replace_image']").toHaveCount(1);
+    await click("button[name='replace_image']");
+    await animationFrame();
+    await click(".nav-link:contains('Icons')");
+    await animationFrame();
+    await click("span.fa-envelope-o");
+    await animationFrame();
+    expect("img[src='/web/static/img/logo.png']").toHaveCount(0);
+    expect("p > span.fa-envelope-o").toHaveCount(1);
+    expect("p > span.fa-envelope-o").not.toHaveClass("img-fluid");
+    expect("p > span.fa-envelope-o").not.toHaveClass("w-100");
+});
+
 test.tags("focus required");
 test("Selection is collapsed after the image after replacing it", async () => {
     onRpc("ir.attachment", "search_read", () => [
@@ -89,6 +113,27 @@ test("Selection is collapsed after the image after replacing it", async () => {
     await click("img.o_we_attachment_highlight");
     await animationFrame();
     expect(getContent(el).replace(/<img.*?>/, "<img>")).toBe("<p>abc<img>[]def</p>");
+});
+
+test("should not preserve image styles when replacing an image with an icon", async () => {
+    onRpc("ir.attachment", "search_read", () => []);
+    const { el } = await setupEditor(
+        `<p><img class="img-fluid" src="/web/static/img/logo.png" style="width: 25%; transform: scaleX(2) scaleY(1);"></p>`
+    );
+    expect("img[src='/web/static/img/logo.png']").toHaveCount(1);
+    await click("img");
+    await tick(); // selectionchange
+    await waitFor(".o-we-toolbar");
+    expect("button[name='replace_image']").toHaveCount(1);
+    await click("button[name='replace_image']");
+    await animationFrame();
+    await click(".nav-link:contains('Icons')");
+    await animationFrame();
+    await click(".fa-glass");
+    await animationFrame();
+    expect(getContent(el).replace(/<img.*?>/, "<img>")).toBe(
+        `<p>\ufeff<span class="fa fa-glass" style="" contenteditable="false">\u200b</span>[]\ufeff</p>`
+    );
 });
 
 test.tags("focus required");
@@ -156,13 +201,13 @@ test("cropper should not open for external image", async () => {
     await setupEditor(
         `<p>[<img src="https://download.odoocdn.com/icons/website/static/description/icon.png">]</p>`
     );
-    await waitFor('div[name="image_transform"]');
+    const imageTransform = await waitFor('div[name="image_transform"] > .btn');
+    imageTransform.click();
 
-    await click('div[name="image_transform"] > .btn');
-    await animationFrame();
+    const imageCrop = await waitFor('.btn[name="image_crop"]');
+    imageCrop.click();
 
-    await click('.btn[name="image_crop"]');
-    await waitFor(".o_notification_manager .o_notification", { timeout: 1000 });
+    await waitFor(".o_notification_manager .o_notification", { timeout: 1500 });
     expect("img.o_we_cropper_img").toHaveCount(0);
 });
 
@@ -178,12 +223,11 @@ test("Image cropper disappear on backspace", async () => {
     });
 
     await setupEditor(`<p>[<img src="#">]</p>`);
-    await waitFor(".o-we-toolbar");
-
-    await contains('.o-we-toolbar .btn[name="image_crop"]').click();
-    await waitFor(".o_we_crop_widget", { timeout: 1000 });
+    const cropButton = await waitFor(".o-we-toolbar .btn[name='image_crop']");
+    cropButton.click();
+    await waitFor(".o_we_crop_widget", { timeout: 1500 });
     expect("img.o_we_cropper_img").toHaveCount(1);
     press("backspace");
-    await waitForNone(".o_we_crop_widget", { timeout: 1000 });
+    await waitForNone(".o_we_crop_widget", { timeout: 1500 });
     expect("img.o_we_cropper_img").toHaveCount(0);
 });

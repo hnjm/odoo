@@ -3,20 +3,24 @@ import { Many2XAutocomplete } from "@web/views/fields/relational_utils";
 import { SelectCreateDialog } from "@web/views/view_dialogs/select_create_dialog";
 import { WebClient } from "@web/webclient/webclient";
 
-import { expect, getFixture, test } from "@odoo/hoot";
 import {
+    animationFrame,
     click,
     edit,
+    expect,
+    getFixture,
+    mockDate,
     press,
     queryAll,
     queryAllTexts,
     queryAllValues,
     queryAttribute,
     queryFirst,
+    runAllTimers,
     select,
+    test,
     waitFor,
-} from "@odoo/hoot-dom";
-import { animationFrame, mockDate, runAllTimers } from "@odoo/hoot-mock";
+} from "@odoo/hoot";
 import {
     getPickerApplyButton,
     getPickerCell,
@@ -528,12 +532,10 @@ test("properties: selection", async () => {
         "Selection"
     );
 
-    const getOptions = () => {
-        return queryAll(".o_property_field_popover .o_field_property_selection_option");
-    };
-    const getOptionsValues = () => {
-        return queryAllValues(".o_property_field_popover .o_field_property_selection_option input");
-    };
+    const getOptions = () =>
+        queryAll(".o_property_field_popover .o_field_property_selection_option");
+    const getOptionsValues = () =>
+        queryAllValues(".o_property_field_popover .o_field_property_selection_option input");
 
     // Create a new selection option
     await click(".o_field_property_selection .fa-plus");
@@ -590,13 +592,12 @@ test("properties: selection", async () => {
         message: "Should have added a new option at the correct spot",
     });
 
-    const getOptionDraggableElement = (index) => {
-        return queryFirst(
+    const getOptionDraggableElement = (index) =>
+        queryFirst(
             `.o_field_property_selection_option:nth-child(${
                 index + 1
             }) .o_field_property_selection_drag`
         );
-    };
 
     await contains(getOptionDraggableElement(0)).dragAndDrop(getOptionDraggableElement(2));
     expect(getOptionsValues()).toEqual(["C", "New option 2", "A", "New option"]);
@@ -1051,7 +1052,7 @@ test("properties: many2many", async () => {
  * modal should correspond to the selected model and should be updated dynamically.
  */
 test.tags("desktop");
-test("properties: many2one 'Search more...'", async () => {
+test("properties: many2one 'Search more...' +  internal link save keeps data", async () => {
     onRpc(({ method, model }) => {
         if (["has_access", "has_group"].includes(method)) {
             return true;
@@ -1065,6 +1066,8 @@ test("properties: many2one 'Search more...'", async () => {
                 { model: "partner", display_name: "Partner" },
                 { model: "res.users", display_name: "User" },
             ];
+        } else if (method === "get_formview_id") {
+            return false;
         }
     });
 
@@ -1092,6 +1095,14 @@ test("properties: many2one 'Search more...'", async () => {
             <field name="id"/>
             <field name="display_name"/>
         </list>`;
+    User._views[["form", false]] = /* xml */ `
+        <form>
+            <sheet>
+                <group>
+                    <field name="display_name"/>
+                </group>
+            </sheet>
+        </form>`;
     User._views[["list", false]] = /* xml */ `
         <list>
             <field name="id"/>
@@ -1161,6 +1172,21 @@ test("properties: many2one 'Search more...'", async () => {
     await animationFrame();
     // Checking the model loaded
     expect.verifySteps(["res.users"]);
+
+    // Select the first value
+    await click(".o_list_table tbody tr:first-child td[name='display_name']");
+    await animationFrame();
+
+    // Click on external button
+    await click(".o_properties_external_button");
+    await animationFrame();
+
+    // Click on Save & close button
+    await click(".modal .o_form_button_save");
+    await animationFrame();
+
+    // Check that value does not disappear
+    expect(".o_field_property_definition_value input").toHaveValue("Alice");
 });
 
 test("properties: date(time) property manipulations", async () => {
@@ -2098,11 +2124,8 @@ test("properties: separators move properties", async () => {
     await makePropertiesGroupView([false, true, true, false, true, true, false]);
 
     // return true if the given separator is folded
-    const foldState = (separatorName) => {
-        return !queryFirst(
-            `div[property-name='${separatorName}'] .o_field_property_label .fa-caret-down`
-        );
-    };
+    const foldState = (separatorName) =>
+        !queryFirst(`div[property-name='${separatorName}'] .o_field_property_label .fa-caret-down`);
 
     const assertFolded = (values) => {
         expect(values.length).toBe(4);
@@ -2283,9 +2306,8 @@ test("properties: separators drag and drop", async () => {
         ],
     ]);
 
-    const getPropertyHandleElement = (propertyName) => {
-        return queryFirst(`*[property-name='${propertyName}'] .oi-draggable`);
-    };
+    const getPropertyHandleElement = (propertyName) =>
+        queryFirst(`*[property-name='${propertyName}'] .oi-draggable`);
 
     // if we move properties inside the same column, do not generate the group
     await contains(getPropertyHandleElement("property_1"), { visible: false }).dragAndDrop(

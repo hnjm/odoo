@@ -622,7 +622,9 @@ registry.category("web_tour.tours").add("test_confirm_coupon_programs_one_by_one
                     // Create 5 orders that will be synced one by one
                     for (let i = 0; i < 5; i++) {
                         const order = posmodel.createNewOrder();
-                        const product = posmodel.models["product.product"].getFirst();
+                        const product = posmodel.models["product.product"].find(
+                            (el) => el.attribute_line_ids.length == 0
+                        );
                         const pm = posmodel.models["pos.payment.method"].getFirst();
                         const program = posmodel.models["loyalty.program"].find(
                             (p) => p.program_type === "gift_card"
@@ -651,5 +653,66 @@ registry.category("web_tour.tours").add("test_confirm_coupon_programs_one_by_one
             PaymentScreen.clickPaymentMethod("Bank"),
             PaymentScreen.clickValidate(),
             ReceiptScreen.isShown(),
+        ].flat(),
+});
+
+registry.category("web_tour.tours").add("test_loyalty_is_not_processed_for_draft_order", {
+    steps: () =>
+        [
+            Chrome.startPoS(),
+            Dialog.confirm("Open Register"),
+            ProductScreen.clickPartnerButton(),
+            ProductScreen.clickCustomer("AAAA"),
+            ProductScreen.addOrderline("Whiteboard Pen", "1", "100"),
+            PosLoyalty.pointsAwardedAre("100"),
+            PosLoyalty.pointsTotalIs("150"),
+            ProductScreen.saveOrder(),
+            ProductScreen.selectFloatingOrder(0),
+            PosLoyalty.pointsAwardedAre("100"),
+            PosLoyalty.pointsTotalIs("150"),
+        ].flat(),
+});
+
+registry.category("web_tour.tours").add("test_race_conditions_update_program", {
+    steps: () =>
+        [
+            Chrome.startPoS(),
+            Dialog.confirm("Open Register"),
+            ProductScreen.clickDisplayedProduct("Test Product"),
+            {
+                trigger: "body",
+                run: async () => {
+                    // Check the number of lines in the order
+                    const line_count = document.querySelectorAll(".orderline").length;
+                    if (line_count !== 11) {
+                        throw new Error(`Expected 11 orderlines, found ${line_count}`);
+                    }
+                },
+            },
+        ].flat(),
+});
+
+registry.category("web_tour.tours").add("test_loyalty_in_trusted_pos_make_order", {
+    steps: () =>
+        [
+            Chrome.startPoS(),
+            Dialog.confirm("Open Register"),
+            ProductScreen.clickPartnerButton(),
+            ProductScreen.clickCustomer("AAAA"),
+            ProductScreen.addOrderline("Whiteboard Pen", "1", "100"),
+            PosLoyalty.pointsAwardedAre("100"),
+            ProductScreen.saveOrder(),
+        ].flat(),
+});
+
+registry.category("web_tour.tours").add("test_loyalty_in_trusted_pos", {
+    steps: () =>
+        [
+            Chrome.startPoS(),
+            Dialog.confirm("Open Register"),
+            Chrome.clickMenuOption("Orders"),
+            TicketScreen.selectOrder("-0001"),
+            TicketScreen.loadSelectedOrder(),
+            PosLoyalty.pointsAwardedAre("100"),
         ].flat(),
 });

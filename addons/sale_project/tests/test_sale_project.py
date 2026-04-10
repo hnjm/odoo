@@ -114,6 +114,14 @@ class TestSaleProject(HttpCase, TestSaleProjectCommon):
         # Create additional analytic plans at setup to avoid adding fields in project.project between tests
         cls.analytic_plan_1 = cls.env['account.analytic.plan'].create({'name': 'Sale Project Plan 1'})
         cls.analytic_plan_2 = cls.env['account.analytic.plan'].create({'name': 'Sale Project Plan 2'})
+        cls.analytic_account_1 = cls.env['account.analytic.account'].create({
+            'name': 'Analytic Account - Plan 1',
+            'plan_id': cls.analytic_plan_1.id,
+        })
+        cls.analytic_account_2 = cls.env['account.analytic.account'].create({
+            'name': 'Analytic Account - Plan 2',
+            'plan_id': cls.analytic_plan_2.id,
+        })
 
     def test_task_create_sol_ui(self):
         self.start_tour('/odoo', 'task_create_sol_tour', login='admin')
@@ -142,7 +150,7 @@ class TestSaleProject(HttpCase, TestSaleProjectCommon):
         })
 
         so_line_order_task_in_global = SaleOrderLine.create({
-            'name': f"{self.product_order_service2.name}\n[TEST1]\nGlobal project",
+            'name': f"{self.product_order_service2.display_name}\nDescription for global task.",
             'product_id': self.product_order_service2.id,
             'product_uom_qty': 10,
             'order_id': sale_order.id,
@@ -150,7 +158,7 @@ class TestSaleProject(HttpCase, TestSaleProjectCommon):
 
         self.product_order_service3.description_sale = "Task in New Project"
         so_line_order_new_task_new_project = SaleOrderLine.create({
-            'name': f"{self.product_order_service3.display_name}\n[TEST2]\nNew project",
+            'name': f"{self.product_order_service3.display_name}\nDescription for new project task.",
             'product_id': self.product_order_service3.id,
             'product_uom_qty': 10,
             'order_id': sale_order.id,
@@ -176,29 +184,29 @@ class TestSaleProject(HttpCase, TestSaleProjectCommon):
         self.assertEqual(self.project_global.tasks.sale_line_id, so_line_order_task_in_global, "Global project's task should be linked to so line")
         self.assertEqual(
             so_line_order_task_in_global.task_id.name,
-            f"{sale_order.name} - [TEST1]",
-            "Task name in global project should include SO name & partial line description",
+            f"{sale_order.name} - Description for global task.",
+            "Task name in global project should include SO name and the single-line SOL description.",
         )
-        self.assertEqual(
-            str(so_line_order_task_in_global.task_id.description),
-            '<p>Global project</p>',
+        self.assertFalse(
+            so_line_order_task_in_global.task_id.description,
+            "Task description should be empty for single-line SOL descriptions."
         )
         #  service_tracking 'task_in_project'
         self.assertTrue(so_line_order_new_task_new_project.project_id, "Sales order line should be linked to newly created project")
         self.assertTrue(so_line_order_new_task_new_project.task_id, "Sales order line should be linked to newly created task")
         self.assertEqual(
             so_line_order_new_task_new_project.task_id.name,
-            "[TEST2]",
-            "Task name in new project should only include partial line description",
+            "Description for new project task.",
+            "Task name should be the single-line SOL description.",
         )
-        self.assertEqual(
-            str(so_line_order_new_task_new_project.task_id.description),
-            '<p>New project</p>',
+        self.assertFalse(
+            so_line_order_new_task_new_project.task_id.description,
+            "Task description should be empty for single-line SOL descriptions."
         )
         self.assertEqual(
             so_line_order_new_task_new_project2.task_id.name,
-            self.product_order_service3.display_name,
-            "Task name created from a SOL with default description should use the product name",
+            self.product_order_service3.description_sale,
+            "Task name should be the product's default sales description."
         )
         # service_tracking 'project_only'
         self.assertFalse(so_line_order_only_project.task_id, "Task should not be created")
@@ -539,10 +547,16 @@ class TestSaleProject(HttpCase, TestSaleProjectCommon):
         self.assertEqual(self.env.company, sale_order.project_ids.company_id, "The project created for the SO should have the same company as its account.")
 
     def test_project_creation_on_so_with_manual_analytic(self):
-        """ Tests that the manually added analytic account (of a plan other than projects) and the project account
-            created when SO is confirmed are both still in the line after confirmation.
+        """ Tests the interaction between manually added analytic account (of a plan other than projects), distribution
+            model accounts and the project account created when SO is confirmed.
         """
+        self.env['account.analytic.distribution.model'].create({
+            'partner_id': self.partner.id,
+            'analytic_distribution': {self.analytic_account_1.id: 100},
+            'company_id': self.company.id,
+        })
         analytic_distribution_manual = {str(self.analytic_account_sale.id): 100}
+
         sale_order = self.env['sale.order'].create({
             'partner_id': self.partner.id,
             'partner_invoice_id': self.partner.id,
@@ -550,13 +564,16 @@ class TestSaleProject(HttpCase, TestSaleProjectCommon):
             'order_line': [
                 Command.create({
                     'product_id': self.product_order_service3.id,
-                    'analytic_distribution': analytic_distribution_manual,
                 }),
             ],
         })
-        self.assertEqual(sale_order.order_line.analytic_distribution, analytic_distribution_manual)
+        sale_order.order_line.analytic_distribution = {**sale_order.order_line.analytic_distribution, **analytic_distribution_manual}
         sale_order.action_confirm()
-        expected_analytic_distribution = {f"{self.analytic_account_sale.id},{sale_order.order_line.project_id.account_id.id}": 100}
+        # All accounts (manually added, from distribution model and project account) are in the line after confirmation
+        expected_analytic_distribution = {
+            f"{self.analytic_account_sale.id},{sale_order.project_id.account_id.id}": 100,
+            f"{self.analytic_account_1.id},{sale_order.project_id.account_id.id}": 100,
+        }
         self.assertEqual(sale_order.order_line.analytic_distribution, expected_analytic_distribution)
 
     def test_project_on_sol_with_analytic_distribution_model(self):
@@ -566,17 +583,9 @@ class TestSaleProject(HttpCase, TestSaleProjectCommon):
         """
         # We create one distribution model with two accounts in one line, based on product
         # and a second model with a different plan, based on partner
-        analytic_account_1 = self.env['account.analytic.account'].create({
-            'name': 'Analytic Account - Plan 1',
-            'plan_id': self.analytic_plan_1.id,
-        })
-        analytic_account_2 = self.env['account.analytic.account'].create({
-            'name': 'Analytic Account - Plan 2',
-            'plan_id': self.analytic_plan_2.id,
-        })
         distribution_model_product = self.env['account.analytic.distribution.model'].create({
             'product_id': self.product_a.id,
-            'analytic_distribution': {','.join([str(analytic_account_1.id), str(analytic_account_2.id)]): 100},
+            'analytic_distribution': {','.join([str(self.analytic_account_1.id), str(self.analytic_account_2.id)]): 100},
             'company_id': self.company.id,
         })
         distribution_model_partner = self.env['account.analytic.distribution.model'].create({
@@ -599,14 +608,13 @@ class TestSaleProject(HttpCase, TestSaleProjectCommon):
                 Command.create({'product_id': self.product_a.id}),
             ],
         })
-
         expected_analytic_distribution = {
-            f"{analytic_account_1.id},{analytic_account_2.id},{project.account_id.id}": 100,
+            f"{self.analytic_account_1.id},{self.analytic_account_2.id},{project.account_id.id}": 100,
             f"{self.analytic_account_sale.id},{project.account_id.id}": 100,
         }
         self.assertEqual(sale_order.order_line.analytic_distribution, expected_analytic_distribution)
 
-        # If the project is removed from the SO, only the product's analytic distribution is still in the line
+        # If the project is removed from the SO, only the analytic distribution is still in the line
         sale_order.project_id = None
         self.assertEqual(
             sale_order.order_line.analytic_distribution,

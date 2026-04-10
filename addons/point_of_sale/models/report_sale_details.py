@@ -122,6 +122,7 @@ class ReportSaleDetails(models.AbstractModel):
                 WHERE payment.payment_method_id = method.id
                     AND payment.id IN %(payment_ids)s
                 GROUP BY method.name, method.is_cash_count, payment.session_id, method.id, journal_id
+                ORDER BY method.id, payment.session_id
             """, method_name=method_name, payment_ids=tuple(payment_ids)))
             payments = self.env.cr.dictfetchall()
         else:
@@ -225,7 +226,7 @@ class ReportSaleDetails(models.AbstractModel):
                     })
 
                 # If there is a cash difference, we remove the last cash move which is the cash difference
-                if cash_difference != 0:
+                if session.currency_id.round(cash_difference) != 0:
                     cash_moves = cash_moves[:-1]
 
                 for cash_move in cash_moves:
@@ -393,14 +394,16 @@ class ReportSaleDetails(models.AbstractModel):
     def _get_total_and_qty_per_category(self, categories):
         all_qty = 0
         all_total = 0
+        qty_precision = self.env['decimal.precision'].precision_get('Product Unit of Measure')
+        price_precision = self.env['decimal.precision'].precision_get('Product Price')
         for category_dict in categories:
             qty_cat = 0
             total_cat = 0
             for product in category_dict['products']:
                 qty_cat += product['quantity']
                 total_cat += product['base_amount']
-            category_dict['total'] = total_cat
-            category_dict['qty'] = qty_cat
+            category_dict['total'] = round(total_cat, price_precision)
+            category_dict['qty'] = round(qty_cat, qty_precision)
         # IMPROVEMENT: It would be better if the `products` are grouped by pos.order.line.id.
         unique_products = list({tuple(sorted(product.items())): product for category in categories for product in category['products']}.values())
         all_qty = sum([product['quantity'] for product in unique_products])

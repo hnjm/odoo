@@ -30,22 +30,23 @@
 # Karlo Mikešić <karlo@uvid.hr>, 2025.
 # Weblate <noreply-mt-weblate@weblate.org>, 2025.
 # Ana Matulin <ana@uvid.hr>, 2025.
+# Vladimir Vrgoč <vladimir@uvid.hr>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-07 18:36+0000\n"
-"PO-Revision-Date: 2025-11-20 13:45+0000\n"
+"POT-Creation-Date: 2025-12-29 18:36+0000\n"
+"PO-Revision-Date: 2025-12-10 15:06+0000\n"
 "Last-Translator: Ana Matulin <ana@uvid.hr>\n"
-"Language-Team: Croatian <https://translate.odoo.com/projects/odoo-18/mrp/hr/>"
-"\n"
+"Language-Team: Croatian <https://translate.odoo.com/projects/odoo-18/mrp/hr/"
+">\n"
 "Language: hr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #. module: mrp
 #: model:ir.model.fields,help:mrp.field_mrp_production__state
@@ -2787,6 +2788,8 @@ msgid ""
 "Informative date allowing to define when the manufacturing order should be "
 "processed at the latest to fulfill delivery on time."
 msgstr ""
+"Informativni datum koji omogućuje definiranje najkasnijeg vremena za obradu "
+"proizvodnog naloga kako bi se isporuka izvršila na vrijeme."
 
 #. module: mrp
 #: model:ir.actions.act_window,name:mrp.action_mrp_production_moves
@@ -5261,7 +5264,7 @@ msgstr "Početni datum"
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_production__state
 msgid "State"
-msgstr "Županija/fed.država"
+msgstr "Status"
 
 #. module: mrp
 #. odoo-javascript
@@ -5793,7 +5796,7 @@ msgstr "Za pokrenuti"
 #. module: mrp
 #: model_terms:ir.ui.view,arch_db:mrp.stock_production_type_kanban
 msgid "To Manufacture"
-msgstr ""
+msgstr "Za proizvesti"
 
 #. module: mrp
 #. odoo-python
@@ -5915,7 +5918,7 @@ msgstr "Sljedivost"
 #. module: mrp
 #: model:ir.model,name:mrp.model_stock_traceability_report
 msgid "Traceability Report"
-msgstr "Sljedivost"
+msgstr "Izvješće sljedivosti"
 
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_bom_line__tracking
@@ -6070,7 +6073,7 @@ msgstr "Otključano prema zadanim postavkama"
 #. module: mrp
 #: model_terms:ir.ui.view,arch_db:mrp.mrp_production_form_view
 msgid "Unplan"
-msgstr ""
+msgstr "Odplaniraj"
 
 #. module: mrp
 #: model:ir.actions.server,name:mrp.mrp_production_action_unreserve_tree
@@ -6903,7 +6906,7 @@ msgstr "naručeno umjesto"
 #. module: mrp
 #: model_terms:ir.ui.view,arch_db:mrp.mrp_workcenter_view
 msgid "per workcenter"
-msgstr ""
+msgstr "po radnom centru"
 
 #. module: mrp
 #: model_terms:ir.ui.view,arch_db:mrp.production_message

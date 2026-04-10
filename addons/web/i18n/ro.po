@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* web
+# * web
 #
 # Translators:
 # Betty Keresztesi, 2024
@@ -11,20 +11,23 @@
 # Wil Odoo, 2025
 # Larisa_nexterp, 2025
 #
+# Weblate <noreply-mt-weblate@weblate.org>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-16 18:39+0000\n"
-"PO-Revision-Date: 2024-09-25 09:42+0000\n"
-"Last-Translator: Larisa_nexterp, 2025\n"
-"Language-Team: Romanian (https://app.transifex.com/odoo/teams/41243/ro/)\n"
+"POT-Creation-Date: 2026-03-06 18:38+0000\n"
+"PO-Revision-Date: 2026-03-02 11:18+0000\n"
+"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
+"Language-Team: Romanian <https://translate.odoo.com/projects/odoo-18/web/ro/"
+">\n"
 "Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?"
-"2:1));\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
+"20)) ? 1 : 2;\n"
+"X-Generator: Weblate 5.16.1\n"
 
 #. module: web
 #. odoo-javascript
@@ -534,8 +537,8 @@ msgstr "<span id=\"line_tax_ids\">15%</span>"
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
-msgid "<span itemprop=\"name\">Deco Addict</span>"
-msgstr "<span itemprop=\"name\">Deco Addict</span>"
+msgid "<span itemprop=\"name\">Acme Corporation</span>"
+msgstr ""
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
@@ -4240,6 +4243,12 @@ msgstr "Precizie minimă"
 
 #. module: web
 #. odoo-javascript
+#: code:addons/web/static/src/views/fields/float/float_field.js:0
+msgid "Minimum Digits"
+msgstr ""
+
+#. module: web
+#. odoo-javascript
 #: code:addons/web/static/src/views/fields/timezone_mismatch/timezone_mismatch_field.js:0
 msgid "Mismatch title"
 msgstr "Titlu nepotrivire"
@@ -4639,6 +4648,12 @@ msgstr "Nu există date"
 #: code:addons/web/static/src/views/no_content_helpers.xml:0
 msgid "No data to display"
 msgstr "Nu sunt date de afișat"
+
+#. module: web
+#. odoo-python
+#: code:addons/web/controllers/pivot.py:0
+msgid "No data to export"
+msgstr ""
 
 #. module: web
 #. odoo-javascript
@@ -6635,7 +6650,7 @@ msgstr "Domeniul nu ar trebui să implice valori non-literal"
 #. odoo-javascript
 #: code:addons/web/static/src/core/utils/files.js:0
 msgid "The file is not an image, resizing is not possible"
-msgstr ""
+msgstr "Fișierul nu este o imagine, redimensionarea nu este posibilă"
 
 #. module: web
 #. odoo-javascript
@@ -6650,9 +6665,15 @@ msgstr ""
 
 #. module: web
 #. odoo-javascript
+#: code:addons/web/static/src/core/errors/error_dialogs.js:0
+msgid "The request sent to the server was too large"
+msgstr ""
+
+#. module: web
+#. odoo-javascript
 #: code:addons/web/static/src/core/utils/files.js:0
 msgid "The resizing of the image failed"
-msgstr ""
+msgstr "Redimensionarea imaginii a eșuat"
 
 #. module: web
 #. odoo-javascript
@@ -6816,6 +6837,12 @@ msgstr "Joi"
 #: code:addons/web/static/src/views/fields/float_time/float_time_field.js:0
 msgid "Time"
 msgstr "Timp"
+
+#. module: web
+#. odoo-javascript
+#: code:addons/web/static/src/webclient/debug/profiling/profiling_item.xml:0
+msgid "Time Limit (seconds)"
+msgstr "Limită de timp (secunde)"
 
 #. module: web
 #. odoo-javascript
@@ -8541,13 +8568,13 @@ msgstr "balet"
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "ballet flat"
-msgstr ""
+msgstr "balerină"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "ballet shoes"
-msgstr ""
+msgstr "pantofi de balet"
 
 #. module: web
 #. odoo-javascript
@@ -15686,7 +15713,7 @@ msgstr "este între"
 #. odoo-javascript
 #: code:addons/web/static/src/core/tree_editor/tree_editor_operator_editor.js:0
 msgid "is in"
-msgstr ""
+msgstr "este în"
 
 #. module: web
 #. odoo-javascript
@@ -15698,7 +15725,7 @@ msgstr "nu este"
 #. odoo-javascript
 #: code:addons/web/static/src/core/tree_editor/tree_editor_operator_editor.js:0
 msgid "is not in"
-msgstr ""
+msgstr "nu este în"
 
 #. module: web
 #. odoo-javascript
@@ -15722,13 +15749,13 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "islam"
-msgstr ""
+msgstr "islam"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "island"
-msgstr ""
+msgstr "insulă"
 
 #. module: web
 #. odoo-javascript
@@ -15740,31 +15767,31 @@ msgstr "încă se încarcă..."
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "jack"
-msgstr ""
+msgstr "cric"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "jack-o-lantern"
-msgstr ""
+msgstr "lanternă de Halloween"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "jack-o’-lantern"
-msgstr ""
+msgstr "jack-o'-lantern"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "jacket"
-msgstr ""
+msgstr "jachetă"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "jar"
-msgstr ""
+msgstr "borcan"
 
 #. module: web
 #. odoo-javascript
@@ -19115,31 +19142,31 @@ msgstr "pachet"
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "packing"
-msgstr ""
+msgstr "ambalare"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "pad"
-msgstr ""
+msgstr "pad"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "paddle"
-msgstr ""
+msgstr "vâslă"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "padlock"
-msgstr ""
+msgstr "lacăt"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "paella"
-msgstr ""
+msgstr "paella"
 
 #. module: web
 #. odoo-javascript
@@ -19151,13 +19178,13 @@ msgstr "pagină"
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "page facing up"
-msgstr ""
+msgstr "pagină cu fața în sus"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "page with curl"
-msgstr ""
+msgstr "pagină cu buclă"
 
 #. module: web
 #. odoo-javascript
@@ -26626,3 +26653,6 @@ msgstr "„loc disponibil”"
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "ココ"
 msgstr "aici"
+
+#~ msgid "<span itemprop=\"name\">Deco Addict</span>"
+#~ msgstr "<span itemprop=\"name\">Deco Addict</span>"

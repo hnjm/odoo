@@ -183,6 +183,24 @@ class TestUiHtmlEditor(HttpCaseWithUserDemo):
 
         self.start_tour("/", 'website_media_dialog_undraw', login='admin')
 
+    def test_dynamic_svg_theme_colors(self):
+        svg = (
+            '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10">'
+            '<rect width="10" height="4" fill="#3AADAA"/>'
+            '<rect y="4" width="10" height="4" fill="#7C6576"/>'
+            '<rect y="8" width="10" height="2" fill="#000000"/>'
+            '</svg>'
+        )
+        self.env['ir.attachment'].create({
+            'name': 'dynamic svg test',
+            'type': 'binary',
+            'mimetype': 'image/svg+xml',
+            'datas': base64.b64encode(svg.encode()),
+            'public': True,
+            'url': '/html_editor/shape/illustration/dynamic-svg-test',
+        })
+        self.start_tour("/", 'website_dynamic_svg_theme_colors', login='admin')
+
     def test_code_editor_usable(self):
         # TODO: enable debug mode when failing tests have been fixed (props validation)
         url = '/odoo/action-website.website_preview'
@@ -757,6 +775,9 @@ class TestUi(odoo.tests.HttpCase):
     def test_website_seo_notification(self):
         self.start_tour(self.env['website'].get_client_action_url("/"), "website_seo_notification", login="admin")
 
+    def test_media_iframe_video_options(self):
+        self.start_tour("/", "website_media_iframe_video_options", login="admin")
+
     def test_popup_visibility_option(self):
         self.start_tour("/", "website_popup_visibility_option", login="admin")
 
@@ -775,3 +796,13 @@ class TestUi(odoo.tests.HttpCase):
 
     def test_website_custom_colors_picking(self):
         self.start_tour('/', 'website_custom_colors_picking', login='admin')
+
+    def test_adapt_custom_button_on_drop(self):
+        default_website = self.env.ref('website.default_website')
+        self.env['ir.ui.view'].with_context(website_id=default_website.id).save_snippet(
+            name='Custom Button',
+            arch="""<a class="btn btn-primary o_default_snippet_text s_custom_snippet o_snippet_drop_in_only s_custom_button" href="#" data-bs-original-title="" title="">Button</a>""",
+            thumbnail_url='/website/static/src/img/snippets_thumbs/s_button.svg',
+            snippet_key='s_button',
+            template_key='website.snippets')
+        self.start_tour('/', 'adapt_custom_button_on_drop', login='admin')

@@ -21,6 +21,7 @@
         <field name="acc_number">MR1300020001010000123456753</field>
         <field name="partner_id" ref="partner_demo_company_mr"/>
         <field name="company_id" ref="demo_company_mr"/>
+        <field name="allow_out_payment" eval="True"/>
     </record>
 
     <function model="res.company" name="_onchange_country_id">
@@ -36,5 +37,6 @@
         <value eval="[]"/>
         <value>mr</value>
         <value model="res.company" eval="obj().env.ref('l10n_mr.demo_company_mr')"/>
+        <value name="install_demo" eval="True"/>
     </function>
 </odoo>

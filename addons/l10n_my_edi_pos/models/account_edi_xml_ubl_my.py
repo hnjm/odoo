@@ -96,6 +96,7 @@ class AccountEdiXmlUBLMyInvoisMY(models.AbstractModel):
         self._add_consolidated_invoice_base_lines_vals(vals)
         self._add_document_currency_vals(vals)
         self._add_document_tax_grouping_function_vals(vals)
+        self._setup_base_lines(vals)
         self._add_consolidated_invoice_monetary_total_vals(vals)
 
         document_node = {}
@@ -133,8 +134,9 @@ class AccountEdiXmlUBLMyInvoisMY(models.AbstractModel):
             'customer': general_public_customer,
             'partner_shipping': None,
 
+            'company': consolidated_invoice.company_id,
             'currency_id': consolidated_invoice.currency_id,
-            'company_currency_id': consolidated_invoice.company_id.currency_id,
+            'company_currency_id': consolidated_invoice.company_currency_id,
 
             'use_company_currency': False,
             'fixed_taxes_as_allowance_charges': True,
@@ -195,8 +197,13 @@ class AccountEdiXmlUBLMyInvoisMY(models.AbstractModel):
             total_amount = total_amount_currency = 0.0
             for base_line in base_lines:
                 sign = -1 if base_line["is_refund"] else 1
-                total_amount += sign * ((base_line['price_unit'] / base_line['rate']) * base_line['quantity'])
-                total_amount_currency += sign * (base_line['price_unit'] * base_line['quantity'])
+                discount_factor = 1 - (base_line['discount'] / 100.0)
+                if discount_factor:
+                    total_amount += sign * (base_line['tax_details']['raw_total_excluded'] / discount_factor)
+                    total_amount_currency += sign * (base_line['tax_details']['raw_total_excluded_currency'] / discount_factor)
+                else:
+                    total_amount += sign * ((base_line['price_unit'] / base_line['rate']) * base_line['quantity'])
+                    total_amount_currency += sign * (base_line['price_unit'] * base_line['quantity'])
 
             new_base_line = AccountTax._prepare_base_line_for_taxes_computation(
                 {},
@@ -215,7 +222,6 @@ class AccountEdiXmlUBLMyInvoisMY(models.AbstractModel):
             consolidated_base_lines.append(new_base_line)
 
         vals['base_lines'] = consolidated_base_lines
-        # We aggregate multiple PoS orders into an UBL InvoiceLine.
         # So any cash rounding will just be part of the line's amount.
         vals['cash_rounding_base_lines'] = []
 
@@ -400,7 +406,7 @@ class AccountEdiXmlUBLMyInvoisMY(models.AbstractModel):
         self._add_document_monetary_total_nodes(document_node, vals)
         currency_suffix = vals['currency_suffix']
 
-        amount_paid = vals[f'total_paid_amount{currency_suffix}']
+        amount_paid = 0.0
         document_node['cac:PrepaidPayment'] = {
             'cbc:PaidAmount': {
                 '_text': self.format_float(amount_paid, vals['currency_dp']),

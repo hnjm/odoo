@@ -1,6 +1,15 @@
 from odoo import fields, models
 
 
+class AccountEdiXmlUBL21(models.AbstractModel):
+    _inherit = 'account.edi.xml.ubl_21'
+
+    def _get_customization_ids(self):
+        vals = super()._get_customization_ids()
+        vals['pint_jp'] = 'urn:peppol:pint:billing-1@jp-1'
+        return vals
+
+
 class AccountEdiXmlUBLPINTJP(models.AbstractModel):
     _inherit = "account.edi.xml.ubl_bis3"
     _name = 'account.edi.xml.pint_jp'
@@ -116,6 +125,42 @@ class AccountEdiXmlUBLPINTJP(models.AbstractModel):
     # EXPORT: New (dict_to_xml) helpers
     # -------------------------------------------------------------------------
 
+    def _ubl_default_tax_subtotal_grouping_key(self, tax_category_grouping_key, vals):
+        # EXTENDS account.edi.xml.ubl_bis3
+        tax_subtotal_grouping_key = super()._ubl_default_tax_subtotal_grouping_key(tax_category_grouping_key, vals)
+
+        # If there is a TaxTotal section in company currency,
+        # its TaxSubtotals nodes should contain a 'Percent' node.
+        currency = vals['currency_id']
+        company = vals['company']
+        if (
+            currency != company.currency_id
+            and tax_subtotal_grouping_key['currency'] == company.currency_id
+        ):
+            tax_subtotal_grouping_key['percent'] = tax_category_grouping_key['percent']
+
+        return tax_subtotal_grouping_key
+
+    def _ubl_get_tax_subtotal_node(self, vals, tax_subtotal):
+        # EXTENDS account.edi.xml.ubl_bis3
+        tax_subtotal_node = super()._ubl_get_tax_subtotal_node(vals, tax_subtotal)
+
+        # If there is a TaxTotal section in company currency,
+        # its TaxSubtotals nodes should contain a 'Percent' node.
+        currency = vals['currency_id']
+        company = vals['company']
+        if (
+            currency != company.currency_id
+            and tax_subtotal['currency'] == company.currency_id
+        ):
+            tax_subtotal_node['cbc:Percent'] = {'_text': tax_subtotal['percent']}
+
+        return tax_subtotal_node
+
+    def _ubl_tax_totals_node_grouping_key(self, base_line, tax_data, vals, currency):
+        # OVERRIDE
+        return self.env['account.edi.ubl']._ubl_tax_totals_node_grouping_key(base_line, tax_data, vals, currency)
+
     def _add_invoice_header_nodes(self, document_node, vals):
         invoice = vals['invoice']
         super()._add_invoice_header_nodes(document_node, vals)
@@ -124,46 +169,20 @@ class AccountEdiXmlUBLPINTJP(models.AbstractModel):
         document_node['cbc:CustomizationID'] = {'_text': self._get_customization_ids()['pint_jp']}
         document_node['cbc:ProfileID'] = {'_text': 'urn:peppol:bis:billing'}
 
-        if invoice.currency_id != invoice.company_id.currency_id:
-            # see https://docs.peppol.eu/poac/jp/pint-jp/bis/#_tax_in_accounting_currency
-            document_node['cbc:TaxCurrencyCode'] = {'_text': invoice.company_id.currency_id.name}  # accounting currency
-
         # [aligned-ibrp-052] An Invoice MUST have an invoice period (ibg-14) or an Invoice line period (ibg-26).
         document_node['cac:InvoicePeriod'] = {
             'cbc:StartDate': {'_text': invoice.invoice_date},
             'cbc:EndDate': {'_text': invoice.invoice_date},
         }
 
-    def _add_invoice_tax_total_nodes(self, document_node, vals):
-        super()._add_invoice_tax_total_nodes(document_node, vals)
+    def _ubl_add_party_legal_entity_nodes(self, vals):
+        # EXTENDS account.edi.ubl_bis3
+        super()._ubl_add_party_legal_entity_nodes(vals)
+        nodes = vals['party_node']['cac:PartyLegalEntity']
+        partner = vals['party_vals']['partner']
+        commercial_partner = partner.commercial_partner_id
 
-        # if company currency != invoice currency, need to add a TaxTotal section
-        # see https://docs.peppol.eu/poac/jp/pint-jp/bis/#_tax_in_accounting_currency
-        document_node['cac:TaxTotal'] = [document_node['cac:TaxTotal']]
-
-        company_currency = vals['invoice'].company_id.currency_id
-        if vals['invoice'].currency_id != company_currency:
-            self._add_tax_total_node_in_company_currency(document_node, vals)
-
-    def _get_tax_subtotal_node(self, vals):
-        tax_subtotal_node = super()._get_tax_subtotal_node(vals)
-
-        # If there is a TaxTotal section in company currency,
-        # its TaxSubtotals nodes should contain a 'Percent' node.
-        if (
-            vals['invoice'].currency_id != vals['invoice'].company_id.currency_id
-            and vals['currency_name'] == vals['company_currency_id'].name
-        ):
-            tax_subtotal_node['cbc:Percent'] = tax_subtotal_node['cac:TaxCategory']['cbc:Percent']
-        return tax_subtotal_node
-
-    def _get_address_node(self, vals):
-        address_node = super()._get_address_node(vals)
-        address_node['cbc:CountrySubentityCode'] = None
-        return address_node
-
-    def _get_party_node(self, vals):
-        party_node = super()._get_party_node(vals)
         # optional, if set: scheme_id should be taken from ISO/IEC 6523 list
-        party_node['cac:PartyLegalEntity']['cbc:CompanyID'] = None
-        return party_node
+        if commercial_partner.country_code == 'JP':
+            for node in nodes:
+                node['cbc:CompanyID'] = None

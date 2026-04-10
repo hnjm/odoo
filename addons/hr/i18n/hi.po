@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-03 18:38+0000\n"
-"PO-Revision-Date: 2025-11-21 02:28+0000\n"
+"POT-Creation-Date: 2026-03-20 18:37+0000\n"
+"PO-Revision-Date: 2025-12-09 17:36+0000\n"
 "Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Hindi <https://translate.odoo.com/projects/odoo-18/hr/hi/>\n"
 "Language: hi\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_res_company__hr_presence_control_email_amount
@@ -104,8 +104,8 @@ msgid ""
 "<b>Congratulations!</b> May I recommend you to setup an <a "
 "href=\"%s\">onboarding plan?</a>"
 msgstr ""
-"<b>बधाई हो!</b> क्या मैं आपको एक <a href=\"%s\">ऑनबोर्डिंग प्लान</a> सेट करने की सला"
-"ह दे सकता हूं?"
+"<b>बधाई हो!</b> क्या मैं आपको एक <a href=\"%s\">ऑनबोर्डिंग प्लान</a> सेट करने की "
+"सलाह दे सकता हूं?"
 
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.hr_department_view_kanban
@@ -153,8 +153,8 @@ msgid ""
 "<span class=\"o_form_label o_hr_form_label cursor-default\">Close "
 "Activities</span>"
 msgstr ""
-"<span class=\"o_form_label o_hr_form_label cursor-default\">गतिविधियां बंद "
-"करें</span>"
+"<span class=\"o_form_label o_hr_form_label cursor-default\">गतिविधियां बंद करें</"
+"span>"
 
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.hr_departure_wizard_view_form
@@ -295,8 +295,8 @@ msgstr "कार्रवाई की ज़रूरत है"
 msgid ""
 "Activate Remote Work to let Employees specify where they are working from."
 msgstr ""
-"कर्मचारियों को यह बताने की अनुमति देने के लिए कि वे कहां (घर से या दफ़्तर से) काम कर रहे हैं"
-", रिमोट वर्क की सुविधा शुरू करें।"
+"कर्मचारियों को यह बताने की अनुमति देने के लिए कि वे कहां (घर से या दफ़्तर से) काम कर रहे "
+"हैं, रिमोट वर्क की सुविधा शुरू करें।"
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_department__active
@@ -528,8 +528,8 @@ msgstr ""
 "                                <br><br>\n"
 "                                इस जॉब के लिए उम्मीदवार <b>क्रिएटिव और मेहनती</"
 "b> दोनों होना चाहिए. साथ ही, वह अलग हटकर सोचना होगा.\n"
-"                                उम्मीदवार को पहल करने वाला और "
-"\"काम हर हाल में पूरा करने\" वाला होना चाहिए.\n"
+"                                उम्मीदवार को पहल करने वाला और \"काम हर हाल में "
+"पूरा करने\" वाला होना चाहिए.\n"
 "                                 सफल होने के लिए समस्या हल करने का मज़बूत हुनर होना "
 "ज़रूरी है।"
 
@@ -715,8 +715,8 @@ msgid ""
 "Categorize your Employees by type. This field also has an impact on "
 "contracts. Only Employees, Students and Trainee will have contract history."
 msgstr ""
-"अपने कर्मचारियों को प्रकार के अनुसार वर्गीकृत करें. इस फ़ील्ड का असर कॉन्ट्रैक्ट पर भी पड़ता है"
-". सिर्फ़ कर्मचारी, छात्र और ट्रेनी के पास ही कॉन्ट्रैक्ट का इतिहास होगा।"
+"अपने कर्मचारियों को प्रकार के अनुसार वर्गीकृत करें. इस फ़ील्ड का असर कॉन्ट्रैक्ट पर भी पड़ता "
+"है. सिर्फ़ कर्मचारी, छात्र और ट्रेनी के पास ही कॉन्ट्रैक्ट का इतिहास होगा।"
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_employee__certificate
@@ -1031,22 +1031,19 @@ msgstr ""
 #. odoo-python
 #: code:addons/hr/models/hr_departure_reason.py:0
 msgid "Default departure reasons cannot be deleted."
-msgstr ""
-"नौकरी छोड़ने के जो कारण सिस्टम में पहले से दिए गए हैं, उन्हें मिटाया नहीं जा सकता।"
+msgstr "नौकरी छोड़ने के जो कारण सिस्टम में पहले से दिए गए हैं, उन्हें मिटाया नहीं जा सकता।"
 
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.res_config_settings_view_form
 msgid ""
 "Define the allowed IP to be displayed as Present. In case of multiple "
 "addresses, separate them by a coma."
-msgstr ""
-"'उपस्थित' दिखने के लिए आईपी तय करें. ज़्यादा पते होने पर, कॉमा से अलग करें।"
+msgstr "'उपस्थित' दिखने के लिए आईपी तय करें. ज़्यादा पते होने पर, कॉमा से अलग करें।"
 
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.res_config_settings_view_form
 msgid "Define the minimum number of sent emails to be displayed as Present."
-msgstr ""
-"तय करें कि किसी व्यक्ति को 'उपस्थित' दिखने के लिए कम से कम कितने ईमेल भेजने होंगे।"
+msgstr "तय करें कि किसी व्यक्ति को 'उपस्थित' दिखने के लिए कम से कम कितने ईमेल भेजने होंगे।"
 
 #. module: hr
 #: model:ir.model.fields,help:hr.field_hr_employee__resource_calendar_id
@@ -1055,8 +1052,8 @@ msgid ""
 "Define the working schedule of the resource. If not set, the resource will "
 "have fully flexible working hours."
 msgstr ""
-"इस संसाधन के काम करने का समय तय करें. अगर समय तय नहीं किया गया, तो यह संसाधन किसी भी"
-" समय काम कर सकता है।"
+"इस संसाधन के काम करने का समय तय करें. अगर समय तय नहीं किया गया, तो यह संसाधन किसी "
+"भी समय काम कर सकता है।"
 
 #. module: hr
 #: model_terms:hr.job,description:hr.job_ceo
@@ -1398,6 +1395,11 @@ msgid "Employee's Country"
 msgstr "कर्मचारी का देश"
 
 #. module: hr
+#: model:ir.model.fields,field_description:hr.field_res_users__employee_country_code
+msgid "Employee's Country Code"
+msgstr ""
+
+#. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.hr_employee_public_view_kanban
 #: model_terms:ir.ui.view,arch_db:hr.hr_kanban_view_employees
 #: model_terms:ir.ui.view,arch_db:hr.res_users_view_form_profile
@@ -1467,8 +1469,7 @@ msgstr "नौकरी किस तरह की है"
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.res_config_settings_view_form
 msgid "Enrich employee profiles with skills and resumes"
-msgstr ""
-"कर्मचारियों की प्रोफ़ाइल में उनकी स्किल और उनके रेज़्यूमे की जानकारी भरें"
+msgstr "कर्मचारियों की प्रोफ़ाइल में उनकी स्किल और उनके रेज़्यूमे की जानकारी भरें"
 
 #. module: hr
 #: model_terms:hr.job,website_description:hr.job_ceo
@@ -1485,8 +1486,7 @@ msgstr "अलग-अलग तरह के कारोबार की अप
 #: model:ir.model.fields,help:hr.field_hr_job__expected_employees
 msgid ""
 "Expected number of employees for this job position after new recruitment."
-msgstr ""
-"नए लोगों को नौकरी पर रखने के बाद इस पद पर कुल कितने कर्मचारी होने की उम्मीद है।"
+msgstr "नए लोगों को नौकरी पर रखने के बाद इस पद पर कुल कितने कर्मचारी होने की उम्मीद है।"
 
 #. module: hr
 #: model_terms:hr.job,website_description:hr.job_ceo
@@ -1511,8 +1511,7 @@ msgstr "अनुभवी डेवलपर"
 msgid ""
 "External user with limited access, created only for the purpose of sharing "
 "data."
-msgstr ""
-"सीमित ऐक्सेस वाला बाहरी यूज़र, जो सिर्फ़ डेटा शेयर करने के उद्देश्य से बनाया गया है।"
+msgstr "सीमित ऐक्सेस वाला बाहरी यूज़र, जो सिर्फ़ डेटा शेयर करने के उद्देश्य से बनाया गया है।"
 
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.view_employee_form
@@ -1605,8 +1604,7 @@ msgstr "जनरेट करे"
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.hr_departure_wizard_view_form
 msgid "Give more details about the reason of archiving the employee."
-msgstr ""
-"इस कर्मचारी को पुराने रिकॉर्ड में क्यों डाला गया, इसकी पूरी जानकारी दें।"
+msgstr "इस कर्मचारी को पुराने रिकॉर्ड में क्यों डाला गया, इसकी पूरी जानकारी दें।"
 
 #. module: hr
 #: model_terms:hr.job,website_description:hr.job_ceo
@@ -1821,8 +1819,7 @@ msgstr ""
 #. module: hr
 #: model:ir.model.fields,help:hr.field_hr_employee__private_car_plate
 msgid "If you have more than one car, just separate the plates by a space."
-msgstr ""
-"अगर आपके पास एक से ज़्यादा कार हैं, तो प्लेटों को सिर्फ़ एक स्पेस से अलग करें।"
+msgstr "अगर आपके पास एक से ज़्यादा कार हैं, तो प्लेटों को सिर्फ़ एक स्पेस से अलग करें।"
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_employee__image_1920
@@ -2402,10 +2399,10 @@ msgid ""
 "one in that loop is linked to a user.                        Please double-"
 "check that everyone reports to the correct manager."
 msgstr ""
-"माफ़ करें! लगता है आपकी टीम की संरचना में कोई समस्या है.                        हमें पता"
-" चला है कि आपके कर्मचारी एक-दूसरे को ही रिपोर्ट कर रहे हैं (सर्कुलर रिपोर्टिंग लूप), जिससे "
-"यह पता नहीं चल रहा है कि काम की ज़िम्मेदारी किसके पास है.                        जां"
-"च करें कि सब सही मैनेजर को रिपोर्ट कर रहे हैं।"
+"माफ़ करें! लगता है आपकी टीम की संरचना में कोई समस्या है.                        हमें "
+"पता चला है कि आपके कर्मचारी एक-दूसरे को ही रिपोर्ट कर रहे हैं (सर्कुलर रिपोर्टिंग लूप), "
+"जिससे यह पता नहीं चल रहा है कि काम की ज़िम्मेदारी किसके पास "
+"है.                        जांच करें कि सब सही मैनेजर को रिपोर्ट कर रहे हैं।"
 
 #. module: hr
 #. odoo-javascript
@@ -2794,8 +2791,7 @@ msgstr "रेटिंग"
 #. module: hr
 #: model_terms:ir.actions.act_window,help:hr.action_hr_job
 msgid "Ready to recruit more efficiently?"
-msgstr ""
-"क्या आप कम समय और मेहनत में बेहतर लोगों को नौकरी पर रखने के लिए तैयार हैं?"
+msgstr "क्या आप कम समय और मेहनत में बेहतर लोगों को नौकरी पर रखने के लिए तैयार हैं?"
 
 #. module: hr
 #: model_terms:hr.job,website_description:hr.job_ceo
@@ -2872,7 +2868,7 @@ msgstr "इस रिसोर्स के ऐक्सेस को मैन�
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_res_config_settings__module_hr_homeworking
 msgid "Remote Work"
-msgstr ""
+msgstr "रिमोट वर्क"
 
 #. module: hr
 #: model:ir.ui.menu,name:hr.hr_menu_hr_reports
@@ -3006,8 +3002,7 @@ msgstr "अनुक्रम"
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.res_config_settings_view_form
 msgid "Set default company schedule to manage your employees working time"
-msgstr ""
-"अपने कर्मचारियों के काम करने के समय को मैनेज करने के लिए डिफ़ॉल्ट कंपनी शेड्यूल सेट करें"
+msgstr "अपने कर्मचारियों के काम करने के समय को मैनेज करने के लिए डिफ़ॉल्ट कंपनी शेड्यूल सेट करें"
 
 #. module: hr
 #: model:ir.actions.act_window,name:hr.hr_config_settings_action
@@ -3063,8 +3058,7 @@ msgstr "सोशल सिक्योरिटी नंबर"
 #. odoo-python
 #: code:addons/hr/models/hr_employee_base.py:0
 msgid "Some employee already have a work contact"
-msgstr ""
-"कुछ कर्मचारियों की काम से जुड़ी संपर्क जानकारी (ईमेल, फ़ोन) पहले से ही दर्ज है"
+msgstr "कुछ कर्मचारियों की काम से जुड़ी संपर्क जानकारी (ईमेल, फ़ोन) पहले से ही दर्ज है"
 
 #. module: hr
 #: model_terms:hr.job,website_description:hr.job_ceo
@@ -3206,8 +3200,7 @@ msgstr "तकनीकी फ़ील्ड, बनाते समय यूज�
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_res_users__create_employee
 msgid "Technical field, whether to create an employee"
-msgstr ""
-"टेक्निकल फ़ील्ड, जिससे यह तय होता है कि नया कर्मचारी रिकॉर्ड बनाना है या नहीं"
+msgstr "टेक्निकल फ़ील्ड, जिससे यह तय होता है कि नया कर्मचारी रिकॉर्ड बनाना है या नहीं"
 
 #. module: hr
 #: model:hr.contract.type,name:hr.contract_type_temporary
@@ -3230,11 +3223,12 @@ msgid ""
 "The Badge ID must be unique, this one is already assigned to another "
 "employee."
 msgstr ""
-"बैज की पहचान संख्या किसी और के पास नहीं हो सकती, यह पहले ही एक दूसरे कर्मचारी को दी जा"
-" चुकी है।"
+"बैज की पहचान संख्या किसी और के पास नहीं हो सकती, यह पहले ही एक दूसरे कर्मचारी को दी "
+"जा चुकी है।"
 
 #. module: hr
 #: model:ir.model.fields,help:hr.field_hr_employee__company_country_code
+#: model:ir.model.fields,help:hr.field_res_users__employee_country_code
 msgid ""
 "The ISO country code in two chars. \n"
 "You can use this field for quick search."
@@ -3316,8 +3310,8 @@ msgstr "%s के कोच का यूज़र सेट नहीं है
 #: model:res.groups,comment:hr.group_hr_user
 msgid "The user will be able to approve document created by employees."
 msgstr ""
-"उपयोगकर्ता के पास यह अधिकार होगा कि वह कर्मचारियों द्वारा तैयार किए गए कागज़ात को पा"
-"स कर सके।"
+"उपयोगकर्ता के पास यह अधिकार होगा कि वह कर्मचारियों द्वारा तैयार किए गए कागज़ात को "
+"पास कर सके।"
 
 #. module: hr
 #: model:res.groups,comment:hr.group_hr_manager
@@ -3366,8 +3360,7 @@ msgstr ""
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.res_config_settings_view_form
 msgid "This setting block is utilized to manage the frontend design."
-msgstr ""
-"इस सेटिंग ब्लॉक का उपयोग फ़्रंटएंड डिज़ाइन मैनेज करने के लिए किया जाता है।"
+msgstr "इस सेटिंग ब्लॉक का उपयोग फ़्रंटएंड डिज़ाइन मैनेज करने के लिए किया जाता है।"
 
 #. module: hr
 #. odoo-python
@@ -3782,9 +3775,9 @@ msgid ""
 "being involved into satisfaction surveys in order to have a better knowledge "
 "of how the support given is seen by the customers."
 msgstr ""
-"आप Odoo के नए वर्शन के लॉन्च के बाद हमारे ट्यूटोरियल टूल और प्री-सेल्स टूल के अपडेट में भाग लेते"
-" हैं. दरअसल, सॉफ़्टवेयर का कोई भी नया संस्करण कार्यक्षमताओं, एर्गोनॉमिक्स और कॉन्फ़िगरेशन के "
-"मामले में महत्वपूर्ण सुधार लाता है.\n"
+"आप Odoo के नए वर्शन के लॉन्च के बाद हमारे ट्यूटोरियल टूल और प्री-सेल्स टूल के अपडेट में भाग "
+"लेते हैं. दरअसल, सॉफ़्टवेयर का कोई भी नया संस्करण कार्यक्षमताओं, एर्गोनॉमिक्स और कॉन्फ़िगरेशन "
+"के मामले में महत्वपूर्ण सुधार लाता है.\n"
 "आपको मौजूदा टूल (किताबें, क्लास सपोर्ट, Odoo प्रज़ेंटेशन स्लाइड, व्यावसायिक टूल) से परिचित "
 "होना होगा, \n"
 "ताकि सॉफ़्टवेयर के नए वर्शन के लिए उन्हें उपयुक्त बनाने हेतु उनके अपडेट में भाग लिया जा सके और, "

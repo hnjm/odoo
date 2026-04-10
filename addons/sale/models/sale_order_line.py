@@ -172,7 +172,7 @@ class SaleOrderLine(models.Model):
     price_unit = fields.Float(
         string="Unit Price",
         compute='_compute_price_unit',
-        digits='Product Price',
+        min_display_digits='Product Price',
         store=True, readonly=False, required=True, precompute=True)
     technical_price_unit = fields.Float()
 
@@ -1241,6 +1241,10 @@ class SaleOrderLine(models.Model):
                         ),
                     },
                 }
+
+    @api.onchange('product_packaging_qty')
+    def _onchange_product_packaging_qty(self):
+        self.env.remove_to_compute(self._fields['product_packaging_id'], self)
 
     #=== CRUD METHODS ===#
 

@@ -7,14 +7,14 @@
 # Ryoko Tsuda <ryoko@quartile.co>, 2024, 2025.
 # Wil Odoo, 2025
 # Junko Augias, 2025
-# "Junko Augias (juau)" <juau@odoo.com>, 2025.
-# Weblate <noreply-mt-weblate@weblate.org>, 2025.
+# "Junko Augias (juau)" <juau@odoo.com>, 2025, 2026.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-07 18:37+0000\n"
-"PO-Revision-Date: 2025-11-28 06:15+0000\n"
+"POT-Creation-Date: 2026-04-03 18:39+0000\n"
+"PO-Revision-Date: 2026-03-29 12:12+0000\n"
 "Last-Translator: \"Junko Augias (juau)\" <juau@odoo.com>\n"
 "Language-Team: Japanese <https://translate.odoo.com/projects/odoo-18/mail/ja/"
 ">\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #. module: mail
 #. odoo-python
@@ -210,8 +210,8 @@ msgstr "%(recipientCount)s 以上"
 #. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/core/web/discuss_core_web_service.js:0
-msgid "%(user)s connected. This is their first connection. Wish them luck."
-msgstr "%(user)s接続済。彼らは初めての接続です。幸運を祈りましょう。"
+msgid "%(user)s just connected for the first time. Wish them luck!"
+msgstr "%(user)s さんが初めて接続しました。応援のメッセージを送りましょう!"
 
 #. module: mail
 #. odoo-python
@@ -258,7 +258,7 @@ msgstr "%s (コピー)"
 #. odoo-python
 #: code:addons/mail/models/mail_thread.py:0
 msgid "%s created"
-msgstr "%s 登録"
+msgstr "%s を作成しました"
 
 #. module: mail
 #. odoo-javascript
@@ -706,7 +706,7 @@ msgstr "グループ \"%(groupFullName)s\"へのアクセスが制限されて�
 #. odoo-python
 #: code:addons/mail/models/res_users.py:0
 msgid "Account"
-msgstr "勘定科目"
+msgstr "アカウント"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity__activity_category
@@ -769,7 +769,7 @@ msgstr "購読の際デフォルトで有効化されます。"
 #: model:ir.model.fields,field_description:mail.field_mail_template__active
 #: model_terms:ir.ui.view,arch_db:mail.mail_alias_view_search
 msgid "Active"
-msgstr "アクティブ"
+msgstr "有効"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_compose_message__res_domain
@@ -877,7 +877,7 @@ msgstr "活動タイプ"
 #: model:ir.model.fields,field_description:mail.field_res_partner__activity_type_icon
 #: model:ir.model.fields,field_description:mail.field_res_users__activity_type_icon
 msgid "Activity Type Icon"
-msgstr "活動種別アイコン"
+msgstr "活動タイプアイコン"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_type_view_kanban
@@ -1528,7 +1528,7 @@ msgstr "認証済み取引先"
 #: model:ir.model.fields,field_description:mail.field_mail_scheduled_message__author_id
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_search
 msgid "Author"
-msgstr "著作者"
+msgstr "作成者"
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_compose_message__author_id
@@ -3957,18 +3957,23 @@ msgstr "メッセージの投稿に失敗しました。クリックして再試
 #. odoo-python
 #: code:addons/mail/models/mail_render_mixin.py:0
 msgid ""
-"Failed to render QWeb template: %(template_src)s\n"
+"Failed to render QWeb template for %(template_label)s\n"
+"Target Model: %(model_name)s\n"
+"Language context: %(lang_context)s\n"
+"Error: %(error_details)s\n"
 "\n"
-"%(template_traceback)s)"
+"Template Source Snippet:\n"
+"%(template_src)s"
 msgstr ""
-"QWebテンプレートのレンダリングに失敗しました: %(template_src)s\n"
-"\n"
-"%(template_traceback)s)"
 
 #. module: mail
 #. odoo-python
 #: code:addons/mail/models/mail_render_mixin.py:0
-msgid "Failed to render inline_template template: %(template_txt)s"
+#, fuzzy
+#| msgid "Failed to render inline_template template: %(template_txt)s"
+msgid ""
+"Failed to render inline_template template: %(template_txt)s\n"
+"Error details: %(error)s"
 msgstr "テンプレートのレンダリングに失敗しました: %(template_txt)s"
 
 #. module: mail
@@ -4953,7 +4958,7 @@ msgstr "着信中..."
 #: model:ir.model.fields.selection,name:mail.selection__mail_message__message_type__email
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_search
 msgid "Incoming Email"
-msgstr "受信Eメール"
+msgstr "受信メール"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
@@ -5223,7 +5228,7 @@ msgstr "招待ウィザード"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_followers__is_active
 msgid "Is Active"
-msgstr "アクティブです"
+msgstr "有効です"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_mail__is_current_user_or_guest_author
@@ -5592,7 +5597,7 @@ msgstr "レイアウト"
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.discuss_channel_view_kanban
 msgid "Leave"
-msgstr "解除"
+msgstr "退出"
 
 #. module: mail
 #. odoo-javascript
@@ -5604,7 +5609,7 @@ msgstr "チャネルから退席"
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/core/public_web/discuss_sidebar_categories.js:0
 msgid "Leave Conversation"
-msgstr "会話から出る"
+msgstr "会話から退出"
 
 #. module: mail
 #. odoo-javascript
@@ -5738,7 +5743,7 @@ msgstr "内部メモを記録する..."
 #: code:addons/mail/static/src/chatter/web/chatter.xml:0
 #: code:addons/mail/static/src/core/common/composer.js:0
 msgid "Log note"
-msgstr "メモを記録"
+msgstr "ログメモ"
 
 #. module: mail
 #. odoo-javascript
@@ -5872,6 +5877,14 @@ msgstr "メール テンプレート エディター"
 #: model:ir.model,name:mail.model_mail_template_reset
 msgid "Mail Template Reset"
 msgstr "メールテンプレートリセット"
+
+#. module: mail
+#. odoo-python
+#: code:addons/mail/models/mail_render_mixin.py:0
+#, fuzzy
+#| msgid "Unnamed %(record_model_name)s (%(record_id)s)"
+msgid "Mail Template: '%(name)s' (ID: %(record_id)s)"
+msgstr "無題%(record_model_name)s (%(record_id)s)"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.model_search_view
@@ -6020,6 +6033,12 @@ msgstr "未読にする"
 #: code:addons/mail/static/src/core/web/activity_list_popover_item.xml:0
 msgid "Mark as done"
 msgstr "完了とする"
+
+#. module: mail
+#. odoo-python
+#: code:addons/mail/models/mail_render_mixin.py:0
+msgid "Mass Mailing Template: '%(name)s' (ID: %(record_id)s)"
+msgstr ""
 
 #. module: mail
 #. odoo-javascript
@@ -6405,7 +6424,7 @@ msgstr "月"
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/call/common/call_action_list.js:0
 msgid "More"
-msgstr "さらに"
+msgstr "その他"
 
 #. module: mail
 #. odoo-javascript
@@ -6662,6 +6681,14 @@ msgstr "まだ会話はありません..."
 #: code:addons/mail/static/src/core/web/thread_patch.xml:0
 msgid "No history messages"
 msgstr "過去メッセージはありません。"
+
+#. module: mail
+#. odoo-python
+#: code:addons/mail/models/mail_render_mixin.py:0
+#, fuzzy
+#| msgid "Result of the language detection based on its content."
+msgid "No language detected in context"
+msgstr "コンテンツに基づく言語検出の結果"
 
 #. module: mail
 #. odoo-python
@@ -7387,7 +7414,7 @@ msgstr "送信メールサーバ"
 #: model:ir.model.fields.selection,name:mail.selection__survey_user_input__activity_state__overdue
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_search
 msgid "Overdue"
-msgstr "遅延"
+msgstr "期限超過"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.email_template_form
@@ -7580,7 +7607,7 @@ msgstr "開始する活動プランを選ぶ"
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/message_pin/common/message_actions.js:0
 msgid "Pin"
-msgstr "ピン"
+msgstr "ピン留め"
 
 #. module: mail
 #. odoo-javascript
@@ -8384,7 +8411,7 @@ msgstr "レポート"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity__request_partner_id
 msgid "Requesting Partner"
-msgstr "リクエストパートナー"
+msgstr "リクエスト元の取引先"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_resend_partner_view_form
@@ -8862,6 +8889,14 @@ msgid "Select the content filter used for filtering GIFs"
 msgstr "GIFをフィルタ用に使われるコンテンツフィルタを選択"
 
 #. module: mail
+#. odoo-python
+#: code:addons/mail/wizard/mail_activity_schedule.py:0
+msgid "Selected user '%(user)s' cannot upload documents on model '%(model)s'"
+msgstr ""
+"選択されたユーザ '%(user)s' は、モデル '%(model)s' にドキュメントをアップロー"
+"ドできません"
+
+#. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/chatter/web/mail_composer_send_dropdown.xml:0
 #: code:addons/mail/static/src/core/common/composer.js:0
@@ -9165,7 +9200,7 @@ msgstr "サイト名"
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_tree
 msgid "Snooze 7d"
-msgstr "アラーム機能 7日"
+msgstr "7日後に再通知"
 
 #. module: mail
 #. odoo-javascript
@@ -9176,7 +9211,7 @@ msgstr "だから......お気に入りのGIFを探しに行くなどでしょう
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_notification_view_form
 msgid "Source"
-msgstr "情報源"
+msgstr "参照元"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_message_translation__source_lang
@@ -9272,7 +9307,7 @@ msgid ""
 "Planned: Future activities."
 msgstr ""
 "活動に基づくステータス\n"
-"遅延: 期限が既に過ぎています\n"
+"期限超過：期限日がすでに過ぎています\n"
 "今日: 活動日は今日です\n"
 "予定: 将来の活動。"
 
@@ -9534,6 +9569,14 @@ msgstr "テンプレート再設定Mixin"
 #: code:addons/mail/wizard/mail_compose_message.py:0
 msgid "Template creation from composer requires a valid model."
 msgstr "Composerからテンプレートを作成するには、有効なモデルが必要です。"
+
+#. module: mail
+#. odoo-python
+#: code:addons/mail/models/mail_render_mixin.py:0
+#, fuzzy
+#| msgid "Message unique identifier"
+msgid "Template name not identified"
+msgstr "メッセージ識別番号"
 
 #. module: mail
 #. odoo-python
@@ -10527,6 +10570,20 @@ msgstr "会話をミュート解除"
 #. odoo-python
 #: code:addons/mail/models/mail_tracking_value.py:0
 msgid "Unnamed %(record_model_name)s (%(record_id)s)"
+msgstr "無題%(record_model_name)s (%(record_id)s)"
+
+#. module: mail
+#. odoo-python
+#: code:addons/mail/models/mail_render_mixin.py:0
+#, fuzzy
+#| msgid "Related Mail Template"
+msgid "Unnamed Mail Template"
+msgstr "関連メールテンプレート"
+
+#. module: mail
+#. odoo-python
+#: code:addons/mail/models/mail_render_mixin.py:0
+msgid "Unnamed Mailing"
 msgstr ""
 
 #. module: mail
@@ -11907,7 +11964,7 @@ msgstr "か月"
 #. odoo-python
 #: code:addons/mail/models/discuss/discuss_channel.py:0
 msgid "more"
-msgstr "さらに"
+msgstr "その他"
 
 #. module: mail
 #. odoo-javascript
@@ -12128,6 +12185,18 @@ msgstr "{{ object.partner_id.lang }}"
 #: code:addons/mail/models/discuss/discuss_channel_member.py:0
 msgid "“%(member_name)s” in “%(channel_name)s”"
 msgstr "“%(member_name)s” 、 “%(channel_name)s内”"
+
+#~ msgid ""
+#~ "Failed to render QWeb template: %(template_src)s\n"
+#~ "\n"
+#~ "%(template_traceback)s)"
+#~ msgstr ""
+#~ "QWebテンプレートのレンダリングに失敗しました: %(template_src)s\n"
+#~ "\n"
+#~ "%(template_traceback)s)"
+
+#~ msgid "%(user)s connected. This is their first connection. Wish them luck."
+#~ msgstr "%(user)s接続済。彼らは初めての接続です。幸運を祈りましょう。"
 
 #~ msgid "The channel type cannot be empty"
 #~ msgstr "チャネルタイプは空にすることはできません。"

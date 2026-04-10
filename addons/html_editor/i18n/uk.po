@@ -4,16 +4,16 @@
 #
 # Translators:
 # Martin Trigaux, 2024
-# Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2024
+# Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2024, 2026.
 # Wil Odoo, 2025
 # Weblate <noreply-mt-weblate@weblate.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-31 18:38+0000\n"
-"PO-Revision-Date: 2025-11-21 02:29+0000\n"
-"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
+"POT-Creation-Date: 2026-02-20 18:38+0000\n"
+"PO-Revision-Date: 2026-03-05 12:04+0000\n"
+"Last-Translator: Alina Lisnenko <alina.lisnenko@erp.co.ua>\n"
 "Language-Team: Ukrainian <https://translate.odoo.com/projects/odoo-18/"
 "html_editor/uk/>\n"
 "Language: uk\n"
@@ -24,7 +24,7 @@ msgstr ""
 "? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > "
 "14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % "
 "100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.16.1\n"
 
 #. module: html_editor
 #. odoo-javascript
@@ -102,7 +102,7 @@ msgstr "AI"
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/chatgpt/chatgpt_alternatives_dialog.xml:0
 msgid "AI Copywriter"
-msgstr ""
+msgstr "Копірайтер AI"
 
 #. module: html_editor
 #. odoo-javascript
@@ -120,7 +120,7 @@ msgstr "Приймає"
 #. odoo-python
 #: code:addons/html_editor/controllers/main.py:0
 msgid "Action %s is not a window action, link preview is not available"
-msgstr ""
+msgstr "Дія %s не є дією вікна, попередній перегляд посилання недоступний"
 
 #. module: html_editor
 #. odoo-python
@@ -129,6 +129,8 @@ msgid ""
 "Action %s not found, link preview is not available, please check your url is "
 "correct"
 msgstr ""
+"Дію %s не знайдено, попередній перегляд посилання недоступний, будь ласка, "
+"перевірте правильність вашої URL-адреси"
 
 #. module: html_editor
 #. odoo-javascript
@@ -165,7 +167,7 @@ msgstr "Додати код розділу"
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/media/file_plugin.js:0
 msgid "Add a download box"
-msgstr ""
+msgstr "Додати поле для завантаження"
 
 #. module: html_editor
 #. odoo-javascript
@@ -183,7 +185,7 @@ msgstr "Додати смайлик"
 #. odoo-javascript
 #: code:addons/html_editor/static/src/others/embedded_components/core/table_of_content/table_of_content.xml:0
 msgid "Add headings in this field to fill the Table of Content"
-msgstr ""
+msgstr "Додайте заголовки в це поле, щоб заповнити зміст"
 
 #. module: html_editor
 #. odoo-javascript
@@ -314,7 +316,7 @@ msgstr "Сповіщення банера"
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/signature_plugin.js:0
 msgid "Basic Bloc"
-msgstr ""
+msgstr "Базовий блок"
 
 #. module: html_editor
 #. odoo-javascript
@@ -338,13 +340,13 @@ msgstr "Кнопка"
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/link/link_popover.js:0
 msgid "Button Primary"
-msgstr ""
+msgstr "Основна кнопка"
 
 #. module: html_editor
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/link/link_popover.js:0
 msgid "Button Secondary"
-msgstr ""
+msgstr "Другорядна кнопка"
 
 #. module: html_editor
 #. odoo-javascript
@@ -395,13 +397,13 @@ msgstr "Код"
 #. odoo-javascript
 #: code:addons/html_editor/static/src/fields/html_field.js:0
 msgid "Code view"
-msgstr ""
+msgstr "Перегляд коду"
 
 #. module: html_editor
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/column_plugin.js:0
 msgid "Columnize"
-msgstr ""
+msgstr "Колонка"
 
 #. module: html_editor
 #. odoo-javascript
@@ -443,7 +445,7 @@ msgstr "Конвертувати у 4 колонки"
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/column_plugin.js:0
 msgid "Convert into columns"
-msgstr ""
+msgstr "Конвертувати в колонки"
 
 #. module: html_editor
 #. odoo-javascript
@@ -491,7 +493,7 @@ msgstr "Створити URL."
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/media/image_crop_plugin.js:0
 msgid "Crop image"
-msgstr ""
+msgstr "Обрізати зображення"
 
 #. module: html_editor
 #. odoo-javascript
@@ -628,7 +630,7 @@ msgstr "Смайл"
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/column_plugin.js:0
 msgid "Empty column"
-msgstr ""
+msgstr "Пуста колонка"
 
 #. module: html_editor
 #. odoo-javascript
@@ -688,7 +690,7 @@ msgstr "Заповнено + Округлено"
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/font/gradient_picker.xml:0
 msgid "First color %"
-msgstr ""
+msgstr "Основний колір %"
 
 #. module: html_editor
 #. odoo-javascript
@@ -737,13 +739,13 @@ msgstr "Формат"
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/chatgpt/chatgpt_alternatives_dialog.js:0
 msgid "Friendly"
-msgstr ""
+msgstr "Дружній"
 
 #. module: html_editor
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/chatgpt/chatgpt_prompt_dialog.xml:0
 msgid "Generate Text with AI"
-msgstr ""
+msgstr "Згенерувати текст за допомогою AI"
 
 #. module: html_editor
 #. odoo-javascript
@@ -863,7 +865,7 @@ msgstr "Сховати елементи керування плеєром"
 #. odoo-javascript
 #: code:addons/html_editor/static/src/others/embedded_components/plugins/table_of_content_plugin/table_of_content_plugin.js:0
 msgid "Highlight the structure (headings) of this field"
-msgstr ""
+msgstr "Виділіть структуру (заголовки) цього поля"
 
 #. module: html_editor
 #. odoo-javascript
@@ -1000,7 +1002,7 @@ msgstr "Вставити правило горизонтального розд�
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/star_plugin.js:0
 msgid "Insert a rating"
-msgstr ""
+msgstr "Вставити оцінку"
 
 #. module: html_editor
 #. odoo-javascript
@@ -1054,7 +1056,7 @@ msgstr "Вставте нижче"
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/media/media_plugin.js:0
 msgid "Insert image or icon"
-msgstr ""
+msgstr "Вставити зображення або іконку"
 
 #. module: html_editor
 #. odoo-javascript
@@ -1096,7 +1098,7 @@ msgstr "Великий"
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/chatgpt/chatgpt_alternatives_dialog.js:0
 msgid "Lengthen"
-msgstr ""
+msgstr "Подовжити"
 
 #. module: html_editor
 #. odoo-javascript
@@ -1123,6 +1125,8 @@ msgstr "Посилання скопійовано в буфер обміну."
 msgid ""
 "Link preview is not available because %s, please check if your url is correct"
 msgstr ""
+"Попередній перегляд посилання недоступний, оскільки %s, будь ласка, "
+"перевірте правильність вашої URL-адреси"
 
 #. module: html_editor
 #. odoo-javascript
@@ -1183,9 +1187,9 @@ msgstr "Відсутній файл"
 
 #. module: html_editor
 #. odoo-javascript
-#: code:addons/html_editor/static/src/main/powerbox/powerbox_plugin.js:0
+#: code:addons/html_editor/static/src/main/powerbox/search_powerbox_plugin.js:0
 msgid "More options"
-msgstr ""
+msgstr "Більше опцій"
 
 #. module: html_editor
 #. odoo-javascript
@@ -1332,7 +1336,7 @@ msgstr "Вставте як URL"
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/chatgpt/chatgpt_alternatives_dialog.js:0
 msgid "Persuasive"
-msgstr ""
+msgstr "Переконливий"
 
 #. module: html_editor
 #. odoo-javascript
@@ -1393,7 +1397,7 @@ msgstr "Вилучити (ВИДАЛИТИ)"
 #. odoo-javascript
 #: code:addons/html_editor/static/src/core/format_plugin.js:0
 msgid "Remove Format"
-msgstr ""
+msgstr "Видалити формат"
 
 #. module: html_editor
 #. odoo-javascript
@@ -1412,7 +1416,7 @@ msgstr "Вилучити колонки"
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/link/link_popover.xml:0
 msgid "Replace URL with its title?"
-msgstr ""
+msgstr "Замінити URL-адресу її назвою?"
 
 #. module: html_editor
 #. odoo-javascript
@@ -1508,7 +1512,7 @@ msgstr "Пошук зображення"
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/font/gradient_picker.xml:0
 msgid "Second color %"
-msgstr ""
+msgstr "Другорядний колір %"
 
 #. module: html_editor
 #. odoo-javascript
@@ -1544,7 +1548,7 @@ msgstr "Форма: заокруглена"
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/media/image_plugin.js:0
 msgid "Shape: Shadow"
-msgstr ""
+msgstr "Форма: Тінь"
 
 #. module: html_editor
 #. odoo-javascript
@@ -1556,7 +1560,7 @@ msgstr "Форма: ескіз"
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/chatgpt/chatgpt_alternatives_dialog.js:0
 msgid "Shorten"
-msgstr ""
+msgstr "Скоротити"
 
 #. module: html_editor
 #. odoo-javascript
@@ -1611,7 +1615,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/star_plugin.js:0
 msgid "Stars"
-msgstr ""
+msgstr "Зірки"
 
 #. module: html_editor
 #. odoo-javascript
@@ -1785,13 +1789,13 @@ msgstr "Перекласти"
 #: code:addons/html_editor/static/src/main/chatgpt/chatgpt_plugin.js:0
 #: code:addons/html_editor/static/src/main/chatgpt/chatgpt_translate_dialog.xml:0
 msgid "Translate with AI"
-msgstr ""
+msgstr "Перекласти за допомогою AI"
 
 #. module: html_editor
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/chatgpt/chatgpt_translate_dialog.xml:0
 msgid "Translating..."
-msgstr ""
+msgstr "Переклад..."
 
 #. module: html_editor
 #. odoo-javascript
@@ -1815,13 +1819,13 @@ msgstr "Введіть \"/\" для команд"
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/link/link_popover.xml:0
 msgid "Type your URL"
-msgstr ""
+msgstr "Введіть вашу URL"
 
 #. module: html_editor
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/link/link_popover.xml:0
 msgid "Type your link label"
-msgstr ""
+msgstr "Введіть підпис посилання"
 
 #. module: html_editor
 #. odoo-javascript
@@ -1858,7 +1862,7 @@ msgstr "Завантажте зображення"
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/media/media_dialog/image_selector.js:0
 msgid "Uploaded image's format is not supported. Try with: "
-msgstr "Формат завантаженого зображення не підтримується. Спробуйте з:"
+msgstr "Формат завантаженого зображення не підтримується. Спробуйте з: "
 
 #. module: html_editor
 #. odoo-python
@@ -1957,8 +1961,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/html_editor/controllers/main.py:0
 msgid "You need to specify either data or url to create an attachment."
-msgstr ""
-"Вам необхідно вказати будь-які дані або url, щоб створити прикріплення."
+msgstr "Вам необхідно вказати будь-які дані або url, щоб створити прикріплення."
 
 #. module: html_editor
 #. odoo-javascript
@@ -2006,7 +2009,7 @@ msgstr "і"
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/font/gradient_picker.xml:0
 msgid "deg"
-msgstr ""
+msgstr "градус"
 
 #. module: html_editor
 #. odoo-javascript

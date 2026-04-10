@@ -7,7 +7,6 @@ import { getAdjacentPreviousSiblings, isBlock, rgbToHex, commonParentGet } from 
 //--------------------------------------------------------------------------
 
 const RE_COL_MATCH = /(^| )col(-[\w\d]+)*( |$)/;
-const RE_COMMAS_OUTSIDE_PARENTHESES = /,(?![^(]*?\))/g;
 const RE_OFFSET_MATCH = /(^| )offset(-[\w\d]+)*( |$)/;
 const RE_PADDING_MATCH = /[ ]*padding[^;]*;/g;
 const RE_PADDING = /([\d.]+)/;
@@ -35,7 +34,8 @@ export const TABLE_ATTRIBUTES = {
 };
 // Cancel tables default styles.
 export const TABLE_STYLES = {
-    'border-collapse': 'collapse',
+    'border-collapse': 'separate',
+    'border-spacing': '0px',
     'text-align': 'inherit',
     'font-size': 'unset',
     'line-height': 'inherit',
@@ -382,6 +382,7 @@ function cardToTable(editable) {
                 col.append(child);
             }
             const subTable = _createTable();
+            subTable.style.height = '100%';
             const superRow = document.createElement('tr');
             const superCol = document.createElement('td');
             row.append(col);
@@ -461,7 +462,7 @@ function classToStyle($editable, cssRules) {
             }
         };
         style = correctBorderAttributes(style);
-        if (Object.keys(style || {}).length === 0) {
+        if (Object.keys(style || {}).length === 0 || node.nodeName === "T") {
             writes.push(() => { node.removeAttribute('style'); });
         } else {
             writes.push(() => {
@@ -1061,6 +1062,26 @@ function formatTables($editable) {
         }
     }
 }
+function splitSelectors(str) {
+    const result = [];
+    let current = "";
+    let depth = 0;
+    for (const char of str) {
+        if (char === "(") {
+            depth++;
+        } else if (char === ")") {
+            depth--;
+        }
+        if (char === "," && depth === 0) {
+            result.push(current.trim());
+            current = "";
+        } else {
+            current += char;
+        }
+    }
+    result.push(current.trim());
+    return result;
+}
 /**
  * Parse through the given document's stylesheets, preprocess(*) them and return
  * the result as an array of objects, each containing a selector string , a
@@ -1103,7 +1124,7 @@ export function getCSSRules(doc) {
             for (const subRule of subRules) {
                 const selectorText = subRule.selectorText || '';
                 // Split selectors, making sure not to split at commas in parentheses.
-                for (const selector of selectorText.split(RE_COMMAS_OUTSIDE_PARENTHESES)) {
+                for (const selector of splitSelectors(selectorText)) {
                     if (selector && !SELECTORS_IGNORE.test(selector)) {
                         cssRules.push({ selector: selector.trim(), rawRule: subRule });
                         if (selector === 'body') {
@@ -1875,4 +1896,5 @@ export default {
     normalizeRem: normalizeRem,
     toInline: toInline,
     createMso: _createMso,
+    splitSelectors: splitSelectors,
 };

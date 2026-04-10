@@ -14,16 +14,16 @@
 # Vojtěch Olšan, 2025
 # Denis Gobin, 2025
 # Marta Wacławek, 2025
-# Vojtěch Olšan <vojtech.olsan@systee.cz>, 2025.
-# "Marta (wacm)" <wacm@odoo.com>, 2025.
-# Weblate <noreply-mt-weblate@weblate.org>, 2025.
+# Vojtěch Olšan <vojtech.olsan@systee.cz>, 2025, 2026.
+# "Marta (wacm)" <wacm@odoo.com>, 2025, 2026.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-07 18:37+0000\n"
-"PO-Revision-Date: 2025-11-08 16:51+0000\n"
-"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
+"POT-Creation-Date: 2026-04-03 18:39+0000\n"
+"PO-Revision-Date: 2026-03-29 12:11+0000\n"
+"Last-Translator: Vojtěch Olšan <vojtech.olsan@systee.cz>\n"
 "Language-Team: Czech <https://translate.odoo.com/projects/odoo-18/mail/cs/>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
@@ -31,7 +31,7 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n "
 "<= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #. module: mail
 #. odoo-python
@@ -214,10 +214,8 @@ msgstr "%(recipientCount)s více"
 #. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/core/web/discuss_core_web_service.js:0
-msgid "%(user)s connected. This is their first connection. Wish them luck."
-msgstr ""
-"%(user)s se připojil/-a. Je to jeho/její první připojení. Přejte mu/jí hodně "
-"štěstí."
+msgid "%(user)s just connected for the first time. Wish them luck!"
+msgstr "%(user)s se právě připojil/a poprvé. Hodně štěstí!"
 
 #. module: mail
 #. odoo-python
@@ -1691,7 +1689,7 @@ msgstr "Kódovaný klíč Base64"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_compose_message__composition_batch
 msgid "Batch composition"
-msgstr ""
+msgstr "Složení šarže"
 
 #. module: mail
 #. odoo-python
@@ -3096,7 +3094,7 @@ msgstr "Zmazat všechny náhledy"
 #. odoo-javascript
 #: code:addons/mail/static/src/core/common/message.xml:0
 msgid "Deleted document"
-msgstr ""
+msgstr "Odstraněný dokument"
 
 #. module: mail
 #. odoo-javascript
@@ -3271,7 +3269,7 @@ msgstr "Zrušit"
 #: model:ir.model.fields,field_description:mail.field_mail_wizard_invite__display_name
 #: model:ir.model.fields,field_description:mail.field_res_users_settings_volumes__display_name
 msgid "Display Name"
-msgstr "Zobrazovací název"
+msgstr "Zobrazovaný název"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.email_template_form
@@ -3966,18 +3964,23 @@ msgstr "Odeslání zprávy se nezdařilo. Kliknutím to zkuste znovu"
 #. odoo-python
 #: code:addons/mail/models/mail_render_mixin.py:0
 msgid ""
-"Failed to render QWeb template: %(template_src)s\n"
+"Failed to render QWeb template for %(template_label)s\n"
+"Target Model: %(model_name)s\n"
+"Language context: %(lang_context)s\n"
+"Error: %(error_details)s\n"
 "\n"
-"%(template_traceback)s)"
+"Template Source Snippet:\n"
+"%(template_src)s"
 msgstr ""
-"Vykreslení šablony QWeb se nezdařilo: %(template_src)s\n"
-"\n"
-"%(template_traceback)s)"
 
 #. module: mail
 #. odoo-python
 #: code:addons/mail/models/mail_render_mixin.py:0
-msgid "Failed to render inline_template template: %(template_txt)s"
+#, fuzzy
+#| msgid "Failed to render inline_template template: %(template_txt)s"
+msgid ""
+"Failed to render inline_template template: %(template_txt)s\n"
+"Error details: %(error)s"
 msgstr "Vykreslení šablony inline_template se nezdařilo: %(template_txt)s"
 
 #. module: mail
@@ -5009,7 +5012,7 @@ msgstr "Počáteční model"
 #: model:ir.model.fields,field_description:mail.field_res_partner__contact_address_inline
 #: model:ir.model.fields,field_description:mail.field_res_users__contact_address_inline
 msgid "Inlined Complete Address"
-msgstr "VLožená úplná adresa"
+msgstr "Vložená úplná adresa"
 
 #. module: mail
 #. odoo-javascript
@@ -5323,7 +5326,7 @@ msgstr "je připnut do rozhraní"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_discuss_channel_rtc_session__is_camera_on
 msgid "Is sending user video"
-msgstr ""
+msgstr "Odesílání uživatelského videa"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_discuss_channel_rtc_session__is_screen_sharing_on
@@ -5649,7 +5652,7 @@ msgstr "Odkaz zkopírován!"
 #. odoo-javascript
 #: code:addons/mail/static/src/views/web/fields/list_activity/list_activity.js:0
 msgid "List Activity"
-msgstr ""
+msgstr "Seznam aktivit"
 
 #. module: mail
 #. odoo-javascript
@@ -5783,7 +5786,7 @@ msgstr "Nízké"
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/call/common/call_actions.js:0
 msgid "Lower Hand"
-msgstr ""
+msgstr "Dolní ruka"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_mimetype
@@ -5889,6 +5892,14 @@ msgstr "Editor e-mailové šablony"
 #: model:ir.model,name:mail.model_mail_template_reset
 msgid "Mail Template Reset"
 msgstr "Resetování emailové šablony"
+
+#. module: mail
+#. odoo-python
+#: code:addons/mail/models/mail_render_mixin.py:0
+#, fuzzy
+#| msgid "alias %(name)s: %(error)s"
+msgid "Mail Template: '%(name)s' (ID: %(record_id)s)"
+msgstr "alias %(name)s: %(error)s"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.model_search_view
@@ -6037,6 +6048,12 @@ msgstr "Označit jako nepřečtené"
 #: code:addons/mail/static/src/core/web/activity_list_popover_item.xml:0
 msgid "Mark as done"
 msgstr "Označit jako hotovo"
+
+#. module: mail
+#. odoo-python
+#: code:addons/mail/models/mail_render_mixin.py:0
+msgid "Mass Mailing Template: '%(name)s' (ID: %(record_id)s)"
+msgstr ""
 
 #. module: mail
 #. odoo-javascript
@@ -6677,6 +6694,14 @@ msgstr "Zatím žádná konverzace..."
 #: code:addons/mail/static/src/core/web/thread_patch.xml:0
 msgid "No history messages"
 msgstr "Žádné zprávy z historie"
+
+#. module: mail
+#. odoo-python
+#: code:addons/mail/models/mail_render_mixin.py:0
+#, fuzzy
+#| msgid "Result of the language detection based on its content."
+msgid "No language detected in context"
+msgstr "Výsledek detekce jazyka na základě obsahu."
 
 #. module: mail
 #. odoo-python
@@ -7439,13 +7464,13 @@ msgstr "POP/IMAP servery"
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/call/common/call_context_menu.xml:0
 msgid "Packets received:"
-msgstr ""
+msgstr "Přijaté pakety:"
 
 #. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/call/common/call_context_menu.xml:0
 msgid "Packets sent:"
-msgstr ""
+msgstr "Odeslané pakety:"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_message_subtype__parent_id
@@ -7505,7 +7530,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/call/public_web/discuss_sidebar_call_participants.xml:0
 msgid "Participant avatar"
-msgstr ""
+msgstr "Avatar účastníka"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_discuss_channel_member__partner_id
@@ -7555,7 +7580,7 @@ msgstr "Heslo"
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
 msgid "Paste your API key"
-msgstr ""
+msgstr "Vložte svůj API klíč"
 
 #. module: mail
 #. odoo-javascript
@@ -7582,13 +7607,13 @@ msgstr "Telefon"
 #. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__mail_activity_type__category__phonecall
 msgid "Phonecall"
-msgstr ""
+msgstr "Telefonát"
 
 #. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/chatter/web/mail_composer_schedule_dialog.xml:0
 msgid "Pick a specific time"
-msgstr ""
+msgstr "Vyberte konkrétní čas"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_schedule_view_form
@@ -7599,19 +7624,19 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/message_pin/common/message_actions.js:0
 msgid "Pin"
-msgstr ""
+msgstr "Připnout"
 
 #. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/message_pin/common/message_model_patch.js:0
 msgid "Pin It"
-msgstr ""
+msgstr "Připnout"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_mail__pinned_at
 #: model:ir.model.fields,field_description:mail.field_mail_message__pinned_at
 msgid "Pinned"
-msgstr ""
+msgstr "Připnuté"
 
 #. module: mail
 #. odoo-javascript
@@ -7619,7 +7644,7 @@ msgstr ""
 #: code:addons/mail/static/src/discuss/message_pin/common/thread_actions.js:0
 #: model:ir.model.fields,field_description:mail.field_discuss_channel__pinned_message_ids
 msgid "Pinned Messages"
-msgstr ""
+msgstr "Připnuté zprávy"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity_plan_template__plan_id
@@ -7631,12 +7656,12 @@ msgstr "Plán"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity_schedule__plan_available_ids
 msgid "Plan Available"
-msgstr ""
+msgstr "Plán k dispozici"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity_schedule__plan_date
 msgid "Plan Date"
-msgstr ""
+msgstr "Datum plánu"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_plan_view_form
@@ -7646,7 +7671,7 @@ msgstr "Název plánu"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity_schedule__plan_summary
 msgid "Plan Summary"
-msgstr ""
+msgstr "Shrnutí plánu"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_schedule_view_form
@@ -7782,7 +7807,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/mail/static/src/chatter/web/chatter.xml:0
 msgid "Pop out Attachments"
-msgstr ""
+msgstr "Vyskakující přílohy"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_fetchmail_server__port
@@ -7793,19 +7818,19 @@ msgstr "Port"
 #. odoo-python
 #: code:addons/mail/models/res_users.py:0
 msgid "Portal Access Granted"
-msgstr ""
+msgstr "Přístup k portálu povolen"
 
 #. module: mail
 #. odoo-python
 #: code:addons/mail/models/res_users.py:0
 msgid "Portal Access Revoked"
-msgstr ""
+msgstr "Přístup k portálu zrušen"
 
 #. module: mail
 #. odoo-python
 #: code:addons/mail/models/mail_thread.py:0
 msgid "Portal users can only filter threads by themselves as followers."
-msgstr ""
+msgstr "Uživatelé portálu mohou filtrovat vlákna pouze sami jako sledující."
 
 #. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__mail_compose_message__composition_mode__comment
@@ -7885,6 +7910,8 @@ msgstr ""
 #: code:addons/mail/static/src/discuss/call/common/call_settings.xml:0
 msgid "Press a key to register it as the push-to-talk shortcut."
 msgstr ""
+"Stiskněte klávesu, abyste ji zaregistrovali jako zkratku pro funkci push-to-"
+"talk."
 
 #. module: mail
 #. odoo-javascript
@@ -7960,7 +7987,7 @@ msgstr "Vydavatel: oznámení o aktualizaci"
 #. module: mail
 #: model:ir.model,name:mail.model_mail_push_device
 msgid "Push Notification Device"
-msgstr ""
+msgstr "Zařízení pro push notifikace"
 
 #. module: mail
 #: model:ir.model,name:mail.model_mail_push
@@ -7971,24 +7998,24 @@ msgstr "Push notifikace"
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/call/common/call_settings.xml:0
 msgid "Push to Talk"
-msgstr ""
+msgstr "Stlač a mluv"
 
 #. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/call/common/call_action_list.xml:0
 msgid "Push to talk"
-msgstr ""
+msgstr "Stlač a mluv"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_res_users_settings__push_to_talk_key
 msgid "Push-To-Talk shortcut"
-msgstr ""
+msgstr "Zkratka stlač a mluv"
 
 #. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/call/common/call_settings.xml:0
 msgid "Push-to-talk key"
-msgstr ""
+msgstr "Tlačítko stlač a mluv"
 
 #. module: mail
 #. odoo-javascript
@@ -8002,7 +8029,7 @@ msgstr "Rychlé vyhledávání"
 #: code:addons/mail/static/src/core/web/messaging_menu_quick_search.xml:0
 #: code:addons/mail/static/src/discuss/core/public_web/discuss_sidebar_categories.xml:0
 msgid "Quick search…"
-msgstr ""
+msgstr "Rychlé vyhledávání…"
 
 #. module: mail
 #: model:ir.model,name:mail.model_ir_qweb
@@ -8013,18 +8040,18 @@ msgstr "Qweb"
 #: model_terms:ir.ui.view,arch_db:mail.discuss_channel_rtc_session_view_form
 #: model_terms:ir.ui.view,arch_db:mail.discuss_channel_rtc_session_view_tree
 msgid "RTC Session"
-msgstr ""
+msgstr "RTC relace"
 
 #. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/call/common/call_context_menu.xml:0
 msgid "RTC Session ID:"
-msgstr ""
+msgstr "ID relace RTC:"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_discuss_channel_member__rtc_session_ids
 msgid "RTC Sessions"
-msgstr ""
+msgstr "RTC relace"
 
 #. module: mail
 #: model:ir.actions.act_window,name:mail.discuss_channel_rtc_session_action
@@ -8036,22 +8063,22 @@ msgstr "RTC relace"
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/call/common/call_actions.js:0
 msgid "Raise Hand"
-msgstr ""
+msgstr "Zvednout ruku"
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_res_users_settings_volumes__volume
 msgid "Ranges between 0.0 and 1.0, scale depends on the browser implementation"
-msgstr ""
+msgstr "Rozsah mezi 0,0 a 1,0, měřítko závisí na implementaci prohlížeče."
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_message_reaction__guest_id
 msgid "Reacting Guest"
-msgstr ""
+msgstr "Reagující host"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_message_reaction__partner_id
 msgid "Reacting Partner"
-msgstr ""
+msgstr "Reagující partner"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_mail__reaction_ids
@@ -8059,7 +8086,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mail.mail_message_reaction_view_form
 #: model_terms:ir.ui.view,arch_db:mail.mail_message_reaction_view_tree
 msgid "Reactions"
-msgstr ""
+msgstr "Reakce"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_notification__read_date
@@ -8071,7 +8098,7 @@ msgstr "Přečíst datum"
 #: code:addons/mail/static/src/chatter/web/scheduled_message.xml:0
 #: code:addons/mail/static/src/core/web_portal/message_patch.js:0
 msgid "Read Less"
-msgstr ""
+msgstr "Zobrazit méně"
 
 #. module: mail
 #. odoo-javascript
@@ -8095,7 +8122,7 @@ msgstr "Připraveno k odeslání"
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/core/public_web/bus_connection_alert.xml:0
 msgid "Real-time connection lost..."
-msgstr ""
+msgstr "Ztráta připojení v reálném čase..."
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_blacklist_remove__reason
@@ -8106,7 +8133,7 @@ msgstr "Důvod"
 #. module: mail
 #: model:res.groups,name:mail.group_mail_notification_type_inbox
 msgid "Receive notifications in Odoo"
-msgstr ""
+msgstr "Přijímání oznámení v Odoo"
 
 #. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__mail_mail__state__received
@@ -8187,7 +8214,7 @@ msgstr "S pozdravem, "
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/call/common/call_settings.xml:0
 msgid "Register new key"
-msgstr ""
+msgstr "Zaregistrujte nový klíč"
 
 #. module: mail
 #. odoo-javascript
@@ -8213,12 +8240,12 @@ msgstr "Související ID dokumentu"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_compose_message__res_ids
 msgid "Related Document IDs"
-msgstr ""
+msgstr "Související identifikátory dokumentů"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_scheduled_message__res_id
 msgid "Related Document Id"
-msgstr ""
+msgstr "Související ID dokumentu"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity__res_model
@@ -8269,7 +8296,7 @@ msgstr "Odebrat"
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/call/common/call_actions.js:0
 msgid "Remove Blur"
-msgstr ""
+msgstr "Odstranit rozmazání"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.email_template_form
@@ -8284,7 +8311,7 @@ msgstr "Odebrat sledující"
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_blacklist_remove_view_form
 msgid "Remove address from blacklist"
-msgstr ""
+msgstr "Odebrat adresu z černé listiny"
 
 #. module: mail
 #: model:ir.model,name:mail.model_mail_blacklist_remove
@@ -8307,13 +8334,13 @@ msgstr "Odstranit odběratele"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_tracking_value__field_info
 msgid "Removed field information"
-msgstr ""
+msgstr "Odstraněno informace o poli"
 
 #. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/core/common/thread_actions.js:0
 msgid "Rename Thread"
-msgstr ""
+msgstr "Přejmenovat vlákno"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_compose_message__render_model
@@ -8329,6 +8356,8 @@ msgstr "Vykreslování modelu"
 msgid ""
 "Rendering of %(field_name)s is not possible as no counterpart on template."
 msgstr ""
+"Renderování %(field_name)s není možné, protože v šabloně není žádný "
+"protějšek."
 
 #. module: mail
 #. odoo-python
@@ -8336,6 +8365,7 @@ msgstr ""
 #: code:addons/mail/models/mail_render_mixin.py:0
 msgid "Rendering of %(field_name)s is not possible as not defined on template."
 msgstr ""
+"Zobrazení %(field_name)s není možné, protože není definováno v šabloně."
 
 #. module: mail
 #. odoo-javascript
@@ -8388,7 +8418,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/mail/static/src/core/common/composer.xml:0
 msgid "Replying to"
-msgstr ""
+msgstr "Odpověď na"
 
 #. module: mail
 #. odoo-python
@@ -8424,7 +8454,7 @@ msgstr "Obnovit potvrzení"
 #. module: mail
 #: model:ir.actions.act_window,name:mail.mail_template_reset_action
 msgid "Reset Mail Template"
-msgstr ""
+msgstr "Obnovit šablonu e-mailu"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.email_template_form
@@ -8459,17 +8489,17 @@ msgstr "Omezit načítání šablon"
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
 msgid "Restrict mail templates edition and QWEB placeholders usage."
-msgstr ""
+msgstr "Omezte úpravy šablon e-mailů a používání zástupných symbolů QWEB."
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_mail__restricted_attachment_count
 msgid "Restricted attachments"
-msgstr ""
+msgstr "Omezené přílohy"
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_message_translation__source_lang
 msgid "Result of the language detection based on its content."
-msgstr ""
+msgstr "Výsledek detekce jazyka na základě obsahu."
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_form
@@ -8501,22 +8531,22 @@ msgstr "Rich-text/HTML zpráva"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_discuss_channel_member__rtc_inviting_session_id
 msgid "Ringing session"
-msgstr ""
+msgstr "Zvonění"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_discuss_channel__rtc_session_ids
 msgid "Rtc Session"
-msgstr ""
+msgstr "RTC relace"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_res_config_settings__sfu_server_url
 msgid "SFU Server URL"
-msgstr ""
+msgstr "URL serveru SFU"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_res_config_settings__sfu_server_key
 msgid "SFU Server key"
-msgstr ""
+msgstr "Klíč serveru SFU"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
@@ -8561,7 +8591,7 @@ msgstr "Uložit jako šablonu"
 #. odoo-javascript
 #: code:addons/mail/static/src/core/common/composer.js:0
 msgid "Save editing"
-msgstr ""
+msgstr "Uložit úpravy"
 
 #. module: mail
 #: model:ir.model,name:mail.model_discuss_gif_favorite
@@ -8597,7 +8627,7 @@ msgstr "Naplánovat aktivitu"
 #: code:addons/mail/static/src/core/web/store_service_patch.js:0
 #: code:addons/mail/wizard/mail_activity_schedule.py:0
 msgid "Schedule Activity On Selected Records"
-msgstr ""
+msgstr "Naplánovat aktivitu u vybraných záznamů"
 
 #. module: mail
 #. odoo-javascript
@@ -8639,7 +8669,7 @@ msgstr "Plánovat aktivitu"
 #. odoo-javascript
 #: code:addons/mail/static/src/core/web/activity_list_popover.xml:0
 msgid "Schedule an activity on selected records"
-msgstr ""
+msgstr "Naplánovat aktivitu u vybraných záznamů"
 
 #. module: mail
 #: model:ir.model,name:mail.model_ir_cron
@@ -8708,7 +8738,7 @@ msgstr "Hledat servery příchozí pošty"
 #. odoo-javascript
 #: code:addons/mail/static/src/core/common/search_messages_panel.js:0
 msgid "Search Message"
-msgstr ""
+msgstr "Hledat zprávu"
 
 #. module: mail
 #. odoo-javascript
@@ -8716,7 +8746,7 @@ msgstr ""
 #: code:addons/mail/static/src/core/common/search_message_input.xml:0
 #: code:addons/mail/static/src/core/common/thread_actions.js:0
 msgid "Search Messages"
-msgstr ""
+msgstr "Hledat zprávy"
 
 #. module: mail
 #. odoo-javascript
@@ -8727,53 +8757,53 @@ msgstr "Vyhledat více..."
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.discuss_channel_rtc_session_view_search
 msgid "Search RTC session"
-msgstr ""
+msgstr "Vyhledat relaci RTC"
 
 #. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/core/public_web/sub_channel_list.xml:0
 msgid "Search Sub Channels"
-msgstr ""
+msgstr "Vyhledávání podkanálů"
 
 #. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/core/common/search_message_input.xml:0
 #: code:addons/mail/static/src/discuss/core/public_web/sub_channel_list.xml:0
 msgid "Search button"
-msgstr ""
+msgstr "Tlačítko pro vyhledávání"
 
 #. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/core/public_web/sub_channel_list.xml:0
 msgid "Search by name"
-msgstr ""
+msgstr "Hledat podle jména"
 
 #. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/gif_picker/common/gif_picker.xml:0
 msgid "Search for a GIF"
-msgstr ""
+msgstr "Hledat GIF"
 
 #. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/core/web/mention_list.js:0
 #: code:addons/mail/static/src/discuss/core/web/command_palette.js:0
 msgid "Search for a channel..."
-msgstr ""
+msgstr "Vyhledat kanál..."
 
 #. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/core/web/mention_list.js:0
 #: code:addons/mail/static/src/discuss/core/web/command_palette.js:0
 msgid "Search for a user..."
-msgstr ""
+msgstr "Hledat uživatele..."
 
 #. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/core/common/search_message_input.xml:0
 #: code:addons/mail/static/src/discuss/core/public_web/sub_channel_list.xml:0
 msgid "Search in progress"
-msgstr ""
+msgstr "Probíhá vyhledávání"
 
 #. module: mail
 #. odoo-javascript
@@ -8793,13 +8823,13 @@ msgstr "Vyhledávání: %s"
 #. odoo-python
 #: code:addons/mail/models/res_users.py:0
 msgid "Security Update: Email Changed"
-msgstr ""
+msgstr "Aktualizace zabezpečení: Změna e-mailové adresy"
 
 #. module: mail
 #. odoo-python
 #: code:addons/mail/models/res_users.py:0
 msgid "Security Update: Login Changed"
-msgstr ""
+msgstr "Bezpečnostní aktualizace: Změna přihlašovacích údajů"
 
 #. module: mail
 #. odoo-python
@@ -8875,6 +8905,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
 msgid "Select the content filter used for filtering GIFs"
 msgstr "Nastavte obsahový filtr pro filtrování GIFů"
+
+#. module: mail
+#. odoo-python
+#: code:addons/mail/wizard/mail_activity_schedule.py:0
+msgid "Selected user '%(user)s' cannot upload documents on model '%(model)s'"
+msgstr ""
 
 #. module: mail
 #. odoo-javascript
@@ -9101,7 +9137,7 @@ msgstr "Zkratka"
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_message_translation__target_lang
 msgid "Shortened language code used as the target for the translation request."
-msgstr ""
+msgstr "Zkrácený kód jazyka použitý jako cíl pro požadavek na překlad."
 
 #. module: mail
 #. odoo-javascript
@@ -9313,6 +9349,7 @@ msgstr ""
 #: code:addons/mail/static/src/core/web/messaging_menu_patch.js:0
 msgid "Stay tuned! Enable push notifications to never miss a message."
 msgstr ""
+"Zůstaňte v obraze! Zapněte push notifikace, abyste nezmeškali žádnou zprávu."
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity_plan__steps_count
@@ -9323,7 +9360,7 @@ msgstr "Počet kroků"
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/voice_message/common/voice_recorder.xml:0
 msgid "Stop Recording"
-msgstr ""
+msgstr "Zastavit nahrávání"
 
 #. module: mail
 #. odoo-javascript
@@ -9346,7 +9383,7 @@ msgstr ""
 #. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__mail_compose_message__reply_to_mode__update
 msgid "Store email and replies in the chatter of each record"
-msgstr ""
+msgstr "Ukládejte e-maily a odpovědi v chatu každého záznamu."
 
 #. module: mail
 #: model:ir.model,name:mail.model_mail_link_preview
@@ -9424,7 +9461,7 @@ msgstr "Poddruhy zpráv"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity_type__suggested_next_type_ids
 msgid "Suggest"
-msgstr ""
+msgstr "Navrhnout"
 
 #. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__mail_activity_type__chaining_type__suggest
@@ -9435,6 +9472,8 @@ msgstr ""
 #: model:ir.model.fields,help:mail.field_mail_activity_type__suggested_next_type_ids
 msgid "Suggest these activities once the current one is marked as done."
 msgstr ""
+"Navrhněte tyto činnosti, jakmile bude aktuální činnost označena jako "
+"dokončená."
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity__summary
@@ -9554,6 +9593,14 @@ msgstr "Mixin pro reset šablony"
 #: code:addons/mail/wizard/mail_compose_message.py:0
 msgid "Template creation from composer requires a valid model."
 msgstr ""
+
+#. module: mail
+#. odoo-python
+#: code:addons/mail/models/mail_render_mixin.py:0
+#, fuzzy
+#| msgid "Message unique identifier"
+msgid "Template name not identified"
+msgstr "Jedinečný identifikátor zprávy"
 
 #. module: mail
 #. odoo-python
@@ -9734,7 +9781,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/voice_message/common/voice_recorder.js:0
 msgid "The duration of voice messages is limited to 1 minute."
-msgstr ""
+msgstr "Délka hlasových zpráv je omezena na 1 minutu."
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_bounce_catchall
@@ -9745,7 +9792,7 @@ msgstr "E-mail odeslaný na"
 #. odoo-python
 #: code:addons/mail/wizard/mail_template_reset.py:0
 msgid "The email template(s) have been restored to their original settings."
-msgstr ""
+msgstr "Šablony e-mailů byly obnoveny do původního nastavení."
 
 #. module: mail
 #: model:ir.model.constraint,message:mail.constraint_mail_push_device_endpoint_unique
@@ -9773,12 +9820,12 @@ msgstr "Interní uživatel odpovědný za tento kontakt."
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_alias_view_form
 msgid "The last message received on this alias has caused an error."
-msgstr ""
+msgstr "Poslední zpráva přijatá na tento alias způsobila chybu."
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.message_notification_limit_email
 msgid "The message below could not be accepted by the address"
-msgstr ""
+msgstr "Níže uvedená zpráva nemohla být přijata adresou."
 
 #. module: mail
 #. odoo-python
@@ -9914,12 +9961,12 @@ msgstr ""
 #: model:ir.model.fields,help:mail.field_mail_mail__preview
 #: model:ir.model.fields,help:mail.field_mail_message__preview
 msgid "The text-only beginning of the body used as email preview."
-msgstr ""
+msgstr "Začátek těla textu používaný jako náhled e-mailu."
 
 #. module: mail
 #: model:ir.model.constraint,message:mail.constraint_discuss_channel_rtc_session_channel_member_unique
 msgid "There can only be one rtc session per channel member"
-msgstr ""
+msgstr "Na každého člena kanálu může připadnout pouze jedna relace rtc."
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.message_origin_link
@@ -9930,7 +9977,7 @@ msgstr "Toto"
 #. odoo-python
 #: code:addons/mail/models/ir_actions_server.py:0
 msgid "This action can only be done on a mail thread models"
-msgstr ""
+msgstr "Tuto akci lze provést pouze u modelů poštovních vláken."
 
 #. module: mail
 #. odoo-python
@@ -9989,7 +10036,7 @@ msgstr "Toto pole nerozlišuje velká a malá písmena."
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_template__description
 msgid "This field is used for internal description of the template's usage."
-msgstr ""
+msgstr "Toto pole se používá pro interní popis použití šablony."
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_thread_blacklist__email_normalized
@@ -10486,7 +10533,7 @@ msgstr "Důvod odblokování: %(reason)s"
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/call/common/call_actions.js:0
 msgid "Undeafen"
-msgstr ""
+msgstr "Zapnout zvuk"
 
 #. module: mail
 #. odoo-javascript
@@ -10545,6 +10592,20 @@ msgstr "Zrušit ztlumení konverzace"
 #. odoo-python
 #: code:addons/mail/models/mail_tracking_value.py:0
 msgid "Unnamed %(record_model_name)s (%(record_id)s)"
+msgstr ""
+
+#. module: mail
+#. odoo-python
+#: code:addons/mail/models/mail_render_mixin.py:0
+#, fuzzy
+#| msgid "Related Mail Template"
+msgid "Unnamed Mail Template"
+msgstr "Související šablona pošty"
+
+#. module: mail
+#. odoo-python
+#: code:addons/mail/models/mail_render_mixin.py:0
+msgid "Unnamed Mailing"
 msgstr ""
 
 #. module: mail
@@ -11347,6 +11408,8 @@ msgstr "Můžete tuto zprávu ignorovat"
 #: code:addons/mail/models/mail_activity_type.py:0
 msgid "You cannot delete %(activity_names)s as it is required in various apps."
 msgstr ""
+"%(activity_names)s nelze odstranit, protože je vyžadován v různých "
+"aplikacích."
 
 #. module: mail
 #. odoo-python
@@ -11365,6 +11428,8 @@ msgid ""
 "You cannot modify %(activities_names)s target model as they are are required "
 "in various apps."
 msgstr ""
+"Cílový model %(activities_names)s nelze upravovat, protože je vyžadován v "
+"různých aplikacích."
 
 #. module: mail
 #. odoo-python
@@ -11658,7 +11723,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/mail/static/src/core/web/activity.xml:0
 msgid "days:"
-msgstr ""
+msgstr "dny:"
 
 #. module: mail
 #. odoo-javascript
@@ -11791,7 +11856,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mail.mail_alias_view_form
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
 msgid "e.g. mycompany.com"
-msgstr ""
+msgstr "např. \"mycompany.com\""
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.discuss_channel_view_form
@@ -11896,7 +11961,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/call/common/call_participant_card.xml:0
 msgid "live"
-msgstr ""
+msgstr "živě"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_blacklist_remove_view_form
@@ -11943,7 +12008,7 @@ msgstr "ms"
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/call/common/call_participant_card.xml:0
 msgid "muted"
-msgstr ""
+msgstr "ztluměný"
 
 #. module: mail
 #. odoo-python
@@ -12059,7 +12124,7 @@ msgstr ""
 #. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__mail_ice_server__server_type__stun
 msgid "stun:"
-msgstr ""
+msgstr "omráčit:"
 
 #. module: mail
 #. odoo-python
@@ -12081,7 +12146,7 @@ msgstr "šablona"
 #. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__mail_ice_server__server_type__turn
 msgid "turn:"
-msgstr ""
+msgstr "otočit:"
 
 #. module: mail
 #. odoo-python
@@ -12152,3 +12217,17 @@ msgstr "{{ object.partner_id.lang }}"
 #: code:addons/mail/models/discuss/discuss_channel_member.py:0
 msgid "“%(member_name)s” in “%(channel_name)s”"
 msgstr "“%(member_name)s” v “%(channel_name)s”"
+
+#~ msgid ""
+#~ "Failed to render QWeb template: %(template_src)s\n"
+#~ "\n"
+#~ "%(template_traceback)s)"
+#~ msgstr ""
+#~ "Vykreslení šablony QWeb se nezdařilo: %(template_src)s\n"
+#~ "\n"
+#~ "%(template_traceback)s)"
+
+#~ msgid "%(user)s connected. This is their first connection. Wish them luck."
+#~ msgstr ""
+#~ "%(user)s se připojil/-a. Je to jeho/její první připojení. Přejte mu/jí "
+#~ "hodně štěstí."

@@ -405,10 +405,19 @@ export class Wysiwyg extends Component {
         }
 
         const getYoutubeVideoElement = async (url) => {
-            const { embed_url: src } = await this._serviceRpc(
-                '/web_editor/video_url/data',
-                { video_url: url },
-            );
+            const parsedUrl = new URL(url);
+            const urlParams = parsedUrl.searchParams;
+            const autoplay = urlParams.get("autoplay") === "1";
+            const loop = urlParams.get("loop") === "1";
+            const hide_controls = urlParams.get("controls") === "0";
+            const hide_fullscreen = urlParams.get("fs") === "0";
+            const { embed_url: src } = await this._serviceRpc("/web_editor/video_url/data", {
+                video_url: url,
+                autoplay,
+                loop,
+                hide_controls,
+                hide_fullscreen,
+            });
             const [savedVideo] = VideoSelector.createElements([{src}]);
             savedVideo.classList.add(...VideoSelector.mediaSpecificClasses);
             return savedVideo;
@@ -687,11 +696,10 @@ export class Wysiwyg extends Component {
 
             if ($target.is(this.customizableLinksSelector)
                     && $target.is('a')
-                    && $target[0].isContentEditable
+                    && ($target[0].isContentEditable || ($target.attr("data-mimetype") && !$target[0].dataset.mimetype.startsWith("image")))
                     && !$target.attr('data-oe-model')
                     && !$target.find('> [data-oe-model]').length
-                    && !$target[0].closest('.o_extra_menu_items')
-                    && $target[0].isContentEditable) {
+                    && !$target[0].closest('.o_extra_menu_items')) {
                 if (ev.ctrlKey || ev.metaKey) {
                     window.open($target[0].href, '_blank');
                 }
@@ -1832,7 +1840,13 @@ export class Wysiwyg extends Component {
                     this.mutex.exec(() => {
                         // TODO In master use a trigger parameter
                         const event = $.Event("image_changed", {_complete: resolve});
-                        $element.trigger(event);
+                        const events = $._data($element[0], "events");
+                        const hasListener = events && events["image_changed"];
+                        if (hasListener && hasListener.length) {
+                            $element.trigger(event);
+                        } else {
+                            resolve();
+                        }
                     });
                 });
             }
@@ -2167,7 +2181,9 @@ export class Wysiwyg extends Component {
         return backgroundGradient || $(targetElement).css(colorType === "text" ? 'color' : 'backgroundColor');
     }
     onColorpaletteDropdownHide(ev) {
-        return !(ev.clickEvent && ev.clickEvent.__isColorpickerClick);
+        const shouldHide = !(ev.clickEvent && this._isColorpickerClick);
+        delete this._isColorpickerClick;
+        return shouldHide;
     }
     onColorpaletteDropdownShow(colorType) {
         const selectedColor = this._getSelectedColor($, colorType);
@@ -2378,23 +2394,28 @@ export class Wysiwyg extends Component {
         // Unselect all media.
         this.$editable.find('.o_we_selected_image').removeClass('o_we_selected_image');
         if (isInMedia) {
-            this.odooEditor.automaticStepSkipStack();
-            // Select the media in the DOM.
-            const selection = this.odooEditor.document.getSelection();
-            const range = this.odooEditor.document.createRange();
-            range.selectNode(this.lastMediaClicked);
-            selection.removeAllRanges();
-            selection.addRange(range);
-            // Toggle the 'active' class on the active image tool buttons.
-            for (const button of this.toolbarEl.querySelectorAll('#image-shape div, #fa-spin')) {
-                button.classList.toggle('active', $(e.target).hasClass(button.id));
+            // Hide the toolbar if the media has a data-mimetype (e.g. attachment).
+            if ($target.attr("data-mimetype") && !$target[0].dataset.mimetype.startsWith("image")) {
+                this.odooEditor.toolbarHide();
+            } else {
+                this.odooEditor.automaticStepSkipStack();
+                // Select the media in the DOM.
+                const selection = this.odooEditor.document.getSelection();
+                const range = this.odooEditor.document.createRange();
+                range.selectNode(this.lastMediaClicked);
+                selection.removeAllRanges();
+                selection.addRange(range);
+                // Toggle the 'active' class on the active image tool buttons.
+                for (const button of this.toolbarEl.querySelectorAll('#image-shape div, #fa-spin')) {
+                    button.classList.toggle('active', $(e.target).hasClass(button.id));
+                }
+                for (const button of this.toolbarEl.querySelectorAll('#image-width div')) {
+                    button.classList.toggle('active', e.target.style.width === button.id);
+                }
+                this.toolbarEl.querySelector('#image-transform').classList.toggle('active', e.target.matches('[style*="transform"]'));
+                this._updateMediaJustifyButton();
+                this._updateFaResizeButtons();
             }
-            for (const button of this.toolbarEl.querySelectorAll('#image-width div')) {
-                button.classList.toggle('active', e.target.style.width === button.id);
-            }
-            this.toolbarEl.querySelector('#image-transform').classList.toggle('active', e.target.matches('[style*="transform"]'));
-            this._updateMediaJustifyButton();
-            this._updateFaResizeButtons();
         }
         if (isInMedia && !this.options.onDblClickEditableMedia) {
             // Handle the media/link's tooltip.
@@ -3010,7 +3031,10 @@ export class Wysiwyg extends Component {
             if (
                 isVisible &&
                 (
-                    (this.options.autohideToolbar && !this.odooEditor.document.getSelection().isCollapsed) ||
+                    (this.options.autohideToolbar &&
+                        !this.odooEditor.document.getSelection().isCollapsed &&
+                        !(this.linkPopover.$target.attr("data-mimetype") &&
+                            this.linkPopover.$target[0].dataset.mimetype.startsWith("image"))) ||
                     !selectionInLink
                 )
             ) {
@@ -3040,6 +3064,9 @@ export class Wysiwyg extends Component {
                 this._pendingBlur = false;
             }
             this._shouldDelayBlur = false;
+        }
+        if (e.target.closest(".o_colorpicker_widget")) {
+            this._isColorpickerClick = true;
         }
     }
     _onBlur() {

@@ -74,6 +74,9 @@ class MrpProduction(models.Model):
             if mo.with_company(mo.company_id).product_id.valuation != 'real_time':
                 continue
 
+            if mo.workorder_ids.time_ids.account_move_line_id:
+                continue
+
             product_accounts = mo.product_id.product_tmpl_id.get_product_accounts()
             labour_amounts = defaultdict(float)
             workorders = defaultdict(self.env['mrp.workorder'].browse)
@@ -105,7 +108,7 @@ class MrpProduction(models.Model):
             for line in account_move.line_ids[:-1]:
                 workorders[line.account_id].time_ids.write({'account_move_line_id': line.id})
 
-    def _post_inventory(self, cancel_backorder=False):
-        res = super()._post_inventory(cancel_backorder=cancel_backorder)
-        self.filtered(lambda mo: mo.state == 'done')._post_labour()
+    def button_mark_done(self):
+        res = super().button_mark_done()
+        self.filtered(lambda mo: mo.state == 'done' and not mo.reservation_state)._post_labour()
         return res
