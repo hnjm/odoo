@@ -85,7 +85,7 @@ class AccountEdiXmlUBL20(models.AbstractModel):
         return {
             'partner': partner,
             'party_identification_vals': self._get_partner_party_identification_vals_list(partner.commercial_partner_id),
-            'party_name_vals': [{'name': partner.display_name}],
+            'party_name_vals': [{'name': partner.display_name if partner.name else partner.commercial_partner_id.display_name}],
             'postal_address_vals': self._get_partner_address_vals(partner),
             'party_tax_scheme_vals': self._get_partner_party_tax_scheme_vals_list(partner.commercial_partner_id, role),
             'party_legal_entity_vals': self._get_partner_party_legal_entity_vals_list(partner.commercial_partner_id),
@@ -312,13 +312,14 @@ class AccountEdiXmlUBL20(models.AbstractModel):
         fixed_tax_charge_vals_list = []
         for grouping_key, tax_details in tax_values_list['tax_details'].items():
             if grouping_key['tax_amount_type'] == 'fixed':
+                is_charge = tax_details['tax_amount_currency'] >= 0
                 fixed_tax_charge_vals_list.append({
                     'currency_name': line.currency_id.name,
                     'currency_dp': line.currency_id.decimal_places,
-                    'charge_indicator': 'true',
-                    'allowance_charge_reason_code': 'AEO',
+                    'charge_indicator': 'true' if is_charge else 'false',
+                    'allowance_charge_reason_code': 'AEO' if is_charge else '100',
                     'allowance_charge_reason': tax_details['tax_name'],
-                    'amount': tax_details['tax_amount_currency'],
+                    'amount': abs(tax_details['tax_amount_currency']),
                 })
 
         if not line.discount:
@@ -394,9 +395,9 @@ class AccountEdiXmlUBL20(models.AbstractModel):
 
         uom = super()._get_uom_unece_code(line)
         total_fixed_tax_amount = sum(
-            vals['amount']
-            for vals in allowance_charge_vals_list
-            if vals.get('charge_indicator') == 'true'
+            tax_details['tax_amount_currency']
+            for grouping_key, tax_details in taxes_vals['tax_details'].items()
+            if grouping_key['tax_amount_type'] == 'fixed'
         )
         return {
             'currency': line.currency_id,
@@ -513,6 +514,11 @@ class AccountEdiXmlUBL20(models.AbstractModel):
         # OrderReference/ID (order_reference) is mandatory inside the OrderReference node !
         order_reference = invoice.ref or invoice.name
 
+        # We only handle rounding amounts that do not belong to any tax ('add_invoice_line' cash rounding strategy).
+        # Rounding amounts belonging to a tax ('biggest_tax' strategy) are included already in the tax amounts.
+        rounding_amls = invoice.line_ids.filtered(lambda line: line.display_type == 'rounding' and not line.tax_line_id)
+        payable_rounding_amount = invoice.direction_sign * sum(rounding_amls.mapped('amount_currency'))
+
         vals = {
             'builder': self,
             'invoice': invoice,
@@ -558,10 +564,11 @@ class AccountEdiXmlUBL20(models.AbstractModel):
                     'currency_dp': invoice.currency_id.decimal_places,
                     'line_extension_amount': line_extension_amount,
                     'tax_exclusive_amount': taxes_vals['base_amount_currency'],
-                    'tax_inclusive_amount': invoice.amount_total,
+                    'tax_inclusive_amount': invoice.amount_total - payable_rounding_amount,
                     'allowance_total_amount': allowance_total_amount or None,
                     'charge_total_amount': charge_total_amount or None,
                     'prepaid_amount': invoice.amount_total - invoice.amount_residual,
+                    'payable_rounding_amount': payable_rounding_amount or None,
                     'payable_amount': invoice.amount_residual,
                 },
                 'invoice_line_vals': invoice_line_vals_list,
@@ -652,7 +659,11 @@ class AccountEdiXmlUBL20(models.AbstractModel):
         # ==== Bank Details ====
 
         bank_detail_nodes = tree.findall('.//{*}PaymentMeans')
-        bank_details = [bank_detail_node.findtext('{*}PayeeFinancialAccount/{*}ID') for bank_detail_node in bank_detail_nodes]
+        bank_details = [
+            bank_detail_node.findtext('{*}PayeeFinancialAccount/{*}ID')
+            for bank_detail_node in bank_detail_nodes
+            if bank_detail_node.findtext('{*}PayeeFinancialAccount/{*}ID')
+        ]
 
         if bank_details:
             self._import_retrieve_and_fill_partner_bank_details(invoice, bank_details=bank_details)
@@ -712,9 +723,25 @@ class AccountEdiXmlUBL20(models.AbstractModel):
 
         invoice_line_tag = 'InvoiceLine' if invoice.move_type in ('in_invoice', 'out_invoice') or qty_factor == -1 else 'CreditNoteLine'
         for i, invl_el in enumerate(tree.findall('./{*}' + invoice_line_tag)):
+            # Avoid creating a line if its LineExtensionAmount is missing/empty/zero.
+            line_total_node = invl_el.find('./{*}LineExtensionAmount')
+            if line_total_node is None or not (line_total_node.text and line_total_node.text.strip()):
+                continue
+            try:
+                if float(line_total_node.text) == 0:
+                    continue
+            except (ValueError, TypeError):
+                # If the value is not a valid number, skip creating the line.
+                continue
+
             invoice_line = invoice.invoice_line_ids.create({'move_id': invoice.id})
             invl_logs = self._import_fill_invoice_line_form(journal, invl_el, invoice, invoice_line, qty_factor)
             logs += invl_logs
+
+        # ==== Payable Rounding amount ====
+
+        payable_rounding_node = tree.find('./{*}LegalMonetaryTotal/{*}PayableRoundingAmount')
+        logs += self._import_rounding_amount(invoice, payable_rounding_node, qty_factor)
 
         return logs
 
@@ -770,8 +797,12 @@ class AccountEdiXmlUBL20(models.AbstractModel):
     def _correct_invoice_tax_amount(self, tree, invoice):
         """ The tax total may have been modified for rounding purpose, if so we should use the imported tax and not
          the computed one """
+        currency = invoice.currency_id
         # For each tax in our tax total, get the amount as well as the total in the xml.
-        for elem in tree.findall('.//{*}TaxTotal/{*}TaxSubtotal'):
+        # Negative tax amounts may appear in invoices; they have to be inverted (since they are credit notes).
+        document_amount_sign = self._get_import_document_amount_sign('', tree)[1] or 1
+        # We only search for `TaxTotal/TaxSubtotal` in the "root" element (i.e. not in `InvoiceLine` elements).
+        for elem in tree.findall('./{*}TaxTotal/{*}TaxSubtotal'):
             percentage = elem.find('.//{*}TaxCategory/{*}Percent')
             if percentage is None:
                 percentage = elem.find('.//{*}Percent')
@@ -783,13 +814,15 @@ class AccountEdiXmlUBL20(models.AbstractModel):
                 taxes = invoice.line_ids.tax_line_id.filtered(lambda tax: tax.amount == tax_percent)
                 # If we found taxes with the correct amount, look for a tax line using it, and correct it as needed.
                 if taxes:
-                    tax_total = float(amount.text)
-                    tax_line = invoice.line_ids.filtered(lambda line: line.tax_line_id in taxes)[:1]
-                    if tax_line:
+                    tax_total = document_amount_sign * float(amount.text)
+                    # Sometimes we have multiple lines for the same tax.
+                    tax_lines = invoice.line_ids.filtered(lambda line: line.tax_line_id in taxes)
+                    if tax_lines:
                         sign = -1 if invoice.is_inbound(include_receipts=True) else 1
-                        tax_line_amount = abs(tax_line.amount_currency)
-                        if abs(tax_total - tax_line_amount) <= 0.05:
-                            tax_line.amount_currency = tax_total * sign
+                        tax_lines_total = currency.round(sign * sum(tax_lines.mapped('amount_currency')))
+                        difference = currency.round(tax_total - tax_lines_total)
+                        if not currency.is_zero(difference):
+                            tax_lines[0].amount_currency += sign * difference
 
     # -------------------------------------------------------------------------
     # IMPORT : helpers
